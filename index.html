@@ -1,4 +1,4 @@
-index.html<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -6,173 +6,160 @@ index.html<!DOCTYPE html>
 <title>Washington FX</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#08111f;
+    color:#fff;
+}
+header{
+    background:#101d31;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid #263852;
+}
+.logo{font-size:24px;font-weight:bold}
+.mode{
+    background:#16864f;
+    padding:8px 15px;
+    border-radius:6px;
+    font-weight:bold;
+}
+.container{max-width:1300px;margin:auto;padding:20px}
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+.card{
+    background:#101d31;
+    padding:18px;
+    border-radius:10px;
+}
+.card small{color:#91a1b8}
+.card strong{display:block;font-size:22px;margin-top:8px}
+
+.main{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+.panel{
+    background:#101d31;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:20px;
+}
+h2{margin-top:0}
+
+.chart{
+    height:350px;
+    background:#07101d;
+    border:1px solid #263852;
+    border-radius:8px;
+    position:relative;
+    overflow:hidden;
+}
+canvas{width:100%;height:100%}
+
+.symbols{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+}
+.symbol{
+    background:#1b2b43;
+    color:#fff;
+    border:1px solid #30435e;
+    padding:8px 13px;
+    border-radius:5px;
+    cursor:pointer;
+}
+.symbol.active{background:#2368a5}
+
+.price{
+    font-size:28px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+.form-row{margin-bottom:13px}
+label{
+    display:block;
+    color:#91a1b8;
+    margin-bottom:6px;
+    font-size:13px;
+}
+input,select{
+    width:100%;
+    padding:11px;
+    border-radius:5px;
+    border:1px solid #344862;
+    background:#07101d;
+    color:white;
+}
+.buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:15px;
+}
+button{cursor:pointer}
+.buy,.sell{
+    border:0;
+    padding:13px;
+    color:white;
+    font-weight:bold;
+    border-radius:5px;
+}
+.buy{background:#16864f}
+.sell{background:#c0392b}
+.buy:hover,.sell:hover{opacity:.8}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    padding:11px;
+    border-bottom:1px solid #263852;
+    text-align:left;
+}
+th{color:#91a1b8;font-size:13px}
+
+.close{
+    background:#555;
+    color:white;
+    border:0;
+    padding:6px 10px;
+    border-radius:4px;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background: #0b1220;
-    color: white;
+.profit{color:#20c878}
+.loss{color:#ff5d52}
+
+.notice{
+    padding:10px;
+    background:#172941;
+    border-radius:6px;
+    color:#91a1b8;
+    margin-top:10px;
+    font-size:13px;
 }
 
-header {
-    background: #111c30;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #26344d;
+@media(max-width:900px){
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .main{grid-template-columns:1fr}
 }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.demo {
-    background: #1d8f5a;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-weight: bold;
-}
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-}
-
-.balance {
-    background: #111c30;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-.balance h2 {
-    color: #9aa8bd;
-    font-size: 15px;
-}
-
-.balance p {
-    font-size: 32px;
-    font-weight: bold;
-    margin-top: 8px;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.card {
-    background: #111c30;
-    padding: 18px;
-    border-radius: 10px;
-}
-
-.card h3 {
-    color: #9aa8bd;
-    font-size: 14px;
-}
-
-.card p {
-    font-size: 20px;
-    margin-top: 8px;
-    font-weight: bold;
-}
-
-.market {
-    background: #111c30;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-.market h2 {
-    margin-bottom: 15px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 13px;
-    text-align: left;
-    border-bottom: 1px solid #26344d;
-}
-
-th {
-    color: #9aa8bd;
-}
-
-.buy {
-    background: #16864f;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 5px;
-}
-
-.sell {
-    background: #c0392b;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.buy:hover, .sell:hover {
-    opacity: 0.8;
-}
-
-.trades {
-    background: #111c30;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.trades h2 {
-    margin-bottom: 15px;
-}
-
-#message {
-    color: #9aa8bd;
-    padding: 10px 0;
-}
-
-@media(max-width: 800px) {
-    .cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    table {
-        font-size: 13px;
-    }
-
-    th, td {
-        padding: 8px;
-    }
-}
-
-@media(max-width: 500px) {
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .container {
-        padding: 10px;
-    }
+@media(max-width:550px){
+    .cards{grid-template-columns:1fr}
+    .container{padding:10px}
+    table{font-size:12px}
 }
 </style>
 </head>
@@ -181,105 +168,137 @@ th {
 
 <header>
     <div class="logo">WASHINGTON FX</div>
-    <div class="demo">DEMO ACCOUNT</div>
+    <div class="mode">DEMO</div>
 </header>
 
 <div class="container">
 
-    <div class="balance">
-        <h2>Demo Balance</h2>
-        <p id="balance">$10,000.00</p>
-    </div>
-
     <div class="cards">
+
         <div class="card">
-            <h3>ACCOUNT TYPE</h3>
-            <p>DEMO</p>
+            <small>BALANCE</small>
+            <strong id="balance">$10,000.00</strong>
         </div>
 
         <div class="card">
-            <h3>BALANCE</h3>
-            <p id="balanceCard">$10,000.00</p>
+            <small>EQUITY</small>
+            <strong id="equity">$10,000.00</strong>
         </div>
 
         <div class="card">
-            <h3>EQUITY</h3>
-            <p id="equity">$10,000.00</p>
+            <small>OPEN TRADES</small>
+            <strong id="openTrades">0</strong>
         </div>
 
         <div class="card">
-            <h3>OPEN TRADES</h3>
-            <p id="openTrades">0</p>
+            <small>ACCOUNT</small>
+            <strong>DEMO</strong>
         </div>
-    </div>
-
-    <div class="market">
-
-        <h2>Market Watch</h2>
-
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Symbol</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td>EUR/USD</td>
-                    <td id="eurusd">1.17350</td>
-                    <td>
-                        <button class="buy" onclick="openTrade('EUR/USD','BUY')">BUY</button>
-                        <button class="sell" onclick="openTrade('EUR/USD','SELL')">SELL</button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>GBP/USD</td>
-                    <td id="gbpusd">1.34520</td>
-                    <td>
-                        <button class="buy" onclick="openTrade('GBP/USD','BUY')">BUY</button>
-                        <button class="sell" onclick="openTrade('GBP/USD','SELL')">SELL</button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>USD/JPY</td>
-                    <td id="usdjpy">147.850</td>
-                    <td>
-                        <button class="buy" onclick="openTrade('USD/JPY','BUY')">BUY</button>
-                        <button class="sell" onclick="openTrade('USD/JPY','SELL')">SELL</button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>XAU/USD</td>
-                    <td id="xauusd">3865.20</td>
-                    <td>
-                        <button class="buy" onclick="openTrade('XAU/USD','BUY')">BUY</button>
-                        <button class="sell" onclick="openTrade('XAU/USD','SELL')">SELL</button>
-                    </td>
-                </tr>
-
-            </tbody>
-
-        </table>
 
     </div>
 
-    <div class="trades">
+    <div class="main">
 
-        <h2>Open Trades</h2>
+        <div>
 
-        <div id="message">
-            No open trades.
+            <div class="panel">
+
+                <div class="symbols">
+                    <button class="symbol active" onclick="selectPair('EUR/USD')">EUR/USD</button>
+                    <button class="symbol" onclick="selectPair('GBP/USD')">GBP/USD</button>
+                    <button class="symbol" onclick="selectPair('USD/JPY')">USD/JPY</button>
+                    <button class="symbol" onclick="selectPair('XAU/USD')">XAU/USD</button>
+                </div>
+
+                <div class="price" id="price">1.17350</div>
+
+                <div class="chart">
+                    <canvas id="chart"></canvas>
+                </div>
+
+                <div class="notice">
+                    DEMO MODE — Trades use virtual money only.
+                </div>
+
+            </div>
+
+            <div class="panel">
+
+                <h2>Open Trades</h2>
+
+                <div id="trades">
+                    No open trades.
+                </div>
+
+            </div>
+
         </div>
 
-        <div id="tradeList"></div>
+        <div>
+
+            <div class="panel">
+
+                <h2>Trade</h2>
+
+                <div class="form-row">
+                    <label>Symbol</label>
+                    <select id="tradeSymbol" onchange="changeFromSelect()">
+                        <option>EUR/USD</option>
+                        <option>GBP/USD</option>
+                        <option>USD/JPY</option>
+                        <option>XAU/USD</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label>Lot Size</label>
+                    <select id="lot">
+                        <option value="0.01">0.01</option>
+                        <option value="0.10">0.10</option>
+                        <option value="1">1.00</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <label>Stop Loss</label>
+                    <input id="sl" type="number" placeholder="Optional">
+                </div>
+
+                <div class="form-row">
+                    <label>Take Profit</label>
+                    <input id="tp" type="number" placeholder="Optional">
+                </div>
+
+                <div class="buttons">
+                    <button class="buy" onclick="placeTrade('BUY')">
+                        BUY
+                    </button>
+
+                    <button class="sell" onclick="placeTrade('SELL')">
+                        SELL
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="panel">
+
+                <h2>Market Watch</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pair</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="market"></tbody>
+                </table>
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -288,121 +307,298 @@ th {
 <script>
 
 let balance = 10000;
+
+let selectedPair = "EUR/USD";
+
+let prices = {
+    "EUR/USD":1.17350,
+    "GBP/USD":1.34520,
+    "USD/JPY":147.850,
+    "XAU/USD":3865.20
+};
+
 let trades = [];
 
-function formatMoney(value) {
+function money(value){
     return "$" + value.toFixed(2);
 }
 
-function updateDashboard() {
+function updateDashboard(){
 
-    document.getElementById("balance").innerText =
-        formatMoney(balance);
+    document.getElementById("balance").innerText = money(balance);
 
-    document.getElementById("balanceCard").innerText =
-        formatMoney(balance);
+    document.getElementById("equity").innerText = money(balance);
 
-    document.getElementById("equity").innerText =
-        formatMoney(balance);
-
-    document.getElementById("openTrades").innerText =
-        trades.length;
+    document.getElementById("openTrades").innerText = trades.length;
 
 }
 
-function openTrade(symbol, type) {
+function selectPair(pair){
 
-    let price;
+    selectedPair = pair;
 
-    if(symbol === "EUR/USD") {
-        price = parseFloat(document.getElementById("eurusd").innerText);
-    }
+    document.getElementById("tradeSymbol").value = pair;
 
-    if(symbol === "GBP/USD") {
-        price = parseFloat(document.getElementById("gbpusd").innerText);
-    }
+    document.getElementById("price").innerText =
+        prices[pair].toFixed(pair === "USD/JPY" ? 3 : 5);
 
-    if(symbol === "USD/JPY") {
-        price = parseFloat(document.getElementById("usdjpy").innerText);
-    }
+    document.querySelectorAll(".symbol").forEach(button=>{
+        button.classList.remove("active");
+    });
 
-    if(symbol === "XAU/USD") {
-        price = parseFloat(document.getElementById("xauusd").innerText);
-    }
+    event.target.classList.add("active");
+
+    drawChart();
+
+}
+
+function changeFromSelect(){
+
+    selectedPair = document.getElementById("tradeSymbol").value;
+
+    document.getElementById("price").innerText =
+        prices[selectedPair].toFixed(
+            selectedPair === "USD/JPY" ? 3 : 5
+        );
+
+    drawChart();
+
+}
+
+function placeTrade(type){
+
+    let symbol =
+        document.getElementById("tradeSymbol").value;
+
+    let lot =
+        parseFloat(document.getElementById("lot").value);
+
+    let price = prices[symbol];
+
+    let sl =
+        parseFloat(document.getElementById("sl").value) || null;
+
+    let tp =
+        parseFloat(document.getElementById("tp").value) || null;
 
     let trade = {
-        id: Date.now(),
-        symbol: symbol,
-        type: type,
-        price: price
+        id:Date.now(),
+        symbol:symbol,
+        type:type,
+        lot:lot,
+        entry:price,
+        sl:sl,
+        tp:tp
     };
 
     trades.push(trade);
 
     showTrades();
+
     updateDashboard();
 
 }
 
-function closeTrade(id) {
+function closeTrade(id){
 
-    trades = trades.filter(trade => trade.id !== id);
+    trades =
+        trades.filter(trade => trade.id !== id);
 
     showTrades();
+
     updateDashboard();
 
 }
 
-function showTrades() {
+function showTrades(){
 
-    let list = document.getElementById("tradeList");
-    let message = document.getElementById("message");
+    let box =
+        document.getElementById("trades");
 
-    list.innerHTML = "";
+    if(trades.length === 0){
 
-    if(trades.length === 0) {
+        box.innerHTML =
+            "No open trades.";
 
-        message.innerText = "No open trades.";
         return;
 
     }
 
-    message.innerText = "";
+    box.innerHTML = `
+    <table>
 
-    trades.forEach(trade => {
+        <thead>
+            <tr>
+                <th>Pair</th>
+                <th>Type</th>
+                <th>Lot</th>
+                <th>Entry</th>
+                <th>Action</th>
+            </tr>
+        </thead>
 
-        let div = document.createElement("div");
+        <tbody>
 
-        div.style.padding = "12px";
-        div.style.marginBottom = "10px";
-        div.style.background = "#18253a";
-        div.style.borderRadius = "6px";
+            ${trades.map(trade => `
 
-        div.innerHTML = `
-            <strong>${trade.symbol}</strong>
-            &nbsp; ${trade.type}
-            &nbsp; Entry: ${trade.price}
-            <button
-                onclick="closeTrade(${trade.id})"
-                style="
-                    float:right;
-                    background:#555;
-                    color:white;
-                    border:none;
-                    padding:6px 12px;
-                    border-radius:4px;
-                    cursor:pointer;">
+            <tr>
+
+                <td>${trade.symbol}</td>
+
+                <td class="${trade.type === 'BUY' ? 'profit' : 'loss'}">
+                    ${trade.type}
+                </td>
+
+                <td>${trade.lot}</td>
+
+                <td>${trade.entry}</td>
+
+                <td>
+                    <button class="close"
+                    onclick="closeTrade(${trade.id})">
                     CLOSE
-            </button>
-        `;
+                    </button>
+                </td>
 
-        list.appendChild(div);
+            </tr>
 
-    });
+            `).join("")}
+
+        </tbody>
+
+    </table>
+    `;
 
 }
 
-updateDashboard();
+function updateMarket(){
+
+    let html = "";
+
+    for(let pair in prices){
+
+        let movement =
+            (Math.random() - 0.5) *
+            (pair === "XAU/USD" ? 2 : 0.0005);
+
+        prices[pair] += movement;
+
+        let decimals =
+            pair === "USD/JPY" ? 3 : 5;
+
+        html += `
+        <tr>
+            <td>${pair}</td>
+            <td>${prices[pair].toFixed(decimals)}</td>
+        </tr>
+        `;
+
+    }
+
+    document.getElementById("market").innerHTML = html;
+
+    document.getElementById("price").innerText =
+        prices[selectedPair].toFixed(
+            selectedPair === "USD/JPY" ? 3 : 5
+        );
+
+    drawChart();
+
+}
+
+let chartValues = [];
+
+function drawChart(){
+
+    let canvas =
+        document.getElementById("chart");
+
+    let ctx =
+        canvas.getContext("2d");
+
+    canvas.width =
+        canvas.clientWidth;
+
+    canvas.height =
+        canvas.clientHeight;
+
+    ctx.clearRect(
+        0,0,
+        canvas.width,
+        canvas.height
+    );
+
+    let current =
+        prices[selectedPair];
+
+    if(chartValues.length === 0){
+
+        for(let i=0;i<50;i++){
+
+            chartValues.push(
+                current +
+                (Math.random()-0.5) *
+                (selectedPair === "XAU/USD" ? 10 : 0.002)
+            );
+
+        }
+
+    }
+
+    chartValues.push(current);
+
+    if(chartValues.length > 60)
+        chartValues.shift();
+
+    let min =
+        Math.min(...chartValues);
+
+    let max =
+        Math.max(...chartValues);
+
+    ctx.beginPath();
+
+    chartValues.forEach((value,i)=>{
+
+        let x =
+            i *
+            (canvas.width/(chartValues.length-1));
+
+        let y =
+            canvas.height -
+            ((value-min)/(max-min || 1)) *
+            (canvas.height-20) -
+            10;
+
+        if(i===0)
+            ctx.moveTo(x,y);
+        else
+            ctx.lineTo(x,y);
+
+    });
+
+    ctx.strokeStyle =
+        "#25c77a";
+
+    ctx.lineWidth = 2;
+
+    ctx.stroke();
+
+}
+
+function start(){
+
+    updateDashboard();
+
+    showTrades();
+
+    updateMarket();
+
+    setInterval(updateMarket,2000);
+
+}
+
+start();
 
 </script>
 
