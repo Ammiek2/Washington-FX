@@ -3,68 +3,111 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Washington FX</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
+
 body{
     margin:0;
-    font-family:Arial,sans-serif;
-    background:#08111f;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07101d;
     color:#fff;
 }
+
 header{
-    background:#101d31;
-    padding:18px 25px;
+    background:#0d192b;
+    border-bottom:1px solid #263852;
+    padding:15px 22px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    border-bottom:1px solid #263852;
+    position:sticky;
+    top:0;
+    z-index:10;
 }
-.logo{font-size:24px;font-weight:bold}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
 .mode{
     background:#16864f;
-    padding:8px 15px;
+    padding:8px 14px;
     border-radius:6px;
     font-weight:bold;
 }
-.container{max-width:1300px;margin:auto;padding:20px}
+
+.market-status{
+    background:#172941;
+    padding:8px 12px;
+    border-radius:6px;
+    color:#25c77a;
+    font-size:12px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:20px;
+}
+
 .cards{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(5,1fr);
     gap:15px;
     margin-bottom:20px;
 }
+
 .card{
     background:#101d31;
+    border:1px solid #1d304a;
     padding:18px;
     border-radius:10px;
 }
-.card small{color:#91a1b8}
-.card strong{display:block;font-size:22px;margin-top:8px}
+
+.card small{
+    color:#91a1b8;
+    font-size:12px;
+}
+
+.card strong{
+    display:block;
+    font-size:22px;
+    margin-top:8px;
+}
 
 .main{
     display:grid;
-    grid-template-columns:2fr 1fr;
+    grid-template-columns:minmax(0,2fr) minmax(300px,1fr);
     gap:20px;
 }
+
 .panel{
     background:#101d31;
+    border:1px solid #1d304a;
     border-radius:10px;
-    padding:20px;
+    padding:18px;
     margin-bottom:20px;
 }
-h2{margin-top:0}
 
-.chart{
-    height:350px;
-    background:#07101d;
-    border:1px solid #263852;
-    border-radius:8px;
-    position:relative;
-    overflow:hidden;
+h2{
+    margin:0 0 15px 0;
+    font-size:19px;
 }
-canvas{width:100%;height:100%}
 
 .symbols{
     display:flex;
@@ -72,29 +115,95 @@ canvas{width:100%;height:100%}
     flex-wrap:wrap;
     margin-bottom:15px;
 }
+
 .symbol{
     background:#1b2b43;
-    color:#fff;
+    color:white;
     border:1px solid #30435e;
-    padding:8px 13px;
+    padding:9px 14px;
     border-radius:5px;
     cursor:pointer;
 }
-.symbol.active{background:#2368a5}
+
+.symbol:hover{
+    background:#27405f;
+}
+
+.symbol.active{
+    background:#2368a5;
+}
+
+.price-area{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:12px;
+    gap:15px;
+}
 
 .price{
-    font-size:28px;
+    font-size:30px;
     font-weight:bold;
-    margin-bottom:15px;
 }
-.form-row{margin-bottom:13px}
+
+.pair-name{
+    color:#91a1b8;
+    font-size:13px;
+}
+
+.spread{
+    color:#91a1b8;
+    font-size:12px;
+}
+
+.chart{
+    height:400px;
+    background:#07101d;
+    border:1px solid #263852;
+    border-radius:8px;
+    position:relative;
+    overflow:hidden;
+}
+
+canvas{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.chart-info{
+    position:absolute;
+    left:12px;
+    top:10px;
+    background:rgba(7,16,29,.8);
+    padding:5px 8px;
+    border-radius:4px;
+    font-size:12px;
+    color:#91a1b8;
+}
+
+.notice{
+    padding:10px;
+    background:#172941;
+    border-radius:6px;
+    color:#91a1b8;
+    margin-top:12px;
+    font-size:12px;
+}
+
+.form-row{
+    margin-bottom:13px;
+}
+
 label{
     display:block;
     color:#91a1b8;
     margin-bottom:6px;
     font-size:13px;
 }
-input,select{
+
+input,
+select{
     width:100%;
     padding:11px;
     border-radius:5px;
@@ -102,34 +211,74 @@ input,select{
     background:#07101d;
     color:white;
 }
-.buttons{
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:#3186c9;
+}
+
+.trade-buttons{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:10px;
     margin-top:15px;
 }
-button{cursor:pointer}
-.buy,.sell{
+
+.buy,
+.sell{
     border:0;
-    padding:13px;
+    padding:14px;
     color:white;
     font-weight:bold;
     border-radius:5px;
+    cursor:pointer;
+    font-size:15px;
 }
-.buy{background:#16864f}
-.sell{background:#c0392b}
-.buy:hover,.sell:hover{opacity:.8}
+
+.buy{
+    background:#16864f;
+}
+
+.sell{
+    background:#c0392b;
+}
+
+.buy:hover,
+.sell:hover{
+    opacity:.85;
+}
+
+button:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
 
 table{
     width:100%;
     border-collapse:collapse;
 }
-th,td{
-    padding:11px;
+
+th,
+td{
+    padding:10px;
     border-bottom:1px solid #263852;
     text-align:left;
+    white-space:nowrap;
 }
-th{color:#91a1b8;font-size:13px}
+
+th{
+    color:#91a1b8;
+    font-size:12px;
+}
+
+td{
+    font-size:13px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
 
 .close{
     background:#555;
@@ -137,42 +286,171 @@ th{color:#91a1b8;font-size:13px}
     border:0;
     padding:6px 10px;
     border-radius:4px;
+    cursor:pointer;
 }
 
-.profit{color:#20c878}
-.loss{color:#ff5d52}
+.close:hover{
+    background:#777;
+}
 
-.notice{
-    padding:10px;
-    background:#172941;
-    border-radius:6px;
+.profit{
+    color:#20c878;
+}
+
+.loss{
+    color:#ff5d52;
+}
+
+.neutral{
     color:#91a1b8;
-    margin-top:10px;
-    font-size:13px;
 }
 
-@media(max-width:900px){
-    .cards{grid-template-columns:repeat(2,1fr)}
-    .main{grid-template-columns:1fr}
+.market-up{
+    color:#20c878;
 }
 
-@media(max-width:550px){
-    .cards{grid-template-columns:1fr}
-    .container{padding:10px}
-    table{font-size:12px}
+.market-down{
+    color:#ff5d52;
+}
+
+.empty{
+    color:#91a1b8;
+    padding:15px 0;
+}
+
+.small-button{
+    border:1px solid #344862;
+    background:#172941;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.small-button:hover{
+    background:#243c5b;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.toast{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#172941;
+    border:1px solid #344862;
+    padding:12px 16px;
+    border-radius:7px;
+    display:none;
+    z-index:100;
+    max-width:350px;
+}
+
+.toast.success{
+    border-color:#16864f;
+}
+
+.toast.error{
+    border-color:#c0392b;
+}
+
+.account-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:15px;
+}
+
+@media(max-width:1100px){
+
+    .cards{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .main{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:700px){
+
+    header{
+        padding:12px;
+    }
+
+    .logo{
+        font-size:19px;
+    }
+
+    .market-status{
+        display:none;
+    }
+
+    .container{
+        padding:10px;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .chart{
+        height:320px;
+    }
+}
+
+@media(max-width:450px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .header-right{
+        gap:5px;
+    }
+
+    .mode{
+        padding:7px 9px;
+        font-size:12px;
+    }
+
+    .price{
+        font-size:24px;
+    }
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
 <header>
-    <div class="logo">WASHINGTON FX</div>
-    <div class="mode">DEMO</div>
+
+    <div class="logo">
+        WASHINGTON FX
+    </div>
+
+    <div class="header-right">
+
+        <div class="market-status">
+            ● SIMULATED MARKET
+        </div>
+
+        <div class="mode">
+            DEMO
+        </div>
+
+    </div>
+
 </header>
 
+
 <div class="container">
+
+    <!-- ACCOUNT CARDS -->
 
     <div class="cards">
 
@@ -187,115 +465,314 @@ th{color:#91a1b8;font-size:13px}
         </div>
 
         <div class="card">
+            <small>FLOATING P/L</small>
+            <strong id="floatingPL">$0.00</strong>
+        </div>
+
+        <div class="card">
             <small>OPEN TRADES</small>
             <strong id="openTrades">0</strong>
         </div>
 
         <div class="card">
-            <small>ACCOUNT</small>
+            <small>ACCOUNT TYPE</small>
             <strong>DEMO</strong>
         </div>
 
     </div>
 
+
     <div class="main">
 
+        <!-- LEFT SIDE -->
+
         <div>
+
+            <!-- CHART -->
 
             <div class="panel">
 
                 <div class="symbols">
-                    <button class="symbol active" onclick="selectPair('EUR/USD')">EUR/USD</button>
-                    <button class="symbol" onclick="selectPair('GBP/USD')">GBP/USD</button>
-                    <button class="symbol" onclick="selectPair('USD/JPY')">USD/JPY</button>
-                    <button class="symbol" onclick="selectPair('XAU/USD')">XAU/USD</button>
+
+                    <button
+                        class="symbol active"
+                        onclick="selectPair('EUR/USD',this)">
+                        EUR/USD
+                    </button>
+
+                    <button
+                        class="symbol"
+                        onclick="selectPair('GBP/USD',this)">
+                        GBP/USD
+                    </button>
+
+                    <button
+                        class="symbol"
+                        onclick="selectPair('USD/JPY',this)">
+                        USD/JPY
+                    </button>
+
+                    <button
+                        class="symbol"
+                        onclick="selectPair('XAU/USD',this)">
+                        XAU/USD
+                    </button>
+
                 </div>
 
-                <div class="price" id="price">1.17350</div>
+
+                <div class="price-area">
+
+                    <div>
+
+                        <div class="pair-name" id="pairName">
+                            EUR/USD
+                        </div>
+
+                        <div class="price" id="price">
+                            1.17350
+                        </div>
+
+                    </div>
+
+                    <div class="spread">
+                        Spread:
+                        <span id="spread">1.2</span>
+                    </div>
+
+                </div>
+
 
                 <div class="chart">
+
                     <canvas id="chart"></canvas>
+
+                    <div class="chart-info">
+                        DEMO CANDLE CHART
+                    </div>
+
                 </div>
 
+
                 <div class="notice">
-                    DEMO MODE — Trades use virtual money only.
+                    DEMO MODE — All prices and trades are simulated.
+                    No real money is involved.
                 </div>
 
             </div>
 
+
+            <!-- OPEN TRADES -->
+
             <div class="panel">
 
-                <h2>Open Trades</h2>
+                <div class="section-title">
 
-                <div id="trades">
-                    No open trades.
+                    <h2>Open Trades</h2>
+
+                    <span
+                        id="openTradeStatus"
+                        class="neutral">
+                        0 positions
+                    </span>
+
+                </div>
+
+                <div
+                    id="trades"
+                    class="table-wrap">
+                </div>
+
+            </div>
+
+
+            <!-- HISTORY -->
+
+            <div class="panel">
+
+                <div class="section-title">
+
+                    <h2>Trade History</h2>
+
+                    <button
+                        class="small-button"
+                        onclick="clearHistory()">
+                        Clear History
+                    </button>
+
+                </div>
+
+                <div
+                    id="history"
+                    class="table-wrap">
                 </div>
 
             </div>
 
         </div>
 
+
+        <!-- RIGHT SIDE -->
+
         <div>
+
+            <!-- TRADE PANEL -->
 
             <div class="panel">
 
-                <h2>Trade</h2>
+                <h2>Place Trade</h2>
 
                 <div class="form-row">
-                    <label>Symbol</label>
-                    <select id="tradeSymbol" onchange="changeFromSelect()">
+
+                    <label>
+                        Symbol
+                    </label>
+
+                    <select
+                        id="tradeSymbol"
+                        onchange="changeFromSelect()">
+
                         <option>EUR/USD</option>
                         <option>GBP/USD</option>
                         <option>USD/JPY</option>
                         <option>XAU/USD</option>
+
                     </select>
+
                 </div>
 
+
                 <div class="form-row">
-                    <label>Lot Size</label>
+
+                    <label>
+                        Lot Size
+                    </label>
+
                     <select id="lot">
-                        <option value="0.01">0.01</option>
-                        <option value="0.10">0.10</option>
-                        <option value="1">1.00</option>
+
+                        <option value="0.01">
+                            0.01
+                        </option>
+
+                        <option value="0.10">
+                            0.10
+                        </option>
+
+                        <option value="1">
+                            1.00
+                        </option>
+
                     </select>
+
                 </div>
+
 
                 <div class="form-row">
-                    <label>Stop Loss</label>
-                    <input id="sl" type="number" placeholder="Optional">
+
+                    <label>
+                        Stop Loss Price
+                    </label>
+
+                    <input
+                        id="sl"
+                        type="number"
+                        step="any"
+                        placeholder="Optional">
+
                 </div>
+
 
                 <div class="form-row">
-                    <label>Take Profit</label>
-                    <input id="tp" type="number" placeholder="Optional">
+
+                    <label>
+                        Take Profit Price
+                    </label>
+
+                    <input
+                        id="tp"
+                        type="number"
+                        step="any"
+                        placeholder="Optional">
+
                 </div>
 
-                <div class="buttons">
-                    <button class="buy" onclick="placeTrade('BUY')">
+
+                <div class="trade-buttons">
+
+                    <button
+                        class="buy"
+                        onclick="placeTrade('BUY')">
+
                         BUY
+
                     </button>
 
-                    <button class="sell" onclick="placeTrade('SELL')">
+                    <button
+                        class="sell"
+                        onclick="placeTrade('SELL')">
+
                         SELL
+
                     </button>
+
                 </div>
 
             </div>
+
+
+            <!-- MARKET WATCH -->
 
             <div class="panel">
 
                 <h2>Market Watch</h2>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Pair</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
+                <div class="table-wrap">
 
-                    <tbody id="market"></tbody>
-                </table>
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Pair</th>
+                                <th>Bid</th>
+                                <th>Ask</th>
+                                <th>Move</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="market">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div class="panel">
+
+                <h2>Demo Account</h2>
+
+                <p class="notice">
+                    Starting balance:
+                    <strong>$10,000</strong>
+                </p>
+
+                <div class="account-actions">
+
+                    <button
+                        class="small-button"
+                        onclick="resetDemo()">
+
+                        RESET DEMO ACCOUNT
+
+                    </button>
+
+                </div>
 
             </div>
 
@@ -305,312 +782,2100 @@ th{color:#91a1b8;font-size:13px}
 
 </div>
 
+
+<div
+    id="toast"
+    class="toast">
+</div>
+
+
 <script>
 
-let balance = 10000;
+/* =========================================================
+   WASHINGTON FX
+   DEMO TRADING ENGINE
+   ========================================================= */
+
+
+/* =========================
+   SUPABASE CONNECTION
+   ========================= */
+
+const SUPABASE_URL =
+    "https://plddteltleqayzcpuxom.supabase.co";
+
+/*
+   IMPORTANT:
+   Paste your existing Supabase Publishable/Anon key below.
+
+   DO NOT use a service_role or secret key here.
+*/
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv";
+
+let supabaseClient = null;
+
+try{
+
+    if(
+        window.supabase &&
+        SUPABASE_ANON_KEY !==
+        "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv"
+    ){
+
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+    }
+
+}catch(error){
+
+    console.log(
+        "Supabase initialization:",
+        error
+    );
+
+}
+
+
+/* =========================
+   ACCOUNT
+   ========================= */
+
+const STARTING_BALANCE = 10000;
+
+let balance = STARTING_BALANCE;
+
+
+/* =========================
+   SELECTED PAIR
+   ========================= */
 
 let selectedPair = "EUR/USD";
 
-let prices = {
-    "EUR/USD":1.17350,
-    "GBP/USD":1.34520,
-    "USD/JPY":147.850,
-    "XAU/USD":3865.20
+
+/* =========================
+   MARKET DATA
+   ========================= */
+
+const pairSettings = {
+
+    "EUR/USD":{
+        price:1.17350,
+        spread:0.00012,
+        decimals:5,
+        contract:100000
+    },
+
+    "GBP/USD":{
+        price:1.34520,
+        spread:0.00015,
+        decimals:5,
+        contract:100000
+    },
+
+    "USD/JPY":{
+        price:147.850,
+        spread:0.012,
+        decimals:3,
+        contract:100000
+    },
+
+    "XAU/USD":{
+        price:3865.20,
+        spread:0.30,
+        decimals:2,
+        contract:100
+    }
+
 };
+
+
+let prices = {};
+
+Object.keys(pairSettings).forEach(pair => {
+
+    prices[pair] =
+        pairSettings[pair].price;
+
+});
+
+
+/* =========================
+   TRADES
+   ========================= */
 
 let trades = [];
 
-function money(value){
-    return "$" + value.toFixed(2);
+let history = [];
+
+
+/* =========================
+   CANDLE DATA
+   ========================= */
+
+let candles = {};
+
+Object.keys(pairSettings).forEach(pair => {
+
+    candles[pair] = [];
+
+});
+
+
+/* =========================
+   LOCAL STORAGE
+   ========================= */
+
+function saveState(){
+
+    const data = {
+
+        balance:balance,
+
+        trades:trades,
+
+        history:history,
+
+        prices:prices,
+
+        candles:candles
+
+    };
+
+    localStorage.setItem(
+        "washingtonFXDemo",
+        JSON.stringify(data)
+    );
+
 }
+
+
+function loadState(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(
+                "washingtonFXDemo"
+            );
+
+        if(!saved)
+            return;
+
+        const data =
+            JSON.parse(saved);
+
+        if(
+            typeof data.balance ===
+            "number"
+        ){
+
+            balance =
+                data.balance;
+
+        }
+
+        if(Array.isArray(data.trades)){
+
+            trades =
+                data.trades;
+
+        }
+
+        if(Array.isArray(data.history)){
+
+            history =
+                data.history;
+
+        }
+
+        if(data.prices){
+
+            prices =
+                data.prices;
+
+        }
+
+        if(data.candles){
+
+            candles =
+                data.candles;
+
+        }
+
+    }catch(error){
+
+        console.log(
+            "Could not load demo data",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   FORMAT MONEY
+   ========================= */
+
+function money(value){
+
+    return "$" +
+        Number(value).toFixed(2);
+
+}
+
+
+/* =========================
+   FORMAT PRICE
+   ========================= */
+
+function formatPrice(pair,price){
+
+    return Number(price)
+        .toFixed(
+            pairSettings[pair].decimals
+        );
+
+}
+
+
+/* =========================
+   GET BID
+   ========================= */
+
+function getBid(pair){
+
+    return prices[pair];
+
+}
+
+
+/* =========================
+   GET ASK
+   ========================= */
+
+function getAsk(pair){
+
+    return prices[pair] +
+        pairSettings[pair].spread;
+
+}
+
+
+/* =========================
+   P/L CALCULATION
+   ========================= */
+
+function calculatePL(trade){
+
+    const pair =
+        trade.symbol;
+
+    let current;
+
+    if(trade.type === "BUY"){
+
+        current =
+            getBid(pair);
+
+    }else{
+
+        current =
+            getAsk(pair);
+
+    }
+
+    const difference =
+        trade.type === "BUY"
+
+        ? current - trade.entry
+
+        : trade.entry - current;
+
+
+    /*
+       Simplified demo P/L calculation.
+    */
+
+    if(pair === "USD/JPY"){
+
+        return (
+            difference *
+            pairSettings[pair].contract *
+            trade.lot
+        ) / current;
+
+    }
+
+
+    return (
+        difference *
+        pairSettings[pair].contract *
+        trade.lot
+    );
+
+}
+
+
+/* =========================
+   DASHBOARD
+   ========================= */
 
 function updateDashboard(){
 
-    document.getElementById("balance").innerText = money(balance);
+    let floatingPL = 0;
 
-    document.getElementById("equity").innerText = money(balance);
+    trades.forEach(trade => {
 
-    document.getElementById("openTrades").innerText = trades.length;
+        floatingPL +=
+            calculatePL(trade);
 
-}
-
-function selectPair(pair){
-
-    selectedPair = pair;
-
-    document.getElementById("tradeSymbol").value = pair;
-
-    document.getElementById("price").innerText =
-        prices[pair].toFixed(pair === "USD/JPY" ? 3 : 5);
-
-    document.querySelectorAll(".symbol").forEach(button=>{
-        button.classList.remove("active");
     });
 
-    event.target.classList.add("active");
 
-    drawChart();
+    const equity =
+        balance + floatingPL;
+
+
+    document.getElementById(
+        "balance"
+    ).innerText =
+        money(balance);
+
+
+    const equityElement =
+        document.getElementById(
+            "equity"
+        );
+
+    equityElement.innerText =
+        money(equity);
+
+
+    equityElement.className =
+        floatingPL >= 0
+        ? "profit"
+        : "loss";
+
+
+    const plElement =
+        document.getElementById(
+            "floatingPL"
+        );
+
+    plElement.innerText =
+        money(floatingPL);
+
+
+    plElement.className =
+        floatingPL >= 0
+        ? "profit"
+        : "loss";
+
+
+    document.getElementById(
+        "openTrades"
+    ).innerText =
+        trades.length;
+
+
+    document.getElementById(
+        "openTradeStatus"
+    ).innerText =
+        trades.length +
+        (
+            trades.length === 1
+            ? " position"
+            : " positions"
+        );
 
 }
+
+
+/* =========================
+   SELECT PAIR
+   ========================= */
+
+function selectPair(pair,button){
+
+    selectedPair =
+        pair;
+
+    document.getElementById(
+        "tradeSymbol"
+    ).value =
+        pair;
+
+
+    document.querySelectorAll(
+        ".symbol"
+    ).forEach(element => {
+
+        element.classList.remove(
+            "active"
+        );
+
+    });
+
+
+    if(button){
+
+        button.classList.add(
+            "active"
+        );
+
+    }
+
+
+    updatePriceDisplay();
+
+    drawCandles();
+
+}
+
+
+/* =========================
+   SELECT FROM DROPDOWN
+   ========================= */
 
 function changeFromSelect(){
 
-    selectedPair = document.getElementById("tradeSymbol").value;
+    selectedPair =
+        document.getElementById(
+            "tradeSymbol"
+        ).value;
 
-    document.getElementById("price").innerText =
-        prices[selectedPair].toFixed(
-            selectedPair === "USD/JPY" ? 3 : 5
+
+    document.querySelectorAll(
+        ".symbol"
+    ).forEach(button => {
+
+        button.classList.toggle(
+            "active",
+            button.innerText ===
+            selectedPair
         );
 
-    drawChart();
+    });
+
+
+    updatePriceDisplay();
+
+    drawCandles();
 
 }
+
+
+/* =========================
+   UPDATE PRICE DISPLAY
+   ========================= */
+
+function updatePriceDisplay(){
+
+    const pair =
+        selectedPair;
+
+    document.getElementById(
+        "pairName"
+    ).innerText =
+        pair;
+
+
+    document.getElementById(
+        "price"
+    ).innerText =
+        formatPrice(
+            pair,
+            prices[pair]
+        );
+
+
+    let spreadDisplay;
+
+    if(pair === "USD/JPY"){
+
+        spreadDisplay =
+            pairSettings[pair]
+                .spread
+                .toFixed(3);
+
+    }else if(pair === "XAU/USD"){
+
+        spreadDisplay =
+            pairSettings[pair]
+                .spread
+                .toFixed(2);
+
+    }else{
+
+        spreadDisplay =
+            (
+                pairSettings[pair]
+                    .spread * 100000
+            ).toFixed(1);
+
+    }
+
+
+    document.getElementById(
+        "spread"
+    ).innerText =
+        spreadDisplay;
+
+}
+
+
+/* =========================
+   PLACE TRADE
+   ========================= */
 
 function placeTrade(type){
 
-    let symbol =
-        document.getElementById("tradeSymbol").value;
+    const symbol =
+        document.getElementById(
+            "tradeSymbol"
+        ).value;
 
-    let lot =
-        parseFloat(document.getElementById("lot").value);
 
-    let price = prices[symbol];
-
-    let sl =
-        parseFloat(document.getElementById("sl").value) || null;
-
-    let tp =
-        parseFloat(document.getElementById("tp").value) || null;
-
-    let trade = {
-        id:Date.now(),
-        symbol:symbol,
-        type:type,
-        lot:lot,
-        entry:price,
-        sl:sl,
-        tp:tp
-    };
-
-    trades.push(trade);
-
-    showTrades();
-
-    updateDashboard();
-
-}
-
-function closeTrade(id){
-
-    trades =
-        trades.filter(trade => trade.id !== id);
-
-    showTrades();
-
-    updateDashboard();
-
-}
-
-function showTrades(){
-
-    let box =
-        document.getElementById("trades");
-
-    if(trades.length === 0){
-
-        box.innerHTML =
-            "No open trades.";
-
-        return;
-
-    }
-
-    box.innerHTML = `
-    <table>
-
-        <thead>
-            <tr>
-                <th>Pair</th>
-                <th>Type</th>
-                <th>Lot</th>
-                <th>Entry</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            ${trades.map(trade => `
-
-            <tr>
-
-                <td>${trade.symbol}</td>
-
-                <td class="${trade.type === 'BUY' ? 'profit' : 'loss'}">
-                    ${trade.type}
-                </td>
-
-                <td>${trade.lot}</td>
-
-                <td>${trade.entry}</td>
-
-                <td>
-                    <button class="close"
-                    onclick="closeTrade(${trade.id})">
-                    CLOSE
-                    </button>
-                </td>
-
-            </tr>
-
-            `).join("")}
-
-        </tbody>
-
-    </table>
-    `;
-
-}
-
-function updateMarket(){
-
-    let html = "";
-
-    for(let pair in prices){
-
-        let movement =
-            (Math.random() - 0.5) *
-            (pair === "XAU/USD" ? 2 : 0.0005);
-
-        prices[pair] += movement;
-
-        let decimals =
-            pair === "USD/JPY" ? 3 : 5;
-
-        html += `
-        <tr>
-            <td>${pair}</td>
-            <td>${prices[pair].toFixed(decimals)}</td>
-        </tr>
-        `;
-
-    }
-
-    document.getElementById("market").innerHTML = html;
-
-    document.getElementById("price").innerText =
-        prices[selectedPair].toFixed(
-            selectedPair === "USD/JPY" ? 3 : 5
+    const lot =
+        parseFloat(
+            document.getElementById(
+                "lot"
+            ).value
         );
 
-    drawChart();
 
-}
+    const slInput =
+        document.getElementById(
+            "sl"
+        ).value;
 
-let chartValues = [];
 
-function drawChart(){
+    const tpInput =
+        document.getElementById(
+            "tp"
+        ).value;
 
-    let canvas =
-        document.getElementById("chart");
 
-    let ctx =
-        canvas.getContext("2d");
+    const sl =
+        slInput === ""
+        ? null
+        : parseFloat(slInput);
 
-    canvas.width =
-        canvas.clientWidth;
 
-    canvas.height =
-        canvas.clientHeight;
+    const tp =
+        tpInput === ""
+        ? null
+        : parseFloat(tpInput);
 
-    ctx.clearRect(
-        0,0,
-        canvas.width,
-        canvas.height
-    );
 
-    let current =
-        prices[selectedPair];
+    const entry =
+        type === "BUY"
+        ? getAsk(symbol)
+        : getBid(symbol);
 
-    if(chartValues.length === 0){
 
-        for(let i=0;i<50;i++){
+    /* Validate SL */
 
-            chartValues.push(
-                current +
-                (Math.random()-0.5) *
-                (selectedPair === "XAU/USD" ? 10 : 0.002)
+    if(sl !== null){
+
+        if(type === "BUY" &&
+           sl >= entry){
+
+            showToast(
+                "BUY Stop Loss must be below entry price.",
+                "error"
             );
+
+            return;
+
+        }
+
+
+        if(type === "SELL" &&
+           sl <= entry){
+
+            showToast(
+                "SELL Stop Loss must be above entry price.",
+                "error"
+            );
+
+            return;
 
         }
 
     }
 
-    chartValues.push(current);
 
-    if(chartValues.length > 60)
-        chartValues.shift();
+    /* Validate TP */
 
-    let min =
-        Math.min(...chartValues);
+    if(tp !== null){
 
-    let max =
-        Math.max(...chartValues);
+        if(type === "BUY" &&
+           tp <= entry){
 
-    ctx.beginPath();
+            showToast(
+                "BUY Take Profit must be above entry price.",
+                "error"
+            );
 
-    chartValues.forEach((value,i)=>{
+            return;
 
-        let x =
-            i *
-            (canvas.width/(chartValues.length-1));
+        }
 
-        let y =
-            canvas.height -
-            ((value-min)/(max-min || 1)) *
-            (canvas.height-20) -
-            10;
 
-        if(i===0)
-            ctx.moveTo(x,y);
-        else
-            ctx.lineTo(x,y);
+        if(type === "SELL" &&
+           tp >= entry){
 
-    });
+            showToast(
+                "SELL Take Profit must be below entry price.",
+                "error"
+            );
 
-    ctx.strokeStyle =
-        "#25c77a";
+            return;
 
-    ctx.lineWidth = 2;
+        }
 
-    ctx.stroke();
+    }
+
+
+    const trade = {
+
+        id:
+            Date.now() +
+            Math.random(),
+
+        symbol:
+            symbol,
+
+        type:
+            type,
+
+        lot:
+            lot,
+
+        entry:
+            entry,
+
+        sl:
+            sl,
+
+        tp:
+            tp,
+
+        openedAt:
+            new Date().toISOString()
+
+    };
+
+
+    trades.push(
+        trade
+    );
+
+
+    showTrades();
+
+    updateDashboard();
+
+    saveState();
+
+
+    showToast(
+        type +
+        " " +
+        symbol +
+        " opened at " +
+        formatPrice(
+            symbol,
+            entry
+        ),
+        "success"
+    );
+
+
+    document.getElementById(
+        "sl"
+    ).value = "";
+
+
+    document.getElementById(
+        "tp"
+    ).value = "";
 
 }
 
+
+/* =========================
+   CLOSE TRADE
+   ========================= */
+
+function closeTrade(
+    id,
+    reason="Manual Close"
+){
+
+    const index =
+        trades.findIndex(
+            trade =>
+                trade.id === id
+        );
+
+
+    if(index === -1)
+        return;
+
+
+    const trade =
+        trades[index];
+
+
+    const pl =
+        calculatePL(
+            trade
+        );
+
+
+    balance +=
+        pl;
+
+
+    history.unshift({
+
+        id:
+            trade.id,
+
+        symbol:
+            trade.symbol,
+
+        type:
+            trade.type,
+
+        lot:
+            trade.lot,
+
+        entry:
+            trade.entry,
+
+        exit:
+            trade.type === "BUY"
+            ? getBid(trade.symbol)
+            : getAsk(trade.symbol),
+
+        pl:
+            pl,
+
+        reason:
+            reason,
+
+        openedAt:
+            trade.openedAt,
+
+        closedAt:
+            new Date().toISOString()
+
+    });
+
+
+    trades.splice(
+        index,
+        1
+    );
+
+
+    showTrades();
+
+    showHistory();
+
+    updateDashboard();
+
+    saveState();
+
+
+    showToast(
+        trade.symbol +
+        " closed: " +
+        money(pl),
+        pl >= 0
+        ? "success"
+        : "error"
+    );
+
+}
+
+
+/* =========================
+   CHECK SL / TP
+   ========================= */
+
+function checkStops(){
+
+    const copy =
+        [...trades];
+
+
+    copy.forEach(
+        trade => {
+
+            const current =
+                prices[
+                    trade.symbol
+                ];
+
+
+            if(
+                trade.type === "BUY"
+            ){
+
+                if(
+                    trade.sl !== null &&
+                    current <= trade.sl
+                ){
+
+                    closeTrade(
+                        trade.id,
+                        "Stop Loss"
+                    );
+
+                    return;
+
+                }
+
+
+                if(
+                    trade.tp !== null &&
+                    current >= trade.tp
+                ){
+
+                    closeTrade(
+                        trade.id,
+                        "Take Profit"
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            if(
+                trade.type === "SELL"
+            ){
+
+                if(
+                    trade.sl !== null &&
+                    current >= trade.sl
+                ){
+
+                    closeTrade(
+                        trade.id,
+                        "Stop Loss"
+                    );
+
+                    return;
+
+                }
+
+
+                if(
+                    trade.tp !== null &&
+                    current <= trade.tp
+                ){
+
+                    closeTrade(
+                        trade.id,
+                        "Take Profit"
+                    );
+
+                    return;
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================
+   OPEN TRADES DISPLAY
+   ========================= */
+
+function showTrades(){
+
+    const box =
+        document.getElementById(
+            "trades"
+        );
+
+
+    if(trades.length === 0){
+
+        box.innerHTML =
+            '<div class="empty">No open trades.</div>';
+
+        return;
+
+    }
+
+
+    box.innerHTML = `
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Pair</th>
+                <th>Type</th>
+                <th>Lot</th>
+                <th>Entry</th>
+                <th>Current</th>
+                <th>P/L</th>
+                <th>SL</th>
+                <th>TP</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            ${trades.map(trade => {
+
+                const current =
+                    trade.type === "BUY"
+                    ? getBid(trade.symbol)
+                    : getAsk(trade.symbol);
+
+                const pl =
+                    calculatePL(trade);
+
+                const plClass =
+                    pl >= 0
+                    ? "profit"
+                    : "loss";
+
+
+                return `
+
+                <tr>
+
+                    <td>
+                        ${trade.symbol}
+                    </td>
+
+                    <td class="${
+                        trade.type === "BUY"
+                        ? "profit"
+                        : "loss"
+                    }">
+
+                        ${trade.type}
+
+                    </td>
+
+                    <td>
+                        ${trade.lot}
+                    </td>
+
+                    <td>
+                        ${formatPrice(
+                            trade.symbol,
+                            trade.entry
+                        )}
+                    </td>
+
+                    <td>
+                        ${formatPrice(
+                            trade.symbol,
+                            current
+                        )}
+                    </td>
+
+                    <td class="${plClass}">
+                        ${money(pl)}
+                    </td>
+
+                    <td>
+                        ${
+                            trade.sl === null
+                            ? "-"
+                            : formatPrice(
+                                trade.symbol,
+                                trade.sl
+                            )
+                        }
+                    </td>
+
+                    <td>
+                        ${
+                            trade.tp === null
+                            ? "-"
+                            : formatPrice(
+                                trade.symbol,
+                                trade.tp
+                            )
+                        }
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="close"
+                            onclick="closeTrade(${trade.id})">
+
+                            CLOSE
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                `;
+
+            }).join("")}
+
+        </tbody>
+
+    </table>
+
+    `;
+
+}
+
+
+/* =========================
+   TRADE HISTORY DISPLAY
+   ========================= */
+
+function showHistory(){
+
+    const box =
+        document.getElementById(
+            "history"
+        );
+
+
+    if(history.length === 0){
+
+        box.innerHTML =
+            '<div class="empty">No closed trades yet.</div>';
+
+        return;
+
+    }
+
+
+    box.innerHTML = `
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Pair</th>
+                <th>Type</th>
+                <th>Lot</th>
+                <th>Entry</th>
+                <th>Exit</th>
+                <th>P/L</th>
+                <th>Reason</th>
+                <th>Closed</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            ${history.map(trade => {
+
+                const plClass =
+                    trade.pl >= 0
+                    ? "profit"
+                    : "loss";
+
+
+                return `
+
+                <tr>
+
+                    <td>
+                        ${trade.symbol}
+                    </td>
+
+                    <td>
+                        ${trade.type}
+                    </td>
+
+                    <td>
+                        ${trade.lot}
+                    </td>
+
+                    <td>
+                        ${formatPrice(
+                            trade.symbol,
+                            trade.entry
+                        )}
+                    </td>
+
+                    <td>
+                        ${formatPrice(
+                            trade.symbol,
+                            trade.exit
+                        )}
+                    </td>
+
+                    <td class="${plClass}">
+                        ${money(trade.pl)}
+                    </td>
+
+                    <td>
+                        ${trade.reason}
+                    </td>
+
+                    <td>
+                        ${new Date(
+                            trade.closedAt
+                        ).toLocaleTimeString()}
+                    </td>
+
+                </tr>
+
+                `;
+
+            }).join("")}
+
+        </tbody>
+
+    </table>
+
+    `;
+
+}
+
+
+/* =========================
+   CLEAR HISTORY
+   ========================= */
+
+function clearHistory(){
+
+    if(history.length === 0)
+        return;
+
+
+    if(
+        !confirm(
+            "Clear all trade history?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    history = [];
+
+    showHistory();
+
+    saveState();
+
+}
+
+
+/* =========================
+   MARKET MOVEMENT
+   ========================= */
+
+function updateMarket(){
+
+    Object.keys(
+        pairSettings
+    ).forEach(pair => {
+
+        let oldPrice =
+            prices[pair];
+
+
+        let volatility;
+
+
+        if(pair === "XAU/USD"){
+
+            volatility = 1.5;
+
+        }else if(pair === "USD/JPY"){
+
+            volatility = 0.025;
+
+        }else{
+
+            volatility = 0.00025;
+
+        }
+
+
+        const movement =
+            (
+                Math.random() -
+                0.5
+            ) *
+            volatility;
+
+
+        prices[pair] =
+            oldPrice +
+            movement;
+
+
+        /* prevent unrealistic demo values */
+
+        if(pair === "EUR/USD" &&
+           prices[pair] < 0.8){
+
+            prices[pair] = 0.8;
+
+        }
+
+        if(pair === "GBP/USD" &&
+           prices[pair] < 0.9){
+
+            prices[pair] = 0.9;
+
+        }
+
+        if(pair === "USD/JPY" &&
+           prices[pair] < 100){
+
+            prices[pair] = 100;
+
+        }
+
+        if(pair === "XAU/USD" &&
+           prices[pair] < 2000){
+
+            prices[pair] = 2000;
+
+        }
+
+
+        updateCandle(
+            pair,
+            prices[pair]
+        );
+
+    });
+
+
+    updatePriceDisplay();
+
+    updateMarketWatch();
+
+    checkStops();
+
+    showTrades();
+
+    updateDashboard();
+
+    drawCandles();
+
+    saveState();
+
+}
+
+
+/* =========================
+   MARKET WATCH
+   ========================= */
+
+function updateMarketWatch(){
+
+    const market =
+        document.getElementById(
+            "market"
+        );
+
+
+    let html = "";
+
+
+    Object.keys(
+        pairSettings
+    ).forEach(pair => {
+
+        const bid =
+            getBid(pair);
+
+        const ask =
+            getAsk(pair);
+
+
+        const decimals =
+            pairSettings[pair]
+                .decimals;
+
+
+        const previous =
+            pairSettings[pair]
+                .price;
+
+
+        const direction =
+            bid >= previous
+            ? "▲"
+            : "▼";
+
+
+        const movementClass =
+            bid >= previous
+            ? "market-up"
+            : "market-down";
+
+
+        html += `
+
+        <tr>
+
+            <td>
+                ${pair}
+            </td>
+
+            <td>
+                ${bid.toFixed(decimals)}
+            </td>
+
+            <td>
+                ${ask.toFixed(decimals)}
+            </td>
+
+            <td class="${movementClass}">
+                ${direction}
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    market.innerHTML =
+        html;
+
+}
+
+
+/* =========================
+   CANDLE CREATION
+   ========================= */
+
+function createInitialCandles(pair){
+
+    if(
+        candles[pair] &&
+        candles[pair].length > 0
+    ){
+
+        return;
+
+    }
+
+
+    candles[pair] = [];
+
+
+    let base =
+        prices[pair];
+
+
+    const volatility =
+        pair === "XAU/USD"
+        ? 5
+        : pair === "USD/JPY"
+        ? 0.08
+        : 0.001;
+
+
+    for(
+        let i = 0;
+        i < 60;
+        i++
+    ){
+
+        const open =
+            base +
+            (
+                Math.random() -
+                0.5
+            ) *
+            volatility;
+
+
+        const close =
+            open +
+            (
+                Math.random() -
+                0.5
+            ) *
+            volatility;
+
+
+        const high =
+            Math.max(
+                open,
+                close
+            ) +
+            Math.random() *
+            volatility;
+
+
+        const low =
+            Math.min(
+                open,
+                close
+            ) -
+            Math.random() *
+            volatility;
+
+
+        candles[pair].push({
+
+            open:open,
+            high:high,
+            low:low,
+            close:close
+
+        });
+
+
+        base =
+            close;
+
+    }
+
+}
+
+
+/* =========================
+   UPDATE CANDLE
+   ========================= */
+
+function updateCandle(
+    pair,
+    price
+){
+
+    createInitialCandles(
+        pair
+    );
+
+
+    let list =
+        candles[pair];
+
+
+    let current =
+        list[
+            list.length - 1
+        ];
+
+
+    if(!current){
+
+        current = {
+
+            open:price,
+            high:price,
+            low:price,
+            close:price
+
+        };
+
+        list.push(current);
+
+        return;
+
+    }
+
+
+    current.close =
+        price;
+
+
+    current.high =
+        Math.max(
+            current.high,
+            price
+        );
+
+
+    current.low =
+        Math.min(
+            current.low,
+            price
+        );
+
+
+    /*
+       Every 10 market updates
+       create a new candle.
+    */
+
+    candleTick++;
+
+
+    if(candleTick >= 10){
+
+        candleTick = 0;
+
+
+        list.push({
+
+            open:price,
+            high:price,
+            low:price,
+            close:price
+
+        });
+
+
+        if(list.length > 60){
+
+            list.shift();
+
+        }
+
+    }
+
+}
+
+
+let candleTick = 0;
+
+
+/* =========================
+   DRAW CANDLE CHART
+   ========================= */
+
+function drawCandles(){
+
+    const canvas =
+        document.getElementById(
+            "chart"
+        );
+
+
+    const ctx =
+        canvas.getContext(
+            "2d"
+        );
+
+
+    const width =
+        canvas.clientWidth;
+
+
+    const height =
+        canvas.clientHeight;
+
+
+    if(width <= 0 ||
+       height <= 0){
+
+        return;
+
+    }
+
+
+    canvas.width =
+        width *
+        window.devicePixelRatio;
+
+
+    canvas.height =
+        height *
+        window.devicePixelRatio;
+
+
+    ctx.scale(
+        window.devicePixelRatio,
+        window.devicePixelRatio
+    );
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    createInitialCandles(
+        selectedPair
+    );
+
+
+    const data =
+        candles[selectedPair];
+
+
+    if(!data.length)
+        return;
+
+
+    let min =
+        Math.min(
+            ...data.map(
+                candle =>
+                    candle.low
+            )
+        );
+
+
+    let max =
+        Math.max(
+            ...data.map(
+                candle =>
+                    candle.high
+            )
+        );
+
+
+    const paddingTop = 20;
+    const paddingBottom = 25;
+    const paddingLeft = 10;
+    const paddingRight = 10;
+
+
+    const chartHeight =
+        height -
+        paddingTop -
+        paddingBottom;
+
+
+    const range =
+        max - min || 1;
+
+
+    function y(value){
+
+        return (
+            height -
+            paddingBottom -
+            (
+                (value - min) /
+                range
+            ) *
+            chartHeight
+        );
+
+    }
+
+
+    /* grid */
+
+    ctx.strokeStyle =
+        "#172941";
+
+    ctx.lineWidth = 1;
+
+
+    for(
+        let i = 1;
+        i < 5;
+        i++
+    ){
+
+        const gy =
+            paddingTop +
+            (
+                chartHeight /
+                5
+            ) *
+            i;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            0,
+            gy
+        );
+
+        ctx.lineTo(
+            width,
+            gy
+        );
+
+        ctx.stroke();
+
+    }
+
+
+    const spacing =
+        (
+            width -
+            paddingLeft -
+            paddingRight
+        ) /
+        data.length;
+
+
+    const candleWidth =
+        Math.max(
+            3,
+            spacing * 0.6
+        );
+
+
+    data.forEach(
+        (candle,index) => {
+
+            const x =
+                paddingLeft +
+                spacing *
+                index +
+                spacing / 2;
+
+
+            const openY =
+                y(candle.open);
+
+            const closeY =
+                y(candle.close);
+
+            const highY =
+                y(candle.high);
+
+            const lowY =
+                y(candle.low);
+
+
+            const bullish =
+                candle.close >=
+                candle.open;
+
+
+            /*
+              Wick
+            */
+
+            ctx.strokeStyle =
+                bullish
+                ? "#20c878"
+                : "#ff5d52";
+
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                highY
+            );
+
+            ctx.lineTo(
+                x,
+                lowY
+            );
+
+            ctx.stroke();
+
+
+            /*
+              Body
+            */
+
+            const bodyTop =
+                Math.min(
+                    openY,
+                    closeY
+                );
+
+
+            const bodyHeight =
+                Math.max(
+                    1,
+                    Math.abs(
+                        closeY -
+                        openY
+                    )
+                );
+
+
+            ctx.fillStyle =
+                bullish
+                ? "#20c878"
+                : "#ff5d52";
+
+
+            ctx.fillRect(
+
+                x -
+                candleWidth / 2,
+
+                bodyTop,
+
+                candleWidth,
+
+                bodyHeight
+
+            );
+
+        }
+    );
+
+
+    /*
+       Current price line
+    */
+
+    const current =
+        prices[selectedPair];
+
+
+    const currentY =
+        y(current);
+
+
+    ctx.strokeStyle =
+        "#3186c9";
+
+    ctx.setLineDash(
+        [5,5]
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        0,
+        currentY
+    );
+
+    ctx.lineTo(
+        width,
+        currentY
+    );
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+
+    ctx.fillStyle =
+        "#3186c9";
+
+    ctx.fillRect(
+        width - 75,
+        currentY - 10,
+        75,
+        20
+    );
+
+
+    ctx.fillStyle =
+        "#fff";
+
+    ctx.font =
+        "11px Arial";
+
+    ctx.fillText(
+        formatPrice(
+            selectedPair,
+            current
+        ),
+        width - 70,
+        currentY + 4
+    );
+
+}
+
+
+/* =========================
+   TOAST
+   ========================= */
+
+function showToast(
+    message,
+    type="success"
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.innerText =
+        message;
+
+
+    toast.className =
+        "toast " +
+        type;
+
+
+    toast.style.display =
+        "block";
+
+
+    setTimeout(
+        () => {
+
+            toast.style.display =
+                "none";
+
+        },
+        3000
+    );
+
+}
+
+
+/* =========================
+   RESET DEMO
+   ========================= */
+
+function resetDemo(){
+
+    if(
+        !confirm(
+            "Reset the entire demo account to $10,000? All trades and history will be deleted."
+        )
+    ){
+
+        return;
+
+    }
+
+
+    balance =
+        STARTING_BALANCE;
+
+
+    trades = [];
+
+    history = [];
+
+
+    Object.keys(
+        pairSettings
+    ).forEach(pair => {
+
+        prices[pair] =
+            pairSettings[pair]
+                .price;
+
+        candles[pair] = [];
+
+    });
+
+
+    localStorage.removeItem(
+        "washingtonFXDemo"
+    );
+
+
+    showTrades();
+
+    showHistory();
+
+    updateDashboard();
+
+    updateMarketWatch();
+
+    updatePriceDisplay();
+
+    drawCandles();
+
+
+    showToast(
+        "Demo account reset successfully.",
+        "success"
+    );
+
+}
+
+
+/* =========================
+   WINDOW RESIZE
+   ========================= */
+
+window.addEventListener(
+    "resize",
+    drawCandles
+);
+
+
+/* =========================
+   START APPLICATION
+   ========================= */
+
 function start(){
+
+    loadState();
+
+
+    Object.keys(
+        pairSettings
+    ).forEach(pair => {
+
+        createInitialCandles(
+            pair
+        );
+
+    });
+
 
     updateDashboard();
 
     showTrades();
 
-    updateMarket();
+    showHistory();
 
-    setInterval(updateMarket,2000);
+    updateMarketWatch();
+
+    updatePriceDisplay();
+
+    drawCandles();
+
+
+    /*
+       Market simulation:
+       prices update every 2 seconds.
+    */
+
+    setInterval(
+        updateMarket,
+        2000
+    );
 
 }
+
+
+/* START */
 
 start();
 
 </script>
 
-<script>
-const SUPABASE_URL = "https://plddteltleqayzcpuxom.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv";
-
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
-</script>
 </body>
 </html>
