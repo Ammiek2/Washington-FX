@@ -1,9 +1,8 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import crypto from "crypto";
+require("dotenv").config();
 
-dotenv.config();
+const express = require("express");
+const cors = require("cors");
+const crypto = require("crypto");
 
 const app = express();
 
@@ -12,41 +11,86 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
+// =====================================================
+// ENVIRONMENT VARIABLES
+// =====================================================
+
 const CTRADER_CLIENT_ID = process.env.CTRADER_CLIENT_ID;
 const CTRADER_CLIENT_SECRET = process.env.CTRADER_CLIENT_SECRET;
-const CTRADER_REDIRECT_URI = process.env.CTRADER_REDIRECT_URI;
+const CTRADER_REDIRECT_URI =
+    process.env.CTRADER_REDIRECT_URI ||
+    "https://washington-fx-production.up.railway.app/auth/ctrader/callback";
 
-if (!CTRADER_CLIENT_ID || !CTRADER_CLIENT_SECRET) {
-    console.error("Missing cTrader credentials.");
-    process.exit(1);
-}
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-/*
-    ----------------------------------------
-    WASHINGTON FX LIVE BACKEND
-    ----------------------------------------
-*/
+// =====================================================
+// CONFIGURATION STATUS
+// =====================================================
+
+const ctraderConfigured =
+    Boolean(CTRADER_CLIENT_ID) &&
+    Boolean(CTRADER_CLIENT_SECRET) &&
+    Boolean(CTRADER_REDIRECT_URI);
+
+const supabaseConfigured =
+    Boolean(SUPABASE_URL) &&
+    Boolean(SUPABASE_SERVICE_ROLE_KEY);
+
+// =====================================================
+// TEMPORARY OAUTH SESSIONS
+// =====================================================
 
 const sessions = new Map();
 
-/*
-    Health check
-*/
+// =====================================================
+// ROOT / HEALTH CHECK
+// =====================================================
 
 app.get("/", (req, res) => {
     res.json({
         platform: "Washington FX",
         status: "online",
         environment: "live-ready",
-        broker: "cTrader Open API"
+        backend: "Railway",
+        broker: "cTrader Open API",
+        ctraderConfigured,
+        supabaseConfigured
     });
 });
 
-/*
-    Generate cTrader authorization URL
-*/
+// =====================================================
+// SYSTEM STATUS
+// =====================================================
+
+app.get("/api/status", (req, res) => {
+    res.json({
+        platform: "Washington FX",
+        backend: "online",
+        serverTime: new Date().toISOString(),
+        ctrader: ctraderConfigured ? "configured" : "not configured",
+        supabase: supabaseConfigured ? "configured" : "not configured",
+        tradingEngine: "server-side"
+    });
+});
+
+// =====================================================
+// cTRADER AUTHORIZATION
+// =====================================================
 
 app.get("/auth/ctrader", (req, res) => {
+
+    if (!ctraderConfigured) {
+        return res.status(503).json({
+            success: false,
+            error: "cTrader is not configured.",
+            requiredVariables: [
+                "CTRADER_CLIENT_ID",
+                "CTRADER_CLIENT_SECRET",
+                "CTRADER_REDIRECT_URI"
+            ]
+        });
+    }
 
     const state = crypto.randomBytes(32).toString("hex");
 
@@ -54,7 +98,7 @@ app.get("/auth/ctrader", (req, res) => {
         createdAt: Date.now()
     });
 
-    const url =
+    const authorizationUrl =
         "https://id.ctrader.com/my/settings/openapi/grantingaccess/" +
         `?client_id=${encodeURIComponent(CTRADER_CLIENT_ID)}` +
         `&redirect_uri=${encodeURIComponent(CTRADER_REDIRECT_URI)}` +
@@ -63,13 +107,14 @@ app.get("/auth/ctrader", (req, res) => {
         `&state=${encodeURIComponent(state)}`;
 
     res.json({
-        authorizationUrl: url
+        success: true,
+        authorizationUrl
     });
 });
 
-/*
-    OAuth callback
-*/
+// =====================================================
+// cTRADER CALLBACK
+// =====================================================
 
 app.get("/auth/ctrader/callback", async (req, res) => {
 
@@ -77,23 +122,32 @@ app.get("/auth/ctrader/callback", async (req, res) => {
 
     if (!code || !state) {
         return res.status(400).json({
-            error: "Missing authorization data"
+            success: false,
+            error: "Missing authorization code or state."
         });
     }
 
     if (!sessions.has(state)) {
         return res.status(403).json({
-            error: "Invalid authorization state"
+            success: false,
+            error: "Invalid authorization state."
         });
     }
 
     sessions.delete(state);
 
+    if (!ctraderConfigured) {
+        return res.status(503).json({
+            success: false,
+            error: "cTrader is not configured."
+        });
+    }
+
     try {
 
         const params = new URLSearchParams({
             grant_type: "authorization_code",
-            code,
+            code: String(code),
             redirect_uri: CTRADER_REDIRECT_URI,
             client_id: CTRADER_CLIENT_ID,
             client_secret: CTRADER_CLIENT_SECRET
@@ -107,81 +161,81 @@ app.get("/auth/ctrader/callback", async (req, res) => {
         const data = await response.json();
 
         if (!response.ok || data.errorCode) {
+
+            console.error("cTrader authentication failed:", data);
+
             return res.status(400).json({
-                error: data.description || "cTrader authentication failed"
+                success: false,
+                error:
+                    data.description ||
+                    "cTrader authentication failed."
             });
         }
 
         /*
-            IMPORTANT:
-            Tokens should eventually be encrypted and stored
-            in the secure database/backend.
-        */
+         * IMPORTANT:
+         * Access and refresh tokens must NOT be returned
+         * directly to the browser in the production system.
+         *
+         * Next stage:
+         * encrypt tokens and store them securely in Supabase.
+         */
 
         res.json({
             success: true,
-            message: "cTrader account authorization successful",
+            message: "cTrader authorization successful.",
             expiresIn: data.expiresIn
         });
 
     } catch (error) {
 
-        console.error(error);
+        console.error("cTrader callback error:", error);
 
         res.status(500).json({
-            error: "Authentication server error"
+            success: false,
+            error: "Authentication server error."
         });
     }
 });
 
-/*
-    LIVE ACCOUNT CONFIGURATION
-*/
+// =====================================================
+// ACCOUNT
+// =====================================================
 
 app.get("/api/account", async (req, res) => {
 
-    /*
-        This endpoint will later:
-        1. Load encrypted user's cTrader token
-        2. Authenticate with cTrader
-        3. Retrieve account information
-        4. Return balance/equity/margin/etc.
-    */
-
     res.json({
         platform: "Washington FX",
-        brokerConnection: "ready",
-        tradingEngine: "server-side"
+        broker: "cTrader",
+        connection:
+            ctraderConfigured
+                ? "configured"
+                : "not configured",
+        status: "account endpoint ready"
     });
 });
 
-/*
-    MARKET DATA
-*/
+// =====================================================
+// MARKET
+// =====================================================
 
 app.get("/api/market/:symbol", async (req, res) => {
 
-    const symbol = req.params.symbol;
-
-    /*
-        Live bid/ask subscription will be connected here.
-
-        Example symbols:
-        EURUSD
-        GBPUSD
-        USDJPY
-        XAUUSD
-    */
+    const symbol = String(req.params.symbol).toUpperCase();
 
     res.json({
         symbol,
-        status: "awaiting broker subscription"
+        broker: "cTrader",
+        status:
+            ctraderConfigured
+                ? "broker connection configured"
+                : "awaiting cTrader configuration"
     });
 });
 
-/*
-    PLACE REAL ORDER
-*/
+// =====================================================
+// ORDER VALIDATION
+// =====================================================
 
 app.post("/api/orders", async (req, res) => {
 
@@ -198,51 +252,48 @@ app.post("/api/orders", async (req, res) => {
 
         if (!accountId) {
             return res.status(400).json({
-                error: "Account ID required"
+                success: false,
+                error: "Account ID required."
             });
         }
 
         if (!symbolId) {
             return res.status(400).json({
-                error: "Symbol ID required"
+                success: false,
+                error: "Symbol ID required."
             });
         }
 
         if (!["BUY", "SELL"].includes(side)) {
             return res.status(400).json({
-                error: "Invalid trade side"
+                success: false,
+                error: "Invalid trade side."
             });
         }
 
-        if (!volume || volume <= 0) {
+        if (!volume || Number(volume) <= 0) {
             return res.status(400).json({
-                error: "Invalid volume"
+                success: false,
+                error: "Invalid volume."
             });
         }
 
         /*
-            SECURITY CHECKS GO HERE
-
-            - authenticated user
-            - account ownership
-            - owner/admin restrictions
-            - margin availability
-            - maximum lot size
-            - symbol permissions
-            - trading hours
-            - risk limits
-            - duplicate order protection
-        */
-
-        /*
-            NEXT:
-            Send ProtoOANewOrderReq through the
-            cTrader live connection.
-        */
+         * SECURITY CHECKS MUST HAPPEN HERE:
+         *
+         * - authenticated user
+         * - account ownership
+         * - account status
+         * - available margin
+         * - symbol permission
+         * - maximum volume
+         * - risk limits
+         * - duplicate order protection
+         */
 
         res.json({
             success: true,
-            status: "order_request_received",
+            status: "order_request_validated",
             accountId,
             symbolId,
             side,
@@ -253,17 +304,18 @@ app.post("/api/orders", async (req, res) => {
 
     } catch (error) {
 
-        console.error(error);
+        console.error("Order error:", error);
 
         res.status(500).json({
-            error: "Order processing failed"
+            success: false,
+            error: "Order processing failed."
         });
     }
 });
 
-/*
-    CLOSE POSITION
-*/
+// =====================================================
+// CLOSE POSITION
+// =====================================================
 
 app.post("/api/positions/close", async (req, res) => {
 
@@ -275,55 +327,63 @@ app.post("/api/positions/close", async (req, res) => {
 
     if (!accountId || !positionId) {
         return res.status(400).json({
-            error: "Account and position are required"
+            success: false,
+            error: "Account and position are required."
         });
     }
 
-    /*
-        NEXT:
-        Send ProtoOAClosePositionReq
-        through the live cTrader connection.
-    */
-
     res.json({
         success: true,
-        status: "close_request_received",
+        status: "close_request_validated",
         accountId,
         positionId,
         volume: volume || null
     });
 });
 
-/*
-    ADMIN SECURITY
-*/
+// =====================================================
+// ADMIN STATUS
+// =====================================================
 
 app.get("/api/admin/status", (req, res) => {
-
-    /*
-        This endpoint will be protected by:
-        Supabase authentication
-        + owner role
-        + server-side authorization.
-    */
 
     res.json({
         platform: "Washington FX",
         adminSystem: "online",
         broker: "cTrader",
-        liveTrading: true
+        ctraderConfigured,
+        supabaseConfigured
     });
 });
 
-/*
-    START SERVER
-*/
+// =====================================================
+// 404
+// =====================================================
+
+app.use((req, res) => {
+
+    res.status(404).json({
+        success: false,
+        error: "Endpoint not found",
+        path: req.originalUrl
+    });
+});
+
+// =====================================================
+// SERVER
+// =====================================================
 
 app.listen(PORT, () => {
 
     console.log("--------------------------------");
     console.log("WASHINGTON FX");
-    console.log("LIVE BACKEND ONLINE");
+    console.log("BACKEND ONLINE");
     console.log("--------------------------------");
     console.log(`Server running on port ${PORT}`);
+    console.log(
+        `cTrader configured: ${ctraderConfigured ? "YES" : "NO"}`
+    );
+    console.log(
+        `Supabase configured: ${supabaseConfigured ? "YES" : "NO"}`
+    );
 });
