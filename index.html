@@ -2,114 +2,127 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Washington FX</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
 body{
     font-family:Arial,Helvetica,sans-serif;
-    background:#07111d;
+    background:#07101c;
     color:#fff;
     min-height:100vh;
 }
 
-button,input,select,textarea{font:inherit}
-
-button{cursor:pointer}
-
-button:disabled{
-    opacity:.5;
-    cursor:not-allowed;
+button,
+input,
+select{
+    font:inherit;
 }
+
+button{
+    cursor:pointer;
+}
+
+/* =========================
+   AUTH
+========================= */
 
 .auth-screen{
     min-height:100vh;
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     padding:20px;
-    background:linear-gradient(135deg,#06101b,#102a43);
+    background:
+        linear-gradient(
+            135deg,
+            #07101c,
+            #10243b
+        );
 }
 
 .auth-box{
     width:100%;
-    max-width:430px;
-    background:#0c1b2a;
-    border:1px solid #24435d;
+    max-width:420px;
+    background:#0d1b2a;
+    border:1px solid #203b55;
     border-radius:16px;
     padding:28px;
-    box-shadow:0 20px 60px rgba(0,0,0,.45);
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.4);
 }
 
 .logo{
-    text-align:center;
-    font-size:28px;
+    font-size:27px;
     font-weight:800;
+    text-align:center;
     margin-bottom:8px;
 }
 
-.subtitle{
+.sub{
     text-align:center;
-    color:#8ea4b9;
-    margin-bottom:24px;
+    color:#91a5b9;
+    margin-bottom:25px;
 }
 
 .auth-box input{
     width:100%;
+    margin:7px 0;
     padding:13px;
-    margin:6px 0;
-    border:1px solid #294761;
-    border-radius:7px;
+    border-radius:8px;
+    border:1px solid #29445e;
     background:#071522;
-    color:#fff;
+    color:white;
 }
 
 .primary{
     width:100%;
-    border:0;
-    border-radius:7px;
     padding:13px;
-    background:#1688e8;
+    margin-top:10px;
+    border:0;
+    border-radius:8px;
+    background:#1687f7;
     color:white;
     font-weight:bold;
-    margin-top:9px;
+}
+
+.primary:hover{
+    background:#2195ff;
 }
 
 .secondary{
-    border:1px solid #2c4b64;
-    background:#102538;
-    color:#fff;
+    background:#172b3e;
+    color:white;
+    border:1px solid #2d4b65;
     border-radius:7px;
     padding:9px 13px;
 }
 
-.danger{
-    border:1px solid #703442;
-    background:#391c25;
-    color:#ff9cab;
-    border-radius:7px;
-    padding:9px 13px;
-}
-
-.success{
-    border:1px solid #216b50;
-    background:#103e31;
-    color:#76efb0;
-    border-radius:7px;
-    padding:9px 13px;
+.secondary:hover{
+    background:#203b55;
 }
 
 .auth-message{
     min-height:22px;
-    margin-top:12px;
-    text-align:center;
+    margin-top:10px;
     color:#ffd166;
+    text-align:center;
 }
+
+/* =========================
+   APPLICATION
+========================= */
 
 .app{
     display:none;
@@ -121,11 +134,11 @@ button:disabled{
     left:0;
     top:0;
     bottom:0;
-    width:235px;
+    width:230px;
     background:#081522;
-    border-right:1px solid #1d354b;
-    padding:18px 12px;
-    z-index:20;
+    border-right:1px solid #1b334a;
+    padding:20px 12px;
+    z-index:10;
 }
 
 .brand{
@@ -137,72 +150,76 @@ button:disabled{
 .nav button{
     display:block;
     width:100%;
+    text-align:left;
+    background:transparent;
+    color:#9db0c3;
+    border:0;
     padding:12px;
     margin:3px 0;
-    border:0;
     border-radius:7px;
-    text-align:left;
-    color:#9db0c2;
-    background:transparent;
 }
 
 .nav button:hover,
 .nav button.active{
-    background:#14314a;
+    background:#14304a;
     color:#fff;
 }
 
 .logout{
     position:absolute;
-    bottom:18px;
+    bottom:20px;
     left:12px;
     width:calc(100% - 24px);
     padding:11px;
+    background:#351b22;
+    color:#ff9da8;
+    border:1px solid #66313b;
     border-radius:7px;
-    border:1px solid #63313b;
-    background:#351b23;
-    color:#ff9aa7;
 }
 
 .main{
-    margin-left:235px;
+    margin-left:230px;
     min-height:100vh;
 }
 
 .topbar{
-    min-height:64px;
-    background:#091724;
-    border-bottom:1px solid #1c344a;
-    padding:10px 18px;
+    min-height:65px;
+    background:#0a1725;
+    border-bottom:1px solid #1b334a;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:12px;
-    flex-wrap:wrap;
+    gap:15px;
+    padding:12px 20px;
 }
 
 .mode-buttons{
     display:flex;
-    gap:6px;
+    flex-wrap:wrap;
+    gap:5px;
 }
 
 .mode-buttons button{
-    padding:9px 14px;
+    padding:9px 15px;
+    border:1px solid #2a4760;
+    background:#102336;
+    color:#a8b9c9;
     border-radius:7px;
-    border:1px solid #2b4962;
-    background:#102438;
-    color:#a9bac9;
 }
 
 .mode-buttons button.active{
-    background:#146fae;
-    color:#fff;
+    background:#146fba;
+    color:white;
 }
 
 .status{
-    color:#6ee7a2;
     font-size:13px;
+    color:#6ee7a2;
 }
+
+/* =========================
+   PAGES
+========================= */
 
 .page{
     display:none;
@@ -213,18 +230,23 @@ button:disabled{
     display:block;
 }
 
+/* =========================
+   CARDS
+========================= */
+
 .cards{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:
+        repeat(4,1fr);
     gap:12px;
     margin-bottom:15px;
 }
 
 .card{
-    background:#0c1b2a;
-    border:1px solid #1f394f;
+    background:#0d1b2a;
+    border:1px solid #1e374f;
     border-radius:10px;
-    padding:15px;
+    padding:16px;
 }
 
 .card-title{
@@ -234,43 +256,49 @@ button:disabled{
 }
 
 .card-value{
-    font-size:21px;
+    font-size:20px;
     font-weight:bold;
 }
 
+/* =========================
+   TRADING
+========================= */
+
+.trading-grid{
+    display:grid;
+    grid-template-columns:
+        minmax(0,1fr) 340px;
+    gap:15px;
+}
+
 .panel{
-    background:#0c1b2a;
-    border:1px solid #1f394f;
+    background:#0d1b2a;
+    border:1px solid #1e374f;
     border-radius:10px;
     padding:15px;
 }
 
 .panel-title{
     font-weight:bold;
-    margin-bottom:13px;
-    font-size:16px;
-}
-
-.trading-grid{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 340px;
-    gap:15px;
+    margin-bottom:12px;
 }
 
 .chart-head{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:8px;
+    gap:10px;
+    margin-bottom:10px;
 }
 
 .instrument{
-    font-size:19px;
+    font-size:18px;
     font-weight:bold;
 }
 
 .market-price{
-    color:#72ddff;
+    color:#7ee7ff;
+    font-size:18px;
     margin-top:4px;
 }
 
@@ -278,30 +306,34 @@ button:disabled{
     display:flex;
     flex-wrap:wrap;
     gap:5px;
-    margin:7px 0;
+    margin:8px 0;
 }
 
 .toolbar button{
+    border:1px solid #29445e;
+    background:#102236;
+    color:#aebfd0;
+    border-radius:5px;
     padding:6px 9px;
     font-size:12px;
-    border-radius:5px;
-    border:1px solid #29465e;
-    background:#102336;
-    color:#aabaca;
 }
 
 .toolbar button.active{
-    background:#146fae;
+    background:#146fba;
     color:#fff;
 }
 
 #chart{
     width:100%;
-    height:470px;
+    height:480px;
     border:1px solid #183149;
     border-radius:7px;
     overflow:hidden;
 }
+
+/* =========================
+   FORMS
+========================= */
 
 .form-row{
     margin-bottom:10px;
@@ -315,654 +347,61 @@ button:disabled{
 }
 
 .form-row input,
-.form-row select,
-.form-row textarea{
+.form-row select{
     width:100%;
-    padding:10px;
     background:#071522;
-    color:#fff;
-    border:1px solid #29465e;
+    border:1px solid #29445e;
+    color:white;
+    padding:10px;
     border-radius:6px;
+}
+
+.form-row input:disabled{
+    opacity:.7;
 }
 
 .order-types{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:
+        repeat(3,1fr);
     gap:5px;
 }
 
 .order-types button{
     padding:8px 4px;
+    background:#102236;
+    color:#9eb1c3;
+    border:1px solid #29445e;
     border-radius:5px;
-    border:1px solid #29465e;
-    background:#102336;
-    color:#a9baca;
     font-size:11px;
 }
 
 .order-types button.active{
-    background:#146fae;
+    background:#176da9;
     color:#fff;
 }
 
 .buy-sell{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:
+        1fr 1fr;
     gap:8px;
     margin-top:12px;
 }
 
 .buy{
+    padding:13px;
+    background:#087f5b;
+    color:white;
     border:0;
     border-radius:7px;
-    background:#087e5a;
-    color:#fff;
-    padding:13px;
     font-weight:bold;
+}
+
+.buy:hover{
+    background:#099c70;
 }
 
 .sell{
-    border:0;
-    border-radius:7px;
-    background:#b7374d;
-    color:#fff;
     padding:13px;
-    font-weight:bold;
-}
-
-.notice{
-    padding:11px;
-    margin:9px 0;
-    background:#122638;
-    border-left:3px solid #1688e8;
-    color:#aabaca;
-    font-size:13px;
-    border-radius:4px;
-}
-
-.warning{
-    border-left-color:#ffd166;
-}
-
-.success-box{
-    border-left-color:#42d991;
-}
-
-.error-box{
-    border-left-color:#ff5f73;
-}
-
-.table-wrap{
-    width:100%;
-    overflow:auto;
-    margin-top:10px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:720px;
-}
-
-th,td{
-    border-bottom:1px solid #1c3449;
-    padding:10px;
-    font-size:13px;
-    text-align:left;
-}
-
-th{
-    color:#8197aa;
-}
-
-.positive{color:#58e69a}
-.negative{color:#ff7182}
-
-.wallet-grid,
-.admin-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-
-.big-number{
-    font-size:31px;
-    font-weight:bold;
-    margin:10px 0;
-}
-
-.request-card{
-    background:#0a1826;
-    border:1px solid #254158;
-    border-radius:8px;
-    padding:14px;
-    margin:10px 0;
-}
-
-.request-actions{
-    display:flex;
-    gap:7px;
-    margin-top:10px;
-}
-
-.admin-only{
-    display:none;
-}
-
-.admin-login{
-    max-width:420px;
-    margin:auto;
-}
-
-.notification{
-    position:fixed;
-    right:20px;
-    top:80px;
-    width:330px;
-    background:#10283b;
-    border:1px solid #2c5976;
-    border-radius:8px;
-    padding:13px;
-    box-shadow:0 10px 30px rgba(0,0,0,.4);
-    z-index:100;
-    display:none;
-}
-
-.notification.show{
-    display:block;
-}
-
-.notification-title{
-    font-weight:bold;
-    margin-bottom:5px;
-}
-
-.small{
-    font-size:12px;
-    color:#8ea4b8;
-}
-
-.file-input{
-    padding:8px!important;
-}
-
-.preview{
-    max-width:180px;
-    max-height:130px;
-    margin-top:8px;
-    border-radius:6px;
-    display:none;
-}
-
-.badge{
-    display:inline-block;
-    padding:4px 7px;
-    border-radius:5px;
-    background:#183148;
-    color:#b7c7d5;
-    font-size:11px;
-}
-
-@media(max-width:1050px){
-    .cards{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .trading-grid{
-        grid-template-columns:1fr;
-    }
-}
-
-@media(max-width:700px){
-
-    .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
-    }
-
-    .main{
-        margin-left:0;
-    }
-
-    .logout{
-        position:relative;
-        left:auto;
-        bottom:auto;
-        width:100%;
-        margin-top:10px;
-    }
-
-    .cards{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .wallet-grid,
-    .admin-grid{
-        grid-template-columns:1fr;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<!-- ======================================================
-     AUTH
-====================================================== -->
-
-<div id="authScreen" class="auth-screen">
-
-    <div class="auth-box">
-
-        <div class="logo">WASHINGTON FX</div>
-
-        <div class="subtitle">
-            Trading Terminal
-        </div>
-
-        <input id="authEmail"
-               type="email"
-               placeholder="Email">
-
-        <input id="authPassword"
-               type="password"
-               placeholder="Password">
-
-        <button class="primary"
-                onclick="loginUser()">
-            Sign In
-        </button>
-
-        <button class="primary"
-                onclick="signupUser()">
-            Create Account
-        </button>
-
-        <button class="secondary"
-                style="width:100%;margin-top:10px"
-                onclick="forgotPassword()">
-            Forgot Password
-        </button>
-
-        <div id="authMessage"
-             class="auth-message"></div>
-
-    </div>
-
-</div>
-
-
-<!-- ======================================================
-     APPLICATION
-====================================================== -->
-
-<div id="app" class="app">
-
-    <aside class="sidebar">
-
-        <div class="brand">
-            WASHINGTON FX
-        </div>
-
-        <div class="nav">
-
-            <button class="active"
-                    onclick="showPage('trading',this)">
-                Trading
-            </button>
-
-            <button onclick="showPage('positions',this)">
-                Positions
-            </button>
-
-            <button onclick="showPage('history',this)">
-                Trade History
-            </button>
-
-            <button onclick="showPage('wallet',this)">
-                Wallet
-            </button>
-
-            <button onclick="showPage('mining',this)">
-                Mining
-            </button>
-
-            <button onclick="showPage('academy',this)">
-                FX Academy
-            </button>
-
-            <button onclick="showPage('account',this)">
-                Account
-            </button>
-
-            <button onclick="showPage('settings',this)">
-                Settings
-            </button>
-
-            <button id="adminNavButton"
-                    onclick="showAdminPage()">
-                Admin
-            </button>
-
-        </div>
-
-        <button class="logout"
-                onclick="logoutUser()">
-            Logout
-        </button>
-
-    </aside>
-
-
-    <main class="main">
-
-        <header class="topbar">
-
-            <div>
-                <strong id="userEmail">
-                    Not signed in
-                </strong>
-            </div>
-
-            <div class="mode-buttons">
-
-                <button id="demoBtn"
-                        class="active"
-                        onclick="setMode('demo')">
-                    DEMO
-                </button>
-
-                <button id="liveBtn"
-                        onclick="setMode('live')">
-                    LIVE SIMULATION
-                </button>
-
-            </div>
-
-            <div id="status"
-                 class="status">
-                ● DEMO ACTIVE
-            </div>
-
-        </header>
-
-
-        <!-- ==================================================
-             TRADING
-        ================================================== -->
-
-        <section id="trading"
-                 class="page active">
-
-            <div class="cards">
-
-                <div class="card">
-                    <div class="card-title">
-                        Balance
-                    </div>
-                    <div id="balance"
-                         class="card-value">
-                        $10,000.00
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">
-                        Equity
-                    </div>
-                    <div id="equity"
-                         class="card-value">
-                        $10,000.00
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">
-                        Free Margin
-                    </div>
-                    <div id="freeMargin"
-                         class="card-value">
-                        $10,000.00
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">
-                        Floating P/L
-                    </div>
-                    <div id="floatingPL"
-                         class="card-value">
-                        $0.00
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="trading-grid">
-
-                <!-- CHART -->
-
-                <div class="panel">
-
-                    <div class="chart-head">
-
-                        <div>
-                            <div id="chartInstrument"
-                                 class="instrument">
-                                EURUSD
-                            </div>
-
-                            <div id="marketPrice"
-                                 class="market-price">
-                                1.08250
-                            </div>
-                        </div>
-
-                        <button class="secondary"
-                                onclick="fitChart()">
-                            Fit
-                        </button>
-
-                    </div>
-
-
-                    <div class="toolbar"
-                         id="timeframeToolbar">
-
-                        <button class="active"
-                                onclick="setTimeframe('1m',this)">
-                            1m
-                        </button>
-
-                        <button onclick="setTimeframe('5m',this)">
-                            5m
-                        </button>
-
-                        <button onclick="setTimeframe('15m',this)">
-                            15m
-                        </button>
-
-                        <button onclick="setTimeframe('30m',this)">
-                            30m
-                        </button>
-
-                        <button onclick="setTimeframe('1H',this)">
-                            1H
-                        </button>
-
-                        <button onclick="setTimeframe('4H',this)">
-                            4H
-                        </button>
-
-                        <button onclick="setTimeframe('1D',this)">
-                            1D
-                        </button>
-
-                    </div>
-
-
-                    <div class="toolbar"
-                         id="chartTypeToolbar">
-
-                        <button class="active"
-                                onclick="setChartType('candlestick',this)">
-                            Candles
-                        </button>
-
-                        <button onclick="setChartType('bar',this)">
-                            Bars
-                        </button>
-
-                        <button onclick="setChartType('line',this)">
-                            Line
-                        </button>
-
-                        <button onclick="setChartType('area',this)">
-                            Area
-                        </button>
-
-                        <button onclick="setChartType('baseline',this)">
-                            Baseline
-                        </button>
-
-                        <button onclick="setChartType('histogram',this)">
-                            Histogram
-                        </button>
-
-                    </div>
-
-
-                    <div class="toolbar">
-
-                        <button onclick="zoomIn()">
-                            Zoom +
-                        </button>
-
-                        <button onclick="zoomOut()">
-                            Zoom −
-                        </button>
-
-                        <button onclick="fitChart()">
-                            Fit
-                        </button>
-
-                    </div>
-
-
-                    <div id="chart"></div>
-
-
-                    <div class="table-wrap">
-
-                        <table>
-
-                            <thead>
-                                <tr>
-                                    <th>Symbol</th>
-                                    <th>Bid</th>
-                                    <th>Ask</th>
-                                    <th>Spread</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td id="symbolCell">
-                                        EURUSD
-                                    </td>
-
-                                    <td id="bidCell">
-                                        1.08250
-                                    </td>
-
-                                    <td id="askCell">
-                                        1.08260
-                                    </td>
-
-                                    <td id="spreadCell">
-                                        1.0
-                                    </td>
-                                </tr>
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ORDER PANEL -->
-
-                <div class="panel">
-
-                    <div class="panel-title">
-                        New Order
-                    </div>
-
-
-                    <div class="form-row">
-
-                        <label>
-                            Instrument
-                        </label>
-
-                        <select id="instrumentSelect"
-                                onchange="changeInstrument(this.value)">
-
-                            <option>EURUSD</option>
-                            <option>GBPUSD</option>
-                            <option>USDJPY</option>
-                            <option>USDCHF</option>
-                            <option>AUDUSD</option>
-                            <option>USDCAD</option>
-                            <option>NZDUSD</option>
-                            <option>XAUUSD</option>
-                            <option>XAGUSD</option>
-                            <option>BTCUSD</option>
-                            <option>ETHUSD</option>
-                            <option>US30</option>
-                            <option>NAS100</option>
-                            <option>SPX500</option>
-                            <option>GER40</option>
-                            <option>UK100</option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="form-row">
-
-                        <label>
-                            Order Type
-                        </label>
-
-                        <div class="order-types">
-
-                            <button class="active"
-                                    onclick="selectOrderType('MARKET',this)">
-                                Market
-                            </button>
-
-                            <button onclick="selectOrderType('BUY_LIMIT',this)">
-                                Buy Limit
-                            </button>
-
-                            <button onclick="selectOrderType('SELL_LIMIT',this)">
-                                Sell Limit
-                            </button>
-
-                            <button onclick="selectOrderType('BUY_STOP',this)">
-                                Buy Stop
-                            </button>
-
-                            <button onclick="selectOrderType('SELL_STOP',this)">
-                                Sell Stop
-                            </button>
-
-                        </div>
-
-              
+    background:#b938
