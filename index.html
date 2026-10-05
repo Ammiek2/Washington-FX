@@ -3335,3 +3335,59 @@ window.addEventListener(
 
 </body>
 </html>
+<div class="withdraw-card">
+
+    <h2>Withdraw</h2>
+
+    <p>
+        Available trading balance:
+        <strong id="withdrawAvailable">$0.00</strong>
+    </p>
+
+    <input
+        id="withdrawAmount"
+        type="number"
+        min="1"
+        step="0.01"
+        placeholder="Amount"
+    >
+
+    <input
+        id="walletAddress"
+        type="text"
+        placeholder="Wallet address"
+    >
+
+    <input
+        id="walletNetwork"
+        type="text"
+        placeholder="Network e.g. USDT-TRC20"
+    >
+
+    <button onclick="submitWithdrawal()">
+        Request Withdrawal
+    </button>
+
+    <div id="withdrawMessage"></div>
+
+</div>
+
+<div class="withdraw-history">
+
+    <h2>Withdrawal History</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Wallet</th>
+                <th>Status</th>
+                <th>Reference</th>
+            </tr>
+        </thead>
+
+        <tbody id="withdrawalHistory"></tbody>
+    </table>
+
+</div>
