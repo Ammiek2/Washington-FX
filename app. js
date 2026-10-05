@@ -1,7 +1,6 @@
-
 /* =========================================================
    WASHINGTON FX
-   DEMO TRADING ENGINE
+   AUTHENTICATION + ADMIN SYSTEM
    ========================================================= */
 
 const SUPABASE_URL =
@@ -9,9 +8,6 @@ const SUPABASE_URL =
 
 const SUPABASE_ANON_KEY =
     "sb_publishable_jX6_GQggT_GDK2Kv_jNBcqA_frXVuZWv";
-
-const API_BASE =
-    "https://washington-fx-production-074e.up.railway.app";
 
 const supabaseClient =
     window.supabase.createClient(
@@ -21,332 +17,141 @@ const supabaseClient =
 
 
 /* =========================================================
-   SYMBOLS
+   ELEMENTS
    ========================================================= */
 
-const SYMBOLS = {
+const authScreen =
+    document.getElementById("authScreen");
 
-    EURUSD: {
-        price: 1.08250,
-        spread: 0.00012,
-        pip: 0.0001,
-        volatility: 0.00035
-    },
+const app =
+    document.getElementById("app");
 
-    GBPUSD: {
-        price: 1.29120,
-        spread: 0.00015,
-        pip: 0.0001,
-        volatility: 0.00045
-    },
+const loginForm =
+    document.getElementById("loginForm");
 
-    USDJPY: {
-        price: 149.250,
-        spread: 0.012,
-        pip: 0.01,
-        volatility: 0.055
-    },
+const registerForm =
+    document.getElementById("registerForm");
 
-    USDCHF: {
-        price: 0.88120,
-        spread: 0.00014,
-        pip: 0.0001,
-        volatility: 0.00035
-    },
+const loginMessage =
+    document.getElementById("loginMessage");
 
-    AUDUSD: {
-        price: 0.67520,
-        spread: 0.00013,
-        pip: 0.0001,
-        volatility: 0.00030
-    },
+const registerMessage =
+    document.getElementById("registerMessage");
 
-    USDCAD: {
-        price: 1.36150,
-        spread: 0.00016,
-        pip: 0.0001,
-        volatility: 0.00040
-    },
+const userLoginTab =
+    document.getElementById("userLoginTab");
 
-    NZDUSD: {
-        price: 0.61580,
-        spread: 0.00015,
-        pip: 0.0001,
-        volatility: 0.00032
-    },
+const adminLoginTab =
+    document.getElementById("adminLoginTab");
 
-    XAUUSD: {
-        price: 2650.00,
-        spread: 0.35,
-        pip: 0.10,
-        volatility: 2.50
-    },
+const registerTab =
+    document.getElementById("registerTab");
 
-    BTCUSD: {
-        price: 62000,
-        spread: 18,
-        pip: 1,
-        volatility: 130
-    },
+const adminNav =
+    document.getElementById("adminNav");
 
-    ETHUSD: {
-        price: 2450,
-        spread: 3,
-        pip: 1,
-        volatility: 12
-    },
-
-    US30: {
-        price: 42000,
-        spread: 5,
-        pip: 1,
-        volatility: 85
-    },
-
-    NAS100: {
-        price: 19500,
-        spread: 4,
-        pip: 1,
-        volatility: 65
-    }
-
-};
-
-
-const TIMEFRAMES = {
-    "1m": 60,
-    "5m": 300,
-    "15m": 900,
-    "30m": 1800,
-    "1h": 3600,
-    "4h": 14400,
-    "1d": 86400
-};
+let loginMode = "user";
 
 
 /* =========================================================
-   STATE
+   MESSAGE
    ========================================================= */
 
-const state = {
+function showLoginMessage(message, error = false) {
 
-    user: null,
-    profile: null,
-    admin: false,
+    loginMessage.textContent = message;
 
-    symbol: "EURUSD",
-    timeframe: "15m",
-    chartType: "candlestick",
+    loginMessage.style.display = "block";
 
-    balance: 10000,
-
-    positions: [],
-    orders: [],
-    history: [],
-    wallet: [],
-
-    ticket: 100001,
-
-    market: {},
-
-    chart: null,
-    series: null,
-
-    lastCandle: null,
-    candles: [],
-
-    simulationStarted: false
-
-};
-
-
-/* =========================================================
-   HELPERS
-   ========================================================= */
-
-function $(id) {
-    return document.getElementById(id);
+    loginMessage.style.color =
+        error ? "#ff5c5c" : "#39d98a";
 }
 
 
-function money(value) {
+function showRegisterMessage(message, error = false) {
 
-    return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 2
-    }).format(Number(value) || 0);
+    registerMessage.textContent = message;
 
-}
+    registerMessage.style.display = "block";
 
-
-function priceFormat(symbol, price) {
-
-    if (["BTCUSD"].includes(symbol)) {
-        return Number(price).toFixed(2);
-    }
-
-    if (["XAUUSD", "US30", "NAS100", "ETHUSD"].includes(symbol)) {
-        return Number(price).toFixed(2);
-    }
-
-    if (symbol === "USDJPY") {
-        return Number(price).toFixed(3);
-    }
-
-    return Number(price).toFixed(5);
-}
-
-
-function toast(message) {
-
-    const box = $("toast");
-
-    box.textContent = message;
-
-    box.classList.add("show");
-
-    setTimeout(() => {
-        box.classList.remove("show");
-    }, 2500);
-
-}
-
-
-function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
+    registerMessage.style.color =
+        error ? "#ff5c5c" : "#39d98a";
 }
 
 
 /* =========================================================
-   LOCAL STORAGE
+   TABS
    ========================================================= */
 
-function storageKey() {
+userLoginTab.addEventListener("click", () => {
 
-    if (!state.user) return null;
+    loginMode = "user";
 
-    return `washington_fx_demo_${state.user.id}`;
+    loginForm.style.display = "block";
+    registerForm.style.display = "none";
 
-}
+    userLoginTab.classList.add("active");
+    adminLoginTab.classList.remove("active");
+    registerTab.classList.remove("active");
 
-
-function saveState() {
-
-    if (!state.user) return;
-
-    localStorage.setItem(
-        storageKey(),
-        JSON.stringify({
-            balance: state.balance,
-            positions: state.positions,
-            orders: state.orders,
-            history: state.history,
-            wallet: state.wallet,
-            ticket: state.ticket
-        })
-    );
-
-}
+    loginMessage.textContent = "";
+});
 
 
-function loadState() {
+adminLoginTab.addEventListener("click", () => {
 
-    if (!state.user) return;
+    loginMode = "admin";
 
-    const raw = localStorage.getItem(storageKey());
+    loginForm.style.display = "block";
+    registerForm.style.display = "none";
 
-    if (!raw) return;
+    userLoginTab.classList.remove("active");
+    adminLoginTab.classList.add("active");
+    registerTab.classList.remove("active");
 
-    try {
+    loginMessage.textContent =
+        "Admin login: use your authorized administrator account.";
+});
 
-        const saved = JSON.parse(raw);
 
-        state.balance =
-            Number(saved.balance ?? 10000);
+registerTab.addEventListener("click", () => {
 
-        state.positions =
-            saved.positions || [];
+    loginForm.style.display = "none";
+    registerForm.style.display = "block";
 
-        state.orders =
-            saved.orders || [];
+    userLoginTab.classList.remove("active");
+    adminLoginTab.classList.remove("active");
+    registerTab.classList.add("active");
 
-        state.history =
-            saved.history || [];
-
-        state.wallet =
-            saved.wallet || [];
-
-        state.ticket =
-            Number(saved.ticket ?? 100001);
-
-    } catch (error) {
-
-        console.error(error);
-
-    }
-
-}
+    registerMessage.textContent = "";
+});
 
 
 /* =========================================================
-   AUTH
+   REGISTER
    ========================================================= */
 
-$("loginTab").onclick = () => {
+registerForm.addEventListener("submit", async (event) => {
 
-    $("loginTab").classList.add("active");
-    $("registerTab").classList.remove("active");
-
-    $("loginForm").classList.remove("hidden");
-    $("registerForm").classList.add("hidden");
-
-};
-
-
-$("registerTab").onclick = () => {
-
-    $("registerTab").classList.add("active");
-    $("loginTab").classList.remove("active");
-
-    $("registerForm").classList.remove("hidden");
-    $("loginForm").classList.add("hidden");
-
-};
-
-
-function authMessage(message, error = false) {
-
-    $("authMessage").textContent = message;
-
-    $("authMessage").style.color =
-        error ? "#f0445b" : "#19c37d";
-
-}
-
-
-$("registerBtn").onclick = async () => {
+    event.preventDefault();
 
     const name =
-        $("registerName").value.trim();
+        document.getElementById("registerName").value.trim();
 
     const email =
-        $("registerEmail").value.trim();
+        document.getElementById("registerEmail").value.trim();
 
     const password =
-        $("registerPassword").value;
+        document.getElementById("registerPassword").value;
 
-    if (!name || !email || password.length < 6) {
+    const password2 =
+        document.getElementById("registerPassword2").value;
 
-        authMessage(
-            "Enter your name, valid email and password of at least 6 characters.",
+
+    if (password !== password2) {
+
+        showRegisterMessage(
+            "Passwords do not match.",
             true
         );
 
@@ -354,24 +159,46 @@ $("registerBtn").onclick = async () => {
     }
 
 
-    const { data, error } =
-        await supabaseClient.auth.signUp({
+    if (password.length < 6) {
 
-            email,
-            password,
+        showRegisterMessage(
+            "Password must contain at least 6 characters.",
+            true
+        );
 
-            options: {
-                data: {
-                    display_name: name
-                }
+        return;
+    }
+
+
+    showRegisterMessage("Creating account...");
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient.auth.signUp({
+
+        email: email,
+
+        password: password,
+
+        options: {
+
+            data: {
+                full_name: name
             }
 
-        });
+        }
+
+    });
 
 
     if (error) {
 
-        authMessage(error.message, true);
+        showRegisterMessage(
+            error.message,
+            true
+        );
 
         return;
     }
@@ -379,30 +206,42 @@ $("registerBtn").onclick = async () => {
 
     if (data.session) {
 
-        await startApplication(data.session.user);
+        showRegisterMessage(
+            "Account created. Signing you in..."
+        );
+
+        await loadUser();
 
     } else {
 
-        authMessage(
-            "Account created. Check your email if email confirmation is enabled."
+        showRegisterMessage(
+            "Account created. Check your email to confirm your account."
         );
 
     }
 
-};
+});
 
 
-$("loginBtn").onclick = async () => {
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+loginForm.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
 
     const email =
-        $("loginEmail").value.trim();
+        document.getElementById("loginEmail").value.trim();
 
     const password =
-        $("loginPassword").value;
+        document.getElementById("loginPassword").value;
+
 
     if (!email || !password) {
 
-        authMessage(
+        showLoginMessage(
             "Enter your email and password.",
             true
         );
@@ -411,35 +250,25 @@ $("loginBtn").onclick = async () => {
     }
 
 
-    const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-        });
+    showLoginMessage("Signing in...");
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient.auth.signInWithPassword({
+
+        email: email,
+
+        password: password
+
+    });
 
 
     if (error) {
 
-        authMessage(error.message, true);
-
-        return;
-    }
-
-
-    await startApplication(data.user);
-
-};
-
-
-$("forgotBtn").onclick = async () => {
-
-    const email =
-        $("loginEmail").value.trim();
-
-    if (!email) {
-
-        authMessage(
-            "Enter your email first.",
+        showLoginMessage(
+            error.message,
             true
         );
 
@@ -447,1840 +276,141 @@ $("forgotBtn").onclick = async () => {
     }
 
 
-    const redirect =
-        window.location.origin +
-        window.location.pathname;
+    const isAdmin =
+        await checkAdmin(data.user.id);
 
 
-    const { error } =
-        await supabaseClient.auth.resetPasswordForEmail(
-            email,
-            {
-                redirectTo: redirect
-            }
+    if (loginMode === "admin" && !isAdmin) {
+
+        await supabaseClient.auth.signOut();
+
+        showLoginMessage(
+            "This account is not authorized for Admin Login.",
+            true
         );
+
+        return;
+    }
+
+
+    await loadUser();
+
+});
+
+
+/* =========================================================
+   ADMIN CHECK
+   ========================================================= */
+
+async function checkAdmin(userId) {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", userId)
+        .maybeSingle();
 
 
     if (error) {
 
-        authMessage(error.message, true);
+        console.error(
+            "Admin check error:",
+            error
+        );
+
+        return false;
+    }
+
+
+    return !!data;
+}
+
+
+/* =========================================================
+   LOAD USER
+   ========================================================= */
+
+async function loadUser() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient.auth.getUser();
+
+
+    if (error || !data.user) {
+
+        showAuth();
 
         return;
     }
 
 
-    authMessage("Password reset email sent.");
-
-};
-
-
-$("logoutBtn").onclick = async () => {
-
-    await supabaseClient.auth.signOut();
-
-    state.user = null;
-
-    $("appScreen").classList.add("hidden");
-    $("authScreen").classList.remove("hidden");
-
-};
+    const user =
+        data.user;
 
 
-/* =========================================================
-   PROFILE / ADMIN
-   ========================================================= */
-
-async function loadProfile() {
-
-    if (!state.user) return;
-
-    const { data } =
-        await supabaseClient
-            .from("profiles")
-            .select("*")
-            .eq("id", state.user.id)
-            .maybeSingle();
-
-    state.profile = data || null;
-
-}
+    const isAdmin =
+        await checkAdmin(user.id);
 
 
-async function checkAdmin() {
-
-    if (!state.user) return false;
-
-    const { data } =
-        await supabaseClient
-            .from("admin_users")
-            .select("user_id")
-            .eq("user_id", state.user.id)
-            .maybeSingle();
-
-    state.admin = !!data;
-
-    document
-        .querySelector(".admin-nav")
-        .classList.toggle(
-            "hidden",
-            !state.admin
-        );
-
-    return state.admin;
-
-}
-
-
-async function loadDemoAccountNumber() {
-
-    if (!state.user) return;
-
-    const { data } =
-        await supabaseClient
-            .from("demo_accounts")
-            .select("account_number")
-            .eq("user_id", state.user.id)
-            .maybeSingle();
-
-    if (data) {
-
-        $("accountNumber").textContent =
-            data.account_number;
-
-        $("accountNumberLarge").textContent =
-            data.account_number;
-
-    }
-
-}
-
-
-/* =========================================================
-   APPLICATION START
-   ========================================================= */
-
-async function startApplication(user) {
-
-    state.user = user;
-
-    loadState();
-
-    await loadProfile();
-
-    await checkAdmin();
-
-    await loadDemoAccountNumber();
-
-    $("authScreen").classList.add("hidden");
-
-    $("appScreen").classList.remove("hidden");
-
-    $("userEmail").textContent =
+    document.getElementById("userEmail").textContent =
         user.email || "";
 
-    $("accountName").textContent =
-        state.profile?.display_name ||
-        user.user_metadata?.display_name ||
-        "Trader";
-
-    $("accountEmail").textContent =
+    document.getElementById("accountEmail").textContent =
         user.email || "";
 
-    initMarket();
 
-    initChart();
+    document.getElementById("accountRole").textContent =
+        isAdmin ? "Administrator" : "User";
 
-    navigate("dashboard");
 
-    updateAll();
+    if (isAdmin) {
 
-    if (!state.simulationStarted) {
+        adminNav.style.display = "block";
 
-        state.simulationStarted = true;
-
-        setInterval(simulationTick, 1000);
-
-    }
-
-}
-
-
-/* =========================================================
-   MARKET
-   ========================================================= */
-
-function initMarket() {
-
-    Object.keys(SYMBOLS).forEach(symbol => {
-
-        const config = SYMBOLS[symbol];
-
-        if (!state.market[symbol]) {
-
-            state.market[symbol] = {
-                price: config.price,
-                previous: config.price,
-                history: []
-            };
-
-        }
-
-        if (
-            state.market[symbol].history.length === 0
-        ) {
-
-            createInitialHistory(symbol);
-
-        }
-
-    });
-
-}
-
-
-function createInitialHistory(symbol) {
-
-    const config = SYMBOLS[symbol];
-
-    let price =
-        state.market[symbol].price;
-
-    const now =
-        Math.floor(Date.now() / 1000);
-
-    const step =
-        TIMEFRAMES[state.timeframe];
-
-    const history = [];
-
-    for (let i = 150; i >= 0; i--) {
-
-        const movement =
-            (Math.random() - .5) *
-            config.volatility *
-            5;
-
-        price += movement;
-
-        if (price <= 0) {
-            price = config.price;
-        }
-
-        const candleTime =
-            now -
-            i * step;
-
-        history.push({
-            time: candleTime,
-            open: price - movement,
-            high: Math.max(
-                price,
-                price + Math.abs(movement)
-            ),
-            low: Math.min(
-                price,
-                price - Math.abs(movement)
-            ),
-            close: price
-        });
-
-    }
-
-    state.market[symbol].price = price;
-
-    state.market[symbol].history = history;
-
-}
-
-
-function getBid(symbol) {
-
-    const m = state.market[symbol];
-
-    return m.price - SYMBOLS[symbol].spread / 2;
-
-}
-
-
-function getAsk(symbol) {
-
-    const m = state.market[symbol];
-
-    return m.price + SYMBOLS[symbol].spread / 2;
-
-}
-
-
-function moveMarket(symbol) {
-
-    const config = SYMBOLS[symbol];
-
-    const m = state.market[symbol];
-
-    const random =
-        Math.random() - .5;
-
-    const momentum =
-        Math.sin(Date.now() / 30000) * .2;
-
-    const move =
-        (random + momentum) *
-        config.volatility;
-
-    m.previous = m.price;
-
-    m.price += move;
-
-    if (m.price <= 0) {
-        m.price = config.price;
-    }
-
-    updateCandle(symbol);
-
-}
-
-
-/* =========================================================
-   CANDLES
-   ========================================================= */
-
-function updateCandle(symbol) {
-
-    const m =
-        state.market[symbol];
-
-    const timeframe =
-        TIMEFRAMES[state.timeframe];
-
-    const now =
-        Math.floor(Date.now() / 1000);
-
-    const candleTime =
-        Math.floor(now / timeframe) *
-        timeframe;
-
-    let candle =
-        m.history[m.history.length - 1];
-
-    if (!candle || candle.time !== candleTime) {
-
-        candle = {
-
-            time: candleTime,
-
-            open: m.price,
-
-            high: m.price,
-
-            low: m.price,
-
-            close: m.price
-
-        };
-
-        m.history.push(candle);
-
-        if (m.history.length > 500) {
-            m.history.shift();
-        }
+        document.getElementById("adminEmail").textContent =
+            user.email || "";
 
     } else {
 
-        candle.high =
-            Math.max(candle.high, m.price);
-
-        candle.low =
-            Math.min(candle.low, m.price);
-
-        candle.close =
-            m.price;
+        adminNav.style.display = "none";
 
     }
 
 
-    if (
-        state.symbol === symbol &&
-        state.series
-    ) {
-
-        updateChart();
-
-    }
+    showApp();
 
 }
 
 
 /* =========================================================
-   CHART
+   SHOW APP
    ========================================================= */
 
-function initChart() {
+function showApp() {
 
-    const container =
-        $("chart");
+    authScreen.style.display = "none";
 
-    if (!container) return;
+    app.style.display = "block";
 
-    state.chart =
-        LightweightCharts.createChart(
-            container,
-            {
-
-                layout: {
-                    background: {
-                        color: "#0d1928"
-                    },
-                    textColor: "#8da0b5"
-                },
-
-                grid: {
-                    vertLines: {
-                        color: "#142638"
-                    },
-                    horzLines: {
-                        color: "#142638"
-                    }
-                },
-
-                rightPriceScale: {
-                    borderColor: "#1d3045"
-                },
-
-                timeScale: {
-                    borderColor: "#1d3045",
-                    timeVisible: true
-                }
-
-            }
-        );
-
-
-    createChartSeries();
-
-    window.addEventListener(
-        "resize",
-        resizeChart
-    );
-
-}
-
-
-function resizeChart() {
-
-    if (!state.chart) return;
-
-    const box =
-        $("chart").getBoundingClientRect();
-
-    state.chart.applyOptions({
-        width: box.width,
-        height: box.height
-    });
-
-}
-
-
-function createChartSeries() {
-
-    if (!state.chart) return;
-
-    if (state.series) {
-
-        try {
-            state.chart.removeSeries(state.series);
-        } catch {}
-
-    }
-
-
-    const options = {
-
-        upColor: "#19c37d",
-        downColor: "#f0445b",
-        borderVisible: false,
-        wickUpColor: "#19c37d",
-        wickDownColor: "#f0445b"
-
-    };
-
-
-    switch (state.chartType) {
-
-        case "bar":
-
-            state.series =
-                state.chart.addBarSeries(options);
-
-            break;
-
-        case "line":
-
-            state.series =
-                state.chart.addLineSeries({
-                    lineWidth: 2
-                });
-
-            break;
-
-        case "area":
-
-            state.series =
-                state.chart.addAreaSeries({
-                    lineWidth: 2,
-                    topColor: "rgba(30,136,255,.35)",
-                    bottomColor: "rgba(30,136,255,.02)"
-                });
-
-            break;
-
-        case "baseline":
-
-            state.series =
-                state.chart.addBaselineSeries({
-                    baseValue: {
-                        type: "price",
-                        price: SYMBOLS[state.symbol].price
-                    }
-                });
-
-            break;
-
-        case "histogram":
-
-            state.series =
-                state.chart.addHistogramSeries({
-                    priceFormat: {
-                        type: "volume"
-                    },
-                    priceScaleId: ""
-                });
-
-            break;
-
-        default:
-
-            state.series =
-                state.chart.addCandlestickSeries(options);
-
-    }
-
-
-    updateChart();
-
-}
-
-
-function updateChart() {
-
-    if (!state.series) return;
-
-    const candles =
-        state.market[state.symbol].history;
-
-    if (!candles) return;
-
-
-    if (
-        state.chartType === "candlestick" ||
-        state.chartType === "bar"
-    ) {
-
-        state.series.setData(
-            candles.map(c => ({
-                time: c.time,
-                open: c.open,
-                high: c.high,
-                low: c.low,
-                close: c.close
-            }))
-        );
-
-    }
-
-
-    else if (
-        state.chartType === "line" ||
-        state.chartType === "area" ||
-        state.chartType === "baseline"
-    ) {
-
-        state.series.setData(
-            candles.map(c => ({
-                time: c.time,
-                value: c.close
-            }))
-        );
-
-    }
-
-
-    else if (state.chartType === "histogram") {
-
-        state.series.setData(
-            candles.map(c => ({
-                time: c.time,
-                value: Math.abs(c.close - c.open)
-            }))
-        );
-
-    }
-
-
-    state.chart.timeScale().fitContent();
+    showPage("dashboard");
 
 }
 
 
 /* =========================================================
-   SIMULATION ENGINE
+   SHOW AUTH
    ========================================================= */
 
-function simulationTick() {
+function showAuth() {
 
-    if (!state.user) return;
+    authScreen.style.display = "flex";
 
-    Object.keys(SYMBOLS).forEach(
-        moveMarket
-    );
-
-    processPendingOrders();
-
-    processStops();
-
-    updateAll();
-
-    saveState();
-
-}
-
-
-/* =========================================================
-   P/L
-   ========================================================= */
-
-function positionProfit(position) {
-
-    const symbol =
-        position.symbol;
-
-    const market =
-        state.market[symbol];
-
-    if (!market) return 0;
-
-    const current =
-        position.side === "BUY"
-            ? getBid(symbol)
-            : getAsk(symbol);
-
-    const difference =
-        position.side === "BUY"
-            ? current - position.entry
-            : position.entry - current;
-
-    const pip =
-        SYMBOLS[symbol].pip;
-
-    const pips =
-        difference / pip;
-
-    const pipValue =
-        symbol === "USDJPY"
-            ? 6.7
-            : 10;
-
-    return pips *
-        pipValue *
-        position.volume;
-
-}
-
-
-function floatingProfit() {
-
-    return state.positions.reduce(
-        (total, position) =>
-            total + positionProfit(position),
-        0
-    );
-
-}
-
-
-function positionMargin(position) {
-
-    const price =
-        state.market[position.symbol].price;
-
-    return (
-        price *
-        position.volume *
-        100000
-    ) / 100;
-
-}
-
-
-function usedMargin() {
-
-    return state.positions.reduce(
-        (total, position) =>
-            total + positionMargin(position),
-        0
-    );
-
-}
-
-
-function equity() {
-
-    return state.balance +
-        floatingProfit();
-
-}
-
-
-function freeMargin() {
-
-    return equity() -
-        usedMargin();
-
-}
-
-
-function marginLevel() {
-
-    const margin =
-        usedMargin();
-
-    if (margin <= 0) {
-        return Infinity;
-    }
-
-    return (
-        equity() /
-        margin
-    ) * 100;
-
-}
-
-
-/* =========================================================
-   TRADING
-   ========================================================= */
-
-function placeTrade(side) {
-
-    const symbol =
-        state.symbol;
-
-    const type =
-        $("orderType").value;
-
-    const volume =
-        Number($("volume").value);
-
-    let entry =
-        Number($("entryPrice").value);
-
-    const sl =
-        Number($("stopLoss").value) || null;
-
-    const tp =
-        Number($("takeProfit").value) || null;
-
-
-    if (!volume || volume <= 0) {
-
-        toast("Enter a valid volume.");
-
-        return;
-    }
-
-
-    if (type === "MARKET") {
-
-        entry =
-            side === "BUY"
-                ? getAsk(symbol)
-                : getBid(symbol);
-
-        openPosition(
-            symbol,
-            side,
-            volume,
-            entry,
-            sl,
-            tp
-        );
-
-        return;
-
-    }
-
-
-    if (!entry) {
-
-        toast("Enter an entry price.");
-
-        return;
-    }
-
-
-    if (
-        !validatePendingOrder(
-            side,
-            type,
-            entry
-        )
-    ) {
-
-        return;
-    }
-
-
-    const requiredMargin =
-        (
-            state.market[symbol].price *
-            volume *
-            100000
-        ) / 100;
-
-
-    if (freeMargin() < requiredMargin) {
-
-        toast("Insufficient free margin.");
-
-        return;
-    }
-
-
-    const order = {
-
-        ticket: state.ticket++,
-
-        symbol,
-
-        side,
-
-        type,
-
-        volume,
-
-        entry,
-
-        sl,
-
-        tp,
-
-        createdAt: new Date().toISOString()
-
-    };
-
-
-    state.orders.push(order);
-
-    toast(
-        `Pending ${side} order #${order.ticket} created.`
-    );
-
-    renderOrders();
-
-}
-
-
-function validatePendingOrder(
-    side,
-    type,
-    entry
-) {
-
-    const bid =
-        getBid(state.symbol);
-
-    const ask =
-        getAsk(state.symbol);
-
-
-    if (
-        type === "BUY_LIMIT" &&
-        entry >= ask
-    ) {
-
-        toast("Buy Limit must be below market.");
-
-        return false;
-
-    }
-
-
-    if (
-        type === "BUY_STOP" &&
-        entry <= ask
-    ) {
-
-        toast("Buy Stop must be above market.");
-
-        return false;
-
-    }
-
-
-    if (
-        type === "SELL_LIMIT" &&
-        entry <= bid
-    ) {
-
-        toast("Sell Limit must be above market.");
-
-        return false;
-
-    }
-
-
-    if (
-        type === "SELL_STOP" &&
-        entry >= bid
-    ) {
-
-        toast("Sell Stop must be below market.");
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-function openPosition(
-    symbol,
-    side,
-    volume,
-    entry,
-    sl,
-    tp,
-    fromOrder = null
-) {
-
-    const margin =
-        (
-            state.market[symbol].price *
-            volume *
-            100000
-        ) / 100;
-
-
-    if (
-        freeMargin() < margin &&
-        !fromOrder
-    ) {
-
-        toast("Insufficient free margin.");
-
-        return false;
-    }
-
-
-    const position = {
-
-        ticket: state.ticket++,
-
-        symbol,
-
-        side,
-
-        volume,
-
-        entry,
-
-        sl,
-
-        tp,
-
-        openedAt:
-            new Date().toISOString(),
-
-        sourceOrder:
-            fromOrder?.ticket || null
-
-    };
-
-
-    state.positions.push(position);
-
-    toast(
-        `${side} ${symbol} position #${position.ticket} opened.`
-    );
-
-    renderPositions();
-
-    return true;
-
-}
-
-
-function closePosition(
-    ticket,
-    reason = "MANUAL"
-) {
-
-    const index =
-        state.positions.findIndex(
-            p => p.ticket === ticket
-        );
-
-
-    if (index === -1) return;
-
-
-    const position =
-        state.positions[index];
-
-    const profit =
-        positionProfit(position);
-
-
-    state.balance += profit;
-
-
-    state.history.unshift({
-
-        ticket: position.ticket,
-
-        symbol: position.symbol,
-
-        side: position.side,
-
-        volume: position.volume,
-
-        entry: position.entry,
-
-        exit:
-            position.side === "BUY"
-                ? getBid(position.symbol)
-                : getAsk(position.symbol),
-
-        profit,
-
-        reason,
-
-        openedAt: position.openedAt,
-
-        closedAt:
-            new Date().toISOString()
-
-    });
-
-
-    state.positions.splice(index, 1);
-
-    toast(
-        `Position #${ticket} closed: ${money(profit)}`
-    );
-
-
-    renderPositions();
-
-    renderHistory();
-
-}
-
-
-function cancelOrder(ticket) {
-
-    const index =
-        state.orders.findIndex(
-            o => o.ticket === ticket
-        );
-
-    if (index === -1) return;
-
-    state.orders.splice(index, 1);
-
-    toast(`Order #${ticket} cancelled.`);
-
-    renderOrders();
-
-}
-
-
-function processPendingOrders() {
-
-    [...state.orders].forEach(order => {
-
-        const bid =
-            getBid(order.symbol);
-
-        const ask =
-            getAsk(order.symbol);
-
-        let triggered = false;
-
-
-        if (
-            order.type === "BUY_LIMIT" &&
-            ask <= order.entry
-        ) triggered = true;
-
-
-        if (
-            order.type === "BUY_STOP" &&
-            ask >= order.entry
-        ) triggered = true;
-
-
-        if (
-            order.type === "SELL_LIMIT" &&
-            bid >= order.entry
-        ) triggered = true;
-
-
-        if (
-            order.type === "SELL_STOP" &&
-            bid <= order.entry
-        ) triggered = true;
-
-
-        if (triggered) {
-
-            const opened =
-                openPosition(
-                    order.symbol,
-                    order.side,
-                    order.volume,
-                    order.entry,
-                    order.sl,
-                    order.tp,
-                    order
-                );
-
-
-            if (opened) {
-
-                state.orders =
-                    state.orders.filter(
-                        o =>
-                            o.ticket !==
-                            order.ticket
-                    );
-
-            }
-
-        }
-
-    });
-
-}
-
-
-function processStops() {
-
-    [...state.positions].forEach(
-        position => {
-
-            const bid =
-                getBid(position.symbol);
-
-            const ask =
-                getAsk(position.symbol);
-
-
-            if (
-                position.side === "BUY"
-            ) {
-
-                if (
-                    position.sl &&
-                    bid <= position.sl
-                ) {
-
-                    closePosition(
-                        position.ticket,
-                        "STOP LOSS"
-                    );
-
-                    return;
-                }
-
-
-                if (
-                    position.tp &&
-                    bid >= position.tp
-                ) {
-
-                    closePosition(
-                        position.ticket,
-                        "TAKE PROFIT"
-                    );
-
-                }
-
-            }
-
-
-            else {
-
-                if (
-                    position.sl &&
-                    ask >= position.sl
-                ) {
-
-                    closePosition(
-                        position.ticket,
-                        "STOP LOSS"
-                    );
-
-                    return;
-                }
-
-
-                if (
-                    position.tp &&
-                    ask <= position.tp
-                ) {
-
-                    closePosition(
-                        position.ticket,
-                        "TAKE PROFIT"
-                    );
-
-                }
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   RENDER
-   ========================================================= */
-
-function updateAll() {
-
-    updateDashboard();
-
-    updateMarket();
-
-    updateTradingQuote();
-
-    renderPositions();
-
-    renderOrders();
-
-    renderHistory();
-
-    renderWallet();
-
-    updateOrderSummary();
-
-    renderAdmin();
-
-}
-
-
-function updateDashboard() {
-
-    $("dashBalance").textContent =
-        money(state.balance);
-
-    $("dashEquity").textContent =
-        money(equity());
-
-    $("dashFreeMargin").textContent =
-        money(freeMargin());
-
-    const floating =
-        floatingProfit();
-
-    $("dashFloating").textContent =
-        money(floating);
-
-    $("dashFloating").className =
-        floating >= 0
-            ? "profit"
-            : "loss";
-
-
-    const ml =
-        marginLevel();
-
-    $("dashMarginLevel").textContent =
-        ml === Infinity
-            ? "∞"
-            : `${ml.toFixed(2)}%`;
-
-}
-
-
-function updateMarket() {
-
-    const container =
-        $("marketRows");
-
-    container.innerHTML = "";
-
-    Object.keys(SYMBOLS).forEach(symbol => {
-
-        const bid =
-            getBid(symbol);
-
-        const ask =
-            getAsk(symbol);
-
-        const spread =
-            ask - bid;
-
-
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "market-row clickable";
-
-        row.innerHTML = `
-
-            <span class="market-symbol">
-                ${symbol}
-            </span>
-
-            <span class="market-price">
-                ${priceFormat(symbol,bid)}
-            </span>
-
-            <span class="market-price">
-                ${priceFormat(symbol,ask)}
-            </span>
-
-            <span>
-                ${priceFormat(symbol,spread)}
-            </span>
-
-        `;
-
-
-        row.onclick = () => {
-
-            state.symbol = symbol;
-
-            $("chartSymbol").value =
-                symbol;
-
-            navigate("trading");
-
-            createInitialHistoryIfNeeded();
-
-            createChartSeries();
-
-        };
-
-
-        container.appendChild(row);
-
-    });
-
-}
-
-
-function createInitialHistoryIfNeeded() {
-
-    if (
-        !state.market[state.symbol].history.length
-    ) {
-
-        createInitialHistory(
-            state.symbol
-        );
-
-    }
-
-    updateChart();
-
-}
-
-
-function updateTradingQuote() {
-
-    const bid =
-        getBid(state.symbol);
-
-    const ask =
-        getAsk(state.symbol);
-
-
-    $("bidPrice").textContent =
-        priceFormat(state.symbol,bid);
-
-    $("askPrice").textContent =
-        priceFormat(state.symbol,ask);
-
-    $("sellQuote").textContent =
-        priceFormat(state.symbol,bid);
-
-    $("buyQuote").textContent =
-        priceFormat(state.symbol,ask);
-
-    $("chartQuote").textContent =
-        priceFormat(state.symbol,state.market[state.symbol].price);
-
-
-    if (!$("entryPrice").value) {
-
-        $("entryPrice").placeholder =
-            priceFormat(
-                state.symbol,
-                state.market[state.symbol].price
-            );
-
-    }
-
-}
-
-
-/* =========================================================
-   POSITIONS UI
-   ========================================================= */
-
-function renderPositions() {
-
-    $("positionCount").textContent =
-        `${state.positions.length} position${state.positions.length === 1 ? "" : "s"}`;
-
-
-    const html =
-        state.positions.length === 0
-            ? `<div class="empty">No open positions.</div>`
-            : `
-            <div class="table-wrapper">
-            <table class="trade-table">
-
-            <thead>
-
-            <tr>
-                <th>Ticket</th>
-                <th>Symbol</th>
-                <th>Side</th>
-                <th>Volume</th>
-                <th>Entry</th>
-                <th>Current</th>
-                <th>SL</th>
-                <th>TP</th>
-                <th>P/L</th>
-                <th></th>
-            </tr>
-
-            </thead>
-
-            <tbody>
-
-            ${state.positions.map(p => {
-
-                const current =
-                    p.side === "BUY"
-                        ? getBid(p.symbol)
-                        : getAsk(p.symbol);
-
-                const profit =
-                    positionProfit(p);
-
-                return `
-
-                <tr>
-
-                    <td>${p.ticket}</td>
-
-                    <td>${p.symbol}</td>
-
-                    <td class="${p.side === "BUY" ? "buy-text" : "sell-text"}">
-                        ${p.side}
-                    </td>
-
-                    <td>${p.volume.toFixed(2)}</td>
-
-                    <td>
-                        ${priceFormat(p.symbol,p.entry)}
-                    </td>
-
-                    <td>
-                        ${priceFormat(p.symbol,current)}
-                    </td>
-
-                    <td>
-                        ${p.sl ? priceFormat(p.symbol,p.sl) : "-"}
-                    </td>
-
-                    <td>
-                        ${p.tp ? priceFormat(p.symbol,p.tp) : "-"}
-                    </td>
-
-                    <td class="${profit >= 0 ? "profit" : "loss"}">
-                        ${money(profit)}
-                    </td>
-
-                    <td>
-                        <button
-                            class="close-btn"
-                            onclick="closePosition(${p.ticket})">
-                            CLOSE
-                        </button>
-                    </td>
-
-                </tr>
-
-                `;
-
-            }).join("")}
-
-            </tbody>
-
-            </table>
-            </div>
-            `;
-
-
-    $("positionsTable").innerHTML =
-        html;
-
-    $("tradingPositions").innerHTML =
-        html;
-
-    $("dashboardPositions").innerHTML =
-        state.positions.length === 0
-            ? `<div class="empty">No open positions.</div>`
-            : state.positions.slice(0,5).map(p => {
-
-                const profit =
-                    positionProfit(p);
-
-                return `
-
-                <div class="market-row">
-
-                    <span>
-                        ${p.symbol}
-                        <small class="${p.side === "BUY" ? "buy-text" : "sell-text"}">
-                            ${p.side}
-                        </small>
-                    </span>
-
-                    <span>${p.volume.toFixed(2)}</span>
-
-                    <span class="${profit >= 0 ? "profit" : "loss"}">
-                        ${money(profit)}
-                    </span>
-
-                    <button
-                        class="close-btn"
-                        onclick="closePosition(${p.ticket})">
-                        CLOSE
-                    </button>
-
-                </div>
-
-                `;
-
-            }).join("");
-
-}
-
-
-/* =========================================================
-   ORDERS UI
-   ========================================================= */
-
-function renderOrders() {
-
-    if (!state.orders.length) {
-
-        $("ordersTable").innerHTML =
-            `<div class="empty">No pending orders.</div>`;
-
-        return;
-
-    }
-
-
-    $("ordersTable").innerHTML = `
-
-        <div class="table-wrapper">
-
-        <table class="trade-table">
-
-        <thead>
-
-        <tr>
-            <th>Ticket</th>
-            <th>Symbol</th>
-            <th>Side</th>
-            <th>Type</th>
-            <th>Volume</th>
-            <th>Entry</th>
-            <th>SL</th>
-            <th>TP</th>
-            <th></th>
-        </tr>
-
-        </thead>
-
-        <tbody>
-
-        ${state.orders.map(o => `
-
-            <tr>
-
-                <td>${o.ticket}</td>
-
-                <td>${o.symbol}</td>
-
-                <td class="${o.side === "BUY" ? "buy-text" : "sell-text"}">
-                    ${o.side}
-                </td>
-
-                <td>${o.type}</td>
-
-                <td>${o.volume.toFixed(2)}</td>
-
-                <td>
-                    ${priceFormat(o.symbol,o.entry)}
-                </td>
-
-                <td>
-                    ${o.sl ? priceFormat(o.symbol,o.sl) : "-"}
-                </td>
-
-                <td>
-                    ${o.tp ? priceFormat(o.symbol,o.tp) : "-"}
-                </td>
-
-                <td>
-                    <button
-                        class="cancel-btn"
-                        onclick="cancelOrder(${o.ticket})">
-                        CANCEL
-                    </button>
-                </td>
-
-            </tr>
-
-        `).join("")}
-
-        </tbody>
-
-        </table>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   HISTORY
-   ========================================================= */
-
-function renderHistory() {
-
-    if (!state.history.length) {
-
-        $("historyTable").innerHTML =
-            `<div class="empty">No completed trades yet.</div>`;
-
-        return;
-
-    }
-
-
-    $("historyTable").innerHTML = `
-
-        <div class="table-wrapper">
-
-        <table class="trade-table">
-
-        <thead>
-
-        <tr>
-            <th>Ticket</th>
-            <th>Symbol</th>
-            <th>Side</th>
-            <th>Volume</th>
-            <th>Entry</th>
-            <th>Exit</th>
-            <th>P/L</th>
-            <th>Reason</th>
-            <th>Closed</th>
-        </tr>
-
-        </thead>
-
-        <tbody>
-
-        ${state.history.map(h => `
-
-            <tr>
-
-                <td>${h.ticket}</td>
-
-                <td>${h.symbol}</td>
-
-                <td>${h.side}</td>
-
-                <td>${h.volume.toFixed(2)}</td>
-
-                <td>
-                    ${priceFormat(h.symbol,h.entry)}
-                </td>
-
-                <td>
-                    ${priceFormat(h.symbol,h.exit)}
-                </td>
-
-                <td class="${h.profit >= 0 ? "profit" : "loss"}">
-                    ${money(h.profit)}
-                </td>
-
-                <td>${h.reason}</td>
-
-                <td>
-                    ${new Date(h.closedAt).toLocaleString()}
-                </td>
-
-            </tr>
-
-        `).join("")}
-
-        </tbody>
-
-        </table>
-
-        </div>
-
-    `;
-
-}
-
-
-/* =========================================================
-   WALLET
-   ========================================================= */
-
-function renderWallet() {
-
-    $("walletBalance").textContent =
-        money(state.balance);
-
-
-    if (!state.wallet.length) {
-
-        $("walletHistory").innerHTML =
-            `<div class="empty">No wallet activity.</div>`;
-
-        return;
-
-    }
-
-
-    $("walletHistory").innerHTML =
-        state.wallet.map(w => `
-
-            <div class="market-row">
-
-                <span>${w.type}</span>
-
-                <span class="${w.amount >= 0 ? "profit" : "loss"}">
-                    ${money(w.amount)}
-                </span>
-
-                <span>
-                    ${new Date(w.date).toLocaleString()}
-                </span>
-
-            </div>
-
-        `).join("");
-
-}
-
-
-/* =========================================================
-   ORDER SUMMARY
-   ========================================================= */
-
-function updateOrderSummary() {
-
-    $("orderBalance").textContent =
-        money(state.balance);
-
-    $("orderFreeMargin").textContent =
-        money(freeMargin());
-
-
-    const volume =
-        Number($("volume").value) || 0;
-
-
-    const margin =
-        (
-            state.market[state.symbol].price *
-            volume *
-            100000
-        ) / 100;
-
-
-    $("orderMargin").textContent =
-        money(margin);
-
-}
-
-
-/* =========================================================
-   ADMIN
-   ========================================================= */
-
-async function renderAdmin() {
-
-    if (!state.admin) return;
-
-
-    try {
-
-        const users =
-            await supabaseClient
-                .from("profiles")
-                .select("id", {
-                    count: "exact",
-                    head: true
-                });
-
-
-        const accounts =
-            await supabaseClient
-                .from("demo_accounts")
-                .select("id", {
-                    count: "exact",
-                    head: true
-                });
-
-
-        $("adminUsers").textContent =
-            users.count ?? 0;
-
-        $("adminDemoAccounts").textContent =
-            accounts.count ?? 0;
-
-        $("adminPositions").textContent =
-            state.positions.length;
-
-    } catch (error) {
-
-        console.error(error);
-
-    }
+    app.style.display = "none";
 
 }
 
@@ -2289,406 +419,208 @@ async function renderAdmin() {
    NAVIGATION
    ========================================================= */
 
-function navigate(page) {
+document
+    .querySelectorAll("[data-page]")
+    .forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const page =
+                button.getAttribute("data-page");
+
+            showPage(page);
+
+        });
+
+    });
+
+
+function showPage(pageName) {
 
     document
         .querySelectorAll(".page")
-        .forEach(el =>
-            el.classList.add("hidden")
-        );
+        .forEach(page => {
+
+            page.style.display = "none";
+
+        });
 
 
-    const target =
-        $(`page-${page}`);
+    const selected =
+        document.getElementById(pageName);
 
-    if (target) {
-        target.classList.remove("hidden");
+
+    if (!selected) return;
+
+
+    if (pageName === "admin") {
+
+        checkCurrentAdminAndOpen();
+
+        return;
     }
 
 
-    document
-        .querySelectorAll(".nav-btn")
-        .forEach(btn =>
-            btn.classList.remove("active")
-        );
+    selected.style.display = "block";
+
+}
 
 
-    const nav =
-        document.querySelector(
-            `.nav-btn[data-page="${page}"]`
-        );
+/* =========================================================
+   ADMIN PAGE PROTECTION
+   ========================================================= */
 
-    if (nav) {
-        nav.classList.add("active");
+async function checkCurrentAdminAndOpen() {
+
+    const {
+        data
+    } = await supabaseClient.auth.getUser();
+
+
+    if (!data.user) {
+
+        showAuth();
+
+        return;
     }
 
 
-    const titles = {
-
-        dashboard: [
-            "Dashboard",
-            "Trading overview"
-        ],
-
-        trading: [
-            "Trading",
-            "Market and order terminal"
-        ],
-
-        positions: [
-            "Positions",
-            "Open trading positions"
-        ],
-
-        orders: [
-            "Orders",
-            "Pending orders"
-        ],
-
-        history: [
-            "History",
-            "Completed trades"
-        ],
-
-        wallet: [
-            "Wallet",
-            "Virtual account funds"
-        ],
-
-        academy: [
-            "Academy",
-            "Trading education"
-        ],
-
-        account: [
-            "Account",
-            "Account information"
-        ],
-
-        settings: [
-            "Settings",
-            "Platform preferences"
-        ],
-
-        admin: [
-            "Admin",
-            "Platform administration"
-        ]
-
-    };
+    const isAdmin =
+        await checkAdmin(data.user.id);
 
 
-    const info =
-        titles[page] || titles.dashboard;
+    if (!isAdmin) {
 
-    $("pageTitle").textContent =
-        info[0];
+        alert(
+            "Administrator access required."
+        );
 
-    $("pageSubtitle").textContent =
-        info[1];
+        showPage("dashboard");
+
+        return;
+    }
 
 
-    if (page === "trading") {
+    document.getElementById("admin").style.display =
+        "block";
 
-        setTimeout(() => {
+}
 
-            resizeChart();
 
-            updateChart();
+/* =========================================================
+   LOGOUT
+   ========================================================= */
 
-        }, 100);
+document
+    .getElementById("logoutBtn")
+    .addEventListener("click", async () => {
+
+        await supabaseClient.auth.signOut();
+
+        showAuth();
+
+    });
+
+
+/* =========================================================
+   FORGOT PASSWORD
+   ========================================================= */
+
+document
+    .getElementById("forgotPassword")
+    .addEventListener("click", async () => {
+
+        const email =
+            document.getElementById("loginEmail").value.trim();
+
+
+        if (!email) {
+
+            showLoginMessage(
+                "Enter your email first.",
+                true
+            );
+
+            return;
+        }
+
+
+        const redirectUrl =
+            window.location.origin +
+            window.location.pathname;
+
+
+        const {
+            error
+        } = await supabaseClient.auth.resetPasswordForEmail(
+            email,
+            {
+                redirectTo: redirectUrl
+            }
+        );
+
+
+        if (error) {
+
+            showLoginMessage(
+                error.message,
+                true
+            );
+
+            return;
+        }
+
+
+        showLoginMessage(
+            "Password reset instructions have been sent to your email."
+        );
+
+    });
+
+
+/* =========================================================
+   SESSION RESTORE
+   ========================================================= */
+
+async function initialize() {
+
+    const {
+        data
+    } = await supabaseClient.auth.getSession();
+
+
+    if (data.session) {
+
+        await loadUser();
+
+    } else {
+
+        showAuth();
 
     }
 
 }
 
 
-document
-    .querySelectorAll(".nav-btn")
-    .forEach(btn => {
-
-        btn.addEventListener(
-            "click",
-            () => navigate(btn.dataset.page)
-        );
-
-    });
-
-
-document
-    .querySelectorAll("[data-page]")
-    .forEach(btn => {
-
-        if (!btn.classList.contains("nav-btn")) {
-
-            btn.addEventListener(
-                "click",
-                () => navigate(btn.dataset.page)
-            );
-
-        }
-
-    });
-
-
-/* =========================================================
-   TRADING CONTROLS
-   ========================================================= */
-
-$("chartSymbol").onchange = e => {
-
-    state.symbol =
-        e.target.value;
-
-    createInitialHistoryIfNeeded();
-
-    createChartSeries();
-
-    updateAll();
-
-};
-
-
-document
-    .querySelectorAll("[data-tf]")
-    .forEach(btn => {
-
-        btn.onclick = () => {
-
-            document
-                .querySelectorAll("[data-tf]")
-                .forEach(b =>
-                    b.classList.remove("active")
-                );
-
-            btn.classList.add("active");
-
-            state.timeframe =
-                btn.dataset.tf;
-
-            createInitialHistory(
-                state.symbol
-            );
-
-            createChartSeries();
-
-        };
-
-    });
-
-
-$("chartType").onchange = e => {
-
-    state.chartType =
-        e.target.value;
-
-    createChartSeries();
-
-};
-
-
-$("fitChart").onclick = () => {
-
-    if (state.chart) {
-        state.chart
-            .timeScale()
-            .fitContent();
-    }
-
-};
-
-
-$("zoomIn").onclick = () => {
-
-    if (state.chart) {
-
-        state.chart
-            .timeScale()
-            .applyOptions({
-                barSpacing: 12
-            });
-
-    }
-
-};
-
-
-$("zoomOut").onclick = () => {
-
-    if (state.chart) {
-
-        state.chart
-            .timeScale()
-            .applyOptions({
-                barSpacing: 5
-            });
-
-    }
-
-};
-
-
-$("buyBtn").onclick =
-    () => placeTrade("BUY");
-
-
-$("sellBtn").onclick =
-    () => placeTrade("SELL");
-
-
-$("volume").oninput =
-    updateOrderSummary;
-
-
-$("orderType").onchange = () => {
-
-    const type =
-        $("orderType").value;
-
-    if (type === "MARKET") {
-
-        $("entryPrice").value = "";
-
-    }
-
-};
-
-
-/* =========================================================
-   VIRTUAL WALLET
-   ========================================================= */
-
-$("virtualDeposit").onclick = () => {
-
-    const amount =
-        Number(
-            prompt(
-                "Enter virtual amount to add:"
-            )
-        );
-
-
-    if (!amount || amount <= 0) {
-
-        toast("Invalid amount.");
-
-        return;
-    }
-
-
-    state.balance += amount;
-
-
-    state.wallet.unshift({
-
-        type: "VIRTUAL DEPOSIT",
-
-        amount,
-
-        date:
-            new Date().toISOString()
-
-    });
-
-
-    saveState();
-
-    updateAll();
-
-    toast(
-        `${money(amount)} virtual funds added.`
-    );
-
-};
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-$("resetDemo").onclick = () => {
-
-    if (
-        !confirm(
-            "Reset the entire demo account?"
-        )
-    ) return;
-
-
-    state.balance = 10000;
-
-    state.positions = [];
-
-    state.orders = [];
-
-    state.history = [];
-
-    state.wallet = [];
-
-    state.ticket = 100001;
-
-
-    saveState();
-
-    updateAll();
-
-    toast("Demo account reset.");
-
-};
-
-
-/* =========================================================
-   CLOCK
-   ========================================================= */
-
-setInterval(() => {
-
-    $("clock").textContent =
-        new Date().toLocaleTimeString();
-
-}, 1000);
-
-
-/* =========================================================
-   SUPABASE SESSION
-   ========================================================= */
-
-(async () => {
-
-    const {
-        data
-    } =
-        await supabaseClient.auth.getSession();
-
-
-    if (data.session) {
-
-        await startApplication(
-            data.session.user
-        );
-
-    }
-
-})();
-
-
 supabaseClient.auth.onAuthStateChange(
     async (event, session) => {
 
-        if (
-            event === "SIGNED_IN" &&
-            session
-        ) {
+        if (session) {
 
-            if (!state.user) {
+            await loadUser();
 
-                await startApplication(
-                    session.user
-                );
+        } else {
 
-            }
+            showAuth();
 
         }
 
     }
 );
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+initialize();
