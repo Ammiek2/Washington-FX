@@ -1,2250 +1,1590 @@
-<!DOCTYPE html>
+[10/5/2026 4:29 AM] Black Shadow 💯: <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Washington FX</title>
 
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07101c;
+  --panel:#0d1827;
+  --panel2:#111f31;
+  --line:#203248;
+  --text:#f4f7fb;
+  --muted:#8ea2b9;
+  --green:#18c784;
+  --red:#ff4d67;
+  --blue:#2d8cff;
+  --yellow:#f5c542;
 }
-
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#07101c;
-    color:#fff;
-    min-height:100vh;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
 }
-
 button,input,select{
-    font:inherit;
+  font:inherit;
 }
-
-button{
-    cursor:pointer;
-}
-
+button{cursor:pointer}
 .app{
-    display:flex;
-    min-height:100vh;
+  display:flex;
+  min-height:100vh;
 }
-
-/* SIDEBAR */
 .sidebar{
-    width:235px;
-    background:#0b1625;
-    border-right:1px solid #1b2a3d;
-    padding:18px 12px;
-    position:fixed;
-    top:0;
-    bottom:0;
-    left:0;
-    overflow-y:auto;
+  width:240px;
+  background:#091422;
+  border-right:1px solid var(--line);
+  padding:20px 14px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  overflow-y:auto;
+  z-index:20;
 }
-
 .logo{
-    font-size:23px;
-    font-weight:bold;
-    text-align:center;
-    padding:10px 0 24px;
-    letter-spacing:1px;
+  font-size:23px;
+  font-weight:800;
+  padding:8px 12px 22px;
 }
-
-.logo span{
-    color:#22c55e;
+.logo span{color:var(--green)}
+.userbox{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:18px;
 }
-
-.nav-title{
-    color:#718096;
-    font-size:11px;
-    margin:16px 10px 7px;
-    text-transform:uppercase;
+.userbox small{color:var(--muted)}
+.navtitle{
+  color:#60748a;
+  font-size:11px;
+  font-weight:bold;
+  margin:18px 10px 7px;
+  text-transform:uppercase;
 }
-
-.nav-btn{
-    width:100%;
-    background:transparent;
-    border:0;
-    color:#b8c4d4;
-    text-align:left;
-    padding:11px 13px;
-    border-radius:7px;
-    margin-bottom:3px;
+.nav button{
+  width:100%;
+  background:none;
+  color:#b9c7d8;
+  border:0;
+  text-align:left;
+  padding:11px 12px;
+  border-radius:8px;
+  margin-bottom:3px;
 }
-
-.nav-btn:hover,
-.nav-btn.active{
-    background:#142337;
-    color:#fff;
+.nav button:hover,
+.nav button.active{
+  background:#14243a;
+  color:#fff;
 }
-
 .main{
-    margin-left:235px;
-    width:calc(100% - 235px);
+  margin-left:240px;
+  width:calc(100% - 240px);
+  min-height:100vh;
 }
-
-/* TOPBAR */
 .topbar{
-    height:68px;
-    border-bottom:1px solid #1b2a3d;
-    background:#091421;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 22px;
+  height:64px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  background:#091422;
+  position:sticky;
+  top:0;
+  z-index:10;
 }
-
-.mode-switch{
-    display:flex;
-    background:#101e2f;
-    padding:4px;
-    border-radius:8px;
+.mode{
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
-
-.mode-btn{
-    border:0;
-    background:transparent;
-    color:#8998ab;
-    padding:9px 20px;
-    border-radius:6px;
-    font-weight:bold;
+.mode button{
+  border:1px solid var(--line);
+  background:#0c1725;
+  color:#9fb0c3;
+  padding:8px 15px;
+  border-radius:7px;
 }
-
-.mode-btn.active{
-    background:#2563eb;
-    color:#fff;
+.mode button.active{
+  background:var(--green);
+  color:#00140d;
+  border-color:var(--green);
+  font-weight:bold;
 }
-
-.live-status{
-    font-size:12px;
-    color:#22c55e;
+.status{
+  font-size:12px;
+  color:var(--muted);
 }
-
-.live-status.offline{
-    color:#f59e0b;
-}
-
-/* CONTENT */
 .content{
-    padding:20px;
+  padding:18px;
 }
-
-.page{
-    display:none;
+.page{display:none}
+.page.active{display:block}
+.grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 350px;
+  gap:14px;
 }
-
-.page.active{
-    display:block;
-}
-
-/* ACCOUNT CARDS */
-.cards{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-    margin-bottom:15px;
-}
-
-.card{
-    background:#0c1929;
-    border:1px solid #1a2a3d;
-    border-radius:10px;
-    padding:15px;
-}
-
-.card-label{
-    color:#718096;
-    font-size:12px;
-    margin-bottom:8px;
-}
-
-.card-value{
-    font-size:21px;
-    font-weight:bold;
-}
-
-/* TRADING AREA */
-.trading-grid{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 315px;
-    gap:15px;
-}
-
 .panel{
-    background:#0c1929;
-    border:1px solid #1a2a3d;
-    border-radius:10px;
-    overflow:hidden;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden;
 }
-
-.panel-header{
-    padding:13px 15px;
-    border-bottom:1px solid #1a2a3d;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+.panelhead{
+  min-height:52px;
+  padding:11px 14px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
 }
-
-.panel-title{
-    font-weight:bold;
+.panelhead h3{font-size:15px}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.charttools{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  flex-wrap:wrap;
 }
-
-.chart-toolbar{
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
+.charttools button{
+  background:#0b1725;
+  color:#91a3b7;
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:6px 8px;
+  font-size:11px;
 }
-
-.chart-toolbar button{
-    background:#111f31;
-    color:#9aabbe;
-    border:1px solid #23364d;
-    padding:5px 8px;
-    border-radius:5px;
-    font-size:11px;
+.charttools button.active{
+  color:#fff;
+  background:#18304c;
 }
-
-.chart-toolbar button.active{
-    background:#2563eb;
-    color:#fff;
+.chartwrap{
+  position:relative;
+  height:520px;
+  background:#07111e;
 }
-
-.chart{
-    height:490px;
-    position:relative;
-    overflow:hidden;
-    background:
-        linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
-    background-size:55px 45px;
+#chart{
+  position:absolute;
+  inset:0;
 }
-
-/* fake candles */
-.candles{
-    position:absolute;
-    inset:25px 65px 30px 20px;
+.chartinfo{
+  position:absolute;
+  left:10px;
+  top:8px;
+  z-index:3;
+  pointer-events:none;
 }
-
-.candle{
-    position:absolute;
-    width:7px;
-    border-radius:1px;
+.chartinfo strong{font-size:16px}
+.chartinfo span{
+  margin-left:10px;
+  color:var(--muted);
+  font-size:12px;
 }
-
-.candle::before{
-    content:"";
-    position:absolute;
-    width:1px;
-    height:100%;
-    left:3px;
-    background:currentColor;
-    z-index:-1;
-    transform:scaleY(1.5);
+.chartbuttons{
+  position:absolute;
+  right:10px;
+  top:8px;
+  z-index:3;
+  display:flex;
+  gap:4px;
 }
-
-.up{
-    background:#22c55e;
-    color:#22c55e;
+.chartbuttons button{
+  border:1px solid var(--line);
+  background:#0d1a29dd;
+  color:#b8c7d7;
+  border-radius:5px;
+  width:29px;
+  height:27px;
 }
-
-.down{
-    background:#ef4444;
-    color:#ef4444;
+.orderpanel{
+  padding:14px;
 }
-
-/* PRICE LINE */
-.current-price{
-    position:absolute;
-    right:0;
-    width:100%;
-    border-top:1px dashed #22c55e;
+label{
+  display:block;
+  color:#8fa1b5;
+  font-size:11px;
+  margin:10px 0 5px;
 }
-
-.price-label{
-    position:absolute;
-    right:0;
-    top:-11px;
-    background:#22c55e;
-    color:#06110a;
-    padding:4px 7px;
-    font-size:10px;
-    font-weight:bold;
+input,select{
+  width:100%;
+  background:#08131f;
+  border:1px solid #263a50;
+  color:#fff;
+  border-radius:6px;
+  padding:10px;
+  outline:none;
 }
-
-/* ORDER MARKERS */
-.order-marker{
-    position:absolute;
-    left:10px;
-    right:65px;
-    height:0;
-    border-top:1px dashed;
-    z-index:10;
+input:focus,select:focus{
+  border-color:var(--blue);
 }
-
-.order-marker .marker-label{
-    position:absolute;
-    left:5px;
-    top:-19px;
-    padding:4px 7px;
-    border-radius:4px;
-    font-size:10px;
-    font-weight:bold;
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
 }
-
-.buy-limit{
-    border-color:#22c55e;
+.typebuttons{
+  display:grid;
+[10/5/2026 4:29 AM] Black Shadow 💯: grid-template-columns:repeat(5,1fr);
+  gap:4px;
 }
-
-.buy-limit .marker-label{
-    background:#166534;
+.typebuttons button{
+  background:#0a1522;
+  border:1px solid var(--line);
+  color:#91a4b9;
+  padding:8px 3px;
+  border-radius:5px;
+  font-size:10px;
 }
-
-.sell-limit{
-    border-color:#ef4444;
+.typebuttons button.active{
+  background:#17304b;
+  color:#fff;
+  border-color:#35638e;
 }
-
-.sell-limit .marker-label{
-    background:#991b1b;
+.tradebuttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:14px;
 }
-
-.buy-stop{
-    border-color:#38bdf8;
+.buy,.sell{
+  border:0;
+  padding:13px;
+  border-radius:6px;
+  font-weight:bold;
 }
-
-.buy-stop .marker-label{
-    background:#075985;
+.buy{background:var(--green);color:#00180f}
+.sell{background:var(--red);color:#fff}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:14px;
 }
-
-.sell-stop{
-    border-color:#f97316;
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:15px;
 }
-
-.sell-stop .marker-label{
-    background:#9a3412;
-}
-
-.sl-marker{
-    border-color:#f43f5e;
-}
-
-.sl-marker .marker-label{
-    background:#9f1239;
-}
-
-.tp-marker{
-    border-color:#a3e635;
-}
-
-.tp-marker .marker-label{
-    background:#3f6212;
-}
-
-/* ORDER PANEL */
-.order-panel{
-    padding:15px;
-}
-
-.instrument-row{
-    display:flex;
-    gap:8px;
-    margin-bottom:13px;
-}
-
-.instrument-select{
-    flex:1;
-}
-
-select,
-input{
-    width:100%;
-    background:#101f31;
-    color:#fff;
-    border:1px solid #263a52;
-    border-radius:6px;
-    padding:10px;
-    outline:none;
-}
-
-select:focus,
-input:focus{
-    border-color:#2563eb;
-}
-
-.field{
-    margin-bottom:11px;
-}
-
-.field label{
-    display:block;
-    color:#8291a4;
-    font-size:11px;
-    margin-bottom:5px;
-}
-
-.order-types{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:6px;
-    margin-bottom:12px;
-}
-
-.order-type{
-    padding:9px 5px;
-    border:1px solid #263a52;
-    background:#101f31;
-    color:#9aabbe;
-    border-radius:5px;
-    font-size:11px;
-}
-
-.order-type.active{
-    border-color:#2563eb;
-    background:#132c50;
-    color:#fff;
-}
-
-.trade-buttons{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    margin-top:15px;
-}
-
-.buy-btn,
-.sell-btn{
-    border:0;
-    color:#fff;
-    padding:13px;
-    border-radius:6px;
-    font-weight:bold;
-}
-
-.buy-btn{
-    background:#16a34a;
-}
-
-.sell-btn{
-    background:#dc2626;
-}
-
-.buy-btn:hover{
-    background:#15803d;
-}
-
-.sell-btn:hover{
-    background:#b91c1c;
-}
-
-.quote{
-    display:flex;
-    justify-content:space-between;
-    background:#091522;
-    padding:10px;
-    border-radius:6px;
-    margin-bottom:12px;
-    font-size:12px;
-}
-
-.bid{
-    color:#ef4444;
-}
-
-.ask{
-    color:#22c55e;
-}
-
-/* POSITIONS */
-.positions{
-    margin-top:15px;
-}
-
-.table-wrap{
-    overflow-x:auto;
-}
-
+.card small{color:var(--muted)}
+.card h2{margin-top:7px;font-size:22px}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.yellow{color:var(--yellow)}
+.tablewrap{overflow:auto}
 table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:12px;
+  width:100%;
+  border-collapse:collapse;
+  min-width:700px;
 }
-
-th,
-td{
-    padding:11px 12px;
-    border-bottom:1px solid #18283a;
-    text-align:left;
+th,td{
+  padding:12px;
+  border-bottom:1px solid #1c2c3e;
+  text-align:left;
+  font-size:12px;
 }
-
-th{
-    color:#718096;
-    font-weight:normal;
+th{color:#73869a;font-size:11px}
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:40px;
 }
-
-.profit{
-    color:#22c55e;
+.action{
+  border:1px solid var(--line);
+  background:#122137;
+  color:#fff;
+  padding:6px 9px;
+  border-radius:5px;
 }
-
-.loss{
-    color:#ef4444;
+.danger{background:#321722;border-color:#63303b}
+.sectiontitle{
+  font-size:20px;
+  margin-bottom:14px;
 }
-
-.close-btn{
-    background:#18283a;
-    color:#fff;
-    border:1px solid #2b4058;
-    border-radius:4px;
-    padding:5px 8px;
+.auth{
+  position:fixed;
+  inset:0;
+  background:#050c14;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
-
-/* OTHER PAGES */
-.section-box{
-    background:#0c1929;
-    border:1px solid #1a2a3d;
-    border-radius:10px;
-    padding:20px;
-    margin-bottom:15px;
+.auth.show{display:flex}
+.authbox{
+  width:420px;
+  max-width:100%;
+  background:#0c1827;
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:24px;
 }
-
-.section-box h2{
-    margin-bottom:10px;
+.authbox h1{margin-bottom:5px}
+.authbox p{color:var(--muted);font-size:13px;margin-bottom:16px}
+.authbuttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:10px 0;
 }
-
-.muted{
-    color:#718096;
-    font-size:13px;
+.authbuttons button{
+  padding:10px;
+  border-radius:6px;
+  border:1px solid var(--line);
+  background:#142338;
+  color:#fff;
 }
-
-@media(max-width:1000px){
-    .sidebar{
-        width:190px;
-    }
-
-    .main{
-        margin-left:190px;
-        width:calc(100% - 190px);
-    }
-
-    .cards{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .trading-grid{
-        grid-template-columns:1fr;
-    }
+.primary{
+  width:100%;
+  margin-top:12px;
+  padding:11px;
+  border:0;
+  border-radius:6px;
+  background:var(--blue);
+  color:#fff;
+  font-weight:bold;
 }
-
+.link{
+  background:none;
+  border:0;
+  color:#4e9cff;
+  margin-top:13px;
+}
+.authmsg{
+  min-height:18px;
+  margin-top:10px;
+  font-size:12px;
+}
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0009;
+  z-index:80;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal.show{display:flex}
+.modalbox{
+  width:460px;
+  max-width:100%;
+  background:#0c1827;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:20px;
+}
+.modalhead{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.close{
+  border:0;
+  background:none;
+  color:#aaa;
+  font-size:22px;
+}
+.mininggrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.miningcard{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:18px;
+}
+.miningcard h3{margin-bottom:8px}
+.badge{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:20px;
+  background:#322e15;
+  color:#e8d06a;
+  font-size:10px;
+}
+@media(max-width:1050px){
+  .sidebar{width:190px}
+  .main{margin-left:190px;width:calc(100% - 190px)}
+  .grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,1fr)}
+}
 @media(max-width:700px){
-    .sidebar{
-        display:none;
-    }
-
-    .main{
-        margin-left:0;
-        width:100%;
-    }
-
-    .cards{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .topbar{
-        padding:0 10px;
-    }
-
-    .content{
-        padding:10px;
-    }
+  .sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+  }
+  .app{display:block}
+  .main{margin-left:0;width:100%}
+  .nav{display:grid;grid-template-columns:1fr 1fr}
+  .topbar{position:relative}
+  .cards{grid-template-columns:1fr}
+  .mininggrid{grid-template-columns:1fr}
 }
-</style>
+[10/5/2026 4:29 AM] Black Shadow 💯: </style>
 </head>
 
 <body>
 
-<div class="app">
+<div id="auth" class="auth">
+  <div class="authbox">
+    <h1>Washington <span class="green">FX</span></h1>
+    <p>Secure trading platform</p>
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
+    <label>Email</label>
+    <input id="authEmail" type="email" placeholder="you@example.com">
 
-    <div class="logo">
-        WASHINGTON <span>FX</span>
+    <label>Password</label>
+    <input id="authPassword" type="password" placeholder="Password">
+
+    <div class="authbuttons">
+      <button onclick="login()">Sign In</button>
+      <button onclick="signup()">Create Account</button>
     </div>
 
-    <div class="nav-title">Trading</div>
-
-    <button class="nav-btn active" onclick="showPage('trading',this)">
-        📊 Trading
+    <button class="authbuttons" style="width:100%;border:0;background:none;padding:0" onclick="googleLogin()">
+      <span style="display:block;width:100%;padding:10px;border:1px solid #263a50;border-radius:6px;background:#142338;color:#fff">
+        Continue with Google
+      </span>
     </button>
 
-    <button class="nav-btn" onclick="showPage('positions',this)">
-        📈 Positions
+    <button class="authbuttons" style="width:100%;border:0;background:none;padding:0" onclick="facebookLogin()">
+      <span style="display:block;width:100%;padding:10px;border:1px solid #263a50;border-radius:6px;background:#142338;color:#fff">
+        Continue with Facebook
+      </span>
     </button>
 
-    <button class="nav-btn" onclick="showPage('history',this)">
-        🧾 Trade History
-    </button>
+    <button class="link" onclick="resetPassword()">Forgot password?</button>
+    <div id="authMsg" class="authmsg"></div>
+  </div>
+</div>
 
-    <div class="nav-title">Account</div>
+<div class="app">
 
-    <button class="nav-btn" onclick="showPage('wallet',this)">
-        💰 Wallet
-    </button>
+<aside class="sidebar">
+  <div class="logo">Washington <span>FX</span></div>
 
-    <button class="nav-btn" onclick="showPage('education',this)">
-        🎓 FX Academy
-    </button>
+  <div class="userbox">
+    <small>Account</small>
+    <div id="sideUser">Not signed in</div>
+  </div>
 
-    <button class="nav-btn" onclick="showPage('account',this)">
-        👤 Account
-    </button>
+  <div class="navtitle">Trading</div>
+  <div class="nav">
+    <button class="active" onclick="showPage('trading',this)">▣ Trading</button>
+    <button onclick="showPage('positions',this)">◫ Positions</button>
+    <button onclick="showPage('history',this)">◷ Trade History</button>
+  </div>
 
-    <button class="nav-btn" onclick="showPage('settings',this)">
-        ⚙️ Settings
-    </button>
+  <div class="navtitle">Account</div>
+  <div class="nav">
+    <button onclick="showPage('wallet',this)">▣ Wallet</button>
+    <button onclick="showPage('academy',this)">▤ FX Academy</button>
+    <button onclick="showPage('mining',this)">◈ Mining</button>
+    <button onclick="showPage('account',this)">◎ Account</button>
+    <button onclick="showPage('settings',this)">⚙ Settings</button>
+    <button onclick="showPage('admin',this)">♛ Admin</button>
+  </div>
 
+  <div style="margin-top:20px">
+    <button class="action" style="width:100%" onclick="logout()">Logout</button>
+  </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
 
 <header class="topbar">
+  <div class="mode">
+    <button id="demoBtn" class="active" onclick="setMode('DEMO')">DEMO</button>
+    <button id="liveBtn" onclick="setMode('LIVE')">LIVE</button>
+    <span id="modeStatus" class="status">Demo trading environment</span>
+  </div>
 
-    <div class="mode-switch">
-        <button class="mode-btn active" id="demoModeBtn" onclick="setMode('demo')">
-            DEMO
-        </button>
-
-        <button class="mode-btn" id="liveModeBtn" onclick="setMode('live')">
-            LIVE
-        </button>
-    </div>
-
-    <div>
-        <span id="liveStatus" class="live-status">
-            ● DEMO ACCOUNT
-        </span>
-    </div>
-
+  <div class="status" id="connectionStatus">● Connecting</div>
 </header>
 
 <div class="content">
 
-<!-- TRADING PAGE -->
-<section id="trading" class="page active">
+<!-- TRADING -->
+<section id="page-trading" class="page active">
 
-    <div class="cards">
+  <div class="cards">
+    <div class="card">
+      <small>Balance</small>
+      <h2 id="balance">$10,000.00</h2>
+    </div>
+    <div class="card">
+      <small>Equity</small>
+      <h2 id="equity">$10,000.00</h2>
+    </div>
+    <div class="card">
+      <small>Margin</small>
+      <h2 id="margin">$0.00</h2>
+    </div>
+    <div class="card">
+      <small>Free Margin</small>
+      <h2 id="freeMargin">$10,000.00</h2>
+    </div>
+  </div>
 
-        <div class="card">
-            <div class="card-label">Balance</div>
-            <div class="card-value" id="balance">$10,000.00</div>
+  <div class="grid">
+
+    <div class="panel">
+      <div class="panelhead">
+        <div>
+          <h3 id="symbolTitle">EURUSD</h3>
+          <span id="currentPrice" class="small muted">1.08000</span>
         </div>
 
-        <div class="card">
-            <div class="card-label">Equity</div>
-            <div class="card-value" id="equity">$10,000.00</div>
+        <div class="charttools">
+          <button class="active" onclick="setTimeframe('1m',this)">1m</button>
+          <button onclick="setTimeframe('5m',this)">5m</button>
+          <button onclick="setTimeframe('15m',this)">15m</button>
+          <button onclick="setTimeframe('30m',this)">30m</button>
+          <button onclick="setTimeframe('1H',this)">1H</button>
+          <button onclick="setTimeframe('4H',this)">4H</button>
+          <button onclick="setTimeframe('1D',this)">1D</button>
+        </div>
+      </div>
+
+      <div class="chartwrap">
+        <div id="chart"></div>
+
+        <div class="chartinfo">
+[10/5/2026 4:29 AM] Black Shadow 💯: <strong id="chartSymbol">EURUSD</strong>
+          <span id="ohlcInfo">O 1.08000 H 1.08000 L 1.08000 C 1.08000</span>
         </div>
 
-        <div class="card">
-            <div class="card-label">Free Margin</div>
-            <div class="card-value" id="freeMargin">$10,000.00</div>
+        <div class="chartbuttons">
+          <button onclick="zoomIn()">+</button>
+          <button onclick="zoomOut()">−</button>
+          <button onclick="fitChart()">⛶</button>
         </div>
-
-        <div class="card">
-            <div class="card-label">Floating P/L</div>
-            <div class="card-value" id="floatingPL">$0.00</div>
-        </div>
-
+      </div>
     </div>
 
-    <div class="trading-grid">
+    <div class="panel">
+      <div class="panelhead">
+        <h3>New Order</h3>
+        <span class="small muted" id="orderMode">DEMO</span>
+      </div>
 
-        <!-- CHART -->
-        <div class="panel">
+      <div class="orderpanel">
 
-            <div class="panel-header">
+        <label>Instrument</label>
+        <select id="instrument" onchange="changeInstrument()">
+          <optgroup label="Forex">
+            <option>EURUSD</option>
+            <option>GBPUSD</option>
+            <option>USDJPY</option>
+            <option>USDCHF</option>
+            <option>AUDUSD</option>
+            <option>USDCAD</option>
+            <option>NZDUSD</option>
+          </optgroup>
+          <optgroup label="Metals">
+            <option>XAUUSD</option>
+            <option>XAGUSD</option>
+          </optgroup>
+          <optgroup label="Crypto">
+            <option>BTCUSD</option>
+            <option>ETHUSD</option>
+          </optgroup>
+          <optgroup label="Indices">
+            <option>US30</option>
+            <option>NAS100</option>
+            <option>SPX500</option>
+            <option>GER40</option>
+            <option>UK100</option>
+          </optgroup>
+        </select>
 
-                <div>
-                    <span id="chartSymbol">EUR/USD</span>
-                    <span class="muted" id="chartPrice">1.08250</span>
-                </div>
-
-                <div class="chart-toolbar">
-                    <button onclick="setTimeframe('1m',this)">1m</button>
-                    <button onclick="setTimeframe('5m',this)">5m</button>
-                    <button class="active" onclick="setTimeframe('15m',this)">15m</button>
-                    <button onclick="setTimeframe('30m',this)">30m</button>
-                    <button onclick="setTimeframe('1H',this)">1H</button>
-                    <button onclick="setTimeframe('4H',this)">4H</button>
-                    <button onclick="setTimeframe('1D',this)">1D</button>
-                </div>
-
-            </div>
-
-            <div class="chart" id="chart">
-
-                <div class="candles" id="candles"></div>
-
-                <div class="current-price" id="currentPriceLine" style="top:48%;">
-                    <div class="price-label" id="priceLabel">
-                        1.08250
-                    </div>
-                </div>
-
-                <!-- Pending-order examples / markers -->
-                <div class="order-marker buy-limit" id="buyLimitMarker" style="top:65%;display:none;">
-                    <span class="marker-label">BUY LIMIT</span>
-                </div>
-
-                <div class="order-marker sell-limit" id="sellLimitMarker" style="top:30%;display:none;">
-                    <span class="marker-label">SELL LIMIT</span>
-                </div>
-
-                <div class="order-marker buy-stop" id="buyStopMarker" style="top:25%;display:none;">
-                    <span class="marker-label">BUY STOP</span>
-                </div>
-
-                <div class="order-marker sell-stop" id="sellStopMarker" style="top:70%;display:none;">
-                    <span class="marker-label">SELL STOP</span>
-                </div>
-
-                <div class="order-marker sl-marker" id="slMarker" style="top:78%;display:none;">
-                    <span class="marker-label">SL</span>
-                </div>
-
-                <div class="order-marker tp-marker" id="tpMarker" style="top:20%;display:none;">
-                    <span class="marker-label">TP</span>
-                </div>
-
-            </div>
-
+        <label>Order Type</label>
+        <div class="typebuttons">
+          <button class="active" onclick="setOrderType('MARKET',this)">Market</button>
+          <button onclick="setOrderType('BUY_LIMIT',this)">Buy Limit</button>
+          <button onclick="setOrderType('SELL_LIMIT',this)">Sell Limit</button>
+          <button onclick="setOrderType('BUY_STOP',this)">Buy Stop</button>
+          <button onclick="setOrderType('SELL_STOP',this)">Sell Stop</button>
         </div>
 
-        <!-- ORDER PANEL -->
-        <div class="panel">
-
-            <div class="panel-header">
-                <div class="panel-title">Place Order</div>
-                <div class="muted" id="modeLabel">DEMO</div>
-            </div>
-
-            <div class="order-panel">
-
-                <div class="instrument-row">
-
-                    <select id="instrument" class="instrument-select" onchange="changeInstrument()">
-
-                        <optgroup label="Forex">
-                            <option value="EURUSD">EUR/USD</option>
-                            <option value="GBPUSD">GBP/USD</option>
-                            <option value="USDJPY">USD/JPY</option>
-                            <option value="USDCHF">USD/CHF</option>
-                            <option value="AUDUSD">AUD/USD</option>
-                            <option value="USDCAD">USD/CAD</option>
-                            <option value="NZDUSD">NZD/USD</option>
-                        </optgroup>
-
-                        <optgroup label="Metals">
-                            <option value="XAUUSD">XAU/USD — GOLD</option>
-                            <option value="XAGUSD">XAG/USD — SILVER</option>
-                        </optgroup>
-
-                        <optgroup label="Crypto">
-                            <option value="BTCUSD">BTC/USD — BITCOIN</option>
-                            <option value="ETHUSD">ETH/USD — ETHEREUM</option>
-                        </optgroup>
-
-                        <optgroup label="Indices">
-                            <option value="US30">US30</option>
-                            <option value="NAS100">NAS100</option>
-                            <option value="SPX500">SPX500</option>
-                            <option value="GER40">GER40</option>
-                            <option value="UK100">UK100</option>
-                        </optgroup>
-
-                    </select>
-
-                </div>
-
-                <div class="quote">
-                    <span>
-                        BID:
-                        <strong class="bid" id="bidPrice">1.08240</strong>
-                    </span>
-
-                    <span>
-                        ASK:
-                        <strong class="ask" id="askPrice">1.08250</strong>
-                    </span>
-                </div>
-
-                <div class="field">
-                    <label>Order Type</label>
-
-                    <div class="order-types">
-
-                        <button class="order-type active"
-                                data-type="MARKET"
-                                onclick="selectOrderType('MARKET',this)">
-                            Market
-                        </button>
-
-                        <button class="order-type"
-                                data-type="BUY_LIMIT"
-                                onclick="selectOrderType('BUY_LIMIT',this)">
-                            Buy Limit
-                        </button>
-
-                        <button class="order-type"
-                                data-type="SELL_LIMIT"
-                                onclick="selectOrderType('SELL_LIMIT',this)">
-                            Sell Limit
-                        </button>
-
-                        <button class="order-type"
-                                data-type="BUY_STOP"
-                                onclick="selectOrderType('BUY_STOP',this)">
-                            Buy Stop
-                        </button>
-
-                        <button class="order-type"
-                                data-type="SELL_STOP"
-                                onclick="selectOrderType('SELL_STOP',this)">
-                            Sell Stop
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <div class="field" id="entryField" style="display:none;">
-                    <label>Entry Price</label>
-                    <input id="entryPrice" type="number" step="any">
-                </div>
-
-                <div class="field">
-                    <label>Volume</label>
-                    <input id="volume" type="number" value="0.10" min="0.01" step="0.01">
-                </div>
-
-                <div class="field">
-                    <label>Stop Loss</label>
-                    <input id="stopLoss" type="number" step="any" placeholder="Optional">
-                </div>
-
-                <div class="field">
-                    <label>Take Profit</label>
-                    <input id="takeProfit" type="number" step="any" placeholder="Optional">
-                </div>
-
-                <div class="trade-buttons">
-
-                    <button class="buy-btn" onclick="placeOrder('BUY')">
-                        BUY
-                    </button>
-
-                    <button class="sell-btn" onclick="placeOrder('SELL')">
-                        SELL
-                    </button>
-
-                </div>
-
-            </div>
-
+        <div id="entryRow">
+          <label>Entry Price</label>
+          <input id="entry" type="number" step="any">
         </div>
 
+        <div class="row">
+          <div>
+            <label>Volume</label>
+            <input id="volume" type="number" step="0.01" min="0.01" value="0.01">
+          </div>
+          <div>
+            <label>Leverage</label>
+            <select id="leverage">
+              <option>1:10</option>
+              <option>1:50</option>
+              <option selected>1:100</option>
+              <option>1:200</option>
+              <option>1:500</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Stop Loss</label>
+            <input id="stopLoss" type="number" step="any" placeholder="Optional">
+          </div>
+          <div>
+            <label>Take Profit</label>
+            <input id="takeProfit" type="number" step="any" placeholder="Optional">
+          </div>
+        </div>
+
+        <div class="tradebuttons">
+          <button class="buy" onclick="placeOrder('BUY')">BUY</button>
+          <button class="sell" onclick="placeOrder('SELL')">SELL</button>
+        </div>
+
+        <div id="orderMessage" class="authmsg"></div>
+
+      </div>
     </div>
 
-    <!-- POSITIONS -->
-    <div class="panel positions">
+  </div>
 
-        <div class="panel-header">
-            <div class="panel-title">Open Positions</div>
-            <div class="muted" id="positionCount">0 positions</div>
-        </div>
-
-        <div class="table-wrap">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Type</th>
-                        <th>Volume</th>
-                        <th>Entry</th>
-                        <th>SL</th>
-                        <th>TP</th>
-                        <th>P/L</th>
-                        <th></th>
-                    </tr>
-                </thead>
-
-                <tbody id="positionsTable"></tbody>
-
-            </table>
-
-        </div>
-
+  <div class="panel" style="margin-top:14px">
+    <div class="panelhead">
+      <h3>Open Positions</h3>
+      <span class="small muted" id="positionCount">0 positions</span>
     </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Side</th>
+            <th>Volume</th>
+            <th>Entry</th>
+            <th>Current</th>
+            <th>P/L</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="positionsTable"></tbody>
+      </table>
+    </div>
+  </div>
 
 </section>
 
-
-<!-- POSITIONS PAGE -->
-<section id="positions" class="page">
-
-    <div class="section-box">
-        <h2>Open Positions</h2>
-        <p class="muted">
-            All active DEMO/LIVE positions will appear here.
-        </p>
-
-        <div class="table-wrap" style="margin-top:20px;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Type</th>
-                        <th>Volume</th>
-                        <th>Entry</th>
-                        <th>SL</th>
-                        <th>TP</th>
-                        <th>P/L</th>
-                    </tr>
-                </thead>
-                <tbody id="positionsPageTable"></tbody>
-            </table>
-        </div>
+<!-- POSITIONS -->
+<section id="page-positions" class="page">
+  <div class="sectiontitle">Open Positions</div>
+  <div class="panel">
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Side</th>
+            <th>Volume</th>
+[10/5/2026 4:29 AM] Black Shadow 💯: <th>Entry</th>
+            <th>Current</th>
+            <th>P/L</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="positionsTable2"></tbody>
+      </table>
     </div>
-
+  </div>
 </section>
-
 
 <!-- HISTORY -->
-<section id="history" class="page">
-
-    <div class="section-box">
-        <h2>Trade History</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Symbol</th>
-                    <th>Type</th>
-                    <th>Volume</th>
-                    <th>Entry</th>
-                    <th>Exit</th>
-                    <th>P/L</th>
-                </tr>
-            </thead>
-
-            <tbody id="historyTable"></tbody>
-        </table>
-
+<section id="page-history" class="page">
+  <div class="sectiontitle">Trade History</div>
+  <div class="panel">
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Symbol</th>
+            <th>Side</th>
+            <th>Volume</th>
+            <th>Entry</th>
+            <th>Exit</th>
+            <th>P/L</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable"></tbody>
+      </table>
     </div>
-
+  </div>
 </section>
-
 
 <!-- WALLET -->
-<section id="wallet" class="page">
+<section id="page-wallet" class="page">
+  <div class="sectiontitle">Wallet</div>
 
-    <div class="section-box">
-        <h2>Wallet</h2>
-
-        <p class="muted">
-            Deposit, withdrawal and transaction management.
-        </p>
-
-        <div style="margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-
-            <div class="card">
-                <div class="card-label">Available Balance</div>
-                <div class="card-value" id="walletBalance">$10,000.00</div>
-            </div>
-
-            <div class="card">
-                <div class="card-label">Withdrawable Balance</div>
-                <div class="card-value">$10,000.00</div>
-            </div>
-
-        </div>
-
+  <div class="cards">
+    <div class="card">
+      <small>Available Balance</small>
+      <h2 id="walletBalance">$10,000.00</h2>
     </div>
+    <div class="card">
+      <small>Pending Withdrawal</small>
+      <h2>$0.00</h2>
+    </div>
+    <div class="card">
+      <small>Deposits</small>
+      <h2>—</h2>
+    </div>
+    <div class="card">
+      <small>Withdrawals</small>
+      <h2>—</h2>
+    </div>
+  </div>
 
+  <div class="panel">
+    <div class="panelhead">
+      <h3>Wallet Actions</h3>
+    </div>
+    <div style="padding:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="buy" onclick="walletNotice('Deposit')">Deposit</button>
+      <button class="action" onclick="openWithdrawal()">Withdraw</button>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:14px">
+    <div class="panelhead">
+      <h3>Transaction History</h3>
+    </div>
+    <div class="empty">
+      Wallet transactions will appear here when connected to the live payment/wallet backend.
+    </div>
+  </div>
 </section>
 
-
-<!-- EDUCATION -->
-<section id="education" class="page">
-
-    <div class="section-box">
-
-        <h2>Washington FX Academy</h2>
-
-        <p class="muted">
-            Learn forex, gold, crypto and risk management.
-        </p>
-
-        <div style="margin-top:20px;">
-
-            <div class="card" style="margin-bottom:10px;">
-                <b>Lesson 1 — Forex Fundamentals</b>
-                <p class="muted">Currencies, pairs and spreads.</p>
-            </div>
-
-            <div class="card" style="margin-bottom:10px;">
-                <b>Lesson 2 — Candlestick Trading</b>
-                <p class="muted">Understanding price action.</p>
-            </div>
-
-            <div class="card" style="margin-bottom:10px;">
-                <b>Lesson 3 — Gold Trading</b>
-                <p class="muted">Understanding XAU/USD.</p>
-            </div>
-
-            <div class="card">
-                <b>Lesson 4 — Bitcoin Trading</b>
-                <p class="muted">Understanding BTC/USD volatility.</p>
-            </div>
-
-        </div>
-
+<!-- ACADEMY -->
+<section id="page-academy" class="page">
+  <div class="sectiontitle">FX Academy</div>
+  <div class="cards">
+    <div class="card">
+      <small>Course</small>
+      <h2>Forex Basics</h2>
+      <p class="muted small" style="margin-top:8px">Learn currency pairs, pips, spreads and leverage.</p>
     </div>
-
+    <div class="card">
+      <small>Course</small>
+      <h2>Risk Management</h2>
+      <p class="muted small" style="margin-top:8px">Understand position sizing and risk controls.</p>
+    </div>
+    <div class="card">
+      <small>Course</small>
+      <h2>Technical Analysis</h2>
+      <p class="muted small" style="margin-top:8px">Learn candles, trends and market structure.</p>
+    </div>
+    <div class="card">
+      <small>Course</small>
+      <h2>Trading Psychology</h2>
+      <p class="muted small" style="margin-top:8px">Build disciplined trading habits.</p>
+    </div>
+  </div>
 </section>
 
+<!-- MINING -->
+<section id="page-mining" class="page">
+  <div class="sectiontitle">Mining</div>
+
+  <div class="panel" style="margin-bottom:14px">
+    <div class="panelhead">
+      <h3>Washington FX Mining</h3>
+      <span class="badge">NOT ACTIVE</span>
+    </div>
+    <div style="padding:18px">
+      <p class="muted">
+        Mining is not currently connected to a verified mining provider or
+        Washington FX mining infrastructure.
+      </p>
+      <p class="muted small" style="margin-top:8px">
+        No artificial mining rewards are generated in this interface.
+[10/5/2026 4:29 AM] Black Shadow 💯: </p>
+    </div>
+  </div>
+
+  <div class="mininggrid">
+    <div class="miningcard">
+      <h3>Mining Status</h3>
+      <div class="yellow">Not connected</div>
+      <p class="muted small" style="margin-top:8px">Provider required</p>
+    </div>
+
+    <div class="miningcard">
+      <h3>Hashrate</h3>
+      <div>—</div>
+      <p class="muted small" style="margin-top:8px">No mining hardware connected</p>
+    </div>
+
+    <div class="miningcard">
+      <h3>Rewards</h3>
+      <div>—</div>
+      <p class="muted small" style="margin-top:8px">No fabricated rewards</p>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:14px">
+    <div class="panelhead">
+      <h3>Mining History</h3>
+    </div>
+    <div class="empty">
+      Mining records will appear after a legitimate mining provider/backend is connected.
+    </div>
+  </div>
+</section>
 
 <!-- ACCOUNT -->
-<section id="account" class="page">
+<section id="page-account" class="page">
+  <div class="sectiontitle">Account</div>
 
-    <div class="section-box">
-
-        <h2>Account</h2>
-
-        <p class="muted">
-            User profile, verification and account information.
-        </p>
-
+  <div class="panel">
+    <div class="panelhead">
+      <h3>Profile</h3>
     </div>
+    <div style="padding:18px">
+      <label>Email</label>
+      <input id="accountEmail" disabled>
 
+      <label>Account Status</label>
+      <input id="accountStatus" disabled value="Authenticated">
+
+      <label>Account ID</label>
+      <input id="accountId" disabled value="—">
+    </div>
+  </div>
 </section>
 
-
 <!-- SETTINGS -->
-<section id="settings" class="page">
+<section id="page-settings" class="page">
+  <div class="sectiontitle">Settings</div>
 
-    <div class="section-box">
-
-        <h2>Trading Settings</h2>
-
-        <div style="max-width:500px;margin-top:20px;">
-
-            <div class="field">
-                <label>Default Volume</label>
-                <input type="number" value="0.10" step="0.01">
-            </div>
-
-            <div class="field">
-                <label>Default Stop Loss</label>
-                <input type="number" placeholder="Optional">
-            </div>
-
-            <div class="field">
-                <label>Default Take Profit</label>
-                <input type="number" placeholder="Optional">
-            </div>
-
-        </div>
-
+  <div class="panel">
+    <div class="panelhead">
+      <h3>Security</h3>
     </div>
 
+    <div style="padding:18px">
+      <p class="muted small">
+        Your withdrawal password/PIN is separate from your login password.
+      </p>
+
+      <button class="action" style="margin-top:14px" onclick="requestWithdrawalPasswordChange()">
+        Request Withdrawal Password Change
+      </button>
+
+      <div id="securityMessage" class="authmsg"></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:14px">
+    <div class="panelhead">
+      <h3>Session</h3>
+    </div>
+    <div style="padding:18px">
+      <button class="action" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<section id="page-admin" class="page">
+  <div class="sectiontitle">Admin Control Center</div>
+
+  <div class="cards">
+    <div class="card">
+      <small>Backend</small>
+      <h2 id="adminBackend">Checking...</h2>
+    </div>
+    <div class="card">
+      <small>cTrader</small>
+      <h2 id="adminCtrader">Checking...</h2>
+    </div>
+    <div class="card">
+      <small>Supabase</small>
+      <h2 id="adminSupabase">Connected</h2>
+    </div>
+    <div class="card">
+      <small>Mining</small>
+      <h2>Inactive</h2>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panelhead">
+      <h3>Platform Status</h3>
+      <button class="action" onclick="loadAdminStatus()">Refresh</button>
+    </div>
+    <div style="padding:18px">
+      <pre id="adminStatusBox" style="white-space:pre-wrap;color:#9eb0c3;font-size:12px"></pre>
+    </div>
+  </div>
 </section>
 
 </div>
 </main>
-
 </div>
 
+<!-- WITHDRAWAL MODAL -->
+<div id="withdrawalModal" class="modal">
+  <div class="modalbox">
+    <div class="modalhead">
+      <h3>Withdraw Funds</h3>
+      <button class="close" onclick="closeWithdrawal()">×</button>
+    </div>
+
+    <p class="muted small">
+      Withdrawal requests require your separate Washington FX withdrawal password.
+    </p>
+
+    <label>Amount</label>
+    <input id="withdrawAmount" type="number" min="0" step="0.01">
+
+    <label>Method</label>
+    <select id="withdrawMethod">
+      <option>M-Pesa</option>
+      <option>Bank Transfer</option>
+      <option>Crypto</option>
+    </select>
+
+    <label>Withdrawal Password / PIN</label>
+    <input id="withdrawPassword" type="password">
+
+    <button class="primary" onclick="submitWithdrawal()">Submit Withdrawal</button>
+
+    <div id="withdrawMessage" class="authmsg"></div>
+  </div>
+</div>
 
 <script>
-
-/* =========================================================
+/* ============================================================
    WASHINGTON FX FRONTEND
-   ========================================================= */
+   ============================================================ */
+[10/5/2026 4:29 AM] Black Shadow 💯: const API_BASE =
+  "https://washington-fx-production-074e.up.railway.app";
 
-const API_BASE =
-    "https://washington-fx-production-074e.up.railway.app";
+/*
+  IMPORTANT:
+  Replace these two values with your SUPABASE PUBLIC URL
+  and your SUPABASE ANON/PUBLISHABLE KEY.
 
-let mode = "demo";
+  NEVER put the Supabase SERVICE ROLE KEY here.
+*/
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY";
 
-let selectedOrderType = "MARKET";
+let supabaseClient = null;
 
-let selectedSymbol = "EURUSD";
+if (
+  SUPABASE_URL.startsWith("http") &&
+  !SUPABASE_URL.includes("YOUR_") &&
+  !SUPABASE_ANON_KEY.includes("YOUR_")
+) {
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+}
 
-let currentPrice = 1.08250;
+let currentUser = null;
+let mode = "DEMO";
+let orderType = "MARKET";
+let timeframe = "1m";
+let currentSymbol = "EURUSD";
 
 let positions = [];
+let history = [];
 
-let tradeHistory = [];
-
-
-/* MARKET PRICES
-   Demo prices are illustrative until real market-data
-   streaming is connected.
-*/
+let chart = null;
+let candleSeries = null;
+let candleData = [];
 
 const marketData = {
-
-    EURUSD:{
-        price:1.08250,
-        digits:5
-    },
-
-    GBPUSD:{
-        price:1.29350,
-        digits:5
-    },
-
-    USDJPY:{
-        price:148.250,
-        digits:3
-    },
-
-    USDCHF:{
-        price:0.79500,
-        digits:5
-    },
-
-    AUDUSD:{
-        price:0.65450,
-        digits:5
-    },
-
-    USDCAD:{
-        price:1.36500,
-        digits:5
-    },
-
-    NZDUSD:{
-        price:0.58950,
-        digits:5
-    },
-
-    XAUUSD:{
-        price:2650.50,
-        digits:2
-    },
-
-    XAGUSD:{
-        price:31.250,
-        digits:3
-    },
-
-    BTCUSD:{
-        price:120000,
-        digits:2
-    },
-
-    ETHUSD:{
-        price:4300,
-        digits:2
-    },
-
-    US30:{
-        price:42800,
-        digits:2
-    },
-
-    NAS100:{
-        price:19850,
-        digits:2
-    },
-
-    SPX500:{
-        price:5750,
-        digits:2
-    },
-
-    GER40:{
-        price:23500,
-        digits:2
-    },
-
-    UK100:{
-        price:9300,
-        digits:2
-    }
-
+  EURUSD: 1.08000,
+  GBPUSD: 1.26000,
+  USDJPY: 149.500,
+  USDCHF: 0.87500,
+  AUDUSD: 0.65500,
+  USDCAD: 1.36000,
+  NZDUSD: 0.61000,
+  XAUUSD: 2650.00,
+  XAGUSD: 31.20,
+  BTCUSD: 62000,
+  ETHUSD: 2500,
+  US30: 42000,
+  NAS100: 19000,
+  SPX500: 5700,
+  GER40: 19000,
+  UK100: 8200
 };
 
+const decimals = {
+  EURUSD:5,
+  GBPUSD:5,
+  USDJPY:3,
+  USDCHF:5,
+  AUDUSD:5,
+  USDCAD:5,
+  NZDUSD:5,
+  XAUUSD:2,
+  XAGUSD:2,
+  BTCUSD:2,
+  ETHUSD:2,
+  US30:2,
+  NAS100:2,
+  SPX500:2,
+  GER40:2,
+  UK100:2
+};
 
-/* PAGE SWITCH */
+function priceDigits(symbol){
+  return decimals[symbol]  5;
+}
+
+function formatPrice(value){
+  return Number(value).toFixed(priceDigits(currentSymbol));
+}
+
+function setMessage(id,text,type=""){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.textContent=text;
+  el.className="authmsg "+type;
+}
+
+/* ============================================================
+   AUTHENTICATION
+   ============================================================ */
+
+async function initAuth(){
+
+  if(!supabaseClient){
+    document.getElementById("connectionStatus").textContent =
+      "● Demo mode";
+    return;
+  }
+
+  const {data} =
+    await supabaseClient.auth.getSession();
+
+  if(data && data.session){
+    currentUser=data.session.user;
+    showApplication();
+  }else{
+    document.getElementById("auth").classList.add("show");
+  }
+
+  supabaseClient.auth.onAuthStateChange(
+    async(event,session)=>{
+
+      if(session){
+        currentUser=session.user;
+        showApplication();
+      }else{
+        currentUser=null;
+      }
+
+    }
+  );
+}
+
+async function signup(){
+
+  if(!supabaseClient){
+    setMessage(
+      "authMsg",
+      "Supabase authentication is not configured yet."
+    );
+    return;
+  }
+
+  const email=
+    document.getElementById("authEmail").value.trim();
+
+  const password=
+    document.getElementById("authPassword").value;
+
+  if(!email  !password){
+    setMessage("authMsg","Enter email and password.");
+    return;
+  }
+
+  if(password.length<6){
+    setMessage(
+      "authMsg",
+      "Password must contain at least 6 characters."
+    );
+    return;
+  }
+
+  const {data,error}=
+    await supabaseClient.auth.signUp({
+      email,
+      password,
+      options:{
+        emailRedirectTo:
+          window.location.origin +
+          window.location.pathname
+      }
+    });
+
+  if(error){
+    setMessage("authMsg",error.message);
+    return;
+  }
+
+  if(data.session){
+    currentUser=data.user;
+    showApplication();
+  }else{
+    setMessage(
+      "authMsg",
+      "Account created. Check your email to verify your account.",
+      "green"
+    );
+  }
+}
+
+async function login(){
+
+  if(!supabaseClient){
+    setMessage(
+      "authMsg",
+      "Supabase authentication is not configured yet."
+    );
+    return;
+  }
+
+  const email=
+    document.getElementById("authEmail").value.trim();
+
+  const password=
+    document.getElementById("authPassword").value;
+
+  if(!email  !password){
+    setMessage("authMsg","Enter email and password.");
+    return;
+  }
+
+  const {data,error}=
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if(error){
+    setMessage("authMsg",error.message);
+    return;
+  }
+
+  currentUser=data.user;
+  showApplication();
+}
+[10/5/2026 4:29 AM] Black Shadow 💯: 
+
+async function googleLogin(){
+
+  if(!supabaseClient){
+    setMessage(
+      "authMsg",
+      "Supabase authentication is not configured yet."
+    );
+    return;
+  }
+
+  const {error}=
+    await supabaseClient.auth.signInWithOAuth({
+      provider:"google",
+      options:{
+        redirectTo:
+          window.location.origin +
+          window.location.pathname
+      }
+    });
+
+  if(error)setMessage("authMsg",error.message);
+}
+
+async function facebookLogin(){
+
+  if(!supabaseClient){
+    setMessage(
+      "authMsg",
+      "Supabase authentication is not configured yet."
+    );
+    return;
+  }
+
+  const {error}=
+    await supabaseClient.auth.signInWithOAuth({
+      provider:"facebook",
+      options:{
+        redirectTo:
+          window.location.origin +
+          window.location.pathname
+      }
+    });
+
+  if(error)setMessage("authMsg",error.message);
+}
+
+async function resetPassword(){
+
+  if(!supabaseClient){
+    setMessage(
+      "authMsg",
+      "Supabase authentication is not configured yet."
+    );
+    return;
+  }
+
+  const email=
+    document.getElementById("authEmail").value.trim();
+
+  if(!email){
+    setMessage(
+      "authMsg",
+      "Enter your email first."
+    );
+    return;
+  }
+
+  const {error}=
+    await supabaseClient.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo:
+          window.location.origin +
+          window.location.pathname
+      }
+    );
+
+  if(error){
+    setMessage("authMsg",error.message);
+    return;
+  }
+
+  setMessage(
+    "authMsg",
+    "Password reset instructions have been sent to your email.",
+    "green"
+  );
+}
+
+async function logout(){
+
+  if(supabaseClient){
+    await supabaseClient.auth.signOut();
+  }
+
+  currentUser=null;
+
+  document.getElementById("auth").classList.add("show");
+
+  setMessage(
+    "authMsg",
+    "You have been signed out."
+  );
+}
+
+function showApplication(){
+
+  document.getElementById("auth").classList.remove("show");
+
+  const email=
+    currentUser?.email  "Demo User";
+
+  document.getElementById("sideUser").textContent=email;
+
+  document.getElementById("accountEmail").value=email;
+
+  document.getElementById("accountId").value=
+    currentUser?.id  "Demo";
+
+  loadChart();
+  updateMarketUI();
+  renderPositions();
+  renderHistory();
+  checkBackend();
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
 
 function showPage(page,button){
 
-    document.querySelectorAll(".page")
-        .forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".page")
+    .forEach(x=>x.classList.remove("active"));
 
-    document.getElementById(page)
-        .classList.add("active");
+  const target=
+    document.getElementById("page-"+page);
 
-    document.querySelectorAll(".nav-btn")
-        .forEach(b => b.classList.remove("active"));
+  if(target)target.classList.add("active");
 
-    if(button){
-        button.classList.add("active");
-    }
+  document.querySelectorAll(".nav button")
+    .forEach(x=>x.classList.remove("active"));
 
+  if(button)button.classList.add("active");
+
+  if(page==="admin"){
+    loadAdminStatus();
+  }
 }
 
+/* ============================================================
+   DEMO / LIVE
+   ============================================================ */
 
-/* DEMO / LIVE */
+async function setMode(newMode){
 
-function setMode(newMode){
+  mode=newMode;
 
-    mode = newMode;
+  document.getElementById("demoBtn")
+    .classList.toggle("active",mode==="DEMO");
 
-    document.getElementById("demoModeBtn")
-        .classList.toggle("active",mode === "demo");
+  document.getElementById("liveBtn")
+    .classList.toggle("active",mode==="LIVE");
 
-    document.getElementById("liveModeBtn")
-        .classList.toggle("active",mode === "live");
+  document.getElementById("orderMode").textContent=mode;
 
-    document.getElementById("modeLabel")
-        .textContent = mode.toUpperCase();
+  if(mode==="DEMO"){
 
-    const status =
-        document.getElementById("liveStatus");
+    document.getElementById("modeStatus").textContent=
+      "Demo trading environment";
 
-    if(mode === "demo"){
+    document.getElementById("balance").textContent=
+      "$10,000.00";
 
-        status.textContent = "● DEMO ACCOUNT";
-        status.className = "live-status";
+    generateCandles();
 
-    }else{
+  }else{
 
-        status.textContent = "● LIVE CONNECTION";
-        status.className = "live-status";
+    document.getElementById("modeStatus").textContent=
+      "Checking live broker connection...";
 
-        checkBackendStatus();
+    await checkLiveStatus();
 
-    }
+    loadLiveAccount();
 
+  }
+
+  updateMarketUI();
 }
 
-
-/* INSTRUMENT */
+/* ============================================================
+   INSTRUMENTS
+   ============================================================ */
 
 function changeInstrument(){
 
-    selectedSymbol =
-        document.getElementById("instrument").value;
+  currentSymbol=
+    document.getElementById("instrument").value;
 
-    const data =
-        marketData[selectedSymbol];
+  document.getElementById("symbolTitle").textContent=
+    currentSymbol;
 
-    if(!data) return;
+  document.getElementById("chartSymbol").textContent=
+    currentSymbol;
 
-    currentPrice = data.price;
+  const price=marketData[currentSymbol];
+[10/5/2026 4:29 AM] Black Shadow 💯: 
 
-    updateMarketDisplay();
+  document.getElementById("currentPrice").textContent=
+    formatPrice(price);
 
-    resetMarkers();
+  document.getElementById("entry").value=
+    price.toFixed(priceDigits(currentSymbol));
 
+  loadChart();
 }
 
+function updateMarketUI(){
 
-/* ORDER TYPE */
+  const price=
+    marketData[currentSymbol];
 
-function selectOrderType(type,button){
+  document.getElementById("currentPrice").textContent=
+    formatPrice(price);
 
-    selectedOrderType = type;
-
-    document.querySelectorAll(".order-type")
-        .forEach(b => b.classList.remove("active"));
-
-    button.classList.add("active");
-
-    const entry =
-        document.getElementById("entryField");
-
-    if(type === "MARKET"){
-
-        entry.style.display = "none";
-
-        resetMarkers();
-
-    }else{
-
-        entry.style.display = "block";
-
-        const input =
-            document.getElementById("entryPrice");
-
-        input.value =
-            currentPrice.toFixed(
-                marketData[selectedSymbol].digits
-            );
-
-        showSelectedMarker(type);
-
-    }
-
+  document.getElementById("entry").value=
+    price.toFixed(priceDigits(currentSymbol));
 }
 
+/* ============================================================
+   ORDER TYPE
+   ============================================================ */
 
-/* MARKET DISPLAY */
+function setOrderType(type,button){
 
-function updateMarketDisplay(){
+  orderType=type;
 
-    const digits =
-        marketData[selectedSymbol]?.digits || 5;
+  document.querySelectorAll(".typebuttons button")
+    .forEach(x=>x.classList.remove("active"));
 
-    const bid =
-        currentPrice - getSpread();
+  if(button)button.classList.add("active");
 
-    const ask =
-        currentPrice;
+  const entryRow=
+    document.getElementById("entryRow");
 
-    document.getElementById("chartSymbol")
-        .textContent =
-        formatSymbol(selectedSymbol);
-
-    document.getElementById("chartPrice")
-        .textContent =
-        currentPrice.toFixed(digits);
-
-    document.getElementById("priceLabel")
-        .textContent =
-        currentPrice.toFixed(digits);
-
-    document.getElementById("bidPrice")
-        .textContent =
-        bid.toFixed(digits);
-
-    document.getElementById("askPrice")
-        .textContent =
-        ask.toFixed(digits);
-
+  if(type==="MARKET"){
+    entryRow.style.display="none";
+  }else{
+    entryRow.style.display="block";
+  }
 }
 
+/* ============================================================
+   PROFESSIONAL CANDLE CHART
+   ============================================================ */
 
-/* SPREAD */
+function createChart(){
 
-function getSpread(){
+  const container=
+    document.getElementById("chart");
 
-    if(selectedSymbol === "BTCUSD")
-        return 15;
+  if(!container)return;
 
-    if(selectedSymbol === "XAUUSD")
-        return 0.20;
+  container.innerHTML="";
 
-    if(
-        selectedSymbol === "US30" ||
-        selectedSymbol === "NAS100" ||
-        selectedSymbol === "SPX500"
-    )
-        return 2;
+  chart=
+    LightweightCharts.createChart(
+      container,
+      {
+        layout:{
+          background:{color:"#07111e"},
+          textColor:"#8194a9"
+        },
 
-    return 0.00010;
+        grid:{
+          vertLines:{color:"#142233"},
+          horzLines:{color:"#142233"}
+        },
+
+        crosshair:{
+          mode:LightweightCharts.CrosshairMode.Normal
+        },
+
+        rightPriceScale:{
+          borderColor:"#203248",
+          autoScale:true
+        },
+
+        timeScale:{
+          borderColor:"#203248",
+          timeVisible:true,
+          secondsVisible:false,
+          rightOffset:8,
+          barSpacing:8,
+          minBarSpacing:2
+        },
+
+        handleScroll:{
+          mouseWheel:true,
+          pressedMouseMove:true,
+          horzTouchDrag:true,
+          vertTouchDrag:true
+        },
+
+        handleScale:{
+          mouseWheel:true,
+          pinch:true,
+          axisPressedMouseMove:true
+        }
+      }
+    );
+
+  candleSeries=
+    chart.addSeries(
+      LightweightCharts.CandlestickSeries,
+      {
+        upColor:"#18c784",
+        downColor:"#ff4d67",
+        borderVisible:false,
+        wickUpColor:"#18c784",
+        wickDownColor:"#ff4d67"
+      }
+    );
+
+  candleSeries.subscribeCrosshairMove(param=>{
+
+    if(!param  !param.time)return;
+
+    const data=
+      param.seriesData?.get(candleSeries);
+
+    if(!data)return;
+
+    document.getElementById("ohlcInfo").textContent=
+      "O "+formatChartPrice(data.open)+
+      " H "+formatChartPrice(data.high)+
+      " L "+formatChartPrice(data.low)+
+      " C "+formatChartPrice(data.close);
+  });
+
+  window.addEventListener(
+    "resize",
+    resizeChart
+  );
+
+  resizeChart();
 }
 
+function resizeChart(){
 
-/* SYMBOL NAME */
+  const container=
+    document.getElementById("chart");
 
-function formatSymbol(symbol){
+  if(!chart || !container)return;
 
-    const names = {
-
-        EURUSD:"EUR/USD",
-        GBPUSD:"GBP/USD",
-        USDJPY:"USD/JPY",
-        USDCHF:"USD/CHF",
-        AUDUSD:"AUD/USD",
-        USDCAD:"USD/CAD",
-        NZDUSD:"NZD/USD",
-
-        XAUUSD:"XAU/USD — GOLD",
-        XAGUSD:"XAG/USD — SILVER",
-
-        BTCUSD:"BTC/USD — BITCOIN",
-        ETHUSD:"ETH/USD — ETHEREUM",
-
-        US30:"US30",
-        NAS100:"NAS100",
-        SPX500:"SPX500",
-        GER40:"GER40",
-        UK100:"UK100"
-
-    };
-
-    return names[symbol] || symbol;
-
+  chart.applyOptions({
+    width:container.clientWidth,
+    height:container.clientHeight
+  });
 }
 
+function formatChartPrice(value){
 
-/* CANDLES */
+  return Number(value)
+    .toFixed(priceDigits(currentSymbol));
+}
 
 function generateCandles(){
 
-    const container =
-        document.getElementById("candles");
+  if(!candleSeries)return;
 
-    container.innerHTML = "";
+  const base=
+    Number(marketData[currentSymbol]);
 
-    let seed = 46;
+  let price=base;
 
-    for(let i=0;i<65;i++){
+  const now=
+    Math.floor(Date.now()/1000);
 
-        seed +=
-            (Math.random() - .48) * 8;
-
-        seed =
-            Math.max(10,Math.min(80,seed));
-
-        const candle =
-            document.createElement("div");
-
-        candle.className =
-            "candle " +
-            (Math.random() > .48 ? "up" : "down");
-
-        candle.style.left =
-            `${i * 1.55}%`;
-
-        candle.style.top =
-            `${seed}%`;
-
-        candle.style.height =
-            `${8 + Math.random()*18}px`;
-
-        container.appendChild(candle);
-
-    }
-
-}
-
-
-/* TIMEFRAME */
-
-function setTimeframe(tf,button){
-
-    document.querySelectorAll(".chart-toolbar button")
-        .forEach(b => b.classList.remove("active"));
-
-    button.classList.add("active");
-
-    generateCandles();
-
-}
-
-
-/* MARKERS */
-
-function resetMarkers(){
-
-    [
-        "buyLimitMarker",
-        "sellLimitMarker",
-        "buyStopMarker",
-        "sellStopMarker",
-        "slMarker",
-        "tpMarker"
-    ].forEach(id => {
-
-        document.getElementById(id)
-            .style.display = "none";
-
-    });
-
-}
-
-
-function showSelectedMarker(type){
-
-    resetMarkers();
-
-    const map = {
-
-        BUY_LIMIT:"buyLimitMarker",
-        SELL_LIMIT:"sellLimitMarker",
-        BUY_STOP:"buyStopMarker",
-        SELL_STOP:"sellStopMarker"
-
-    };
-
-    const id = map[type];
-
-    if(id){
-
-        document.getElementById(id)
-            .style.display = "block";
-
-    }
-
-}
-
-
-/* PRICE TO CHART */
-
-function priceToPosition(price){
-
-    const difference =
-        price - currentPrice;
-
-    const range =
-        Math.max(
-            Math.abs(currentPrice * 0.02),
-            0.00001
-        );
-
-    let position =
-        50 - (difference / range) * 50;
-
-    return Math.max(
-        5,
-        Math.min(95,position)
-    );
-
-}
-
-
-/* UPDATE MARKER FROM ENTRY */
-
-document
-    .getElementById("entryPrice")
-    .addEventListener("input",function(){
-
-        const price =
-            parseFloat(this.value);
-
-        if(!price || selectedOrderType === "MARKET")
-            return;
-
-        const map = {
-
-            BUY_LIMIT:"buyLimitMarker",
-            SELL_LIMIT:"sellLimitMarker",
-            BUY_STOP:"buyStopMarker",
-            SELL_STOP:"sellStopMarker"
-
-        };
-
-        const id =
-            map[selectedOrderType];
-
-        if(!id) return;
-
-        const marker =
-            document.getElementById(id);
-
-        marker.style.top =
-            priceToPosition(price) + "%";
-
-    });
-
-
-/* VALIDATE PENDING ORDER */
-
-function validatePendingOrder(side){
-
-    if(selectedOrderType === "MARKET")
-        return true;
-
-    const entry =
-        parseFloat(
-            document.getElementById("entryPrice").value
-        );
-
-    if(!entry){
-
-        alert("Enter an Entry Price.");
-        return false;
-
-    }
-
-    const bid =
-        currentPrice - getSpread();
-
-    const ask =
-        currentPrice;
-
-    if(selectedOrderType === "BUY_LIMIT" && entry >= ask){
-
-        alert("Buy Limit must be below the current Ask price.");
-        return false;
-
-    }
-
-    if(selectedOrderType === "SELL_LIMIT" && entry <= bid){
-
-        alert("Sell Limit must be above the current Bid price.");
-        return false;
-
-    }
-
-    if(selectedOrderType === "BUY_STOP" && entry <= ask){
-
-        alert("Buy Stop must be above the current Ask price.");
-        return false;
-
-    }
-
-    if(selectedOrderType === "SELL_STOP" && entry >= bid){
-
-        alert("Sell Stop must be below the current Bid price.");
-        return false;
-
-    }
-
-    return true;
-
-}
-
-
-/* PLACE ORDER */
-
-async function placeOrder(side){
-
-    if(!validatePendingOrder(side))
-        return;
-
-    const volume =
-        parseFloat(
-            document.getElementById("volume").value
-        );
-
-    if(!volume || volume <= 0){
-
-        alert("Enter a valid volume.");
-        return;
-
-    }
-
-    const entry =
-        selectedOrderType === "MARKET"
-        ? currentPrice
-        : parseFloat(
-            document.getElementById("entryPrice").value
-          );
-
-    const stopLoss =
-        parseFloat(
-            document.getElementById("stopLoss").value
-        ) || null;
-
-    const takeProfit =
-        parseFloat(
-            document.getElementById("takeProfit").value
-        ) || null;
-
-
-    /* DEMO */
-
-    if(mode === "demo"){
-
-        const order = {
-
-            id:
-                "DEMO-" +
-                Date.now(),
-
-            symbol:
-                selectedSymbol,
-
-            type:
-                side,
-
-            orderType:
-                selectedOrderType,
-
-            volume:
-                volume,
-
-            entry:
-                entry,
-
-            stopLoss:
-                stopLoss,
-
-            takeProfit:
-                takeProfit,
-
-            current:
-                currentPrice,
-
-            profit:
-                0,
-
-            status:
-                selectedOrderType === "MARKET"
-                ? "OPEN"
-                : "PENDING"
-
-        };
-
-        positions.push(order);
-
-        renderPositions();
-
-        updateAccount();
-
-        alert(
-            selectedOrderType === "MARKET"
-            ? "DEMO trade opened."
-            : selectedOrderType.replace("_"," ") +
-              " placed."
-        );
-
-        return;
-
-    }
-
-
-    /* LIVE */
-
-    try{
-
-        const response =
-            await fetch(
-                API_BASE + "/api/orders",
-                {
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:JSON.stringify({
-
-                        accountType:"LIVE",
-
-                        symbol:
-                            selectedSymbol,
-
-                        side:
-                            side,
-
-                        orderType:
-                            selectedOrderType,
-
-                        volume:
-                            volume,
-
-                        entry:
-                            entry,
-
-                        stopLoss:
-                            stopLoss,
-
-                        takeProfit:
-                            takeProfit
-
-                    })
-
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if(!response.ok){
-
-            alert(
-                data.message ||
-                data.error ||
-                "LIVE order was not accepted."
-            );
-
-            return;
-
-        }
-
-        alert(
-            "LIVE order request sent successfully."
-        );
-
-    }catch(error){
-
-        alert(
-            "Unable to connect to Washington FX server."
-        );
-
-        console.error(error);
-
-    }
-
-}
-
-
-/* POSITIONS */
-
-function renderPositions(){
-
-    const table =
-        document.getElementById("positionsTable");
-
-    table.innerHTML = "";
-
-    positions.forEach(position => {
-
-        const tr =
-            document.createElement("tr");
-
-        tr.innerHTML = `
-
-            <td>${formatSymbol(position.symbol)}</td>
-
-            <td>
-                ${position.orderType}
-                ${position.type}
-            </td>
-
-            <td>${position.volume}</td>
-
-            <td>${position.entry}</td>
-
-            <td>${position.stopLoss || "-"}</td>
-
-            <td>${position.takeProfit || "-"}</td>
-
-            <td class="${position.profit >= 0 ? "profit":"loss"}">
-                ${position.profit >= 0 ? "+" : ""}
-                $${position.profit.toFixed(2)}
-            </td>
-
-            <td>
-                <button
-                    class="close-btn"
-                    onclick="closePosition('${position.id}')">
-                    Close
-                </button>
-            </td>
-
-        `;
-
-        table.appendChild(tr);
-
-    });
-
-    document.getElementById("positionCount")
-        .textContent =
-        positions.length +
-        (positions.length === 1
-            ? " position"
-            : " positions");
-
-    renderPositionsPage();
-
-}
-
-
-/* POSITIONS PAGE */
-
-function renderPositionsPage(){
-
-    const table =
-        document.getElementById("positionsPageTable");
-
-    table.innerHTML = "";
-
-    positions.forEach(position => {
-
-        const tr =
-            document.createElement("tr");
-
-        tr.innerHTML = `
-
-            <td>${formatSymbol(position.symbol)}</td>
-            <td>${position.orderType} ${position.type}</td>
-            <td>${position.volume}</td>
-            <td>${position.entry}</td>
-            <td>${position.stopLoss || "-"}</td>
-            <td>${position.takeProfit || "-"}</td>
-            <td class="${position.profit >= 0 ? "profit":"loss"}">
-                $${position.profit.toFixed(2)}
-            </td>
-
-        `;
-
-        table.appendChild(tr);
-
-    });
-
-}
-
-
-/* CLOSE POSITION */
-
-async function closePosition(id){
-
-    const position =
-        positions.find(p => p.id === id);
-
-    if(!position)
-        return;
-
-
-    if(mode === "demo"){
-
-        tradeHistory.push({
-
-            time:
-                new Date().toLocaleString(),
-
-            symbol:
-                position.symbol,
-
-            type:
-                position.type,
-
-            volume:
-                position.volume,
-
-            entry:
-                position.entry,
-
-            exit:
-                currentPrice,
-
-            profit:
-                position.profit
-
-        });
-
-        positions =
-            positions.filter(
-                p => p.id !== id
-            );
-
-        renderPositions();
-
-        renderHistory();
-
-        updateAccount();
-
-        return;
-
-    }
-
-
-    try{
-
-        const response =
-            await fetch(
-                API_BASE +
-                "/api/orders/" +
-                encodeURIComponent(id) +
-                "/close",
-                {
-                    method:"POST",
-                    headers:{
-                        "Content-Type":
-                            "application/json"
-                    }
-                }
-            );
-
-        const data =
-            await response.json();
-
-        if(!response.ok){
-
-            alert(
-                data.message ||
-                data.error ||
-                "Unable to close LIVE position."
-            );
-
-            return;
-
-        }
-
-    }catch(error){
-
-        alert(
-            "LIVE server connection failed."
-        );
-
-    }
-
-}
-
-
-/* HISTORY */
-
-function renderHistory(){
-
-    const table =
-        document.getElementById("historyTable");
-
-    table.innerHTML = "";
-
-    tradeHistory.forEach(trade => {
-
-        const tr =
-            document.createElement("tr");
-
-        tr.innerHTML = `
-
-            <td>${trade.time}</td>
-            <td>${formatSymbol(trade.symbol)}</td>
-            <td>${trade.type}</td>
-            <td>${trade.volume}</td>
-            <td>${trade.entry}</td>
-            <td>${trade.exit}</td>
-            <td class="${trade.profit >= 0 ? "profit":"loss"}">
-                $${trade.profit.toFixed(2)}
-            </td>
-
-        `;
-
-        table.appendChild(tr);
-
-    });
-
-}
-
-
-/* ACCOUNT */
-
-function updateAccount(){
-
-    const balance = 10000;
-
-    let floating = 0;
-
-    positions.forEach(position => {
-
-        if(position.status === "OPEN"){
-
-            const difference =
-                position.type === "BUY"
-                ? currentPrice - position.entry
-                : position.entry - currentPrice;
-
-            position.profit =
-                difference *
-                position.volume *
-                100000;
-
-            floating += position.profit;
-
-        }
-
-    });
-
-    const equity =
-        balance + floating;
-
-    document.getElementById("balance")
-        .textContent =
-        "$" + balance.toFixed(2);
-
-    document.getElementById("equity")
-        .textContent =
-        "$" + equity.toFixed(2);
-
-    document.getElementById("freeMargin")
-        .textContent =
-        "$" + equity.toFixed(2);
-
-    document.getElementById("floatingPL")
-        .textContent =
-        "$" + floating.toFixed(2);
-
-    document.getElementById("walletBalance")
-        .textContent =
-        "$" + balance.toFixed(2);
-
-}
-
-
-/* BACKEND STATUS */
-
-async function checkBackendStatus(){
-
-    const status =
-        document.getElementById("liveStatus");
-
-    try{
-
-        const response =
-            await fetch(
-                API_BASE +
-                "/api/admin/status"
-            );
-
-        const data =
-            await response.json();
-
-        if(response.ok){
-
-            status.textContent =
-                "● LIVE SERVER CONNECTED";
-
-            status.className =
-                "live-status";
-
-        }else{
-
-            status.textContent =
-                "● LIVE SERVER WARNING";
-
-            status.className =
-                "live-status offline";
-
-        }
-
-    }catch(error){
-
-        status.textContent =
-            "● LIVE SERVER OFFLINE";
-
-        status.className =
-            "live-status offline";
-
-    }
-
-}
-
-
-/* DEMO PRICE MOVEMENT */
-
-function simulateMarket(){
-
-    const data =
-        marketData[selectedSymbol];
-
-    if(!data)
-        return;
-
-    const volatility =
-        selectedSymbol === "BTCUSD"
-        ? 20
-        : selectedSymbol === "XAUUSD"
-        ? 0.40
-        : selectedSymbol.includes("JPY")
-        ? 0.025
-        : selectedSymbol.length > 0 &&
-          ["US30","NAS100","SPX500","GER40","UK100"]
-          .includes(selectedSymbol)
-        ? 5
-        : 0.00005;
-
-    currentPrice +=
-        (Math.random() - .5) *
-        volatility;
-
-    updateMarketDisplay();
-
-    updateAccount();
-
-    checkPendingOrders();
-
-}
-
-
-/* PENDING ORDER TRIGGER */
-
-function checkPendingOrders(){
-
-    positions.forEach(position => {
-
-        if(position.status !== "PENDING")
-            return;
-
-        const entry =
-            Number(position.entry);
-
-        let triggered = false;
-
-        if(
-            position.orderType === "BUY_LIMIT" &&
-            currentPrice <= entry
-        ){
-            triggered = true;
-        }
-
-        if(
-            position.orderType === "SELL_LIMIT" &&
-            currentPrice >= entry
-        ){
-            triggered = true;
-        }
-
-        if(
-            position.orderType === "BUY_STOP" &&
-            currentPrice >= entry
-        ){
-            triggered = true;
-        }
-
-        if(
-            position.orderType === "SELL_STOP" &&
-            currentPrice <= entry
-        ){
-            triggered = true;
-        }
-
-        if(triggered){
-
-            position.status = "OPEN";
-
-            position.current =
-                currentPrice;
-
-        }
-
-    });
-
-}
-
-
-/* START */
-
-generateCandles();
-
-changeInstrument();
-
-renderPositions();
-
-renderHistory();
-
-updateAccount();
-
-
-/* MARKET LOOP */
-
-setInterval(() => {
-
-    if(mode === "demo"){
-
-        simulateMarket();
-
-    }else{
-
-        checkBackendStatus();
-
-    }
-
-},5000);
-
-
-/* CANDLE REFRESH */
-
-setInterval(() => {
-
-    generateCandles();
-
-},10000);
-
-</script>
-
-</body>
-</html>
+  const step=
+    timefra
