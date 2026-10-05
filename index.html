@@ -1,4 +1,4 @@
-[10/5/2026 4:29 AM] Black Shadow 💯: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -235,7 +235,7 @@ input:focus,select:focus{
 }
 .typebuttons{
   display:grid;
-[10/5/2026 4:29 AM] Black Shadow 💯: grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:4px;
 }
 .typebuttons button{
@@ -436,7 +436,7 @@ th{color:#73869a;font-size:11px}
   .cards{grid-template-columns:1fr}
   .mininggrid{grid-template-columns:1fr}
 }
-[10/5/2026 4:29 AM] Black Shadow 💯: </style>
+</style>
 </head>
 
 <body>
@@ -566,7 +566,7 @@ th{color:#73869a;font-size:11px}
         <div id="chart"></div>
 
         <div class="chartinfo">
-[10/5/2026 4:29 AM] Black Shadow 💯: <strong id="chartSymbol">EURUSD</strong>
+          <strong id="chartSymbol">EURUSD</strong>
           <span id="ohlcInfo">O 1.08000 H 1.08000 L 1.08000 C 1.08000</span>
         </div>
 
@@ -704,7 +704,7 @@ th{color:#73869a;font-size:11px}
             <th>Symbol</th>
             <th>Side</th>
             <th>Volume</th>
-[10/5/2026 4:29 AM] Black Shadow 💯: <th>Entry</th>
+            <th>Entry</th>
             <th>Current</th>
             <th>P/L</th>
             <th>Action</th>
@@ -825,7 +825,7 @@ th{color:#73869a;font-size:11px}
       </p>
       <p class="muted small" style="margin-top:8px">
         No artificial mining rewards are generated in this interface.
-[10/5/2026 4:29 AM] Black Shadow 💯: </p>
+      </p>
     </div>
   </div>
 
@@ -985,7 +985,8 @@ th{color:#73869a;font-size:11px}
 /* ============================================================
    WASHINGTON FX FRONTEND
    ============================================================ */
-[10/5/2026 4:29 AM] Black Shadow 💯: const API_BASE =
+
+const API_BASE =
   "https://washington-fx-production-074e.up.railway.app";
 
 /*
@@ -1063,7 +1064,7 @@ const decimals = {
 };
 
 function priceDigits(symbol){
-  return decimals[symbol]  5;
+  return decimals[symbol] || 5;
 }
 
 function formatPrice(value){
@@ -1129,7 +1130,7 @@ async function signup(){
   const password=
     document.getElementById("authPassword").value;
 
-  if(!email  !password){
+  if(!email || !password){
     setMessage("authMsg","Enter email and password.");
     return;
   }
@@ -1186,7 +1187,7 @@ async function login(){
   const password=
     document.getElementById("authPassword").value;
 
-  if(!email  !password){
+  if(!email || !password){
     setMessage("authMsg","Enter email and password.");
     return;
   }
@@ -1205,7 +1206,6 @@ async function login(){
   currentUser=data.user;
   showApplication();
 }
-[10/5/2026 4:29 AM] Black Shadow 💯: 
 
 async function googleLogin(){
 
@@ -1317,14 +1317,14 @@ function showApplication(){
   document.getElementById("auth").classList.remove("show");
 
   const email=
-    currentUser?.email  "Demo User";
+    currentUser?.email || "Demo User";
 
   document.getElementById("sideUser").textContent=email;
 
   document.getElementById("accountEmail").value=email;
 
   document.getElementById("accountId").value=
-    currentUser?.id  "Demo";
+    currentUser?.id || "Demo";
 
   loadChart();
   updateMarketUI();
@@ -1413,7 +1413,6 @@ function changeInstrument(){
     currentSymbol;
 
   const price=marketData[currentSymbol];
-[10/5/2026 4:29 AM] Black Shadow 💯: 
 
   document.getElementById("currentPrice").textContent=
     formatPrice(price);
@@ -1533,7 +1532,7 @@ function createChart(){
 
   candleSeries.subscribeCrosshairMove(param=>{
 
-    if(!param  !param.time)return;
+    if(!param || !param.time)return;
 
     const data=
       param.seriesData?.get(candleSeries);
@@ -1587,4 +1586,960 @@ function generateCandles(){
     Math.floor(Date.now()/1000);
 
   const step=
-    timefra
+    timeframeSeconds(timeframe);
+
+  const result=[];
+
+  let start=
+    now-(300*step);
+
+  for(let i=0;i<300;i++){
+
+    const open=price;
+
+    const volatility=
+      base *
+      (
+        currentSymbol.includes("BTC") ?
+        0.0015 :
+        currentSymbol.includes("XAU") ?
+        0.0007 :
+        0.00018
+      );
+
+    const movement=
+      (Math.random()-0.5)*volatility;
+
+    const close=
+      Math.max(
+        0.00001,
+        open+movement
+      );
+
+    const high=
+      Math.max(open,close)+
+      Math.random()*volatility*0.7;
+
+    const low=
+      Math.min(open,close)-
+      Math.random()*volatility*0.7;
+
+    result.push({
+      time:start+(i*step),
+      open:Number(open.toFixed(priceDigits(currentSymbol))),
+      high:Number(high.toFixed(priceDigits(currentSymbol))),
+      low:Number(low.toFixed(priceDigits(currentSymbol))),
+      close:Number(close.toFixed(priceDigits(currentSymbol)))
+    });
+
+    price=close;
+  }
+
+  candleData=result;
+
+  candleSeries.setData(result);
+
+  if(chart){
+    chart.timeScale().fitContent();
+  }
+
+  const last=
+    result[result.length-1];
+
+  marketData[currentSymbol]=last.close;
+
+  updateMarketUI();
+}
+
+function timeframeSeconds(tf){
+
+  const map={
+    "1m":60,
+    "5m":300,
+    "15m":900,
+    "30m":1800,
+    "1H":3600,
+    "4H":14400,
+    "1D":86400
+  };
+
+  return map[tf]||60;
+}
+
+function setTimeframe(tf,button){
+
+  timeframe=tf;
+
+  document.querySelectorAll(".charttools button")
+    .forEach(x=>x.classList.remove("active"));
+
+  if(button)button.classList.add("active");
+
+  generateCandles();
+}
+
+function zoomIn(){
+
+  if(!chart)return;
+
+  const range=
+    chart.timeScale().getVisibleLogicalRange();
+
+  if(!range)return;
+
+  const center=
+    (range.from+range.to)/2;
+
+  const half=
+    (range.to-range.from)/3;
+
+  chart.timeScale().setVisibleLogicalRange({
+    from:center-half,
+    to:center+half
+  });
+}
+
+function zoomOut(){
+
+  if(!chart)return;
+
+  const range=
+    chart.timeScale().getVisibleLogicalRange();
+
+  if(!range)return;
+
+  const center=
+    (range.from+range.to)/2;
+
+  const half=
+    (range.to-range.from);
+
+  chart.timeScale().setVisibleLogicalRange({
+    from:center-half,
+    to:center+half
+  });
+}
+
+function fitChart(){
+
+  if(chart)
+    chart.timeScale().fitContent();
+}
+
+function loadChart(){
+
+  if(!chart){
+    createChart();
+  }
+
+  generateCandles();
+}
+
+/* ============================================================
+   DEMO ORDER ENGINE
+   ============================================================ */
+
+async function placeOrder(side){
+
+  const symbol=currentSymbol;
+
+  const volume=
+    Number(document.getElementById("volume").value);
+
+  const entry=
+    Number(document.getElementById("entry").value);
+
+  const stopLoss=
+    Number(document.getElementById("stopLoss").value) || null;
+
+  const takeProfit=
+    Number(document.getElementById("takeProfit").value) || null;
+
+  if(!volume || volume<=0){
+    setMessage(
+      "orderMessage",
+      "Enter a valid volume."
+    );
+    return;
+  }
+
+  if(mode==="DEMO"){
+
+    const price=
+      marketData[symbol];
+
+    const tradePrice=
+      orderType==="MARKET" ?
+      price :
+      entry;
+
+    const position={
+      id:"DEMO-"+Date.now(),
+      symbol,
+      side,
+      orderType,
+      volume,
+      entry:tradePrice,
+      current:price,
+      stopLoss,
+      takeProfit,
+      openedAt:new Date().toISOString()
+    };
+
+    positions.push(position);
+
+    setMessage(
+      "orderMessage",
+      "Demo order opened.",
+      "green"
+    );
+
+    renderPositions();
+    updateAccount();
+
+    return;
+  }
+
+  /* LIVE */
+
+  setMessage(
+    "orderMessage",
+    "Sending request to Washington FX broker backend..."
+  );
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+"/api/orders",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            accountType:"LIVE",
+            symbol,
+            side,
+            orderType,
+            volume,
+            entry,
+            stopLoss,
+            takeProfit
+          })
+        }
+      );
+
+    const data=
+      await response.json();
+
+    if(!response.ok){
+
+      setMessage(
+        "orderMessage",
+        data.message ||
+        data.error ||
+        "Live order was not accepted."
+      );
+
+      return;
+    }
+
+    setMessage(
+      "orderMessage",
+      data.message ||
+      "Live order request received.",
+      "green"
+    );
+
+  }catch(error){
+
+    setMessage(
+      "orderMessage",
+      "Live backend connection failed."
+    );
+
+  }
+
+}
+
+/* ============================================================
+   POSITION DISPLAY
+   ============================================================ */
+
+function calculatePL(position){
+
+  const current=
+    marketData[position.symbol];
+
+  const difference=
+    position.side==="BUY" ?
+    current-position.entry :
+    position.entry-current;
+
+  let multiplier=100000;
+
+  if(
+    position.symbol==="XAUUSD" ||
+    position.symbol==="XAGUSD"
+  ){
+    multiplier=100;
+  }
+
+  if(
+    position.symbol==="BTCUSD" ||
+    position.symbol==="ETHUSD"
+  ){
+    multiplier=1;
+  }
+
+  return difference*
+    position.volume*
+    multiplier;
+}
+
+function renderPositions(){
+
+  const tbody=
+    document.getElementById("positionsTable");
+
+  const tbody2=
+    document.getElementById("positionsTable2");
+
+  const html=
+    positions.length ?
+    positions.map(position=>{
+
+      const pl=
+        calculatePL(position);
+
+      return `
+        <tr>
+          <td>${position.symbol}</td>
+          <td class="${position.side==="BUY"?"green":"red"}">
+            ${position.side}
+          </td>
+          <td>${position.volume}</td>
+          <td>${position.entry}</td>
+          <td>${marketData[position.symbol]}</td>
+          <td class="${pl>=0?"green":"red"}">
+            ${pl>=0?"+":""}${pl.toFixed(2)}
+          </td>
+          <td>
+            <button class="action danger"
+              onclick="closePosition('${position.id}')">
+              Close
+            </button>
+          </td>
+        </tr>
+      `;
+
+    }).join("")
+    :
+    `<tr><td colspan="7" class="empty">No open positions</td></tr>`;
+
+  if(tbody)tbody.innerHTML=html;
+  if(tbody2)tbody2.innerHTML=html;
+
+  document.getElementById("positionCount").textContent=
+    positions.length+
+    (positions.length===1?" position":" positions");
+}
+
+async function closePosition(id){
+
+  const position=
+    positions.find(x=>x.id===id);
+
+  if(!position)return;
+
+  if(mode==="DEMO"){
+
+    const exit=
+      marketData[position.symbol];
+
+    const pl=
+      calculatePL(position);
+
+    history.unshift({
+      time:new Date().toLocaleString(),
+      symbol:position.symbol,
+      side:position.side,
+      volume:position.volume,
+      entry:position.entry,
+      exit,
+      pl
+    });
+
+    positions=
+      positions.filter(x=>x.id!==id);
+
+    renderPositions();
+    renderHistory();
+    updateAccount();
+
+    return;
+  }
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+
+        "/api/orders/"+
+        encodeURIComponent(id)+
+        "/close",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            accountType:"LIVE",
+            positionId:id,
+            symbol:position.symbol
+          })
+        }
+      );
+
+    const data=
+      await response.json();
+
+    alert(
+      data.message ||
+      data.error ||
+      "Close request sent."
+    );
+
+  }catch(error){
+
+    alert("Unable to connect to live backend.");
+
+  }
+}
+
+function renderHistory(){
+
+  const tbody=
+    document.getElementById("historyTable");
+
+  if(!history.length){
+
+    tbody.innerHTML=
+      `<tr><td colspan="7" class="empty">
+        No closed trades yet.
+      </td></tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML=
+    history.map(x=>`
+      <tr>
+        <td>${x.time}</td>
+        <td>${x.symbol}</td>
+        <td class="${x.side==="BUY"?"green":"red"}">
+          ${x.side}
+        </td>
+        <td>${x.volume}</td>
+        <td>${x.entry}</td>
+        <td>${x.exit}</td>
+        <td class="${x.pl>=0?"green":"red"}">
+          ${x.pl>=0?"+":""}${x.pl.toFixed(2)}
+        </td>
+      </tr>
+    `).join("");
+}
+
+/* ============================================================
+   DEMO ACCOUNT
+   ============================================================ */
+
+function updateAccount(){
+
+  if(mode!=="DEMO")return;
+
+  const balance=10000;
+
+  let floating=0;
+
+  positions.forEach(
+    x=>floating+=calculatePL(x)
+  );
+
+  const equity=
+    balance+floating;
+
+  const margin=
+    positions.reduce(
+      (sum,x)=>
+        sum+
+        (
+          x.volume*
+          marketData[x.symbol]*
+          100000/
+          100
+        ),
+      0
+    );
+
+  const free=
+    Math.max(0,equity-margin);
+
+  document.getElementById("balance").textContent=
+    "$"+balance.toFixed(2);
+
+  document.getElementById("equity").textContent=
+    "$"+equity.toFixed(2);
+
+  document.getElementById("margin").textContent=
+    "$"+margin.toFixed(2);
+
+  document.getElementById("freeMargin").textContent=
+    "$"+free.toFixed(2);
+
+  document.getElementById("walletBalance").textContent=
+    "$"+balance.toFixed(2);
+}
+
+/* ============================================================
+   LIVE ACCOUNT
+   ============================================================ */
+
+async function loadLiveAccount(){
+
+  if(mode!=="LIVE")return;
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+"/api/account"
+      );
+
+    const data=
+      await response.json();
+
+    if(!response.ok){
+
+      document.getElementById("balance").textContent="—";
+      document.getElementById("equity").textContent="—";
+      document.getElementById("margin").textContent="—";
+      document.getElementById("freeMargin").textContent="—";
+
+      return;
+    }
+
+    if(data.balance!==undefined){
+
+      document.getElementById("balance").textContent=
+        "$"+Number(data.balance).toFixed(2);
+    }
+
+    if(data.equity!==undefined){
+
+      document.getElementById("equity").textContent=
+        "$"+Number(data.equity).toFixed(2);
+    }
+
+    if(data.margin!==undefined){
+
+      document.getElementById("margin").textContent=
+        "$"+Number(data.margin).toFixed(2);
+    }
+
+    if(data.freeMargin!==undefined){
+
+      document.getElementById("freeMargin").textContent=
+        "$"+Number(data.freeMargin).toFixed(2);
+    }
+
+    if(Array.isArray(data.positions)){
+
+      positions=data.positions;
+
+      renderPositions();
+    }
+
+  }catch(error){
+
+    document.getElementById("balance").textContent="—";
+    document.getElementById("equity").textContent="—";
+    document.getElementById("margin").textContent="—";
+    document.getElementById("freeMargin").textContent="—";
+  }
+}
+
+/* ============================================================
+   BACKEND / cTRADER STATUS
+   ============================================================ */
+
+async function checkBackend(){
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+"/api/admin/status"
+      );
+
+    if(response.ok){
+
+      document.getElementById(
+        "connectionStatus"
+      ).textContent="● Backend online";
+
+    }else{
+
+      document.getElementById(
+        "connectionStatus"
+      ).textContent="● Backend error";
+
+    }
+
+  }catch(error){
+
+    document.getElementById(
+      "connectionStatus"
+    ).textContent="● Backend offline";
+  }
+}
+
+async function checkLiveStatus(){
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+"/api/admin/status"
+      );
+
+    const data=
+      await response.json();
+
+    const text=
+      JSON.stringify(data).toLowerCase();
+
+    if(
+      text.includes("active") ||
+      text.includes("authenticated")
+    ){
+
+      document.getElementById("modeStatus").textContent=
+        "Live broker connection available";
+
+    }else{
+
+      document.getElementById("modeStatus").textContent=
+        "Live broker connection pending";
+
+    }
+
+  }catch(error){
+
+    document.getElementById("modeStatus").textContent=
+      "Live broker backend unavailable";
+  }
+}
+
+async function loadAdminStatus(){
+
+  const box=
+    document.getElementById("adminStatusBox");
+
+  box.textContent="Loading...";
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+"/api/admin/status"
+      );
+
+    const data=
+      await response.json();
+
+    document.getElementById("adminBackend").textContent=
+      response.ok?"Online":"Error";
+
+    document.getElementById("adminCtrader").textContent=
+      JSON.stringify(data).toLowerCase().includes("active")
+      ?"Active"
+      :"Pending";
+
+    box.textContent=
+      JSON.stringify(data,null,2);
+
+  }catch(error){
+
+    document.getElementById("adminBackend").textContent=
+      "Offline";
+
+    document.getElementById("adminCtrader").textContent=
+      "Unavailable";
+
+    box.textContent=
+      "Backend connection failed.";
+  }
+}
+
+/* ============================================================
+   WALLET / WITHDRAWAL
+   ============================================================ */
+
+function walletNotice(action){
+
+  alert(
+    action+
+    " functionality requires the secure wallet/payment backend."
+  );
+}
+
+function openWithdrawal(){
+
+  document
+    .getElementById("withdrawalModal")
+    .classList.add("show");
+}
+
+function closeWithdrawal(){
+
+  document
+    .getElementById("withdrawalModal")
+    .classList.remove("show");
+}
+
+async function submitWithdrawal(){
+
+  const amount=
+    Number(
+      document.getElementById("withdrawAmount").value
+    );
+
+  const method=
+    document.getElementById("withdrawMethod").value;
+
+  const password=
+    document.getElementById("withdrawPassword").value;
+
+  if(!amount || amount<=0){
+
+    setMessage(
+      "withdrawMessage",
+      "Enter a valid withdrawal amount."
+    );
+
+    return;
+  }
+
+  if(!password){
+
+    setMessage(
+      "withdrawMessage",
+      "Enter your withdrawal password/PIN."
+    );
+
+    return;
+  }
+
+  if(mode==="DEMO"){
+
+    setMessage(
+      "withdrawMessage",
+      "Demo wallet withdrawals are not processed. Switch to the connected live wallet when available."
+    );
+
+    return;
+  }
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+"/api/withdrawals",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            amount,
+            method,
+            withdrawalPassword:password
+          })
+        }
+      );
+
+    const data=
+      await response.json();
+
+    if(!response.ok){
+
+      setMessage(
+        "withdrawMessage",
+        data.error ||
+        data.message ||
+        "Withdrawal request failed."
+      );
+
+      return;
+    }
+
+    setMessage(
+      "withdrawMessage",
+      "Withdrawal request submitted for Washington FX review.",
+      "green"
+    );
+
+  }catch(error){
+
+    setMessage(
+      "withdrawMessage",
+      "Secure withdrawal backend is not available."
+    );
+
+  }
+}
+
+async function requestWithdrawalPasswordChange(){
+
+  if(!currentUser){
+
+    setMessage(
+      "securityMessage",
+      "Please sign in first."
+    );
+
+    return;
+  }
+
+  try{
+
+    const response=
+      await fetch(
+        API_BASE+"/api/security/withdrawal-password-request",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            userId:currentUser.id,
+            email:currentUser.email
+          })
+        }
+      );
+
+    const data=
+      await response.json();
+
+    if(!response.ok){
+
+      setMessage(
+        "securityMessage",
+        data.error ||
+        data.message ||
+        "Request could not be submitted."
+      );
+
+      return;
+    }
+
+    setMessage(
+      "securityMessage",
+      "Your Washington FX Customer Service request has been submitted.",
+      "green"
+    );
+
+  }catch(error){
+
+    setMessage(
+      "securityMessage",
+      "Customer Service backend is not connected yet."
+    );
+  }
+}
+
+/* ============================================================
+   MARKET SIMULATION
+   DEMO ONLY
+   ============================================================ */
+
+function demoMarketTick(){
+
+  if(mode!=="DEMO")return;
+
+  const old=
+    marketData[currentSymbol];
+
+  const volatility=
+    old*
+    (
+      currentSymbol.includes("BTC") ?
+      0.0004 :
+      currentSymbol.includes("XAU") ?
+      0.00025 :
+      0.00008
+    );
+
+  const next=
+    old+
+    (Math.random()-0.5)*volatility;
+
+  marketData[currentSymbol]=next;
+
+  document.getElementById("currentPrice").textContent=
+    formatPrice(next);
+
+  const entry=
+    document.getElementById("entry");
+
+  if(orderType==="MARKET" && entry){
+    entry.value=
+      next.toFixed(priceDigits(currentSymbol));
+  }
+
+  renderPositions();
+  updateAccount();
+}
+
+/* ============================================================
+   STARTUP
+   ============================================================ */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  ()=>{
+
+    setOrderType(
+      "MARKET",
+      document.querySelector(".typebuttons button")
+    );
+
+    changeInstrument();
+
+    initAuth();
+
+    setInterval(
+      demoMarketTick,
+      2000
+    );
+
+    setInterval(
+      ()=>{
+        if(mode==="DEMO"){
+          generateCandles();
+        }else{
+          loadLiveAccount();
+        }
+      },
+      15000
+    );
+
+  }
+);
+
+</script>
+
+</body>
+</html>
