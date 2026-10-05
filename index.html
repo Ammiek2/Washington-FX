@@ -1,185 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Washington FX</title>
 
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #07101c;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        .box {
+            width: 90%;
+            max-width: 400px;
+            background: #111d2d;
+            padding: 30px;
+            border-radius: 15px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border-radius: 8px;
+            border: 1px solid #40516a;
+            background: #07101c;
+            color: white;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .primary {
+            background: #1683ff;
+            color: white;
+        }
+
+        .secondary {
+            background: #26364d;
+            color: white;
+        }
+
+        #registerForm {
+            display: none;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 
 <body>
 
-<div id="authScreen">
+<div class="box">
 
-    <div class="auth-card">
+    <h1>Washington FX</h1>
 
-        <h1>Washington FX</h1>
+    <!-- LOGIN -->
+    <div id="loginForm">
 
-        <p>Secure FX Trading Platform</p>
+        <h2>Login</h2>
 
-        <div class="auth-buttons">
-            <button type="button" id="loginTab">
-                Login
-            </button>
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Email"
+        >
 
-            <button type="button" id="registerTab">
-                Register
-            </button>
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+        >
 
-            <button type="button" id="adminTab">
-                Admin Login
-            </button>
-        </div>
+        <button
+            class="primary"
+            type="button"
+            onclick="login()"
+        >
+            Login
+        </button>
 
-
-        <!-- LOGIN -->
-
-        <form id="loginForm">
-
-            <h2>Login</h2>
-
-            <input
-                type="email"
-                id="loginEmail"
-                placeholder="Email"
-                autocomplete="email"
-                required
-            >
-
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Password"
-                autocomplete="current-password"
-                required
-            >
-
-            <button type="submit">
-                Login
-            </button>
-
-            <p id="loginMessage"></p>
-
-        </form>
-
-
-        <!-- REGISTER -->
-
-        <form id="registerForm" style="display:none;">
-
-            <h2>Create Account</h2>
-
-            <input
-                type="text"
-                id="registerName"
-                placeholder="Full name"
-                required
-            >
-
-            <input
-                type="email"
-                id="registerEmail"
-                placeholder="Email"
-                autocomplete="email"
-                required
-            >
-
-            <input
-                type="password"
-                id="registerPassword"
-                placeholder="Password"
-                autocomplete="new-password"
-                required
-            >
-
-            <button type="submit">
-                Create Account
-            </button>
-
-            <p id="registerMessage"></p>
-
-        </form>
-
-
-        <!-- ADMIN -->
-
-        <div id="adminMessage" style="display:none;">
-
-            <h2>Admin Login</h2>
-
-            <p>
-                Use the Login form with your authorized
-                administrator email and password.
-            </p>
-
-            <button type="button" id="adminBack">
-                Continue to Login
-            </button>
-
-        </div>
+        <button
+            class="secondary"
+            type="button"
+            onclick="showRegister()"
+        >
+            Create Account
+        </button>
 
     </div>
 
-</div>
 
+    <!-- REGISTER -->
+    <div id="registerForm">
 
-<!-- MAIN APP -->
+        <h2>Create Account</h2>
 
-<div id="app" style="display:none;">
+        <input
+            type="text"
+            id="registerName"
+            placeholder="Full Name"
+        >
 
-    <header>
+        <input
+            type="email"
+            id="registerEmail"
+            placeholder="Email"
+        >
 
-        <h1>Washington FX</h1>
+        <input
+            type="password"
+            id="registerPassword"
+            placeholder="Password"
+        >
 
-        <span id="userEmail"></span>
-
-        <button type="button" id="logoutBtn">
-            Logout
+        <button
+            class="primary"
+            type="button"
+            onclick="register()"
+        >
+            Register
         </button>
 
-    </header>
+        <button
+            class="secondary"
+            type="button"
+            onclick="showLogin()"
+        >
+            Back to Login
+        </button>
+
+    </div>
 
 
-    <main>
-
-        <h2>Dashboard</h2>
-
-        <div class="dashboard-card">
-
-            <h3>Account Balance</h3>
-
-            <strong>$10,000.00</strong>
-
-            <p>Virtual demo funds</p>
-
-        </div>
-
-
-        <div id="adminPanel" style="display:none;">
-
-            <h2>Admin Dashboard</h2>
-
-            <p>Administrator access confirmed.</p>
-
-            <h3>System Monitoring</h3>
-
-            <p>
-                Users, demo accounts, orders, trades and
-                platform activity can be managed here.
-            </p>
-
-        </div>
-
-    </main>
+    <div id="message"></div>
 
 </div>
 
 
-<script src="app.js"></script>
+<script>
+
+function showRegister() {
+
+    document.getElementById("loginForm").style.display = "none";
+
+    document.getElementById("registerForm").style.display = "block";
+
+    document.getElementById("message").textContent = "";
+}
+
+
+function showLogin() {
+
+    document.getElementById("registerForm").style.display = "none";
+
+    document.getElementById("loginForm").style.display = "block";
+
+    document.getElementById("message").textContent = "";
+}
+
+
+function login() {
+
+    const email =
+        document.getElementById("loginEmail").value;
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+
+        document.getElementById("message").textContent =
+            "Please enter email and password.";
+
+        return;
+    }
+
+    document.getElementById("message").textContent =
+        "Login button is working.";
+}
+
+
+function register() {
+
+    const name =
+        document.getElementById("registerName").value;
+
+    const email =
+        document.getElementById("registerEmail").value;
+
+    const password =
+        document.getElementById("registerPassword").value;
+
+    if (!name || !email || !password) {
+
+        document.getElementById("message").textContent =
+            "Please complete all fields.";
+
+        return;
+    }
+
+    document.getElementById("message").textContent =
+        "Register button is working.";
+}
+
+</script>
 
 </body>
 </html>
