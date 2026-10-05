@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Washington FX</title>
 
     <link rel="stylesheet" href="style.css">
@@ -12,281 +13,166 @@
 
 <body>
 
-<div id="authScreen" class="auth-screen">
+<div id="authScreen">
+
     <div class="auth-card">
 
         <h1>Washington FX</h1>
-        <p class="auth-subtitle">Secure Trading Platform</p>
 
-        <div class="auth-tabs">
-            <button id="userLoginTab" class="active">User Login</button>
-            <button id="adminLoginTab">Admin Login</button>
-            <button id="registerTab">Register</button>
-        </div>
+        <p>Secure FX Trading Platform</p>
 
-        <form id="loginForm">
-
-            <label>Email</label>
-            <input
-                type="email"
-                id="loginEmail"
-                placeholder="Enter your email"
-                required
-            >
-
-            <label>Password</label>
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Enter your password"
-                required
-            >
-
-            <button type="submit" class="primary-btn">
+        <div class="auth-buttons">
+            <button type="button" id="loginTab">
                 Login
             </button>
 
-            <button type="button" id="forgotPassword" class="text-btn">
-                Forgot password?
+            <button type="button" id="registerTab">
+                Register
             </button>
 
-            <p id="loginMessage" class="auth-message"></p>
+            <button type="button" id="adminTab">
+                Admin Login
+            </button>
+        </div>
+
+
+        <!-- LOGIN -->
+
+        <form id="loginForm">
+
+            <h2>Login</h2>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Email"
+                autocomplete="email"
+                required
+            >
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit">
+                Login
+            </button>
+
+            <p id="loginMessage"></p>
+
         </form>
+
+
+        <!-- REGISTER -->
 
         <form id="registerForm" style="display:none;">
 
-            <label>Full Name</label>
+            <h2>Create Account</h2>
+
             <input
                 type="text"
                 id="registerName"
-                placeholder="Your full name"
+                placeholder="Full name"
                 required
             >
 
-            <label>Email</label>
             <input
                 type="email"
                 id="registerEmail"
-                placeholder="Your email"
+                placeholder="Email"
+                autocomplete="email"
                 required
             >
 
-            <label>Password</label>
             <input
                 type="password"
                 id="registerPassword"
-                placeholder="Create a password"
-                minlength="6"
+                placeholder="Password"
+                autocomplete="new-password"
                 required
             >
 
-            <label>Confirm Password</label>
-            <input
-                type="password"
-                id="registerPassword2"
-                placeholder="Confirm your password"
-                minlength="6"
-                required
-            >
-
-            <button type="submit" class="primary-btn">
+            <button type="submit">
                 Create Account
             </button>
 
-            <p id="registerMessage" class="auth-message"></p>
+            <p id="registerMessage"></p>
+
         </form>
 
+
+        <!-- ADMIN -->
+
+        <div id="adminMessage" style="display:none;">
+
+            <h2>Admin Login</h2>
+
+            <p>
+                Use the Login form with your authorized
+                administrator email and password.
+            </p>
+
+            <button type="button" id="adminBack">
+                Continue to Login
+            </button>
+
+        </div>
+
     </div>
+
 </div>
 
 
+<!-- MAIN APP -->
+
 <div id="app" style="display:none;">
 
-    <header class="topbar">
-        <div>
-            <strong>Washington FX</strong>
-        </div>
+    <header>
 
-        <div>
-            <span id="userEmail"></span>
-            <button id="logoutBtn">Logout</button>
-        </div>
-    </header>
+        <h1>Washington FX</h1>
 
-    <aside class="sidebar">
+        <span id="userEmail"></span>
 
-        <button data-page="dashboard">Dashboard</button>
-        <button data-page="trading">Trading</button>
-        <button data-page="positions">Positions</button>
-        <button data-page="orders">Orders</button>
-        <button data-page="history">History</button>
-        <button data-page="wallet">Wallet</button>
-        <button data-page="academy">Academy</button>
-        <button data-page="account">Account</button>
-        <button data-page="settings">Settings</button>
-
-        <button
-            id="adminNav"
-            data-page="admin"
-            style="display:none;"
-        >
-            🛡️ Admin
+        <button type="button" id="logoutBtn">
+            Logout
         </button>
 
-    </aside>
+    </header>
 
 
-    <main class="main-content">
+    <main>
 
-        <section id="dashboard" class="page">
-            <h2>Dashboard</h2>
+        <h2>Dashboard</h2>
 
-            <div class="stats">
+        <div class="dashboard-card">
 
-                <div class="stat-card">
-                    <span>Balance</span>
-                    <strong id="balance">$10,000.00</strong>
-                </div>
+            <h3>Account Balance</h3>
 
-                <div class="stat-card">
-                    <span>Equity</span>
-                    <strong id="equity">$10,000.00</strong>
-                </div>
+            <strong>$10,000.00</strong>
 
-                <div class="stat-card">
-                    <span>Free Margin</span>
-                    <strong id="freeMargin">$10,000.00</strong>
-                </div>
+            <p>Virtual demo funds</p>
 
-                <div class="stat-card">
-                    <span>Floating P/L</span>
-                    <strong id="floatingPL">$0.00</strong>
-                </div>
-
-            </div>
-
-            <div class="panel">
-                <h3>Account</h3>
-                <p id="accountStatus">Loading account...</p>
-            </div>
-        </section>
+        </div>
 
 
-        <section id="trading" class="page" style="display:none;">
-            <h2>Trading</h2>
+        <div id="adminPanel" style="display:none;">
 
-            <div class="panel">
-                <h3>Market Simulation</h3>
-                <p>
-                    Trading activity in this version uses virtual/demo
-                    funds and simulated execution.
-                </p>
-            </div>
-        </section>
+            <h2>Admin Dashboard</h2>
 
+            <p>Administrator access confirmed.</p>
 
-        <section id="positions" class="page" style="display:none;">
-            <h2>Positions</h2>
+            <h3>System Monitoring</h3>
 
-            <div class="panel">
-                <p>No open positions.</p>
-            </div>
-        </section>
+            <p>
+                Users, demo accounts, orders, trades and
+                platform activity can be managed here.
+            </p>
 
-
-        <section id="orders" class="page" style="display:none;">
-            <h2>Orders</h2>
-
-            <div class="panel">
-                <p>No pending orders.</p>
-            </div>
-        </section>
-
-
-        <section id="history" class="page" style="display:none;">
-            <h2>History</h2>
-
-            <div class="panel">
-                <p>No trading history.</p>
-            </div>
-        </section>
-
-
-        <section id="wallet" class="page" style="display:none;">
-            <h2>Wallet</h2>
-
-            <div class="panel">
-                <h3>Virtual Wallet</h3>
-                <p>
-                    Demo wallet balance:
-                    <strong>$10,000.00</strong>
-                </p>
-            </div>
-        </section>
-
-
-        <section id="academy" class="page" style="display:none;">
-            <h2>Academy</h2>
-
-            <div class="panel">
-                <h3>FX Learning</h3>
-                <p>Trading education and training resources.</p>
-            </div>
-        </section>
-
-
-        <section id="account" class="page" style="display:none;">
-            <h2>Account</h2>
-
-            <div class="panel">
-                <p>Email: <strong id="accountEmail"></strong></p>
-                <p>Role: <strong id="accountRole">User</strong></p>
-            </div>
-        </section>
-
-
-        <section id="settings" class="page" style="display:none;">
-            <h2>Settings</h2>
-
-            <div class="panel">
-                <p>Account settings.</p>
-            </div>
-        </section>
-
-
-        <section id="admin" class="page" style="display:none;">
-
-            <h2>🛡️ Admin Dashboard</h2>
-
-            <div class="stats">
-
-                <div class="stat-card">
-                    <span>System</span>
-                    <strong id="adminSystemStatus">Online</strong>
-                </div>
-
-                <div class="stat-card">
-                    <span>Admin</span>
-                    <strong id="adminEmail"></strong>
-                </div>
-
-            </div>
-
-            <div class="panel">
-                <h3>User Monitoring</h3>
-
-                <p>
-                    Admin access is enabled for authorized administrators.
-                </p>
-
-                <p>
-                    This area is where user accounts, demo accounts,
-                    trades, orders, wallet activity and system settings
-                    can be connected to the Supabase backend.
-                </p>
-            </div>
-
-        </section>
+        </div>
 
     </main>
 
