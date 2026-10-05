@@ -6,402 +6,732 @@
 
 <title>Washington FX</title>
 
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"></script>
 
-<style>
+<link rel="stylesheet" href="style.css">
+</head>
 
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+<body>
 
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#07101c;
-    color:#fff;
-    min-height:100vh;
-}
+<!-- ================= AUTH ================= -->
 
-button,
-input,
-select{
-    font:inherit;
-}
+<section id="authScreen" class="auth-screen">
 
-button{
-    cursor:pointer;
-}
+    <div class="auth-card">
 
-/* =========================
-   AUTH
-========================= */
+        <div class="logo">
+            <div class="logo-mark">W</div>
+            <div>
+                <strong>WASHINGTON FX</strong>
+                <small>TRADING PLATFORM</small>
+            </div>
+        </div>
 
-.auth-screen{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:
-        linear-gradient(
-            135deg,
-            #07101c,
-            #10243b
-        );
-}
+        <div class="auth-tabs">
+            <button id="loginTab" class="active">LOGIN</button>
+            <button id="registerTab">REGISTER</button>
+        </div>
 
-.auth-box{
-    width:100%;
-    max-width:420px;
-    background:#0d1b2a;
-    border:1px solid #203b55;
-    border-radius:16px;
-    padding:28px;
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.4);
-}
+        <div id="loginForm">
 
-.logo{
-    font-size:27px;
-    font-weight:800;
-    text-align:center;
-    margin-bottom:8px;
-}
+            <h2>Welcome back</h2>
+            <p class="muted">Sign in to your trading account.</p>
 
-.sub{
-    text-align:center;
-    color:#91a5b9;
-    margin-bottom:25px;
-}
+            <label>Email</label>
+            <input id="loginEmail" type="email" placeholder="you@example.com">
 
-.auth-box input{
-    width:100%;
-    margin:7px 0;
-    padding:13px;
-    border-radius:8px;
-    border:1px solid #29445e;
-    background:#071522;
-    color:white;
-}
+            <label>Password</label>
+            <input id="loginPassword" type="password" placeholder="Password">
 
-.primary{
-    width:100%;
-    padding:13px;
-    margin-top:10px;
-    border:0;
-    border-radius:8px;
-    background:#1687f7;
-    color:white;
-    font-weight:bold;
-}
+            <button id="loginBtn" class="primary full">
+                LOGIN
+            </button>
 
-.primary:hover{
-    background:#2195ff;
-}
+            <button id="forgotBtn" class="link-btn">
+                Forgot password?
+            </button>
 
-.secondary{
-    background:#172b3e;
-    color:white;
-    border:1px solid #2d4b65;
-    border-radius:7px;
-    padding:9px 13px;
-}
+        </div>
 
-.secondary:hover{
-    background:#203b55;
-}
+        <div id="registerForm" class="hidden">
 
-.auth-message{
-    min-height:22px;
-    margin-top:10px;
-    color:#ffd166;
-    text-align:center;
-}
+            <h2>Create account</h2>
+            <p class="muted">Open your Washington FX demo account.</p>
 
-/* =========================
-   APPLICATION
-========================= */
+            <label>Full name</label>
+            <input id="registerName" type="text" placeholder="Your name">
 
-.app{
-    display:none;
-    min-height:100vh;
-}
+            <label>Email</label>
+            <input id="registerEmail" type="email" placeholder="you@example.com">
 
-.sidebar{
-    position:fixed;
-    left:0;
-    top:0;
-    bottom:0;
-    width:230px;
-    background:#081522;
-    border-right:1px solid #1b334a;
-    padding:20px 12px;
-    z-index:10;
-}
+            <label>Password</label>
+            <input id="registerPassword" type="password" placeholder="Minimum 6 characters">
 
-.brand{
-    font-size:22px;
-    font-weight:800;
-    padding:8px 10px 22px;
-}
+            <button id="registerBtn" class="primary full">
+                CREATE ACCOUNT
+            </button>
 
-.nav button{
-    display:block;
-    width:100%;
-    text-align:left;
-    background:transparent;
-    color:#9db0c3;
-    border:0;
-    padding:12px;
-    margin:3px 0;
-    border-radius:7px;
-}
+        </div>
 
-.nav button:hover,
-.nav button.active{
-    background:#14304a;
-    color:#fff;
-}
+        <div id="authMessage"></div>
 
-.logout{
-    position:absolute;
-    bottom:20px;
-    left:12px;
-    width:calc(100% - 24px);
-    padding:11px;
-    background:#351b22;
-    color:#ff9da8;
-    border:1px solid #66313b;
-    border-radius:7px;
-}
+    </div>
 
-.main{
-    margin-left:230px;
-    min-height:100vh;
-}
+</section>
 
-.topbar{
-    min-height:65px;
-    background:#0a1725;
-    border-bottom:1px solid #1b334a;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:15px;
-    padding:12px 20px;
-}
 
-.mode-buttons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-}
+<!-- ================= APPLICATION ================= -->
 
-.mode-buttons button{
-    padding:9px 15px;
-    border:1px solid #2a4760;
-    background:#102336;
-    color:#a8b9c9;
-    border-radius:7px;
-}
+<section id="appScreen" class="app-screen hidden">
 
-.mode-buttons button.active{
-    background:#146fba;
-    color:white;
-}
+    <aside class="sidebar">
 
-.status{
-    font-size:13px;
-    color:#6ee7a2;
-}
+        <div class="brand">
+            <div class="logo-mark">W</div>
+            <div>
+                <strong>WASHINGTON FX</strong>
+                <small>TRADING PLATFORM</small>
+            </div>
+        </div>
 
-/* =========================
-   PAGES
-========================= */
+        <div class="account-badge">
+            <span>ACCOUNT</span>
+            <strong id="accountNumber">DEMO</strong>
+            <small id="userEmail"></small>
+        </div>
 
-.page{
-    display:none;
-    padding:20px;
-}
+        <nav>
 
-.page.active{
-    display:block;
-}
+            <button data-page="dashboard" class="nav-btn active">
+                <span>⌂</span> Dashboard
+            </button>
 
-/* =========================
-   CARDS
-========================= */
+            <button data-page="trading" class="nav-btn">
+                <span>◈</span> Trading
+            </button>
 
-.cards{
-    display:grid;
-    grid-template-columns:
-        repeat(4,1fr);
-    gap:12px;
-    margin-bottom:15px;
-}
+            <button data-page="positions" class="nav-btn">
+                <span>▣</span> Positions
+            </button>
 
-.card{
-    background:#0d1b2a;
-    border:1px solid #1e374f;
-    border-radius:10px;
-    padding:16px;
-}
+            <button data-page="orders" class="nav-btn">
+                <span>☷</span> Orders
+            </button>
 
-.card-title{
-    color:#8197aa;
-    font-size:12px;
-    margin-bottom:7px;
-}
+            <button data-page="history" class="nav-btn">
+                <span>◷</span> History
+            </button>
 
-.card-value{
-    font-size:20px;
-    font-weight:bold;
-}
+            <button data-page="wallet" class="nav-btn">
+                <span>◇</span> Wallet
+            </button>
 
-/* =========================
-   TRADING
-========================= */
+            <button data-page="academy" class="nav-btn">
+                <span>★</span> Academy
+            </button>
 
-.trading-grid{
-    display:grid;
-    grid-template-columns:
-        minmax(0,1fr) 340px;
-    gap:15px;
-}
+            <button data-page="account" class="nav-btn">
+                <span>◎</span> Account
+            </button>
 
-.panel{
-    background:#0d1b2a;
-    border:1px solid #1e374f;
-    border-radius:10px;
-    padding:15px;
-}
+            <button data-page="settings" class="nav-btn">
+                <span>⚙</span> Settings
+            </button>
 
-.panel-title{
-    font-weight:bold;
-    margin-bottom:12px;
-}
+            <button data-page="admin" class="nav-btn admin-nav hidden">
+                <span>◆</span> Admin
+            </button>
 
-.chart-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin-bottom:10px;
-}
+        </nav>
 
-.instrument{
-    font-size:18px;
-    font-weight:bold;
-}
+        <div class="sidebar-bottom">
 
-.market-price{
-    color:#7ee7ff;
-    font-size:18px;
-    margin-top:4px;
-}
+            <div class="simulation-status">
+                <span class="status-dot"></span>
+                SIMULATION ENGINE ONLINE
+            </div>
 
-.toolbar{
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-    margin:8px 0;
-}
+            <button id="logoutBtn" class="logout">
+                LOGOUT
+            </button>
 
-.toolbar button{
-    border:1px solid #29445e;
-    background:#102236;
-    color:#aebfd0;
-    border-radius:5px;
-    padding:6px 9px;
-    font-size:12px;
-}
+        </div>
 
-.toolbar button.active{
-    background:#146fba;
-    color:#fff;
-}
+    </aside>
 
-#chart{
-    width:100%;
-    height:480px;
-    border:1px solid #183149;
-    border-radius:7px;
-    overflow:hidden;
-}
 
-/* =========================
-   FORMS
-========================= */
+    <main class="main">
 
-.form-row{
-    margin-bottom:10px;
-}
+        <header class="topbar">
 
-.form-row label{
-    display:block;
-    color:#91a5b9;
-    font-size:12px;
-    margin-bottom:5px;
-}
+            <div>
+                <h1 id="pageTitle">Dashboard</h1>
+                <p id="pageSubtitle">Trading overview</p>
+            </div>
 
-.form-row input,
-.form-row select{
-    width:100%;
-    background:#071522;
-    border:1px solid #29445e;
-    color:white;
-    padding:10px;
-    border-radius:6px;
-}
+            <div class="top-actions">
 
-.form-row input:disabled{
-    opacity:.7;
-}
+                <div class="demo-label">
+                    DEMO / VIRTUAL FUNDS
+                </div>
 
-.order-types{
-    display:grid;
-    grid-template-columns:
-        repeat(3,1fr);
-    gap:5px;
-}
+                <div class="live-clock" id="clock">
+                    --:--:--
+                </div>
 
-.order-types button{
-    padding:8px 4px;
-    background:#102236;
-    color:#9eb1c3;
-    border:1px solid #29445e;
-    border-radius:5px;
-    font-size:11px;
-}
+            </div>
 
-.order-types button.active{
-    background:#176da9;
-    color:#fff;
-}
+        </header>
 
-.buy-sell{
-    display:grid;
-    grid-template-columns:
-        1fr 1fr;
-    gap:8px;
-    margin-top:12px;
-}
 
-.buy{
-    padding:13px;
-    background:#087f5b;
-    color:white;
-    border:0;
-    border-radius:7px;
-    font-weight:bold;
-}
+        <!-- ================= DASHBOARD ================= -->
 
-.buy:hover{
-    background:#099c70;
-}
+        <section id="page-dashboard" class="page">
 
-.sell{
-    padding:13px;
-    background:#b938
+            <div class="warning-banner">
+                <strong>Demo Trading Environment</strong>
+                <span>
+                    All balances, orders and profits on this account are virtual.
+                </span>
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <span>Balance</span>
+                    <strong id="dashBalance">$10,000.00</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Equity</span>
+                    <strong id="dashEquity">$10,000.00</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Free Margin</span>
+                    <strong id="dashFreeMargin">$10,000.00</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Floating P/L</span>
+                    <strong id="dashFloating">$0.00</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Margin Level</span>
+                    <strong id="dashMarginLevel">∞</strong>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h3>Market Watch</h3>
+                        <span class="market-status">LIVE SIMULATION</span>
+                    </div>
+
+                    <div class="market-table">
+
+                        <div class="market-head">
+                            <span>Symbol</span>
+                            <span>Bid</span>
+                            <span>Ask</span>
+                            <span>Spread</span>
+                        </div>
+
+                        <div id="marketRows"></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h3>Open Positions</h3>
+                        <button data-page="positions" class="small-btn">
+                            VIEW ALL
+                        </button>
+                    </div>
+
+                    <div id="dashboardPositions"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TRADING ================= -->
+
+        <section id="page-trading" class="page hidden">
+
+            <div class="trading-layout">
+
+                <div class="chart-panel panel">
+
+                    <div class="chart-toolbar">
+
+                        <div class="symbol-control">
+
+                            <select id="chartSymbol">
+
+                                <option>EURUSD</option>
+                                <option>GBPUSD</option>
+                                <option>USDJPY</option>
+                                <option>USDCHF</option>
+                                <option>AUDUSD</option>
+                                <option>USDCAD</option>
+                                <option>NZDUSD</option>
+                                <option>XAUUSD</option>
+                                <option>BTCUSD</option>
+                                <option>ETHUSD</option>
+                                <option>US30</option>
+                                <option>NAS100</option>
+
+                            </select>
+
+                            <div id="chartQuote" class="chart-quote">
+                                1.00000
+                            </div>
+
+                        </div>
+
+
+                        <div class="timeframes">
+
+                            <button data-tf="1m">1M</button>
+                            <button data-tf="5m">5M</button>
+                            <button data-tf="15m" class="active">15M</button>
+                            <button data-tf="30m">30M</button>
+                            <button data-tf="1h">1H</button>
+                            <button data-tf="4h">4H</button>
+                            <button data-tf="1d">1D</button>
+
+                        </div>
+
+
+                        <div class="chart-types">
+
+                            <select id="chartType">
+
+                                <option value="candlestick">Candlestick</option>
+                                <option value="bar">Bar</option>
+                                <option value="line">Line</option>
+                                <option value="area">Area</option>
+                                <option value="baseline">Baseline</option>
+                                <option value="histogram">Histogram</option>
+
+                            </select>
+
+                            <button id="fitChart">FIT</button>
+                            <button id="zoomIn">+</button>
+                            <button id="zoomOut">−</button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="chart"></div>
+
+                </div>
+
+
+                <!-- ORDER PANEL -->
+
+                <div class="order-panel panel">
+
+                    <div class="panel-header">
+                        <h3>Trade</h3>
+                    </div>
+
+
+                    <div class="quote-box">
+
+                        <div>
+                            <small>BID</small>
+                            <strong id="bidPrice">-</strong>
+                        </div>
+
+                        <div>
+                            <small>ASK</small>
+                            <strong id="askPrice">-</strong>
+                        </div>
+
+                    </div>
+
+
+                    <label>Order Type</label>
+
+                    <select id="orderType">
+
+                        <option value="MARKET">Market</option>
+                        <option value="BUY_LIMIT">Buy Limit</option>
+                        <option value="SELL_LIMIT">Sell Limit</option>
+                        <option value="BUY_STOP">Buy Stop</option>
+                        <option value="SELL_STOP">Sell Stop</option>
+
+                    </select>
+
+
+                    <label>Volume / Lots</label>
+
+                    <input id="volume"
+                           type="number"
+                           value="0.10"
+                           min="0.01"
+                           step="0.01">
+
+
+                    <label>Entry Price</label>
+
+                    <input id="entryPrice"
+                           type="number"
+                           step="0.00001"
+                           placeholder="Market price">
+
+
+                    <label>Stop Loss</label>
+
+                    <input id="stopLoss"
+                           type="number"
+                           step="0.00001"
+                           placeholder="Optional">
+
+
+                    <label>Take Profit</label>
+
+                    <input id="takeProfit"
+                           type="number"
+                           step="0.00001"
+                           placeholder="Optional">
+
+
+                    <div class="trade-buttons">
+
+                        <button id="sellBtn" class="sell">
+                            SELL
+                            <small id="sellQuote">-</small>
+                        </button>
+
+                        <button id="buyBtn" class="buy">
+                            BUY
+                            <small id="buyQuote">-</small>
+                        </button>
+
+                    </div>
+
+
+                    <div class="risk-summary">
+
+                        <div>
+                            <span>Balance</span>
+                            <strong id="orderBalance">$0</strong>
+                        </div>
+
+                        <div>
+                            <span>Margin</span>
+                            <strong id="orderMargin">$0</strong>
+                        </div>
+
+                        <div>
+                            <span>Free Margin</span>
+                            <strong id="orderFreeMargin">$0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>Positions</h3>
+                </div>
+
+                <div id="tradingPositions"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= POSITIONS ================= -->
+
+        <section id="page-positions" class="page hidden">
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>Open Positions</h3>
+                    <span id="positionCount">0 positions</span>
+                </div>
+
+                <div id="positionsTable"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ORDERS ================= -->
+
+        <section id="page-orders" class="page hidden">
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>Pending Orders</h3>
+                </div>
+
+                <div id="ordersTable"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= HISTORY ================= -->
+
+        <section id="page-history" class="page hidden">
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>Trade History</h3>
+                </div>
+
+                <div id="historyTable"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= WALLET ================= -->
+
+        <section id="page-wallet" class="page hidden">
+
+            <div class="warning-banner">
+                <strong>Virtual Wallet</strong>
+                <span>
+                    This wallet is for simulator funds only. It does not move real money.
+                </span>
+            </div>
+
+            <div class="wallet-grid">
+
+                <div class="wallet-card">
+
+                    <span>Demo Balance</span>
+
+                    <strong id="walletBalance">
+                        $10,000.00
+                    </strong>
+
+                    <button id="virtualDeposit" class="primary">
+                        ADD VIRTUAL FUNDS
+                    </button>
+
+                </div>
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h3>Wallet Activity</h3>
+                    </div>
+
+                    <div id="walletHistory"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ACADEMY ================= -->
+
+        <section id="page-academy" class="page hidden">
+
+            <div class="academy-grid">
+
+                <div class="academy-card">
+                    <span>01</span>
+                    <h3>Forex Basics</h3>
+                    <p>Learn currency pairs, spreads and pips.</p>
+                </div>
+
+                <div class="academy-card">
+                    <span>02</span>
+                    <h3>Technical Analysis</h3>
+                    <p>Understand charts, trends and support/resistance.</p>
+                </div>
+
+                <div class="academy-card">
+                    <span>03</span>
+                    <h3>Risk Management</h3>
+                    <p>Learn position sizing and margin management.</p>
+                </div>
+
+                <div class="academy-card">
+                    <span>04</span>
+                    <h3>Trading Psychology</h3>
+                    <p>Develop discipline and consistent decision making.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ACCOUNT ================= -->
+
+        <section id="page-account" class="page hidden">
+
+            <div class="panel account-panel">
+
+                <h3>Account Information</h3>
+
+                <div class="account-info">
+
+                    <div>
+                        <span>Name</span>
+                        <strong id="accountName">-</strong>
+                    </div>
+
+                    <div>
+                        <span>Email</span>
+                        <strong id="accountEmail">-</strong>
+                    </div>
+
+                    <div>
+                        <span>Account Number</span>
+                        <strong id="accountNumberLarge">-</strong>
+                    </div>
+
+                    <div>
+                        <span>Account Type</span>
+                        <strong>DEMO</strong>
+                    </div>
+
+                    <div>
+                        <span>Status</span>
+                        <strong class="success-text">ACTIVE</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SETTINGS ================= -->
+
+        <section id="page-settings" class="page hidden">
+
+            <div class="panel">
+
+                <h3>Settings</h3>
+
+                <div class="setting-row">
+
+                    <div>
+                        <strong>Reset Demo Account</strong>
+                        <p>Returns the virtual account to its initial balance.</p>
+                    </div>
+
+                    <button id="resetDemo" class="danger">
+                        RESET DEMO
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ADMIN ================= -->
+
+        <section id="page-admin" class="page hidden">
+
+            <div class="warning-banner">
+                <strong>Administrator Area</strong>
+                <span>
+                    Administrative functions are protected by Supabase authorization.
+                </span>
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <span>Total Users</span>
+                    <strong id="adminUsers">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Demo Accounts</span>
+                    <strong id="adminDemoAccounts">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Open Positions</span>
+                    <strong id="adminPositions">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>System</span>
+                    <strong class="success-text">ONLINE</strong>
+                </div>
+
+            </div>
+
+            <div class="panel">
+
+                <h3>Platform Architecture</h3>
+
+                <div class="architecture">
+
+                    <div>Authentication</div>
+                    <div>Demo Trading Engine</div>
+                    <div>Market Simulation</div>
+                    <div>Risk / Margin Engine</div>
+                    <div>Supabase Database</div>
+                    <div>Railway Backend</div>
+                    <div>Future Broker Layer</div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</section>
+
+
+<div id="toast"></div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
