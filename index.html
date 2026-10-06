@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Washington FX</title>
 
 <style>
@@ -19,7 +19,10 @@ body{
     min-height:100vh;
 }
 
-button,input,select,textarea{
+button,
+input,
+select,
+textarea{
     font:inherit;
 }
 
@@ -27,447 +30,414 @@ button{
     cursor:pointer;
 }
 
-.topbar{
-    background:#0b1726;
-    border-bottom:1px solid #1d334b;
-    padding:12px;
+header{
+    padding:18px;
+    background:#091525;
+    border-bottom:1px solid #20344b;
+    position:sticky;
+    top:0;
+    z-index:20;
+}
+
+.header-row{
     display:flex;
-    align-items:center;
     justify-content:space-between;
-    gap:10px;
+    align-items:center;
+    gap:15px;
     flex-wrap:wrap;
 }
 
 .logo{
-    font-size:22px;
+    font-size:25px;
+    font-weight:800;
+}
+
+.mode-badge{
+    padding:8px 14px;
+    border-radius:20px;
     font-weight:bold;
+    font-size:13px;
 }
 
-.logo span{
-    color:#21d4fd;
+.demo-badge{
+    background:#123b24;
+    color:#7dffae;
 }
 
-.mode-buttons{
-    display:flex;
-    gap:7px;
-}
-
-.mode-buttons button{
-    padding:9px 14px;
-    border:1px solid #31506d;
-    border-radius:7px;
-    background:#102235;
-    color:#fff;
-}
-
-.mode-buttons button.active{
-    background:#1261a0;
-    border-color:#21d4fd;
+.live-badge{
+    background:#392b08;
+    color:#ffd76a;
 }
 
 .container{
-    padding:12px;
-    max-width:1500px;
+    width:min(1400px,96%);
     margin:auto;
+    padding:18px 0 40px;
+}
+
+.top-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-bottom:15px;
+}
+
+.card{
+    background:#0b1828;
+    border:1px solid #1d344d;
+    border-radius:14px;
+    padding:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.2);
+}
+
+.card h2{
+    margin-bottom:15px;
+    font-size:20px;
+}
+
+.controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+select,
+input,
+textarea{
+    width:100%;
+    background:#0c1c2d;
+    border:1px solid #2b4864;
+    color:#fff;
+    border-radius:9px;
+    padding:12px;
+    outline:none;
+}
+
+select:focus,
+input:focus,
+textarea:focus{
+    border-color:#1596e8;
+}
+
+.small-control{
+    flex:1;
+    min-width:130px;
+}
+
+label{
+    display:block;
+    color:#9fb2c7;
+    margin-bottom:7px;
+    font-size:14px;
+}
+
+.btn{
+    border:0;
+    border-radius:9px;
+    padding:12px 18px;
+    font-weight:bold;
+    color:#fff;
+}
+
+.btn-blue{
+    background:#147bc1;
+}
+
+.btn-blue:hover{
+    background:#1994e6;
+}
+
+.btn-green{
+    background:#159447;
+}
+
+.btn-red{
+    background:#b72e3a;
+}
+
+.btn-dark{
+    background:#17283a;
+    border:1px solid #29445f;
+}
+
+.btn-gold{
+    background:#96700d;
 }
 
 .stats{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:10px;
-    margin-bottom:12px;
 }
 
-.card{
-    background:#0b1726;
-    border:1px solid #1d334b;
-    border-radius:9px;
+.stat{
+    background:#0d1d2f;
+    border:1px solid #1d344d;
+    border-radius:10px;
     padding:13px;
 }
 
-.card-title{
-    color:#8ea5bb;
+.stat-title{
+    color:#91a7bd;
     font-size:12px;
     margin-bottom:5px;
 }
 
-.card-value{
-    font-size:20px;
+.stat-value{
+    font-size:18px;
     font-weight:bold;
 }
 
-.controls{
+.market-row{
     display:flex;
-    gap:8px;
+    gap:10px;
     flex-wrap:wrap;
-    align-items:center;
-    margin-bottom:10px;
-}
-
-select,
-input,
-textarea{
-    background:#0d1d2d;
-    border:1px solid #29445e;
-    color:#fff;
-    border-radius:6px;
-    padding:9px;
-    outline:none;
-}
-
-textarea{
-    width:100%;
-    min-height:70px;
-    resize:vertical;
-}
-
-.chart-wrap{
-    background:#08131f;
-    border:1px solid #1d334b;
-    border-radius:9px;
-    overflow:hidden;
-    position:relative;
-}
-
-.chart-header{
-    padding:10px;
-    background:#0b1726;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:8px;
-}
-
-.market-price{
-    font-size:20px;
-    font-weight:bold;
-}
-
-.price-up{
-    color:#19d17f;
-}
-
-.price-down{
-    color:#ff5c67;
-}
-
-#chart{
-    width:100%;
-    height:470px;
-    display:block;
-    touch-action:none;
-}
-
-.small-btn{
-    background:#102235;
-    border:1px solid #29445e;
-    color:#fff;
-    border-radius:5px;
-    padding:6px 9px;
-}
-
-.small-btn.active{
-    border-color:#21d4fd;
-    background:#123a55;
-}
-
-.trade-panel{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-top:12px;
-}
-
-.panel{
-    background:#0b1726;
-    border:1px solid #1d334b;
-    border-radius:9px;
-    padding:13px;
-}
-
-.panel h3{
     margin-bottom:12px;
 }
 
-.form-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:8px;
+.market-row select{
+    width:auto;
+    min-width:145px;
 }
 
-.form-group{
+.chart-wrap{
+    position:relative;
+    background:#06101c;
+    border:1px solid #223b54;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+#chart{
+    display:block;
+    width:100%;
+    height:500px;
+    touch-action:none;
+}
+
+.chart-tools{
     display:flex;
-    flex-direction:column;
-    gap:5px;
+    gap:7px;
+    flex-wrap:wrap;
+    padding:10px;
+    background:#091727;
+    border-top:1px solid #20364d;
 }
 
-.form-group label{
-    font-size:12px;
-    color:#8ea5bb;
+.chart-tools button{
+    padding:8px 11px;
+    border-radius:7px;
+    border:1px solid #2a4862;
+    background:#102238;
+    color:#fff;
 }
 
-.trade-buttons{
+.chart-tools button.active{
+    background:#176fa8;
+}
+
+.trade-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:8px;
+    gap:15px;
+    margin-top:15px;
+}
+
+.trade-box{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.trade-box .wide{
+    grid-column:1/-1;
+}
+
+.buy-sell{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
     margin-top:10px;
 }
 
 .buy{
-    background:#087f4d;
-    color:#fff;
-    border:0;
-    border-radius:7px;
-    padding:12px;
-    font-weight:bold;
+    background:#118c43;
 }
 
 .sell{
-    background:#a82939;
-    color:#fff;
-    border:0;
-    border-radius:7px;
-    padding:12px;
-    font-weight:bold;
+    background:#bb3040;
 }
 
 .notice{
-    padding:10px;
-    border-radius:7px;
-    background:#102235;
-    color:#b7c9da;
-    margin-top:10px;
-    font-size:13px;
-}
-
-.wallet-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+    padding:12px;
+    border-radius:9px;
+    background:#10263d;
+    color:#a9c5dd;
     margin-top:12px;
+    line-height:1.5;
 }
 
-.balance-box{
-    background:#102235;
-    border-radius:8px;
-    padding:15px;
-}
-
-.balance-label{
-    color:#8ea5bb;
-    font-size:12px;
-}
-
-.balance-value{
-    font-size:27px;
-    font-weight:bold;
-    margin-top:4px;
-}
-
-.withdraw-form{
-    display:grid;
-    gap:9px;
-}
-
-.withdraw-submit{
-    background:#1261a0;
-    color:#fff;
-    border:1px solid #21d4fd;
-    border-radius:7px;
-    padding:11px;
-    font-weight:bold;
-}
-
-.status{
-    padding:9px;
-    border-radius:6px;
-    margin-top:8px;
-    font-size:13px;
-}
-
-.withdraw-processing{
-    background:#23334a;
-    color:#ffd166;
-}
-
-.withdraw-pending{
-    background:#342d0b;
-    color:#ffd166;
-}
-
-.withdraw-approved{
-    background:#093d2a;
-    color:#42e8a0;
-}
-
-.withdraw-rejected{
-    background:#451722;
-    color:#ff7883;
-}
-
-.withdraw-paid{
-    background:#073d32;
-    color:#58f0bd;
-}
-
-.withdraw-error{
-    background:#451722;
-    color:#ff7883;
-}
-
-.table-wrap{
-    overflow-x:auto;
-    margin-top:12px;
+.notice.live{
+    background:#392b08;
+    color:#f4d57b;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    min-width:700px;
+    min-width:760px;
 }
 
-th,td{
-    padding:9px;
-    border-bottom:1px solid #1d334b;
+.table-scroll{
+    overflow-x:auto;
+}
+
+th,
+td{
+    border-bottom:1px solid #1d3349;
+    padding:10px;
     text-align:left;
     font-size:13px;
+    white-space:nowrap;
 }
 
 th{
-    color:#8ea5bb;
-    background:#0d1d2d;
+    color:#91aac2;
+    background:#0a1726;
 }
 
-.status-badge{
-    display:inline-block;
-    padding:4px 7px;
-    border-radius:5px;
-    font-size:11px;
-    font-weight:bold;
+.profit{
+    color:#61e695;
 }
 
-.status-PENDING{
-    background:#4a3a08;
-    color:#ffd166;
+.loss{
+    color:#ff737d;
 }
 
-.status-PROCESSING{
-    background:#23334a;
-    color:#65b9ff;
+.wallet-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-top:15px;
 }
 
-.status-APPROVED{
-    background:#083b29;
-    color:#45e3a0;
+.balance-box{
+    background:#091827;
+    border:1px solid #24435d;
+    border-radius:12px;
+    padding:18px;
 }
 
-.status-REJECTED{
-    background:#481724;
-    color:#ff7883;
+.balance-big{
+    font-size:32px;
+    font-weight:800;
+    margin-top:6px;
 }
 
-.status-PAID{
-    background:#064436;
-    color:#5cf3bd;
+.form-group{
+    margin-bottom:13px;
 }
 
-.status-CANCELLED{
-    background:#30343a;
-    color:#bbb;
+textarea{
+    min-height:100px;
+    resize:vertical;
 }
 
-.admin-section{
+.status-box{
+    display:none;
+    padding:13px;
+    border-radius:9px;
     margin-top:12px;
-    border:1px solid #5b4320;
+    line-height:1.5;
+    overflow-wrap:anywhere;
 }
 
-.admin-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.admin-title{
-    color:#ffd166;
-}
-
-.admin-buttons{
-    display:flex;
-    gap:5px;
-    flex-wrap:wrap;
-}
-
-.admin-buttons button{
-    border:1px solid #39536b;
-    background:#122437;
-    color:#fff;
-    border-radius:5px;
-    padding:6px 8px;
+.withdraw-card{
+    margin-top:15px;
 }
 
 .service-buttons{
     display:flex;
-    gap:8px;
+    gap:10px;
     flex-wrap:wrap;
-    margin-top:10px;
+    margin-top:12px;
 }
 
 .service-buttons a{
     text-decoration:none;
+    display:inline-block;
+    padding:10px 15px;
+    border-radius:8px;
     color:#fff;
-    padding:9px 12px;
-    border-radius:6px;
-    background:#14283c;
-    border:1px solid #29445e;
-}
-
-.empty{
-    color:#71869b;
-    text-align:center;
-    padding:20px;
+    font-weight:bold;
+    background:#152b41;
+    border:1px solid #294966;
 }
 
 .fullscreen-mode{
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    background:#08131f;
-    padding:10px;
+    position:fixed!important;
+    inset:0!important;
+    z-index:9999!important;
+    background:#06101c!important;
+    padding:10px!important;
+    border-radius:0!important;
 }
 
 .fullscreen-mode #chart{
-    height:calc(100vh - 80px);
+    height:calc(100vh - 65px);
+}
+
+.entry-line{
+    color:#ffd76a;
+}
+
+.footer-note{
+    color:#71879b;
+    text-align:center;
+    font-size:12px;
+    margin-top:25px;
+    line-height:1.5;
 }
 
 @media(max-width:900px){
+    .top-grid,
+    .trade-grid,
+    .wallet-grid{
+        grid-template-columns:1fr;
+    }
+
     .stats{
         grid-template-columns:repeat(2,1fr);
     }
 
-    .trade-panel,
-    .wallet-grid{
-        grid-template-columns:1fr;
+    #chart{
+        height:390px;
     }
 }
 
-@media(max-width:600px){
+@media(max-width:550px){
+    .container{
+        width:94%;
+    }
+
     .stats{
         grid-template-columns:1fr 1fr;
     }
 
-    .card-value{
-        font-size:17px;
+    .stat-value{
+        font-size:15px;
     }
 
     #chart{
-        height:360px;
+        height:330px;
     }
 
-    .form-grid{
+    .trade-box{
         grid-template-columns:1fr;
+    }
+
+    .trade-box .wide{
+        grid-column:auto;
     }
 }
 </style>
@@ -475,223 +445,157 @@ th{
 
 <body>
 
-<header class="topbar">
+<header>
+    <div class="header-row">
+        <div class="logo">WASHINGTON FX</div>
 
-    <div class="logo">
-        WASHINGTON <span>FX</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+            <button class="btn btn-dark" onclick="setMode('DEMO')">
+                DEMO FX
+            </button>
+
+            <button class="btn btn-dark" onclick="setMode('LIVE')">
+                LIVE FX
+            </button>
+
+            <span id="modeBadge" class="mode-badge demo-badge">
+                SIMULATION MODE
+            </span>
+        </div>
     </div>
-
-    <div class="mode-buttons">
-
-        <button
-            id="demoBtn"
-            class="active"
-            onclick="setMode('DEMO')"
-        >
-            DEMO FX
-        </button>
-
-        <button
-            id="liveBtn"
-            onclick="setMode('LIVE')"
-        >
-            LIVE FX
-        </button>
-
-    </div>
-
 </header>
-
 
 <div class="container">
 
-    <!-- ACCOUNT SUMMARY -->
-
-    <div class="stats">
+    <!-- ACCOUNT -->
+    <div class="top-grid">
 
         <div class="card">
-            <div class="card-title">Balance</div>
-            <div
-                class="card-value"
-                id="balance"
-            >
-                $10,000.00
+            <h2>Account</h2>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <div class="stat-title">Balance</div>
+                    <div class="stat-value" id="balanceValue">$10,000.00</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-title">Equity</div>
+                    <div class="stat-value" id="equityValue">$10,000.00</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-title">Floating P/L</div>
+                    <div class="stat-value" id="floatingValue">$0.00</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-title">Open Positions</div>
+                    <div class="stat-value" id="positionsValue">0</div>
+                </div>
+
             </div>
         </div>
 
         <div class="card">
-            <div class="card-title">Equity</div>
-            <div
-                class="card-value"
-                id="equity"
-            >
-                $10,000.00
+
+            <h2>Market</h2>
+
+            <div class="market-row">
+
+                <select id="marketSelect" onchange="selectMarket(this.value)">
+                    <option value="EURUSD">EURUSD</option>
+                    <option value="GBPUSD">GBPUSD</option>
+                    <option value="USDJPY">USDJPY</option>
+                    <option value="USDCHF">USDCHF</option>
+                    <option value="AUDUSD">AUDUSD</option>
+                    <option value="USDCAD">USDCAD</option>
+                    <option value="XAUUSD">XAUUSD</option>
+                    <option value="BTCUSD">BTCUSD</option>
+                </select>
+
+                <select id="timeframeSelect">
+                    <option>1 Minute</option>
+                    <option>5 Minutes</option>
+                    <option>15 Minutes</option>
+                    <option>1 Hour</option>
+                </select>
+
             </div>
-        </div>
 
-        <div class="card">
-            <div class="card-title">Floating P/L</div>
-            <div
-                class="card-value"
-                id="floatingPL"
-            >
-                $0.00
-            </div>
-        </div>
+            <div class="stats">
 
-        <div class="card">
-            <div class="card-title">Open Positions</div>
-            <div
-                class="card-value"
-                id="openPositions"
-            >
-                0
-            </div>
-        </div>
+                <div class="stat">
+                    <div class="stat-title">Bid</div>
+                    <div class="stat-value" id="bidValue">1.08500</div>
+                </div>
 
-    </div>
-
-
-    <!-- CHART CONTROLS -->
-
-    <div class="controls">
-
-        <select
-            id="symbolSelect"
-            onchange="selectMarket(this.value)"
-        >
-            <option value="EURUSD">EURUSD</option>
-            <option value="GBPUSD">GBPUSD</option>
-            <option value="USDJPY">USDJPY</option>
-            <option value="USDCHF">USDCHF</option>
-            <option value="AUDUSD">AUDUSD</option>
-            <option value="USDCAD">USDCAD</option>
-            <option value="XAUUSD">XAUUSD</option>
-            <option value="BTCUSD">BTCUSD</option>
-        </select>
-
-        <select id="timeframe">
-            <option>1 Minute</option>
-            <option>5 Minutes</option>
-            <option>15 Minutes</option>
-            <option>1 Hour</option>
-        </select>
-
-        <select
-            id="candleStyle"
-            onchange="changeCandleStyle(this.value)"
-        >
-            <option value="classic">
-                Classic Candles
-            </option>
-
-            <option value="hollow">
-                Hollow Candles
-            </option>
-        </select>
-
-        <button
-            class="small-btn"
-            id="gridBtn"
-            onclick="toggleGrid()"
-        >
-            Grid: ON
-        </button>
-
-        <button
-            class="small-btn"
-            onclick="zoomChart(1.2)"
-        >
-            + Zoom
-        </button>
-
-        <button
-            class="small-btn"
-            onclick="zoomChart(0.8)"
-        >
-            − Zoom
-        </button>
-
-        <button
-            class="small-btn"
-            onclick="resetChart()"
-        >
-            Reset Chart
-        </button>
-
-        <button
-            class="small-btn"
-            onclick="toggleFullscreen()"
-        >
-            Full Screen
-        </button>
-
-    </div>
-
-
-    <!-- CHART -->
-
-    <div
-        class="chart-wrap"
-        id="chartWrap"
-    >
-
-        <div class="chart-header">
-
-            <div>
-
-                <strong id="chartSymbol">
-                    EURUSD
-                </strong>
-
-                <div
-                    class="market-price"
-                    id="marketPrice"
-                >
-                    1.08500
+                <div class="stat">
+                    <div class="stat-title">Ask</div>
+                    <div class="stat-value" id="askValue">1.08510</div>
                 </div>
 
             </div>
 
-            <div>
+        </div>
 
-                Bid:
-                <strong id="bidPrice">
-                    1.08500
-                </strong>
+    </div>
 
-                &nbsp;
+    <!-- CHART -->
+    <div class="card">
 
-                Ask:
-                <strong id="askPrice">
-                    1.08520
-                </strong>
+        <h2>
+            <span id="chartTitle">EURUSD</span>
+            Chart
+        </h2>
+
+        <div class="chart-wrap" id="chartContainer">
+
+            <canvas id="chart"></canvas>
+
+            <div class="chart-tools">
+
+                <button onclick="zoomChart(1.2)">＋ Zoom In</button>
+                <button onclick="zoomChart(0.83)">－ Zoom Out</button>
+                <button onclick="resetChart()">Reset</button>
+                <button id="gridButton" class="active" onclick="toggleGrid()">
+                    Grid
+                </button>
+
+                <button onclick="setCandleStyle('classic')">
+                    Classic Candles
+                </button>
+
+                <button onclick="setCandleStyle('hollow')">
+                    Hollow Candles
+                </button>
+
+                <button onclick="toggleFullscreen()">
+                    Full Screen
+                </button>
 
             </div>
 
         </div>
 
-        <canvas id="chart"></canvas>
+        <div class="notice" id="marketNotice">
+            Demo market prices are simulated for testing.
+        </div>
 
     </div>
 
+    <!-- TRADE -->
+    <div class="trade-grid">
 
-    <!-- TRADING -->
+        <div class="card">
 
-    <div class="trade-panel">
+            <h2>Open Trade</h2>
 
-        <div class="panel">
+            <div class="trade-box">
 
-            <h3>Open Trade</h3>
-
-            <div class="form-grid">
-
-                <div class="form-group">
-
-                    <label>
-                        Volume
-                    </label>
-
+                <div>
+                    <label>Volume</label>
                     <input
                         id="volume"
                         type="number"
@@ -699,101 +603,61 @@ th{
                         min="0.01"
                         step="0.01"
                     >
-
                 </div>
 
-                <div class="form-group">
-
-                    <label>
-                        Take Profit
-                    </label>
-
+                <div>
+                    <label>Take Profit</label>
                     <input
                         id="takeProfit"
                         type="number"
                         placeholder="Optional"
+                        step="0.00001"
                     >
-
                 </div>
 
-                <div class="form-group">
-
-                    <label>
-                        Stop Loss
-                    </label>
-
+                <div>
+                    <label>Stop Loss</label>
                     <input
                         id="stopLoss"
                         type="number"
                         placeholder="Optional"
+                        step="0.00001"
                     >
+                </div>
+
+                <div class="wide buy-sell">
+
+                    <button class="btn buy" onclick="openTrade('BUY')">
+                        BUY
+                    </button>
+
+                    <button class="btn sell" onclick="openTrade('SELL')">
+                        SELL
+                    </button>
 
                 </div>
 
             </div>
 
-            <div class="trade-buttons">
-
-                <button
-                    class="buy"
-                    onclick="openTrade('BUY')"
-                >
-                    BUY
-                </button>
-
-                <button
-                    class="sell"
-                    onclick="openTrade('SELL')"
-                >
-                    SELL
-                </button>
-
-            </div>
-
-            <div
-                class="notice"
-                id="modeNotice"
-            >
-                Demo mode uses virtual funds and simulated
-                market execution.
-            </div>
+            <div id="tradeMessage" class="status-box"></div>
 
         </div>
 
+        <div class="card">
 
-        <div class="panel">
+            <h2>Selected Market</h2>
 
-            <h3>Current Market</h3>
+            <div class="notice">
 
-            <div class="balance-box">
+                Symbol:
+                <strong id="selectedSymbol">EURUSD</strong>
+                <br>
 
-                <div class="balance-label">
-                    Symbol
-                </div>
+                Current price:
+                <strong id="selectedPrice">1.08500</strong>
+                <br>
 
-                <div
-                    class="balance-value"
-                    id="currentMarketName"
-                >
-                    EURUSD
-                </div>
-
-            </div>
-
-            <div style="height:8px"></div>
-
-            <div class="balance-box">
-
-                <div class="balance-label">
-                    Current Price
-                </div>
-
-                <div
-                    class="balance-value"
-                    id="currentMarketPrice"
-                >
-                    1.08500
-                </div>
+                Entry markers and open-position lines are displayed on the chart.
 
             </div>
 
@@ -801,24 +665,16 @@ th{
 
     </div>
 
+    <!-- POSITIONS -->
+    <div class="card" style="margin-top:15px;">
 
-    <!-- OPEN POSITIONS -->
+        <h2>Open Positions</h2>
 
-    <div
-        class="panel"
-        style="margin-top:12px"
-    >
-
-        <h3>
-            Open Positions
-        </h3>
-
-        <div class="table-wrap">
+        <div class="table-scroll">
 
             <table>
 
                 <thead>
-
                     <tr>
                         <th>Symbol</th>
                         <th>Side</th>
@@ -830,20 +686,9 @@ th{
                         <th>P/L</th>
                         <th>Action</th>
                     </tr>
-
                 </thead>
 
-                <tbody id="positionsBody">
-
-                    <tr>
-                        <td
-                            colspan="9"
-                            class="empty"
-                        >
-                            No open positions
-                        </td>
-                    </tr>
-
+                <tbody id="positionsTable">
                 </tbody>
 
             </table>
@@ -852,163 +697,203 @@ th{
 
     </div>
 
+    <!-- HISTORY -->
+    <div class="card" style="margin-top:15px;">
 
-    <!-- WALLET / WITHDRAWAL -->
+        <h2>Trade History</h2>
 
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Side</th>
+                        <th>Volume</th>
+                        <th>Entry</th>
+                        <th>Exit</th>
+                        <th>P/L</th>
+                    </tr>
+                </thead>
+
+                <tbody id="historyTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- WALLET -->
     <div class="wallet-grid">
 
-        <div class="panel">
+        <div class="balance-box">
 
-            <h3>
-                Wallet
-            </h3>
+            <div style="color:#91a7bd;">
+                Wallet Balance
+            </div>
 
-            <div class="balance-box">
-
-                <div class="balance-label">
-                    Available Balance
-                </div>
-
-                <div
-                    class="balance-value"
-                    id="walletBalance"
-                >
-                    $10,000.00
-                </div>
-
+            <div class="balance-big" id="walletBalance">
+                $10,000.00
             </div>
 
             <div class="notice">
-
-                Wallet funds in this version are simulator
-                funds. Withdrawal requests are recorded in
-                Supabase and remain pending until reviewed.
-
-            </div>
-
-            <div class="service-buttons">
-
-                <a
-                    href="https://wa.me/"
-                    target="_blank"
-                >
-                    WhatsApp Customer Service
-                </a>
-
-                <a
-                    href="https://t.me/"
-                    target="_blank"
-                >
-                    Telegram Customer Service
-                </a>
-
-                <a
-                    href="mailto:"
-                    target="_blank"
-                >
-                    Email Customer Service
-                </a>
-
+                Demo wallet funds are virtual. A Live wallet must only be
+                connected to a real payment/custody system when that
+                infrastructure is enabled.
             </div>
 
         </div>
 
+        <div class="balance-box">
 
-        <!-- WITHDRAW FORM -->
+            <div style="color:#91a7bd;">
+                Account Mode
+            </div>
 
-        <div class="panel">
+            <div class="balance-big" id="walletMode">
+                DEMO
+            </div>
 
-            <h3>
-                Withdraw Funds
-            </h3>
-
-            <div class="withdraw-form">
-
-                <div class="form-group">
-
-                    <label>
-                        Amount (USD)
-                    </label>
-
-                    <input
-                        id="withdrawAmount"
-                        type="number"
-                        min="1"
-                        step="0.01"
-                        placeholder="Enter amount"
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>
-                        Wallet Address / Destination
-                    </label>
-
-                    <input
-                        id="walletAddress"
-                        type="text"
-                        placeholder="Enter destination"
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>
-                        Network / Method
-                    </label>
-
-                    <input
-                        id="walletNetwork"
-                        type="text"
-                        placeholder="Example: USDT TRC20"
-                    >
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>
-                        Message
-                    </label>
-
-                    <textarea
-                        id="withdrawMessage"
-                        placeholder="Optional message"
-                    ></textarea>
-
-                </div>
-
-                <button
-                    class="withdraw-submit"
-                    onclick="submitWithdrawal()"
-                >
-                    SUBMIT WITHDRAWAL
-                </button>
-
-                <div id="withdrawStatus"></div>
-
+            <div class="notice" id="walletNotice">
+                Demo withdrawal requests are recorded as virtual requests.
             </div>
 
         </div>
 
     </div>
 
+    <!-- WITHDRAWAL -->
+    <div class="card withdraw-card">
 
-    <!-- USER WITHDRAWAL ORDERS -->
+        <h2>Withdraw Funds</h2>
 
-    <div
-        class="panel"
-        style="margin-top:12px"
-    >
+        <div class="form-group">
 
-        <h3>
-            My Withdrawal Orders
-        </h3>
+            <label>Amount (USD)</label>
 
-        <div class="table-wrap">
+            <input
+                id="withdrawAmount"
+                type="number"
+                min="1"
+                step="0.01"
+                placeholder="100"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Wallet Address / Destination</label>
+
+            <input
+                id="walletAddress"
+                type="text"
+                placeholder="Enter destination"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Network / Method</label>
+
+            <select id="walletNetwork">
+
+                <option value="">
+                    Select network / method
+                </option>
+
+                <option value="USDT TRC20">
+                    USDT TRC20
+                </option>
+
+                <option value="USDT ERC20">
+                    USDT ERC20
+                </option>
+
+                <option value="USDT BEP20">
+                    USDT BEP20
+                </option>
+
+                <option value="BTC">
+                    BTC
+                </option>
+
+                <option value="Bank Transfer">
+                    Bank Transfer
+                </option>
+
+                <option value="Mobile Money">
+                    Mobile Money
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Message</label>
+
+            <textarea
+                id="withdrawMessage"
+                placeholder="Optional message"
+            ></textarea>
+
+        </div>
+
+        <button
+            class="btn btn-blue"
+            style="width:100%;font-size:17px;"
+            onclick="submitWithdrawal()"
+        >
+            SUBMIT WITHDRAWAL
+        </button>
+
+        <div id="withdrawStatus" class="status-box"></div>
+
+        <div class="notice">
+            Withdrawal requests are stored with status
+            <strong>PENDING</strong> until authorized processing is available.
+        </div>
+
+        <div class="service-buttons">
+
+            <a
+                href="https://wa.me/"
+                target="_blank"
+                rel="noopener"
+            >
+                WhatsApp Customer Service
+            </a>
+
+            <a
+                href="https://t.me/"
+                target="_blank"
+                rel="noopener"
+            >
+                Telegram Customer Service
+            </a>
+
+            <a
+                href="mailto:"
+            >
+                Email Customer Service
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- MY WITHDRAWALS -->
+    <div class="card" style="margin-top:15px;">
+
+        <h2>My Withdrawal Orders</h2>
+
+        <div class="table-scroll">
 
             <table>
 
@@ -1021,22 +906,12 @@ th{
                         <th>Method</th>
                         <th>Destination</th>
                         <th>Status</th>
-                        <th>Date</th>
+                        <th>Created</th>
                     </tr>
 
                 </thead>
 
-                <tbody id="withdrawalsBody">
-
-                    <tr>
-                        <td
-                            colspan="7"
-                            class="empty"
-                        >
-                            No withdrawal orders
-                        </td>
-                    </tr>
-
+                <tbody id="withdrawalsTable">
                 </tbody>
 
             </table>
@@ -1045,41 +920,18 @@ th{
 
     </div>
 
+    <!-- ADMIN TEST VIEW -->
+    <div class="card" style="margin-top:15px;">
 
-    <!-- ADMIN -->
+        <h2>Admin Withdrawal Queue</h2>
 
-    <div
-        class="panel admin-section"
-    >
-
-        <div class="admin-header">
-
-            <div>
-
-                <h3 class="admin-title">
-                    Admin Withdrawal Orders
-                </h3>
-
-                <div class="notice">
-
-                    New withdrawal requests appear here
-                    for review.
-
-                </div>
-
-            </div>
-
-            <button
-                class="small-btn"
-                onclick="loadAdminWithdrawals()"
-            >
-                Refresh Orders
-            </button>
-
+        <div class="notice">
+            This section displays withdrawal requests received by the
+            database. Actual approval requires an authenticated admin
+            account with the correct Supabase permissions.
         </div>
 
-
-        <div class="table-wrap">
+        <div class="table-scroll" style="margin-top:12px;">
 
             <table>
 
@@ -1092,78 +944,26 @@ th{
                         <th>Method</th>
                         <th>Destination</th>
                         <th>Status</th>
-                        <th>Created</th>
-                        <th>Admin Action</th>
+                        <th>Action</th>
                     </tr>
 
                 </thead>
 
-                <tbody id="adminWithdrawalsBody">
-
-                    <tr>
-                        <td
-                            colspan="8"
-                            class="empty"
-                        >
-                            No withdrawal orders
-                        </td>
-                    </tr>
-
+                <tbody id="adminWithdrawalsTable">
                 </tbody>
 
             </table>
 
         </div>
+
+        <div id="adminStatus" class="status-box"></div>
 
     </div>
 
-
-    <!-- TRADE HISTORY -->
-
-    <div
-        class="panel"
-        style="margin-top:12px"
-    >
-
-        <h3>
-            Trade History
-        </h3>
-
-        <div class="table-wrap">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Side</th>
-                        <th>Volume</th>
-                        <th>Entry</th>
-                        <th>Exit</th>
-                        <th>P/L</th>
-                        <th>Reason</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="historyBody">
-
-                    <tr>
-                        <td
-                            colspan="7"
-                            class="empty"
-                        >
-                            No completed trades
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
+    <div class="footer-note">
+        Washington FX — Demo trading uses simulated prices and virtual funds.
+        Live execution and real-money settlement require actual broker,
+        payment, custody and compliance infrastructure.
     </div>
 
 </div>
@@ -1180,6 +980,19 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
     "sb_publishable_jX6_GQggT_GDK2Kv_jNBcqA_frXVuZWv";
+
+
+/* =========================================================
+   ACCOUNT
+========================================================= */
+
+let currentMode = "DEMO";
+
+let balance = 10000;
+
+let positions = [];
+
+let history = [];
 
 
 /* =========================================================
@@ -1239,90 +1052,56 @@ const markets = {
 };
 
 
-/* =========================================================
-   STATE
-========================================================= */
+let currentSymbol = "EURUSD";
 
-let currentSymbol =
-    "EURUSD";
+let candles = [];
 
-let currentMode =
-    "DEMO";
+let zoom = 1;
 
-let balance =
-    10000;
+let chartOffset = 0;
 
-let positions =
-    [];
+let gridEnabled = true;
 
-let history =
-    [];
-
-let candles =
-    [];
-
-let zoom =
-    1;
-
-let chartOffset =
-    0;
-
-let gridEnabled =
-    true;
-
-let candleStyle =
-    "classic";
-
-let dragStartX =
-    null;
-
-let dragStartOffset =
-    0;
-
-let lastCandleTime =
-    Date.now();
+let candleStyle = "classic";
 
 
 /* =========================================================
-   FORMATTERS
+   DOM
 ========================================================= */
+
+const canvas = document.getElementById("chart");
+
+const ctx = canvas.getContext("2d");
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function escapeHtml(text){
+
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
 
 function money(value){
 
-    return "$" +
-        Number(value).toLocaleString(
-            "en-US",
-            {
-                minimumFractionDigits:2,
-                maximumFractionDigits:2
-            }
-        );
+    return "$" + Number(value).toFixed(2);
 
 }
 
 
-function formatPrice(symbol,value){
+function priceFormat(symbol,value){
 
-    return Number(value)
-        .toFixed(
-            markets[symbol].digits
-        );
-
-}
-
-
-/* =========================================================
-   MARKET MOVEMENT
-========================================================= */
-
-function randomMove(symbol){
-
-    return (
-        Math.random() -
-        0.5
-    ) *
-    markets[symbol].step *
-    2;
+    return Number(value).toFixed(
+        markets[symbol].digits
+    );
 
 }
 
@@ -1335,188 +1114,65 @@ function createInitialCandles(){
 
     candles = [];
 
-    let price =
-        markets[currentSymbol].price;
+    let price = markets[currentSymbol].price;
 
-    for(
-        let i=0;
-        i<120;
-        i++
-    ){
+    for(let i=0;i<120;i++){
 
-        const open =
-            price;
+        const open = price;
+
+        const move =
+            (Math.random() - 0.5) *
+            markets[currentSymbol].step *
+            3;
 
         const close =
-            open +
-            (
-                Math.random()-0.5
-            ) *
-            markets[currentSymbol].step *
-            5;
+            open + move;
 
         const high =
-            Math.max(
-                open,
-                close
-            ) +
+            Math.max(open,close) +
             Math.random() *
-            markets[currentSymbol].step *
-            2;
+            markets[currentSymbol].step;
 
         const low =
-            Math.min(
-                open,
-                close
-            ) -
+            Math.min(open,close) -
             Math.random() *
-            markets[currentSymbol].step *
-            2;
+            markets[currentSymbol].step;
 
         candles.push({
-            open,
-            high,
-            low,
-            close,
-            time:
-                Date.now() -
-                (120-i)*60000
+            open:open,
+            high:high,
+            low:low,
+            close:close
         });
 
-        price =
-            close;
+        price = close;
 
     }
 
-    markets[currentSymbol].price =
-        price;
-
-    lastCandleTime =
-        Date.now();
-
-    drawChart();
+    markets[currentSymbol].price = price;
 
 }
 
 
 /* =========================================================
-   MARKET SELECTION
+   CHART SIZE
 ========================================================= */
-
-function selectMarket(symbol){
-
-    currentSymbol =
-        symbol;
-
-    document.getElementById(
-        "chartSymbol"
-    ).textContent =
-        symbol;
-
-    document.getElementById(
-        "currentMarketName"
-    ).textContent =
-        symbol;
-
-    createInitialCandles();
-
-    updateMarketDisplay();
-
-}
-
-
-/* =========================================================
-   CANDLE SETTINGS
-========================================================= */
-
-function changeCandleStyle(style){
-
-    candleStyle =
-        style;
-
-    drawChart();
-
-}
-
-
-function toggleGrid(){
-
-    gridEnabled =
-        !gridEnabled;
-
-    document.getElementById(
-        "gridBtn"
-    ).textContent =
-        "Grid: " +
-        (
-            gridEnabled
-                ? "ON"
-                : "OFF"
-        );
-
-    drawChart();
-
-}
-
-
-function zoomChart(amount){
-
-    zoom *=
-        amount;
-
-    if(zoom < 0.5)
-        zoom = 0.5;
-
-    if(zoom > 4)
-        zoom = 4;
-
-    drawChart();
-
-}
-
-
-function resetChart(){
-
-    zoom = 1;
-
-    chartOffset = 0;
-
-    createInitialCandles();
-
-}
-
-
-/* =========================================================
-   CANVAS
-========================================================= */
-
-const canvas =
-    document.getElementById(
-        "chart"
-    );
-
-const ctx =
-    canvas.getContext("2d");
-
 
 function resizeCanvas(){
 
-    const rect =
-        canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
 
-    canvas.width =
-        rect.width *
-        window.devicePixelRatio;
+    const dpr = window.devicePixelRatio || 1;
 
-    canvas.height =
-        rect.height *
-        window.devicePixelRatio;
+    canvas.width = rect.width * dpr;
+
+    canvas.height = rect.height * dpr;
 
     ctx.setTransform(
-        window.devicePixelRatio,
+        dpr,
         0,
         0,
-        window.devicePixelRatio,
+        dpr,
         0,
         0
     );
@@ -1538,14 +1194,9 @@ window.addEventListener(
 
 function drawChart(){
 
-    const width =
-        canvas.clientWidth;
+    const width = canvas.clientWidth;
 
-    const height =
-        canvas.clientHeight;
-
-    if(!width || !height)
-        return;
+    const height = canvas.clientHeight;
 
     ctx.clearRect(
         0,
@@ -1554,8 +1205,7 @@ function drawChart(){
         height
     );
 
-    ctx.fillStyle =
-        "#08131f";
+    ctx.fillStyle = "#06101c";
 
     ctx.fillRect(
         0,
@@ -1565,261 +1215,215 @@ function drawChart(){
     );
 
 
-    const candleWidth =
-        8 * zoom;
+    if(gridEnabled){
 
-    const spacing =
-        candleWidth + 5;
+        ctx.strokeStyle = "#12283d";
 
-    const visibleCount =
-        Math.floor(
-            width / spacing
-        ) + 4;
+        ctx.lineWidth = 1;
+
+        for(let x=0;x<width;x+=70){
+
+            ctx.beginPath();
+
+            ctx.moveTo(x,0);
+
+            ctx.lineTo(x,height);
+
+            ctx.stroke();
+
+        }
+
+        for(let y=0;y<height;y+=55){
+
+            ctx.beginPath();
+
+            ctx.moveTo(0,y);
+
+            ctx.lineTo(width,y);
+
+            ctx.stroke();
+
+        }
+
+    }
+
+
+    if(!candles.length) return;
+
+
+    let visibleCount =
+        Math.max(
+            25,
+            Math.floor(90 / zoom)
+        );
+
+    visibleCount =
+        Math.min(
+            visibleCount,
+            candles.length
+        );
+
+
+    let end =
+        candles.length - chartOffset;
+
+    end =
+        Math.max(
+            visibleCount,
+            Math.min(
+                candles.length,
+                end
+            )
+        );
+
 
     let start =
-        Math.max(
-            0,
-            candles.length -
-            visibleCount -
-            chartOffset
-        );
+        end - visibleCount;
+
 
     const visible =
-        candles.slice(
-            start,
-            start+visibleCount
-        );
-
-    if(!visible.length)
-        return;
+        candles.slice(start,end);
 
 
-    let minPrice =
-        Math.min(
-            ...visible.map(
-                c=>c.low
-            )
-        );
-
-    let maxPrice =
+    let highest =
         Math.max(
-            ...visible.map(
-                c=>c.high
-            )
+            ...visible.map(c=>c.high)
+        );
+
+    let lowest =
+        Math.min(
+            ...visible.map(c=>c.low)
         );
 
 
-    const padding =
-        (
-            maxPrice -
-            minPrice
-        ) * 0.12 || 1;
+    const padding = 35;
 
-    minPrice -=
-        padding;
+    const range =
+        highest - lowest || 1;
 
-    maxPrice +=
-        padding;
+
+    const scaleY =
+        (height - padding * 2) /
+        range;
+
+
+    const candleWidth =
+        Math.max(
+            4,
+            (width - 70) /
+            visible.length
+        );
 
 
     function y(price){
 
         return height -
-            (
-                (
-                    price -
-                    minPrice
-                ) /
-                (
-                    maxPrice -
-                    minPrice
-                )
-            ) *
-            height;
+            padding -
+            (price-lowest) *
+            scaleY;
 
     }
 
 
-    if(gridEnabled){
+    visible.forEach((c,i)=>{
+
+        const x =
+            40 +
+            i * candleWidth;
+
+
+        const openY = y(c.open);
+
+        const closeY = y(c.close);
+
+        const highY = y(c.high);
+
+        const lowY = y(c.low);
+
+
+        const up =
+            c.close >= c.open;
+
 
         ctx.strokeStyle =
-            "#183047";
+            up ? "#35d878" : "#f05c67";
 
-        for(
-            let i=0;
-            i<10;
-            i++
-        ){
+        ctx.fillStyle =
+            up ? "#35d878" : "#f05c67";
 
-            const yy =
-                height/10*i;
 
-            ctx.beginPath();
+        ctx.beginPath();
 
-            ctx.moveTo(
-                0,
-                yy
+        ctx.moveTo(
+            x + candleWidth/2,
+            highY
+        );
+
+        ctx.lineTo(
+            x + candleWidth/2,
+            lowY
+        );
+
+        ctx.stroke();
+
+
+        const bodyTop =
+            Math.min(
+                openY,
+                closeY
             );
 
-            ctx.lineTo(
-                width,
-                yy
+        const bodyHeight =
+            Math.max(
+                1,
+                Math.abs(
+                    closeY-openY
+                )
             );
 
-            ctx.stroke();
 
-        }
+        if(candleStyle==="classic"){
 
-
-        for(
-            let i=0;
-            i<12;
-            i++
-        ){
-
-            const xx =
-                width/12*i;
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                xx,
-                0
-            );
-
-            ctx.lineTo(
-                xx,
-                height
-            );
-
-            ctx.stroke();
-
-        }
-
-    }
-
-
-    visible.forEach(
-        (candle,index)=>{
-
-            const x =
-                index *
-                spacing +
-                5;
-
-            const openY =
-                y(candle.open);
-
-            const closeY =
-                y(candle.close);
-
-            const highY =
-                y(candle.high);
-
-            const lowY =
-                y(candle.low);
-
-            const up =
-                candle.close >=
-                candle.open;
-
-
-            ctx.strokeStyle =
-                up
-                    ? "#18d88a"
-                    : "#ff5964";
-
-            ctx.fillStyle =
-                up
-                    ? "#18d88a"
-                    : "#ff5964";
-
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                x+candleWidth/2,
-                highY
-            );
-
-            ctx.lineTo(
-                x+candleWidth/2,
-                lowY
-            );
-
-            ctx.stroke();
-
-
-            const bodyTop =
-                Math.min(
-                    openY,
-                    closeY
-                );
-
-            const bodyHeight =
+            ctx.fillRect(
+                x+1,
+                bodyTop,
                 Math.max(
-                    1,
-                    Math.abs(
-                        closeY -
-                        openY
-                    )
-                );
+                    2,
+                    candleWidth-2
+                ),
+                bodyHeight
+            );
 
+        }else{
 
-            if(
-                candleStyle ===
-                "hollow" &&
-                up
-            ){
-
-                ctx.fillStyle =
-                    "#08131f";
-
-                ctx.strokeStyle =
-                    "#18d88a";
-
-                ctx.strokeRect(
-                    x,
-                    bodyTop,
-                    candleWidth,
-                    bodyHeight
-                );
-
-            }else{
-
-                ctx.fillStyle =
-                    up
-                        ? "#18d88a"
-                        : "#ff5964";
-
-                ctx.fillRect(
-                    x,
-                    bodyTop,
-                    candleWidth,
-                    bodyHeight
-                );
-
-            }
+            ctx.strokeRect(
+                x+1,
+                bodyTop,
+                Math.max(
+                    2,
+                    candleWidth-2
+                ),
+                bodyHeight
+            );
 
         }
-    );
+
+    });
 
 
     /* CURRENT PRICE */
 
-    const current =
-        markets[currentSymbol]
-            .price;
+    const currentPrice =
+        markets[currentSymbol].price;
 
     const currentY =
-        y(current);
+        y(currentPrice);
+
 
     ctx.strokeStyle =
-        "#21d4fd";
+        "#f2c94c";
 
-    ctx.setLineDash(
-        [5,5]
-    );
+    ctx.setLineDash([5,5]);
 
     ctx.beginPath();
 
@@ -1839,285 +1443,225 @@ function drawChart(){
 
 
     ctx.fillStyle =
-        "#21d4fd";
+        "#f2c94c";
 
     ctx.font =
         "12px Arial";
 
     ctx.fillText(
-        formatPrice(
+        priceFormat(
             currentSymbol,
-            current
+            currentPrice
         ),
-        8,
-        Math.max(
-            14,
-            currentY-5
-        )
+        width-90,
+        currentY-5
     );
 
 
-    /* TRADE ENTRY LINES */
+    /* ENTRY LINES */
 
     positions
         .filter(
-            p =>
-                p.symbol ===
-                currentSymbol
+            p=>p.symbol===currentSymbol
         )
-        .forEach(
-            position=>{
+        .forEach(p=>{
 
-                const entryY =
-                    y(position.entry);
+            const entryY =
+                y(p.entry);
 
-                ctx.strokeStyle =
-                    position.side === "BUY"
-                        ? "#18d88a"
-                        : "#ff5964";
 
-                ctx.setLineDash(
-                    [7,4]
-                );
+            ctx.strokeStyle =
+                "#65aef2";
 
-                ctx.beginPath();
+            ctx.setLineDash([4,4]);
 
-                ctx.moveTo(
-                    0,
-                    entryY
-                );
+            ctx.beginPath();
 
-                ctx.lineTo(
-                    width,
-                    entryY
-                );
+            ctx.moveTo(
+                0,
+                entryY
+            );
 
-                ctx.stroke();
+            ctx.lineTo(
+                width,
+                entryY
+            );
 
-                ctx.setLineDash([]);
+            ctx.stroke();
 
-                ctx.fillStyle =
-                    position.side === "BUY"
-                        ? "#18d88a"
-                        : "#ff5964";
+            ctx.setLineDash([]);
 
-                ctx.fillText(
-                    position.side +
-                    " " +
-                    formatPrice(
-                        currentSymbol,
-                        position.entry
-                    ),
-                    8,
-                    Math.max(
-                        15,
-                        entryY-6
-                    )
-                );
 
-            }
+            ctx.fillStyle =
+                "#65aef2";
+
+            ctx.fillText(
+                p.side +
+                " " +
+                priceFormat(
+                    currentSymbol,
+                    p.entry
+                ),
+                8,
+                entryY-5
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   MARKET SELECTION
+========================================================= */
+
+function selectMarket(symbol){
+
+    currentSymbol = symbol;
+
+    document.getElementById(
+        "chartTitle"
+    ).textContent = symbol;
+
+    document.getElementById(
+        "selectedSymbol"
+    ).textContent = symbol;
+
+    zoom = 1;
+
+    chartOffset = 0;
+
+    createInitialCandles();
+
+    updateMarketUI();
+
+    drawChart();
+
+}
+
+
+function updateMarketUI(){
+
+    const price =
+        markets[currentSymbol].price;
+
+    const spread =
+        markets[currentSymbol].digits >= 5
+        ? 0.00010
+        : markets[currentSymbol].digits === 3
+        ? 0.010
+        : currentSymbol==="XAUUSD"
+        ? 0.20
+        : 20;
+
+
+    document.getElementById(
+        "bidValue"
+    ).textContent =
+        priceFormat(
+            currentSymbol,
+            price
+        );
+
+
+    document.getElementById(
+        "askValue"
+    ).textContent =
+        priceFormat(
+            currentSymbol,
+            price+spread
+        );
+
+
+    document.getElementById(
+        "selectedPrice"
+    ).textContent =
+        priceFormat(
+            currentSymbol,
+            price
         );
 
 }
 
 
 /* =========================================================
-   DRAG CHART
-========================================================= */
-
-canvas.addEventListener(
-    "mousedown",
-    function(e){
-
-        dragStartX =
-            e.clientX;
-
-        dragStartOffset =
-            chartOffset;
-
-    }
-);
-
-
-canvas.addEventListener(
-    "mousemove",
-    function(e){
-
-        if(
-            dragStartX ===
-            null
-        )
-            return;
-
-        const distance =
-            e.clientX -
-            dragStartX;
-
-        chartOffset =
-            Math.round(
-                dragStartOffset -
-                distance/10
-            );
-
-        if(chartOffset < 0)
-            chartOffset = 0;
-
-        drawChart();
-
-    }
-);
-
-
-window.addEventListener(
-    "mouseup",
-    function(){
-
-        dragStartX =
-            null;
-
-    }
-);
-
-
-/* =========================================================
-   TOUCH
-========================================================= */
-
-canvas.addEventListener(
-    "touchstart",
-    function(e){
-
-        if(!e.touches.length)
-            return;
-
-        dragStartX =
-            e.touches[0].clientX;
-
-        dragStartOffset =
-            chartOffset;
-
-    },
-    {passive:true}
-);
-
-
-canvas.addEventListener(
-    "touchmove",
-    function(e){
-
-        if(
-            dragStartX === null ||
-            !e.touches.length
-        )
-            return;
-
-        const distance =
-            e.touches[0].clientX -
-            dragStartX;
-
-        chartOffset =
-            Math.round(
-                dragStartOffset -
-                distance/10
-            );
-
-        if(chartOffset < 0)
-            chartOffset = 0;
-
-        drawChart();
-
-    },
-    {passive:true}
-);
-
-
-canvas.addEventListener(
-    "touchend",
-    function(){
-
-        dragStartX =
-            null;
-
-    }
-);
-
-
-/* =========================================================
-   MARKET UPDATE
+   MARKET MOVEMENT
 ========================================================= */
 
 function updateMarkets(){
 
-    Object.keys(
-        markets
-    ).forEach(
-        symbol=>{
+    Object.keys(markets).forEach(symbol=>{
 
-            markets[symbol].price +=
-                randomMove(symbol);
+        const m =
+            markets[symbol];
 
-        }
-    );
+        const move =
+            (Math.random()-0.5) *
+            m.step;
 
+        m.price += move;
 
-    const price =
-        markets[currentSymbol]
-            .price;
-
-    const currentCandle =
-        candles[
-            candles.length-1
-        ];
+    });
 
 
-    if(
-        Date.now() -
-        lastCandleTime >=
-        15000
-    ){
+    const m =
+        markets[currentSymbol];
 
-        candles.push({
 
-            open:price,
+    let last =
+        candles[candles.length-1];
 
-            high:price,
 
-            low:price,
+    if(!last){
 
-            close:price,
+        createInitialCandles();
 
-            time:
-                Date.now()
-
-        });
-
-        lastCandleTime =
-            Date.now();
-
-        if(candles.length>200)
-            candles.shift();
-
-    }else{
-
-        currentCandle.close =
-            price;
-
-        currentCandle.high =
-            Math.max(
-                currentCandle.high,
-                price
-            );
-
-        currentCandle.low =
-            Math.min(
-                currentCandle.low,
-                price
-            );
+        return;
 
     }
 
 
-    updateMarketDisplay();
+    last.close =
+        m.price;
+
+    last.high =
+        Math.max(
+            last.high,
+            m.price
+        );
+
+    last.low =
+        Math.min(
+            last.low,
+            m.price
+        );
+
+
+    if(Date.now()%15000<1000){
+
+        candles.push({
+
+            open:m.price,
+
+            high:m.price,
+
+            low:m.price,
+
+            close:m.price
+
+        });
+
+
+        if(candles.length>180){
+
+            candles.shift();
+
+        }
+
+    }
+
+
+    updateMarketUI();
 
     updatePositions();
 
@@ -2126,112 +1670,14 @@ function updateMarkets(){
 }
 
 
-function updateMarketDisplay(){
-
-    const price =
-        markets[currentSymbol]
-            .price;
-
-    document.getElementById(
-        "marketPrice"
-    ).textContent =
-        formatPrice(
-            currentSymbol,
-            price
-        );
-
-    document.getElementById(
-        "bidPrice"
-    ).textContent =
-        formatPrice(
-            currentSymbol,
-            price
-        );
-
-
-    const spread =
-        currentSymbol === "XAUUSD"
-            ? 0.20
-            : currentSymbol === "BTCUSD"
-                ? 10
-                : currentSymbol === "USDJPY"
-                    ? 0.02
-                    : 0.00020;
-
-
-    document.getElementById(
-        "askPrice"
-    ).textContent =
-        formatPrice(
-            currentSymbol,
-            price +
-            spread
-        );
-
-
-    document.getElementById(
-        "currentMarketPrice"
-    ).textContent =
-        formatPrice(
-            currentSymbol,
-            price
-        );
-
-}
+setInterval(
+    updateMarkets,
+    1000
+);
 
 
 /* =========================================================
-   P/L
-========================================================= */
-
-function calculatePL(position){
-
-    const current =
-        markets[
-            position.symbol
-        ].price;
-
-    let multiplier =
-        100000;
-
-    if(
-        position.symbol ===
-        "XAUUSD"
-    )
-        multiplier = 100;
-
-    if(
-        position.symbol ===
-        "BTCUSD"
-    )
-        multiplier = 1;
-
-    if(
-        position.symbol ===
-        "USDJPY"
-    )
-        multiplier = 1000;
-
-
-    const difference =
-        position.side === "BUY"
-            ? current -
-              position.entry
-            : position.entry -
-              current;
-
-
-    return (
-        difference *
-        position.volume *
-        multiplier
-    );
-
-}
-
-
-/* =========================================================
-   OPEN TRADE
+   TRADING
 ========================================================= */
 
 function openTrade(side){
@@ -2243,35 +1689,40 @@ function openTrade(side){
             ).value
         );
 
-    const tpValue =
+
+    const tpText =
         document.getElementById(
             "takeProfit"
         ).value;
 
-    const slValue =
+
+    const slText =
         document.getElementById(
             "stopLoss"
         ).value;
 
 
     const tp =
-        tpValue === ""
-            ? null
-            : Number(tpValue);
+        tpText === ""
+        ? null
+        : Number(tpText);
+
 
     const sl =
-        slValue === ""
-            ? null
-            : Number(slValue);
+        slText === ""
+        ? null
+        : Number(slText);
 
 
-    if(
-        !volume ||
-        volume <= 0
-    ){
+    const price =
+        markets[currentSymbol].price;
 
-        alert(
-            "Enter a valid volume."
+
+    if(!volume || volume<=0){
+
+        showTradeMessage(
+            "Enter a valid volume.",
+            true
         );
 
         return;
@@ -2279,20 +1730,16 @@ function openTrade(side){
     }
 
 
-    const entry =
-        markets[currentSymbol]
-            .price;
-
-
-    if(tp !== null){
+    if(tp!==null){
 
         if(
-            side === "BUY" &&
-            tp <= entry
+            side==="BUY" &&
+            tp<=price
         ){
 
-            alert(
-                "For BUY, Take Profit must be above entry."
+            showTradeMessage(
+                "BUY Take Profit must be above the entry price.",
+                true
             );
 
             return;
@@ -2300,12 +1747,13 @@ function openTrade(side){
         }
 
         if(
-            side === "SELL" &&
-            tp >= entry
+            side==="SELL" &&
+            tp>=price
         ){
 
-            alert(
-                "For SELL, Take Profit must be below entry."
+            showTradeMessage(
+                "SELL Take Profit must be below the entry price.",
+                true
             );
 
             return;
@@ -2315,15 +1763,16 @@ function openTrade(side){
     }
 
 
-    if(sl !== null){
+    if(sl!==null){
 
         if(
-            side === "BUY" &&
-            sl >= entry
+            side==="BUY" &&
+            sl>=price
         ){
 
-            alert(
-                "For BUY, Stop Loss must be below entry."
+            showTradeMessage(
+                "BUY Stop Loss must be below the entry price.",
+                true
             );
 
             return;
@@ -2331,12 +1780,13 @@ function openTrade(side){
         }
 
         if(
-            side === "SELL" &&
-            sl <= entry
+            side==="SELL" &&
+            sl<=price
         ){
 
-            alert(
-                "For SELL, Stop Loss must be above entry."
+            showTradeMessage(
+                "SELL Stop Loss must be above the entry price.",
+                true
             );
 
             return;
@@ -2349,35 +1799,119 @@ function openTrade(side){
     positions.push({
 
         id:
-            Date.now().toString(),
+            Date.now() +
+            Math.random(),
 
-        symbol:
-            currentSymbol,
+        symbol:currentSymbol,
 
-        side:
-            side,
+        side:side,
 
-        volume:
-            volume,
+        volume:volume,
 
-        entry:
-            entry,
+        entry:price,
 
-        tp:
-            tp,
+        tp:tp,
 
-        sl:
-            sl,
+        sl:sl,
 
-        openedAt:
-            new Date()
+        mode:currentMode
 
     });
+
+
+    showTradeMessage(
+        side +
+        " " +
+        currentSymbol +
+        " opened at " +
+        priceFormat(
+            currentSymbol,
+            price
+        ),
+        false
+    );
 
 
     renderPositions();
 
     drawChart();
+
+}
+
+
+function showTradeMessage(message,error){
+
+    const box =
+        document.getElementById(
+            "tradeMessage"
+        );
+
+    box.style.display =
+        "block";
+
+    box.style.background =
+        error
+        ? "#4a151b"
+        : "#123b24";
+
+    box.style.color =
+        error
+        ? "#ff8b8b"
+        : "#7dffae";
+
+    box.innerHTML =
+        escapeHtml(message);
+
+}
+
+
+/* =========================================================
+   P/L
+========================================================= */
+
+function calculatePL(position){
+
+    const current =
+        markets[position.symbol].price;
+
+
+    let multiplier =
+        100000;
+
+
+    if(position.symbol==="XAUUSD")
+        multiplier = 100;
+
+
+    if(position.symbol==="BTCUSD")
+        multiplier = 1;
+
+
+    if(position.symbol==="USDJPY")
+        multiplier = 1000;
+
+
+    let difference;
+
+
+    if(position.side==="BUY"){
+
+        difference =
+            current-position.entry;
+
+    }else{
+
+        difference =
+            position.entry-current;
+
+    }
+
+
+    return (
+        difference *
+        position.volume *
+        multiplier
+    );
 
 }
 
@@ -2388,241 +1922,158 @@ function openTrade(side){
 
 function updatePositions(){
 
-    positions.forEach(
-        position=>{
-
-            const current =
-                markets[
-                    position.symbol
-                ].price;
-
-            let reason =
-                null;
+    let floating = 0;
 
 
-            if(
-                position.tp !== null &&
-                (
-                    position.side === "BUY"
-                        ? current >= position.tp
-                        : current <= position.tp
-                )
-            ){
+    positions.forEach(position=>{
 
-                reason =
-                    "Take Profit";
+        const pl =
+            calculatePL(position);
 
-            }
+        floating += pl;
 
 
-            if(
-                position.sl !== null &&
-                (
-                    position.side === "BUY"
-                        ? current <= position.sl
-                        : current >= position.sl
-                )
-            ){
-
-                reason =
-                    "Stop Loss";
-
-            }
+        const current =
+            markets[position.symbol].price;
 
 
-            if(reason){
+        let closeReason = null;
 
-                closePosition(
-                    position.id,
-                    reason
-                );
 
-            }
+        if(
+            position.tp!==null &&
+            (
+                position.side==="BUY"
+                ? current>=position.tp
+                : current<=position.tp
+            )
+        ){
+
+            closeReason = "TP";
 
         }
-    );
 
 
-    updateAccountDisplay();
+        if(
+            position.sl!==null &&
+            (
+                position.side==="BUY"
+                ? current<=position.sl
+                : current>=position.sl
+            )
+        ){
+
+            closeReason = "SL";
+
+        }
+
+
+        if(closeReason){
+
+            closePosition(
+                position.id,
+                closeReason
+            );
+
+        }
+
+    });
+
+
+    const equity =
+        balance + floating;
+
+
+    document.getElementById(
+        "equityValue"
+    ).textContent =
+        money(equity);
+
+
+    document.getElementById(
+        "floatingValue"
+    ).textContent =
+        money(floating);
+
+
+    document.getElementById(
+        "positionsValue"
+    ).textContent =
+        positions.length;
+
 
     renderPositions();
 
 }
 
 
-function updateAccountDisplay(){
-
-    const floating =
-        positions.reduce(
-            (
-                sum,
-                position
-            ) =>
-                sum +
-                calculatePL(
-                    position
-                ),
-            0
-        );
-
-
-    document.getElementById(
-        "floatingPL"
-    ).textContent =
-        money(floating);
-
-    document.getElementById(
-        "equity"
-    ).textContent =
-        money(
-            balance +
-            floating
-        );
-
-    document.getElementById(
-        "balance"
-    ).textContent =
-        money(balance);
-
-    document.getElementById(
-        "walletBalance"
-    ).textContent =
-        money(balance);
-
-    document.getElementById(
-        "openPositions"
-    ).textContent =
-        positions.length;
-
-}
-
-
-/* =========================================================
-   RENDER POSITIONS
-========================================================= */
-
 function renderPositions(){
 
-    const body =
+    const tbody =
         document.getElementById(
-            "positionsBody"
+            "positionsTable"
         );
 
 
-    if(!positions.length){
+    tbody.innerHTML = "";
 
-        body.innerHTML =
-            `
-            <tr>
-                <td
-                    colspan="9"
-                    class="empty"
+
+    positions.forEach(p=>{
+
+        const pl =
+            calculatePL(p);
+
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${escapeHtml(p.symbol)}</td>
+
+            <td>${escapeHtml(p.side)}</td>
+
+            <td>${p.volume}</td>
+
+            <td>${priceFormat(p.symbol,p.entry)}</td>
+
+            <td>${priceFormat(
+                p.symbol,
+                markets[p.symbol].price
+            )}</td>
+
+            <td>${
+                p.tp===null
+                ? "-"
+                : priceFormat(p.symbol,p.tp)
+            }</td>
+
+            <td>${
+                p.sl===null
+                ? "-"
+                : priceFormat(p.symbol,p.sl)
+            }</td>
+
+            <td class="${pl>=0?'profit':'loss'}">
+                ${money(pl)}
+            </td>
+
+            <td>
+                <button
+                    class="btn btn-red"
+                    onclick="closePosition('${p.id}','MANUAL')"
                 >
-                    No open positions
-                </td>
-            </tr>
-            `;
+                    CLOSE
+                </button>
+            </td>
 
-        return;
-
-    }
+        `;
 
 
-    body.innerHTML =
-        positions.map(
-            position=>{
+        tbody.appendChild(row);
 
-                const current =
-                    markets[
-                        position.symbol
-                    ].price;
-
-                const pl =
-                    calculatePL(
-                        position
-                    );
-
-
-                return `
-                <tr>
-
-                    <td>
-                        ${position.symbol}
-                    </td>
-
-                    <td>
-                        ${position.side}
-                    </td>
-
-                    <td>
-                        ${position.volume}
-                    </td>
-
-                    <td>
-                        ${formatPrice(
-                            position.symbol,
-                            position.entry
-                        )}
-                    </td>
-
-                    <td>
-                        ${formatPrice(
-                            position.symbol,
-                            current
-                        )}
-                    </td>
-
-                    <td>
-                        ${
-                            position.tp === null
-                                ? "-"
-                                : formatPrice(
-                                    position.symbol,
-                                    position.tp
-                                )
-                        }
-                    </td>
-
-                    <td>
-                        ${
-                            position.sl === null
-                                ? "-"
-                                : formatPrice(
-                                    position.symbol,
-                                    position.sl
-                                )
-                        }
-                    </td>
-
-                    <td class="${
-                        pl >= 0
-                            ? "price-up"
-                            : "price-down"
-                    }">
-
-                        ${money(pl)}
-
-                    </td>
-
-                    <td>
-
-                        <button
-                            class="small-btn"
-                            onclick="closePosition(
-                                '${position.id}',
-                                'Manual Close'
-                            )"
-                        >
-                            CLOSE
-                        </button>
-
-                    </td>
-
-                </tr>
-                `;
-
-            }
-        ).join("");
+    });
 
 }
 
@@ -2631,64 +2082,48 @@ function renderPositions(){
    CLOSE POSITION
 ========================================================= */
 
-function closePosition(
-    id,
-    reason
-){
+function closePosition(id,reason){
 
     const index =
         positions.findIndex(
-            p =>
-                p.id === id
+            p=>String(p.id)===String(id)
         );
 
-    if(index === -1)
+
+    if(index===-1)
         return;
 
 
-    const position =
+    const p =
         positions[index];
 
+
     const exit =
-        markets[
-            position.symbol
-        ].price;
+        markets[p.symbol].price;
+
 
     const pl =
-        calculatePL(
-            position
-        );
+        calculatePL(p);
 
 
-    balance +=
-        pl;
+    balance += pl;
 
 
     history.unshift({
 
-        symbol:
-            position.symbol,
+        symbol:p.symbol,
 
-        side:
-            position.side,
+        side:p.side,
 
-        volume:
-            position.volume,
+        volume:p.volume,
 
-        entry:
-            position.entry,
+        entry:p.entry,
 
-        exit:
-            exit,
+        exit:exit,
 
-        pl:
-            pl,
+        pl:pl,
 
-        reason:
-            reason,
-
-        time:
-            new Date()
+        reason:reason
 
     });
 
@@ -2699,11 +2134,13 @@ function closePosition(
     );
 
 
+    updateAccountUI();
+
     renderHistory();
 
     renderPositions();
 
-    updateAccountDisplay();
+    drawChart();
 
 }
 
@@ -2714,83 +2151,92 @@ function closePosition(
 
 function renderHistory(){
 
-    const body =
+    const tbody =
         document.getElementById(
-            "historyBody"
+            "historyTable"
         );
 
 
-    if(!history.length){
+    tbody.innerHTML = "";
 
-        body.innerHTML =
-            `
-            <tr>
-                <td
-                    colspan="7"
-                    class="empty"
-                >
-                    No completed trades
-                </td>
-            </tr>
-            `;
 
-        return;
+    history.forEach(h=>{
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>${escapeHtml(h.symbol)}</td>
+
+            <td>${escapeHtml(h.side)}</td>
+
+            <td>${h.volume}</td>
+
+            <td>${priceFormat(h.symbol,h.entry)}</td>
+
+            <td>${priceFormat(h.symbol,h.exit)}</td>
+
+            <td class="${h.pl>=0?'profit':'loss'}">
+                ${money(h.pl)}
+            </td>
+
+        `;
+
+
+        tbody.appendChild(row);
+
+    });
+
+}
+
+
+/* =========================================================
+   ACCOUNT UI
+========================================================= */
+
+function updateAccountUI(){
+
+    document.getElementById(
+        "balanceValue"
+    ).textContent =
+        money(balance);
+
+
+    document.getElementById(
+        "walletBalance"
+    ).textContent =
+        money(balance);
+
+
+    document.getElementById(
+        "walletMode"
+    ).textContent =
+        currentMode;
+
+
+    const walletNotice =
+        document.getElementById(
+            "walletNotice"
+        );
+
+
+    if(currentMode==="DEMO"){
+
+        walletNotice.innerHTML =
+            "Demo wallet funds are virtual. " +
+            "Withdrawal requests are recorded as " +
+            "virtual requests.";
+
+    }else{
+
+        walletNotice.innerHTML =
+            "Live interface selected. " +
+            "Real-money settlement is not connected " +
+            "by this simulator.";
 
     }
-
-
-    body.innerHTML =
-        history.map(
-            item=>{
-
-                return `
-                <tr>
-
-                    <td>
-                        ${item.symbol}
-                    </td>
-
-                    <td>
-                        ${item.side}
-                    </td>
-
-                    <td>
-                        ${item.volume}
-                    </td>
-
-                    <td>
-                        ${formatPrice(
-                            item.symbol,
-                            item.entry
-                        )}
-                    </td>
-
-                    <td>
-                        ${formatPrice(
-                            item.symbol,
-                            item.exit
-                        )}
-                    </td>
-
-                    <td class="${
-                        item.pl >= 0
-                            ? "price-up"
-                            : "price-down"
-                    }">
-
-                        ${money(item.pl)}
-
-                    </td>
-
-                    <td>
-                        ${item.reason}
-                    </td>
-
-                </tr>
-                `;
-
-            }
-        ).join("");
 
 }
 
@@ -2801,93 +2247,347 @@ function renderHistory(){
 
 function setMode(mode){
 
-    currentMode =
-        mode;
+    currentMode = mode;
 
 
-    document.getElementById(
-        "demoBtn"
-    ).classList.toggle(
-        "active",
-        mode === "DEMO"
-    );
+    const badge =
+        document.getElementById(
+            "modeBadge"
+        );
 
 
-    document.getElementById(
-        "liveBtn"
-    ).classList.toggle(
-        "active",
-        mode === "LIVE"
-    );
+    const notice =
+        document.getElementById(
+            "marketNotice"
+        );
 
 
-    document.getElementById(
-        "modeNotice"
-    ).textContent =
-        mode === "DEMO"
-            ? "Demo mode uses virtual funds and simulated market execution."
-            : "Live interface selected. Real-money execution is not connected yet.";
+    if(mode==="DEMO"){
+
+        badge.textContent =
+            "SIMULATION MODE";
+
+        badge.className =
+            "mode-badge demo-badge";
+
+        notice.className =
+            "notice";
+
+        notice.innerHTML =
+            "Demo market prices and account funds are simulated.";
+
+    }else{
+
+        badge.textContent =
+            "LIVE INTERFACE";
+
+        badge.className =
+            "mode-badge live-badge";
+
+        notice.className =
+            "notice live";
+
+        notice.innerHTML =
+            "Live interface selected. Real-money order execution is not connected.";
+
+    }
+
+
+    updateAccountUI();
 
 }
 
 
 /* =========================================================
-   ESCAPE HTML
+   CHART TOOLS
 ========================================================= */
 
-function escapeHtml(value){
+function zoomChart(amount){
 
-    return String(
-        value ?? ""
-    )
-    .replaceAll(
-        "&",
-        "&amp;"
-    )
-    .replaceAll(
-        "<",
-        "&lt;"
-    )
-    .replaceAll(
-        ">",
-        "&gt;"
-    )
-    .replaceAll(
-        '"',
-        "&quot;"
-    )
-    .replaceAll(
-        "'",
-        "&#039;"
+    zoom *= amount;
+
+    zoom =
+        Math.max(
+            0.5,
+            Math.min(
+                5,
+                zoom
+            )
+        );
+
+    drawChart();
+
+}
+
+
+function resetChart(){
+
+    zoom = 1;
+
+    chartOffset = 0;
+
+    drawChart();
+
+}
+
+
+function toggleGrid(){
+
+    gridEnabled =
+        !gridEnabled;
+
+
+    document.getElementById(
+        "gridButton"
+    ).classList.toggle(
+        "active",
+        gridEnabled
+    );
+
+
+    drawChart();
+
+}
+
+
+function setCandleStyle(style){
+
+    candleStyle =
+        style;
+
+    drawChart();
+
+}
+
+
+function toggleFullscreen(){
+
+    const box =
+        document.getElementById(
+            "chartContainer"
+        );
+
+
+    box.classList.toggle(
+        "fullscreen-mode"
+    );
+
+
+    setTimeout(
+        resizeCanvas,
+        100
     );
 
 }
+
+
+/* =========================================================
+   DRAG CHART
+========================================================= */
+
+let dragging = false;
+
+let dragStartX = 0;
+
+let startingOffset = 0;
+
+
+canvas.addEventListener(
+    "mousedown",
+    e=>{
+
+        dragging = true;
+
+        dragStartX = e.clientX;
+
+        startingOffset = chartOffset;
+
+    }
+);
+
+
+window.addEventListener(
+    "mouseup",
+    ()=>{
+
+        dragging = false;
+
+    }
+);
+
+
+window.addEventListener(
+    "mousemove",
+    e=>{
+
+        if(!dragging)
+            return;
+
+
+        const distance =
+            e.clientX-dragStartX;
+
+
+        chartOffset =
+            Math.round(
+                startingOffset -
+                distance/8
+            );
+
+
+        chartOffset =
+            Math.max(
+                0,
+                Math.min(
+                    candles.length-20,
+                    chartOffset
+                )
+            );
+
+
+        drawChart();
+
+    }
+);
+
+
+canvas.addEventListener(
+    "touchstart",
+    e=>{
+
+        if(!e.touches[0])
+            return;
+
+
+        dragging = true;
+
+        dragStartX =
+            e.touches[0].clientX;
+
+        startingOffset =
+            chartOffset;
+
+    },
+    {passive:true}
+);
+
+
+canvas.addEventListener(
+    "touchend",
+    ()=>{
+
+        dragging = false;
+
+    }
+);
+
+
+canvas.addEventListener(
+    "touchmove",
+    e=>{
+
+        if(!dragging || !e.touches[0])
+            return;
+
+
+        const distance =
+            e.touches[0].clientX -
+            dragStartX;
+
+
+        chartOffset =
+            Math.round(
+                startingOffset -
+                distance/8
+            );
+
+
+        chartOffset =
+            Math.max(
+                0,
+                Math.min(
+                    candles.length-20,
+                    chartOffset
+                )
+            );
+
+
+        drawChart();
+
+    },
+    {passive:true}
+);
+
+
+/* =========================================================
+   MOUSE WHEEL ZOOM
+========================================================= */
+
+canvas.addEventListener(
+    "wheel",
+    e=>{
+
+        e.preventDefault();
+
+        zoomChart(
+            e.deltaY < 0
+            ? 1.15
+            : 0.87
+        );
+
+    },
+    {passive:false}
+);
 
 
 /* =========================================================
    WITHDRAWAL STATUS
 ========================================================= */
 
-function withdrawalStatusClass(
-    status
+function showWithdrawalStatus(
+    message,
+    type="info"
 ){
 
-    return (
-        "status-badge status-" +
-        status
-    );
-
-}
+    const box =
+        document.getElementById(
+            "withdrawStatus"
+        );
 
 
-function formatDate(date){
+    box.style.display =
+        "block";
 
-    if(!date)
-        return "-";
 
-    return new Date(
-        date
-    ).toLocaleString();
+    if(type==="success"){
+
+        box.style.background =
+            "#123b24";
+
+        box.style.color =
+            "#7dffae";
+
+    }else if(type==="error"){
+
+        box.style.background =
+            "#4a151b";
+
+        box.style.color =
+            "#ff8b8b";
+
+    }else{
+
+        box.style.background =
+            "#10263d";
+
+        box.style.color =
+            "#b9d4ec";
+
+    }
+
+
+    box.innerHTML =
+        message;
 
 }
 
@@ -2905,93 +2605,94 @@ async function submitWithdrawal(){
             ).value
         );
 
+
     const wallet =
         document.getElementById(
             "walletAddress"
         ).value.trim();
+
 
     const network =
         document.getElementById(
             "walletNetwork"
         ).value.trim();
 
+
     const message =
         document.getElementById(
             "withdrawMessage"
         ).value.trim();
 
-    const statusBox =
-        document.getElementById(
-            "withdrawStatus"
-        );
 
-
-    if(
-        !amount ||
-        amount <= 0
-    ){
-
-        statusBox.textContent =
-            "Enter a valid withdrawal amount.";
-
-        statusBox.className =
-            "status withdraw-error";
-
-        return;
-
-    }
-
-
-    if(
-        amount >
-        balance
-    ){
-
-        statusBox.textContent =
-            "Withdrawal amount is greater than your available balance.";
-
-        statusBox.className =
-            "status withdraw-error";
-
-        return;
-
-    }
-
-
-    if(!wallet){
-
-        statusBox.textContent =
-            "Enter your wallet address.";
-
-        statusBox.className =
-            "status withdraw-error";
-
-        return;
-
-    }
-
-
-    if(!network){
-
-        statusBox.textContent =
-            "Enter the wallet network.";
-
-        statusBox.className =
-            "status withdraw-error";
-
-        return;
-
-    }
-
-
-    statusBox.textContent =
-        "Submitting withdrawal...";
-
-    statusBox.className =
-        "status withdraw-processing";
+    showWithdrawalStatus(
+        "Submitting withdrawal request...",
+        "info"
+    );
 
 
     try{
+
+        if(!amount || amount<=0){
+
+            throw new Error(
+                "Enter a valid withdrawal amount."
+            );
+
+        }
+
+
+        if(amount>balance){
+
+            throw new Error(
+                "Insufficient available balance. Current balance: " +
+                money(balance)
+            );
+
+        }
+
+
+        if(!wallet){
+
+            throw new Error(
+                "Enter the wallet address or destination."
+            );
+
+        }
+
+
+        if(!network){
+
+            throw new Error(
+                "Select a withdrawal network or method."
+            );
+
+        }
+
+
+        const requestData = {
+
+            mode:currentMode,
+
+            amount:amount,
+
+            currency:"USD",
+
+            withdrawal_method:network,
+
+            destination:wallet,
+
+            note:message || null,
+
+            status:"PENDING"
+
+        };
+
+
+        console.log(
+            "Withdrawal request:",
+            requestData
+        );
+
 
         const response =
             await fetch(
@@ -3019,118 +2720,180 @@ async function submitWithdrawal(){
                     },
 
                     body:
-                        JSON.stringify({
-
-                            mode:
-                                currentMode,
-
-                            amount:
-                                amount,
-
-                            currency:
-                                "USD",
-
-                            withdrawal_method:
-                                network,
-
-                            destination:
-                                wallet,
-
-                            note:
-                                message,
-
-                            status:
-                                "PENDING"
-
-                        })
+                        JSON.stringify(
+                            requestData
+                        )
 
                 }
             );
 
 
+        const responseText =
+            await response.text();
+
+
+        console.log(
+            "Supabase HTTP status:",
+            response.status
+        );
+
+
+        console.log(
+            "Supabase response:",
+            responseText
+        );
+
+
         if(!response.ok){
 
-            const error =
-                await response.text();
+            let detailedError =
+                responseText;
 
-            console.error(
-                "SUPABASE ERROR:",
-                error
-            );
+
+            try{
+
+                const errorObject =
+                    JSON.parse(
+                        responseText
+                    );
+
+
+                if(errorObject.code){
+
+                    detailedError =
+                        "Code " +
+                        errorObject.code +
+                        ": " +
+                        detailedError;
+
+                }
+
+
+                if(errorObject.message){
+
+                    detailedError +=
+                        "<br><br>Message: " +
+                        escapeHtml(
+                            errorObject.message
+                        );
+
+                }
+
+
+                if(errorObject.details){
+
+                    detailedError +=
+                        "<br>Details: " +
+                        escapeHtml(
+                            errorObject.details
+                        );
+
+                }
+
+
+                if(errorObject.hint){
+
+                    detailedError +=
+                        "<br>Hint: " +
+                        escapeHtml(
+                            errorObject.hint
+                        );
+
+                }
+
+            }catch(e){
+
+                detailedError =
+                    escapeHtml(
+                        responseText
+                    );
+
+            }
+
 
             throw new Error(
-                error
+                "Supabase HTTP " +
+                response.status +
+                "<br><br>" +
+                detailedError
             );
 
         }
 
 
-        const result =
-            await response.json();
+        /* SUCCESS */
 
-        console.log(
-            "Withdrawal created:",
-            result
-        );
+        balance -= amount;
 
 
-        /*
-         * The request has now been created
-         * in Supabase as PENDING.
-         */
-
-        statusBox.textContent =
-            "Withdrawal submitted successfully. Status: PENDING";
-
-        statusBox.className =
-            "status withdraw-pending";
-
-
-        /*
-         * Deduct from the local simulator
-         * after the request has successfully
-         * been created.
-         */
-
-        balance -=
-            amount;
+        updateAccountUI();
 
 
         document.getElementById(
             "withdrawAmount"
         ).value = "";
 
+
         document.getElementById(
             "walletAddress"
         ).value = "";
 
-        document.getElementById(
-            "walletNetwork"
-        ).value = "";
 
         document.getElementById(
             "withdrawMessage"
         ).value = "";
 
 
-        updateAccountDisplay();
+        showWithdrawalStatus(
 
-        await loadWithdrawals();
+            "✓ Withdrawal request submitted successfully." +
 
-        await loadAdminWithdrawals();
+            "<br>Status: <strong>PENDING</strong>" +
+
+            "<br>Amount: " +
+            money(amount) +
+
+            "<br>Mode: " +
+            escapeHtml(currentMode) +
+
+            "<br><br>Order has been sent to the withdrawal queue.",
+
+            "success"
+
+        );
+
+
+        loadWithdrawals();
+
+        loadAdminWithdrawals();
 
 
     }catch(error){
 
         console.error(
+            "WITHDRAWAL ERROR:",
             error
         );
 
-        statusBox.textContent =
-            "Withdrawal request failed. Check Supabase table and permissions.";
 
-        statusBox.className =
-            "status withdraw-error";
+        showWithdrawalStatus(
+
+            "<strong>Withdrawal failed</strong>" +
+
+            "<br><br>" +
+
+            error.message +
+
+            "<br><br>" +
+
+            "<small>" +
+            "This is the exact server/database response. " +
+            "Do not run another SQL query until we see this message." +
+            "</small>",
+
+            "error"
+
+        );
 
     }
 
@@ -3138,7 +2901,7 @@ async function submitWithdrawal(){
 
 
 /* =========================================================
-   LOAD WITHDRAWALS
+   LOAD USER WITHDRAWALS
 ========================================================= */
 
 async function loadWithdrawals(){
@@ -3147,10 +2910,12 @@ async function loadWithdrawals(){
 
         const response =
             await fetch(
+
                 SUPABASE_URL +
                 "/rest/v1/withdrawal_requests" +
                 "?select=*" +
                 "&order=created_at.desc",
+
                 {
 
                     method:"GET",
@@ -3167,17 +2932,18 @@ async function loadWithdrawals(){
                     }
 
                 }
+
             );
 
 
         if(!response.ok){
 
-            const error =
-                await response.text();
-
-            throw new Error(
-                error
+            console.log(
+                "Withdrawal load error:",
+                await response.text()
             );
+
+            return;
 
         }
 
@@ -3194,7 +2960,7 @@ async function loadWithdrawals(){
     }catch(error){
 
         console.error(
-            "Withdrawal loading error:",
+            "Load withdrawals error:",
             error
         );
 
@@ -3204,32 +2970,27 @@ async function loadWithdrawals(){
 
 
 /* =========================================================
-   RENDER WITHDRAWALS
+   RENDER USER WITHDRAWALS
 ========================================================= */
 
-function renderWithdrawals(
-    data
-){
+function renderWithdrawals(data){
 
-    const body =
+    const tbody =
         document.getElementById(
-            "withdrawalsBody"
+            "withdrawalsTable"
         );
 
 
-    if(
-        !data ||
-        !data.length
-    ){
+    tbody.innerHTML = "";
 
-        body.innerHTML =
+
+    if(!data || !data.length){
+
+        tbody.innerHTML =
             `
             <tr>
-                <td
-                    colspan="7"
-                    class="empty"
-                >
-                    No withdrawal orders
+                <td colspan="7">
+                    No withdrawal orders yet.
                 </td>
             </tr>
             `;
@@ -3239,74 +3000,99 @@ function renderWithdrawals(
     }
 
 
-    body.innerHTML =
-        data.map(
-            item=>{
+    data.forEach(item=>{
 
-                return `
-                <tr>
+        const row =
+            document.createElement("tr");
 
-                    <td>
-                        ${String(
-                            item.id
-                        ).substring(
-                            0,
-                            8
-                        )}...
-                    </td>
 
-                    <td>
-                        ${item.mode}
-                    </td>
+        let statusClass =
+            "";
 
-                    <td>
-                        ${item.currency || "USD"}
-                        ${Number(
-                            item.amount
-                        ).toFixed(2)}
-                    </td>
 
-                    <td>
-                        ${escapeHtml(
-                            item.withdrawal_method
-                        )}
-                    </td>
+        if(
+            item.status==="APPROVED" ||
+            item.status==="PAID"
+        ){
 
-                    <td>
-                        ${escapeHtml(
-                            item.destination
-                        )}
-                    </td>
+            statusClass =
+                "profit";
 
-                    <td>
+        }
 
-                        <span
-                            class="${withdrawalStatusClass(
-                                item.status
-                            )}"
-                        >
-                            ${item.status}
-                        </span>
 
-                    </td>
+        if(
+            item.status==="REJECTED" ||
+            item.status==="CANCELLED"
+        ){
 
-                    <td>
-                        ${formatDate(
-                            item.created_at
-                        )}
-                    </td>
+            statusClass =
+                "loss";
 
-                </tr>
-                `;
+        }
 
-            }
-        ).join("");
+
+        row.innerHTML = `
+
+            <td>
+                ${escapeHtml(
+                    String(item.id).slice(0,8)
+                )}...
+            </td>
+
+            <td>
+                ${escapeHtml(
+                    item.mode || ""
+                )}
+            </td>
+
+            <td>
+                $${Number(
+                    item.amount || 0
+                ).toFixed(2)}
+            </td>
+
+            <td>
+                ${escapeHtml(
+                    item.withdrawal_method || ""
+                )}
+            </td>
+
+            <td>
+                ${escapeHtml(
+                    item.destination || ""
+                )}
+            </td>
+
+            <td class="${statusClass}">
+                <strong>
+                    ${escapeHtml(
+                        item.status || ""
+                    )}
+                </strong>
+            </td>
+
+            <td>
+                ${item.created_at
+                    ? new Date(
+                        item.created_at
+                      ).toLocaleString()
+                    : "-"
+                }
+            </td>
+
+        `;
+
+
+        tbody.appendChild(row);
+
+    });
 
 }
 
 
 /* =========================================================
-   ADMIN LOAD
+   ADMIN WITHDRAWALS
 ========================================================= */
 
 async function loadAdminWithdrawals(){
@@ -3315,10 +3101,12 @@ async function loadAdminWithdrawals(){
 
         const response =
             await fetch(
+
                 SUPABASE_URL +
                 "/rest/v1/withdrawal_requests" +
                 "?select=*" +
                 "&order=created_at.desc",
+
                 {
 
                     method:"GET",
@@ -3335,14 +3123,13 @@ async function loadAdminWithdrawals(){
                     }
 
                 }
+
             );
 
 
         if(!response.ok){
 
-            throw new Error(
-                await response.text()
-            );
+            return;
 
         }
 
@@ -3372,29 +3159,24 @@ async function loadAdminWithdrawals(){
    ADMIN TABLE
 ========================================================= */
 
-function renderAdminWithdrawals(
-    data
-){
+function renderAdminWithdrawals(data){
 
-    const body =
+    const tbody =
         document.getElementById(
-            "adminWithdrawalsBody"
+            "adminWithdrawalsTable"
         );
 
 
-    if(
-        !data ||
-        !data.length
-    ){
+    tbody.innerHTML = "";
 
-        body.innerHTML =
+
+    if(!data || !data.length){
+
+        tbody.innerHTML =
             `
             <tr>
-                <td
-                    colspan="8"
-                    class="empty"
-                >
-                    No withdrawal orders
+                <td colspan="7">
+                    No withdrawal requests.
                 </td>
             </tr>
             `;
@@ -3404,117 +3186,102 @@ function renderAdminWithdrawals(
     }
 
 
-    body.innerHTML =
-        data.map(
-            item=>{
+    data.forEach(item=>{
 
-                return `
-                <tr>
+        const row =
+            document.createElement("tr");
 
-                    <td>
-                        ${String(
-                            item.id
-                        ).substring(
-                            0,
-                            8
-                        )}...
-                    </td>
 
-                    <td>
-                        ${item.mode}
-                    </td>
+        row.innerHTML = `
 
-                    <td>
-                        $${Number(
-                            item.amount
-                        ).toFixed(2)}
-                    </td>
+            <td>
+                ${escapeHtml(
+                    String(item.id).slice(0,8)
+                )}...
+            </td>
 
-                    <td>
-                        ${escapeHtml(
-                            item.withdrawal_method
-                        )}
-                    </td>
+            <td>
+                ${escapeHtml(
+                    item.mode || ""
+                )}
+            </td>
 
-                    <td>
-                        ${escapeHtml(
-                            item.destination
-                        )}
-                    </td>
+            <td>
+                $${Number(
+                    item.amount || 0
+                ).toFixed(2)}
+            </td>
 
-                    <td>
+            <td>
+                ${escapeHtml(
+                    item.withdrawal_method || ""
+                )}
+            </td>
 
-                        <span
-                            class="${withdrawalStatusClass(
-                                item.status
-                            )}"
-                        >
-                            ${item.status}
-                        </span>
+            <td>
+                ${escapeHtml(
+                    item.destination || ""
+                )}
+            </td>
 
-                    </td>
+            <td>
+                <strong>
+                    ${escapeHtml(
+                        item.status || ""
+                    )}
+                </strong>
+            </td>
 
-                    <td>
-                        ${formatDate(
-                            item.created_at
-                        )}
-                    </td>
+            <td>
 
-                    <td>
+                <div style="display:flex;gap:5px;">
 
-                        <div class="admin-buttons">
+                    <button
+                        class="btn btn-gold"
+                        onclick="adminChangeWithdrawal(
+                            '${item.id}',
+                            'PROCESSING'
+                        )"
+                    >
+                        PROCESS
+                    </button>
 
-                            <button
-                                onclick="adminChangeWithdrawal(
-                                    '${item.id}',
-                                    'PROCESSING'
-                                )"
-                            >
-                                PROCESS
-                            </button>
+                    <button
+                        class="btn btn-green"
+                        onclick="adminChangeWithdrawal(
+                            '${item.id}',
+                            'APPROVED'
+                        )"
+                    >
+                        APPROVE
+                    </button>
 
-                            <button
-                                onclick="adminChangeWithdrawal(
-                                    '${item.id}',
-                                    'APPROVED'
-                                )"
-                            >
-                                APPROVE
-                            </button>
+                    <button
+                        class="btn btn-red"
+                        onclick="adminChangeWithdrawal(
+                            '${item.id}',
+                            'REJECTED'
+                        )"
+                    >
+                        REJECT
+                    </button>
 
-                            <button
-                                onclick="adminChangeWithdrawal(
-                                    '${item.id}',
-                                    'REJECTED'
-                                )"
-                            >
-                                REJECT
-                            </button>
+                </div>
 
-                            <button
-                                onclick="adminChangeWithdrawal(
-                                    '${item.id}',
-                                    'PAID'
-                                )"
-                            >
-                                PAID
-                            </button>
+            </td>
 
-                        </div>
+        `;
 
-                    </td>
 
-                </tr>
-                `;
+        tbody.appendChild(row);
 
-            }
-        ).join("");
+    });
 
 }
 
 
 /* =========================================================
-   ADMIN UPDATE
+   ADMIN CHANGE STATUS
 ========================================================= */
 
 async function adminChangeWithdrawal(
@@ -3522,26 +3289,35 @@ async function adminChangeWithdrawal(
     newStatus
 ){
 
-    const confirmed =
-        confirm(
-            "Change withdrawal status to " +
-            newStatus +
-            "?"
+    const box =
+        document.getElementById(
+            "adminStatus"
         );
 
 
-    if(!confirmed)
-        return;
+    box.style.display =
+        "block";
+
+    box.style.background =
+        "#10263d";
+
+    box.style.color =
+        "#b9d4ec";
+
+    box.innerHTML =
+        "Updating order status...";
 
 
     try{
 
         const response =
             await fetch(
+
                 SUPABASE_URL +
                 "/rest/v1/withdrawal_requests" +
                 "?id=eq." +
                 encodeURIComponent(id),
+
                 {
 
                     method:"PATCH",
@@ -3566,81 +3342,73 @@ async function adminChangeWithdrawal(
                     body:
                         JSON.stringify({
 
-                            status:
-                                newStatus,
+                            status:newStatus,
 
                             reviewed_at:
                                 new Date()
-                                    .toISOString()
+                                .toISOString()
 
                         })
 
                 }
+
             );
+
+
+        const responseText =
+            await response.text();
 
 
         if(!response.ok){
 
-            const error =
-                await response.text();
-
-            console.error(
-                "ADMIN UPDATE ERROR:",
-                error
-            );
-
             throw new Error(
-                error
+
+                "Supabase HTTP " +
+                response.status +
+                ": " +
+                responseText
+
             );
 
         }
 
 
-        await loadWithdrawals();
+        box.style.background =
+            "#123b24";
 
-        await loadAdminWithdrawals();
+        box.style.color =
+            "#7dffae";
+
+        box.innerHTML =
+            "Order status changed to <strong>" +
+            escapeHtml(newStatus) +
+            "</strong>.";
 
 
-        alert(
-            "Withdrawal status changed to " +
-            newStatus
-        );
+        loadWithdrawals();
+
+        loadAdminWithdrawals();
 
 
     }catch(error){
 
-        console.error(
-            error
-        );
+        box.style.background =
+            "#4a151b";
 
-        alert(
-            "Admin status update is blocked by Supabase permissions. " +
-            "The withdrawal request itself is working."
-        );
+        box.style.color =
+            "#ff8b8b";
+
+        box.innerHTML =
+
+            "<strong>Admin update failed</strong>" +
+            "<br><br>" +
+            escapeHtml(
+                error.message
+            ) +
+            "<br><br>" +
+            "The current Supabase RLS setup only allows status changes by an authenticated admin.";
 
     }
-
-}
-
-
-/* =========================================================
-   FULLSCREEN
-========================================================= */
-
-function toggleFullscreen(){
-
-    document
-        .getElementById(
-            "chartWrap"
-        )
-        .classList.toggle(
-            "fullscreen-mode"
-        );
-
-    setTimeout(
-        resizeCanvas,
-        100
-    );
 
 }
 
@@ -3651,9 +3419,11 @@ function toggleFullscreen(){
 
 createInitialCandles();
 
-resizeCanvas();
+setMode("DEMO");
 
-updateMarketDisplay();
+updateMarketUI();
+
+updateAccountUI();
 
 renderPositions();
 
@@ -3663,30 +3433,9 @@ loadWithdrawals();
 
 loadAdminWithdrawals();
 
-
-/* =========================================================
-   LIVE MARKET LOOP
-========================================================= */
-
-setInterval(
-    updateMarkets,
-    1000
-);
-
-
-/* =========================================================
-   WITHDRAWAL REFRESH
-========================================================= */
-
-setInterval(
-    function(){
-
-        loadWithdrawals();
-
-        loadAdminWithdrawals();
-
-    },
-    5000
+setTimeout(
+    resizeCanvas,
+    100
 );
 
 </script>
