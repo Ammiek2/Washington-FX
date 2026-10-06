@@ -135,7 +135,8 @@ button:hover{
     margin-bottom:10px;
 }
 
-.chart-toolbar button{
+.chart-toolbar button,
+.chart-toolbar select{
     min-height:38px;
     padding:7px 11px;
 }
@@ -255,6 +256,7 @@ th{
 }
 
 @media(max-width:900px){
+
     .cards{
         grid-template-columns:repeat(2,1fr);
     }
@@ -265,6 +267,7 @@ th{
 }
 
 @media(max-width:600px){
+
     .cards{
         grid-template-columns:1fr 1fr;
     }
@@ -330,6 +333,7 @@ th{
 
     </div>
 
+
     <div class="cards">
 
         <div class="card">
@@ -354,6 +358,7 @@ th{
 
     </div>
 
+
     <div class="layout">
 
         <div>
@@ -374,6 +379,7 @@ th{
 
                 </div>
 
+
                 <div class="chart-toolbar">
 
                     <button id="zoomIn">
@@ -392,13 +398,31 @@ th{
                         Latest
                     </button>
 
+                    <button id="gridBtn">
+                        Grid: ON
+                    </button>
+
+                    <select id="candleStyle">
+                        <option value="classic">
+                            Classic Candles
+                        </option>
+
+                        <option value="hollow">
+                            Hollow Candles
+                        </option>
+                    </select>
+
                 </div>
 
+
                 <div class="chart-wrap">
+
                     <canvas id="chart"></canvas>
+
                 </div>
 
             </div>
+
 
             <div class="panel">
 
@@ -409,6 +433,7 @@ th{
                     <table>
 
                         <thead>
+
                             <tr>
                                 <th>Symbol</th>
                                 <th>Side</th>
@@ -419,6 +444,7 @@ th{
                                 <th>P/L</th>
                                 <th></th>
                             </tr>
+
                         </thead>
 
                         <tbody id="positions"></tbody>
@@ -429,6 +455,7 @@ th{
 
             </div>
 
+
             <div class="panel">
 
                 <h3>Trade History</h3>
@@ -438,6 +465,7 @@ th{
                     <table>
 
                         <thead>
+
                             <tr>
                                 <th>Time</th>
                                 <th>Symbol</th>
@@ -445,6 +473,7 @@ th{
                                 <th>Volume</th>
                                 <th>Result</th>
                             </tr>
+
                         </thead>
 
                         <tbody id="history"></tbody>
@@ -457,11 +486,13 @@ th{
 
         </div>
 
+
         <aside>
 
             <div class="panel">
 
                 <h3>New Order</h3>
+
 
                 <div class="order-field">
 
@@ -477,6 +508,7 @@ th{
 
                 </div>
 
+
                 <div class="order-field">
 
                     <label>Take Profit</label>
@@ -489,6 +521,7 @@ th{
                     >
 
                 </div>
+
 
                 <div class="order-field">
 
@@ -503,6 +536,7 @@ th{
 
                 </div>
 
+
                 <div class="order-actions">
 
                     <button id="buyBtn" class="buy">
@@ -515,9 +549,11 @@ th{
 
                 </div>
 
+
                 <div id="status" class="status">
                     Demo simulator ready.
                 </div>
+
 
                 <div id="liveNote" class="live-note">
                     Live interface selected. Real-money execution requires
@@ -525,6 +561,7 @@ th{
                 </div>
 
             </div>
+
 
             <div class="panel">
 
@@ -538,8 +575,7 @@ th{
                 <p class="notice">
                     Switching to Live keeps the same trading interface,
                     chart, controls and account display. Real-money
-                    execution is only enabled after a genuine broker
-                    connection and server-side execution layer are added.
+                    execution requires a genuine broker connection.
                 </p>
 
             </div>
@@ -550,6 +586,7 @@ th{
 
 </div>
 
+
 <script>
 
 const canvas =
@@ -558,25 +595,35 @@ const canvas =
 const ctx =
     canvas.getContext("2d");
 
+
 let balance = 10000;
+
 let price = 1.08500;
+
 let positions = [];
+
 let history = [];
+
 let candles = [];
 
 let currentMode = "DEMO";
 
 
 /* =========================
-   CHART VIEW
+   CHART SETTINGS
 ========================= */
 
 let zoom = 1;
 
 const MIN_ZOOM = 0.5;
+
 const MAX_ZOOM = 6;
 
 let offset = 0;
+
+let gridEnabled = true;
+
+let candleStyle = "classic";
 
 
 /* =========================
@@ -591,14 +638,14 @@ for(let i=0;i<70;i++){
         (Math.random()-0.5)*0.002;
 
     let close =
-        open + move;
+        open+move;
 
     let high =
-        Math.max(open,close) +
+        Math.max(open,close)+
         Math.random()*0.001;
 
     let low =
-        Math.min(open,close) -
+        Math.min(open,close)-
         Math.random()*0.001;
 
     candles.push({
@@ -608,7 +655,7 @@ for(let i=0;i<70;i++){
         close
     });
 
-    price = close;
+    price=close;
 }
 
 
@@ -622,10 +669,10 @@ function resizeCanvas(){
         canvas.getBoundingClientRect();
 
     canvas.width =
-        rect.width * devicePixelRatio;
+        rect.width*devicePixelRatio;
 
     canvas.height =
-        rect.height * devicePixelRatio;
+        rect.height*devicePixelRatio;
 
     ctx.setTransform(
         devicePixelRatio,
@@ -641,6 +688,76 @@ function resizeCanvas(){
 
 
 /* =========================
+   DRAW GRID
+========================= */
+
+function drawGrid(
+    width,
+    height
+){
+
+    if(!gridEnabled)
+        return;
+
+
+    ctx.save();
+
+    ctx.lineWidth=1;
+
+    ctx.strokeStyle="rgba(255,255,255,0.08)";
+
+
+    const verticalLines=10;
+
+    const horizontalLines=8;
+
+
+    for(
+        let i=1;
+        i<verticalLines;
+        i++
+    ){
+
+        const x =
+            (width/verticalLines)*i;
+
+        ctx.beginPath();
+
+        ctx.moveTo(x,0);
+
+        ctx.lineTo(x,height);
+
+        ctx.stroke();
+
+    }
+
+
+    for(
+        let i=1;
+        i<horizontalLines;
+        i++
+    ){
+
+        const y =
+            (height/horizontalLines)*i;
+
+        ctx.beginPath();
+
+        ctx.moveTo(0,y);
+
+        ctx.lineTo(width,y);
+
+        ctx.stroke();
+
+    }
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================
    DRAW CHART
 ========================= */
 
@@ -652,6 +769,7 @@ function drawChart(){
     const height =
         canvas.clientHeight;
 
+
     ctx.clearRect(
         0,
         0,
@@ -659,14 +777,23 @@ function drawChart(){
         height
     );
 
-    if(candles.length === 0)
+
+    if(candles.length===0)
         return;
+
+
+    drawGrid(
+        width,
+        height
+    );
 
 
     let visibleCount =
         Math.max(
             8,
-            Math.floor(candles.length / zoom)
+            Math.floor(
+                candles.length/zoom
+            )
         );
 
 
@@ -702,96 +829,206 @@ function drawChart(){
         candles.slice(start,end);
 
 
-    if(visibleCandles.length === 0)
+    if(
+        visibleCandles.length===0
+    )
         return;
 
 
     let max =
         Math.max(
-            ...visibleCandles.map(c=>c.high)
+            ...visibleCandles.map(
+                c=>c.high
+            )
         );
+
 
     let min =
         Math.min(
-            ...visibleCandles.map(c=>c.low)
+            ...visibleCandles.map(
+                c=>c.low
+            )
         );
 
 
     const range =
-        max-min || 0.001;
+        max-min||0.001;
 
 
     const gap =
-        width/visibleCandles.length;
+        width/
+        visibleCandles.length;
 
 
-    visibleCandles.forEach((c,i)=>{
+    visibleCandles.forEach(
+        (c,i)=>{
 
-        const x =
-            i*gap+gap/2;
-
-
-        const openY =
-            height-
-            ((c.open-min)/range)*height;
+            const x =
+                i*gap+
+                gap/2;
 
 
-        const closeY =
-            height-
-            ((c.close-min)/range)*height;
+            const openY =
+                height-
+                ((c.open-min)/range)*
+                height;
 
 
-        const highY =
-            height-
-            ((c.high-min)/range)*height;
+            const closeY =
+                height-
+                ((c.close-min)/range)*
+                height;
 
 
-        const lowY =
-            height-
-            ((c.low-min)/range)*height;
+            const highY =
+                height-
+                ((c.high-min)/range)*
+                height;
 
 
-        ctx.beginPath();
-
-        ctx.moveTo(x,highY);
-
-        ctx.lineTo(x,lowY);
-
-        ctx.strokeStyle =
-            c.close>=c.open
-            ? "#36d98b"
-            : "#ff5967";
-
-        ctx.stroke();
+            const lowY =
+                height-
+                ((c.low-min)/range)*
+                height;
 
 
-        const bodyTop =
-            Math.min(openY,closeY);
+            const bullish =
+                c.close>=c.open;
 
 
-        const bodyHeight =
-            Math.max(
-                2,
-                Math.abs(closeY-openY)
+            const candleColor =
+                bullish
+                ? "#36d98b"
+                : "#ff5967";
+
+
+            /* Wick */
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x,
+                highY
             );
 
+            ctx.lineTo(
+                x,
+                lowY
+            );
 
-        ctx.fillStyle =
-            c.close>=c.open
-            ? "#36d98b"
-            : "#ff5967";
+            ctx.strokeStyle =
+                candleColor;
+
+            ctx.stroke();
 
 
-        ctx.fillRect(
-            x-gap*0.3,
-            bodyTop,
-            gap*0.6,
-            bodyHeight
-        );
+            /* Body */
 
-    });
+            const bodyTop =
+                Math.min(
+                    openY,
+                    closeY
+                );
+
+
+            const bodyHeight =
+                Math.max(
+                    2,
+                    Math.abs(
+                        closeY-openY
+                    )
+                );
+
+
+            const bodyWidth =
+                Math.max(
+                    2,
+                    gap*0.6
+                );
+
+
+            if(
+                candleStyle==="classic"
+            ){
+
+                ctx.fillStyle =
+                    candleColor;
+
+                ctx.fillRect(
+                    x-bodyWidth/2,
+                    bodyTop,
+                    bodyWidth,
+                    bodyHeight
+                );
+
+            }
+            else{
+
+                ctx.strokeStyle =
+                    candleColor;
+
+                ctx.lineWidth=1.5;
+
+                ctx.strokeRect(
+                    x-bodyWidth/2,
+                    bodyTop,
+                    bodyWidth,
+                    bodyHeight
+                );
+
+            }
+
+        }
+    );
 
 }
+
+
+/* =========================
+   GRID BUTTON
+========================= */
+
+document
+.getElementById("gridBtn")
+.addEventListener(
+    "click",
+    ()=>{
+
+        gridEnabled =
+            !gridEnabled;
+
+
+        document
+        .getElementById("gridBtn")
+        .textContent =
+            gridEnabled
+            ? "Grid: ON"
+            : "Grid: OFF";
+
+
+        drawChart();
+
+    }
+);
+
+
+/* =========================
+   CANDLE STYLE
+========================= */
+
+document
+.getElementById("candleStyle")
+.addEventListener(
+    "change",
+    event=>{
+
+        candleStyle =
+            event.target.value;
+
+        drawChart();
+
+    }
+);
 
 
 /* =========================
@@ -800,55 +1037,68 @@ function drawChart(){
 
 document
 .getElementById("zoomIn")
-.addEventListener("click",()=>{
+.addEventListener(
+    "click",
+    ()=>{
 
-    zoom =
-        Math.min(
-            MAX_ZOOM,
-            zoom+0.5
-        );
+        zoom =
+            Math.min(
+                MAX_ZOOM,
+                zoom+0.5
+            );
 
-    drawChart();
+        drawChart();
 
-});
+    }
+);
 
 
 document
 .getElementById("zoomOut")
-.addEventListener("click",()=>{
+.addEventListener(
+    "click",
+    ()=>{
 
-    zoom =
-        Math.max(
-            MIN_ZOOM,
-            zoom-0.5
-        );
+        zoom =
+            Math.max(
+                MIN_ZOOM,
+                zoom-0.5
+            );
 
-    drawChart();
+        drawChart();
 
-});
+    }
+);
 
 
 document
 .getElementById("resetZoom")
-.addEventListener("click",()=>{
+.addEventListener(
+    "click",
+    ()=>{
 
-    zoom=1;
-    offset=0;
+        zoom=1;
 
-    drawChart();
+        offset=0;
 
-});
+        drawChart();
+
+    }
+);
 
 
 document
 .getElementById("latest")
-.addEventListener("click",()=>{
+.addEventListener(
+    "click",
+    ()=>{
 
-    offset=0;
+        offset=0;
 
-    drawChart();
+        drawChart();
 
-});
+    }
+);
 
 
 /* =========================
@@ -856,7 +1106,9 @@ document
 ========================= */
 
 let dragging=false;
+
 let dragStartX=0;
+
 let dragStartOffset=0;
 
 
@@ -889,11 +1141,12 @@ window.addEventListener(
 
 
         const dx =
-            event.clientX-dragStartX;
+            event.clientX-
+            dragStartX;
 
 
         const candleWidth =
-            canvas.clientWidth /
+            canvas.clientWidth/
             Math.max(
                 8,
                 Math.floor(
@@ -909,7 +1162,8 @@ window.addEventListener(
 
 
         offset =
-            dragStartOffset-candleMove;
+            dragStartOffset-
+            candleMove;
 
 
         drawChart();
@@ -933,11 +1187,13 @@ window.addEventListener(
 
 
 /* =========================
-   PHONE TOUCH DRAG
+   PHONE DRAG
 ========================= */
 
 let touchStartX=0;
+
 let touchStartOffset=0;
+
 let touching=false;
 
 
@@ -945,8 +1201,11 @@ canvas.addEventListener(
     "touchstart",
     event=>{
 
-        if(event.touches.length!==1)
+        if(
+            event.touches.length!==1
+        )
             return;
+
 
         touching=true;
 
@@ -965,8 +1224,10 @@ canvas.addEventListener(
     "touchmove",
     event=>{
 
-        if(!touching ||
-           event.touches.length!==1)
+        if(
+            !touching ||
+            event.touches.length!==1
+        )
             return;
 
 
@@ -979,7 +1240,7 @@ canvas.addEventListener(
 
 
         const candleWidth =
-            canvas.clientWidth /
+            canvas.clientWidth/
             Math.max(
                 8,
                 Math.floor(
@@ -995,7 +1256,8 @@ canvas.addEventListener(
 
 
         offset =
-            touchStartOffset-candleMove;
+            touchStartOffset-
+            candleMove;
 
 
         drawChart();
@@ -1025,6 +1287,7 @@ canvas.addEventListener(
 
         event.preventDefault();
 
+
         if(event.deltaY<0){
 
             zoom =
@@ -1033,7 +1296,8 @@ canvas.addEventListener(
                     zoom+0.25
                 );
 
-        }else{
+        }
+        else{
 
             zoom =
                 Math.max(
@@ -1042,6 +1306,7 @@ canvas.addEventListener(
                 );
 
         }
+
 
         drawChart();
 
@@ -1057,9 +1322,11 @@ canvas.addEventListener(
 function updatePrice(){
 
     const move =
-        (Math.random()-0.5)*0.0008;
+        (Math.random()-0.5)*
+        0.0008;
 
-    price += move;
+
+    price+=move;
 
 
     if(price<=0)
@@ -1067,7 +1334,9 @@ function updatePrice(){
 
 
     const previousClose =
-        candles[candles.length-1].close;
+        candles[
+            candles.length-1
+        ].close;
 
 
     candles.push({
@@ -1095,14 +1364,17 @@ function updatePrice(){
         candles.shift();
 
 
-    document.getElementById("bid")
+    document
+    .getElementById("bid")
     .textContent =
         price.toFixed(5);
 
 
-    document.getElementById("ask")
+    document
+    .getElementById("ask")
     .textContent =
-        (price+0.00010).toFixed(5);
+        (price+0.00010)
+        .toFixed(5);
 
 
     updatePositions();
@@ -1120,11 +1392,16 @@ function openTrade(side){
 
     const volume =
         Number(
-            document.getElementById("volume").value
+            document
+            .getElementById("volume")
+            .value
         );
 
 
-    if(!Number.isFinite(volume)||volume<=0){
+    if(
+        !Number.isFinite(volume) ||
+        volume<=0
+    ){
 
         setStatus(
             "Enter a valid volume.",
@@ -1132,38 +1409,43 @@ function openTrade(side){
         );
 
         return;
+
     }
 
 
     let takeProfit =
         Number(
-            document.getElementById("takeProfit").value
+            document
+            .getElementById("takeProfit")
+            .value
         );
 
 
     let stopLoss =
         Number(
-            document.getElementById("stopLoss").value
+            document
+            .getElementById("stopLoss")
+            .value
         );
 
 
-    if(!Number.isFinite(takeProfit))
-        takeProfit = null;
+    if(
+        !Number.isFinite(takeProfit)
+    )
+        takeProfit=null;
 
 
-    if(!Number.isFinite(stopLoss))
-        stopLoss = null;
+    if(
+        !Number.isFinite(stopLoss)
+    )
+        stopLoss=null;
 
-
-    /*
-       Validate TP/SL direction.
-    */
 
     if(side==="BUY"){
 
         if(
-            takeProfit !== null &&
-            takeProfit <= price
+            takeProfit!==null &&
+            takeProfit<=price
         ){
 
             setStatus(
@@ -1172,12 +1454,13 @@ function openTrade(side){
             );
 
             return;
+
         }
 
 
         if(
-            stopLoss !== null &&
-            stopLoss >= price
+            stopLoss!==null &&
+            stopLoss>=price
         ){
 
             setStatus(
@@ -1186,6 +1469,7 @@ function openTrade(side){
             );
 
             return;
+
         }
 
     }
@@ -1194,8 +1478,8 @@ function openTrade(side){
     if(side==="SELL"){
 
         if(
-            takeProfit !== null &&
-            takeProfit >= price
+            takeProfit!==null &&
+            takeProfit>=price
         ){
 
             setStatus(
@@ -1204,12 +1488,13 @@ function openTrade(side){
             );
 
             return;
+
         }
 
 
         if(
-            stopLoss !== null &&
-            stopLoss <= price
+            stopLoss!==null &&
+            stopLoss<=price
         ){
 
             setStatus(
@@ -1218,6 +1503,7 @@ function openTrade(side){
             );
 
             return;
+
         }
 
     }
@@ -1228,7 +1514,9 @@ function openTrade(side){
         id:Date.now(),
 
         symbol:
-            document.getElementById("symbol").value,
+            document
+            .getElementById("symbol")
+            .value,
 
         side,
 
@@ -1268,132 +1556,130 @@ function updatePositions(){
     const positionsToClose=[];
 
 
-    positions.forEach(position=>{
+    positions.forEach(
+        position=>{
 
-        const difference =
-            position.side==="BUY"
-            ? price-position.entry
-            : position.entry-price;
-
-
-        position.pl =
-            difference*
-            position.volume*
-            100000;
+            const difference =
+                position.side==="BUY"
+                ? price-position.entry
+                : position.entry-price;
 
 
-        totalPL +=
-            position.pl;
+            position.pl =
+                difference*
+                position.volume*
+                100000;
 
 
-        /*
-           TP / SL automatic close
-        */
+            totalPL+=
+                position.pl;
 
-        if(position.side==="BUY"){
 
             if(
-                position.takeProfit !== null &&
-                price >= position.takeProfit
+                position.side==="BUY"
             ){
 
-                positionsToClose.push({
-                    id:position.id,
-                    reason:"Take Profit"
-                });
+                if(
+                    position.takeProfit!==null &&
+                    price>=position.takeProfit
+                ){
+
+                    positionsToClose.push({
+                        id:position.id,
+                        reason:"Take Profit"
+                    });
+
+                }
+                else if(
+                    position.stopLoss!==null &&
+                    price<=position.stopLoss
+                ){
+
+                    positionsToClose.push({
+                        id:position.id,
+                        reason:"Stop Loss"
+                    });
+
+                }
 
             }
-            else if(
-                position.stopLoss !== null &&
-                price <= position.stopLoss
+
+
+            if(
+                position.side==="SELL"
             ){
 
-                positionsToClose.push({
-                    id:position.id,
-                    reason:"Stop Loss"
-                });
+                if(
+                    position.takeProfit!==null &&
+                    price<=position.takeProfit
+                ){
+
+                    positionsToClose.push({
+                        id:position.id,
+                        reason:"Take Profit"
+                    });
+
+                }
+                else if(
+                    position.stopLoss!==null &&
+                    price>=position.stopLoss
+                ){
+
+                    positionsToClose.push({
+                        id:position.id,
+                        reason:"Stop Loss"
+                    });
+
+                }
 
             }
 
         }
+    );
 
 
-        if(position.side==="SELL"){
+    positionsToClose.forEach(
+        item=>{
 
-            if(
-                position.takeProfit !== null &&
-                price <= position.takeProfit
-            ){
-
-                positionsToClose.push({
-                    id:position.id,
-                    reason:"Take Profit"
-                });
-
-            }
-            else if(
-                position.stopLoss !== null &&
-                price >= position.stopLoss
-            ){
-
-                positionsToClose.push({
-                    id:position.id,
-                    reason:"Stop Loss"
-                });
-
-            }
-
-        }
-
-    });
-
-
-    /*
-       Close triggered positions after
-       calculating their P/L.
-    */
-
-    positionsToClose.forEach(item=>{
-
-        closePosition(
-            item.id,
-            item.reason
-        );
-
-    });
-
-
-    /*
-       Recalculate after automatic closes.
-    */
-
-    if(positionsToClose.length>0){
-
-        totalPL =
-            positions.reduce(
-                (sum,p)=>sum+p.pl,
-                0
+            closePosition(
+                item.id,
+                item.reason
             );
 
-    }
+        }
+    );
 
 
-    document.getElementById("pl")
+    totalPL =
+        positions.reduce(
+            (sum,p)=>sum+p.pl,
+            0
+        );
+
+
+    document
+    .getElementById("pl")
     .textContent =
         "$"+totalPL.toFixed(2);
 
 
-    document.getElementById("equity")
+    document
+    .getElementById("equity")
     .textContent =
-        "$"+(balance+totalPL).toFixed(2);
+        "$"+
+        (balance+totalPL)
+        .toFixed(2);
 
 
-    document.getElementById("balance")
+    document
+    .getElementById("balance")
     .textContent =
-        "$"+balance.toFixed(2);
+        "$"+
+        balance.toFixed(2);
 
 
-    document.getElementById("positionCount")
+    document
+    .getElementById("positionCount")
     .textContent =
         positions.length;
 
@@ -1410,82 +1696,93 @@ function updatePositions(){
 function renderPositions(){
 
     const body =
-        document.getElementById("positions");
+        document
+        .getElementById("positions");
+
 
     body.innerHTML="";
 
 
-    positions.forEach(position=>{
+    positions.forEach(
+        position=>{
 
-        const row =
-            document.createElement("tr");
-
-
-        const plClass =
-            position.pl>=0
-            ? "green"
-            : "red";
+            const row =
+                document
+                .createElement("tr");
 
 
-        const tp =
-            position.takeProfit === null
-            ? "-"
-            : position.takeProfit.toFixed(5);
+            const plClass =
+                position.pl>=0
+                ? "green"
+                : "red";
 
 
-        const sl =
-            position.stopLoss === null
-            ? "-"
-            : position.stopLoss.toFixed(5);
+            const tp =
+                position.takeProfit===null
+                ? "-"
+                : position.takeProfit
+                    .toFixed(5);
 
 
-        row.innerHTML=`
-
-            <td>${position.symbol}</td>
-
-            <td>${position.side}</td>
-
-            <td>${position.volume.toFixed(2)}</td>
-
-            <td>${position.entry.toFixed(5)}</td>
-
-            <td>${tp}</td>
-
-            <td>${sl}</td>
-
-            <td class="${plClass}">
-                $${position.pl.toFixed(2)}
-            </td>
-
-            <td>
-                <button data-close="${position.id}">
-                    Close
-                </button>
-            </td>
-
-        `;
+            const sl =
+                position.stopLoss===null
+                ? "-"
+                : position.stopLoss
+                    .toFixed(5);
 
 
-        body.appendChild(row);
+            row.innerHTML=`
 
-    });
+                <td>${position.symbol}</td>
+
+                <td>${position.side}</td>
+
+                <td>${position.volume.toFixed(2)}</td>
+
+                <td>${position.entry.toFixed(5)}</td>
+
+                <td>${tp}</td>
+
+                <td>${sl}</td>
+
+                <td class="${plClass}">
+                    $${position.pl.toFixed(2)}
+                </td>
+
+                <td>
+                    <button data-close="${position.id}">
+                        Close
+                    </button>
+                </td>
+
+            `;
+
+
+            body.appendChild(row);
+
+        }
+    );
 
 
     body
-    .querySelectorAll("[data-close]")
-    .forEach(button=>{
+    .querySelectorAll(
+        "[data-close]"
+    )
+    .forEach(
+        button=>{
 
-        button.addEventListener(
-            "click",
-            ()=>closePosition(
-                Number(
-                    button.dataset.close
-                ),
-                "Manual Close"
-            )
-        );
+            button.addEventListener(
+                "click",
+                ()=>closePosition(
+                    Number(
+                        button.dataset.close
+                    ),
+                    "Manual Close"
+                )
+            );
 
-    });
+        }
+    );
 
 }
 
@@ -1494,7 +1791,10 @@ function renderPositions(){
    CLOSE POSITION
 ========================= */
 
-function closePosition(id,reason="Manual Close"){
+function closePosition(
+    id,
+    reason="Manual Close"
+){
 
     const index =
         positions.findIndex(
@@ -1510,14 +1810,15 @@ function closePosition(id,reason="Manual Close"){
         positions[index];
 
 
-    balance +=
+    balance+=
         position.pl;
 
 
     history.unshift({
 
         time:
-            new Date().toLocaleTimeString(),
+            new Date()
+            .toLocaleTimeString(),
 
         symbol:
             position.symbol,
@@ -1561,46 +1862,56 @@ function closePosition(id,reason="Manual Close"){
 function renderHistory(){
 
     const body =
-        document.getElementById("history");
+        document
+        .getElementById("history");
+
 
     body.innerHTML="";
 
 
-    history.forEach(item=>{
+    history.forEach(
+        item=>{
 
-        const row =
-            document.createElement("tr");
-
-
-        const cls =
-            item.result>=0
-            ? "green"
-            : "red";
+            const row =
+                document
+                .createElement("tr");
 
 
-        row.innerHTML=`
-
-            <td>${item.time}</td>
-
-            <td>${item.symbol}</td>
-
-            <td>${item.side}</td>
-
-            <td>${item.volume.toFixed(2)}</td>
-
-            <td class="${cls}">
-                $${item.result.toFixed(2)}
-                <small style="display:block;color:#8da0b5;">
-                    ${item.reason}
-                </small>
-            </td>
-
-        `;
+            const cls =
+                item.result>=0
+                ? "green"
+                : "red";
 
 
-        body.appendChild(row);
+            row.innerHTML=`
 
-    });
+                <td>${item.time}</td>
+
+                <td>${item.symbol}</td>
+
+                <td>${item.side}</td>
+
+                <td>${item.volume.toFixed(2)}</td>
+
+                <td class="${cls}">
+                    $${item.result.toFixed(2)}
+
+                    <small style="
+                        display:block;
+                        color:#8da0b5;
+                    ">
+                        ${item.reason}
+                    </small>
+
+                </td>
+
+            `;
+
+
+            body.appendChild(row);
+
+        }
+    );
 
 }
 
@@ -1615,7 +1926,8 @@ function setStatus(
 ){
 
     const status =
-        document.getElementById("status");
+        document
+        .getElementById("status");
 
 
     status.textContent =
@@ -1667,17 +1979,20 @@ document
         currentMode="DEMO";
 
 
-        document.getElementById("modeText")
+        document
+        .getElementById("modeText")
         .textContent =
             "Demo FX uses virtual funds and simulated market execution.";
 
 
-        document.getElementById("modeBadge")
+        document
+        .getElementById("modeBadge")
         .textContent =
             "SIMULATION MODE";
 
 
-        document.getElementById("liveNote")
+        document
+        .getElementById("liveNote")
         .style.display =
             "none";
 
@@ -1703,23 +2018,20 @@ document
         currentMode="LIVE";
 
 
-        /*
-           Keep the exact same interface.
-           Do not reset chart, balance display,
-           positions or history.
-        */
-
-        document.getElementById("modeText")
+        document
+        .getElementById("modeText")
         .textContent =
             "Live FX interface selected. Real-money execution requires a connected broker.";
 
 
-        document.getElementById("modeBadge")
+        document
+        .getElementById("modeBadge")
         .textContent =
             "LIVE INTERFACE";
 
 
-        document.getElementById("liveNote")
+        document
+        .getElementById("liveNote")
         .style.display =
             "block";
 
@@ -1743,7 +2055,9 @@ document
     ()=>{
 
         setStatus(
-            document.getElementById("symbol").value+
+            document
+            .getElementById("symbol")
+            .value+
             " selected."
         );
 
