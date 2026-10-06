@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#07101c">
 <title>Washington FX</title>
 
 <style>
@@ -12,17 +13,20 @@
     padding:0;
 }
 
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#07101c;
-    color:#fff;
-    min-height:100vh;
+html,body{
+    width:100%;
+    min-height:100%;
 }
 
-button,
-input,
-select,
-textarea{
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#050b13;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+button,input,select,textarea{
     font:inherit;
 }
 
@@ -30,99 +34,245 @@ button{
     cursor:pointer;
 }
 
+button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+:root{
+    --bg:#050b13;
+    --panel:#0a1421;
+    --panel2:#0d1a2a;
+    --panel3:#101f31;
+    --border:#1c344c;
+    --border2:#29455f;
+    --text:#eaf4fb;
+    --muted:#7f97ad;
+    --cyan:#00c8ef;
+    --green:#19d69b;
+    --red:#ff5d73;
+    --yellow:#e7b84b;
+}
+
+body.fullscreen-chart-mode .header,
+body.fullscreen-chart-mode .main-navigation,
+body.fullscreen-chart-mode .notice,
+body.fullscreen-chart-mode .terminal-left,
+body.fullscreen-chart-mode .terminal-right,
+body.fullscreen-chart-mode .bottom-panel,
+body.fullscreen-chart-mode .footer{
+    display:none!important;
+}
+
+body.fullscreen-chart-mode .container{
+    max-width:none;
+    padding:0;
+}
+
+body.fullscreen-chart-mode .terminal-center{
+    width:100%;
+}
+
+body.fullscreen-chart-mode .chart-card{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    border-radius:0;
+    margin:0;
+}
+
+body.fullscreen-chart-mode .chart-canvas-wrap{
+    height:calc(100vh - 100px);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 .header{
-    background:#0c1726;
-    border-bottom:1px solid #1e344d;
-    padding:14px;
+    background:#081321;
+    border-bottom:1px solid #1c3249;
+    padding:11px 15px;
     position:sticky;
     top:0;
-    z-index:100;
+    z-index:500;
 }
 
 .header-inner{
-    max-width:1400px;
+    max-width:1600px;
     margin:auto;
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
     gap:15px;
 }
 
 .logo{
-    font-size:24px;
-    font-weight:800;
+    font-size:23px;
+    font-weight:900;
+    letter-spacing:.5px;
     color:#00d4ff;
+    white-space:nowrap;
 }
 
 .logo span{
     color:#fff;
 }
 
+.header-market{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#9db3c8;
+    font-size:13px;
+}
+
+.market-live-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#19d69b;
+    box-shadow:0 0 10px #19d69b;
+}
+
 .mode-buttons{
     display:flex;
-    gap:8px;
+    gap:7px;
 }
 
 .mode-btn{
     border:1px solid #31506d;
     background:#101f31;
     color:#bcd0e5;
-    padding:9px 15px;
-    border-radius:8px;
+    padding:8px 15px;
+    border-radius:7px;
+    font-weight:bold;
 }
 
 .mode-btn.active{
-    background:#00a8cc;
+    background:#008fb0;
     color:#fff;
     border-color:#00d4ff;
 }
 
+/* =========================================================
+   MAIN
+========================================================= */
+
 .container{
-    max-width:1400px;
+    max-width:1600px;
     margin:auto;
-    padding:15px;
+    padding:12px;
 }
 
 .notice{
-    background:#102238;
+    background:#0c1d30;
     border:1px solid #244361;
-    border-radius:10px;
-    padding:12px;
-    margin-bottom:15px;
+    border-radius:8px;
+    padding:9px 12px;
+    margin-bottom:10px;
     color:#c9d9e8;
-    font-size:13px;
+    font-size:12px;
 }
 
-.grid{
+.main-navigation{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    background:#091522;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:7px 9px;
+    margin-bottom:10px;
+}
+
+.nav-left,
+.nav-right{
+    display:flex;
+    gap:6px;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.nav-btn{
+    border:1px solid #233c54;
+    background:#0d1b2b;
+    color:#a9bfd1;
+    padding:7px 10px;
+    border-radius:6px;
+    font-size:12px;
+}
+
+.nav-btn.active,
+.nav-btn:hover{
+    color:#fff;
+    border-color:#00a8cc;
+    background:#102b40;
+}
+
+/* =========================================================
+   PROFESSIONAL TERMINAL
+========================================================= */
+
+.terminal{
     display:grid;
-    grid-template-columns:280px 1fr 330px;
-    gap:15px;
+    grid-template-columns:235px minmax(450px,1fr) 300px;
+    gap:8px;
+    align-items:start;
+}
+
+.terminal-left,
+.terminal-center,
+.terminal-right{
+    min-width:0;
 }
 
 .card{
-    background:#0c1726;
-    border:1px solid #1e344d;
-    border-radius:12px;
-    padding:15px;
-    margin-bottom:15px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:11px;
+    margin-bottom:8px;
 }
 
 .card h2,
 .card h3{
-    margin-bottom:12px;
+    margin-bottom:10px;
 }
+
+.card-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.card-title h3{
+    margin:0;
+    font-size:14px;
+}
+
+/* =========================================================
+   WATCHLIST
+========================================================= */
 
 .market-list{
     display:flex;
     flex-direction:column;
-    gap:8px;
+    gap:4px;
 }
 
 .market{
-    background:#101f31;
-    border:1px solid #203a55;
-    border-radius:8px;
-    padding:11px;
+    background:#0b1928;
+    border:1px solid #1a334b;
+    border-radius:6px;
+    padding:8px;
     cursor:pointer;
 }
 
@@ -132,97 +282,292 @@ button{
 
 .market.active{
     border-color:#00d4ff;
-    background:#122c43;
+    background:#10283d;
 }
 
 .market-top{
     display:flex;
     justify-content:space-between;
-    margin-bottom:5px;
+    gap:5px;
+    font-size:11px;
+    margin-bottom:4px;
 }
 
 .price{
-    font-size:18px;
+    font-size:15px;
     font-weight:bold;
 }
 
+.market-bottom{
+    display:flex;
+    justify-content:space-between;
+    margin-top:3px;
+}
+
 .up{
-    color:#18d99b;
+    color:var(--green)!important;
 }
 
 .down{
-    color:#ff5d73;
+    color:var(--red)!important;
+}
+
+.muted{
+    color:var(--muted);
+}
+
+/* =========================================================
+   CHART HEADER
+========================================================= */
+
+.chart-card{
+    padding:0;
+    overflow:hidden;
 }
 
 .chart-header{
+    padding:9px 10px 7px;
+    border-bottom:1px solid #1c344c;
+    background:#091523;
+}
+
+.chart-header-top{
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:10px;
-    margin-bottom:10px;
+}
+
+.symbol-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
 .chart-title{
-    font-size:20px;
+    font-size:18px;
     font-weight:bold;
 }
 
-canvas{
-    width:100%;
-    height:390px;
-    background:#07101c;
-    border:1px solid #203a55;
-    border-radius:10px;
-    display:block;
+.chart-price{
+    font-size:17px;
+    font-weight:bold;
 }
+
+.chart-change{
+    font-size:12px;
+}
+
+.chart-stats{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:7px;
+    font-size:11px;
+    color:#8da5bc;
+}
+
+.chart-stats span b{
+    color:#d8e8f4;
+}
+
+.chart-toolbar{
+    display:flex;
+    justify-content:space-between;
+    gap:5px;
+    align-items:center;
+    margin-top:8px;
+    flex-wrap:wrap;
+}
+
+.toolbar-group{
+    display:flex;
+    gap:4px;
+    flex-wrap:wrap;
+}
+
+.chart-tool{
+    border:1px solid #213b53;
+    background:#0c1b2b;
+    color:#9fb6c9;
+    border-radius:5px;
+    padding:5px 8px;
+    font-size:11px;
+}
+
+.chart-tool:hover,
+.chart-tool.active{
+    color:#fff;
+    background:#123149;
+    border-color:#00a8cc;
+}
+
+.chart-canvas-wrap{
+    position:relative;
+    height:480px;
+    background:#060d16;
+    overflow:hidden;
+}
+
+#chart{
+    width:100%;
+    height:100%;
+    display:block;
+    background:#060d16;
+}
+
+.chart-overlay{
+    position:absolute;
+    pointer-events:none;
+    inset:0;
+}
+
+.crosshair-label{
+    position:absolute;
+    display:none;
+    background:#15293c;
+    border:1px solid #41627c;
+    color:#dcebf5;
+    padding:3px 5px;
+    border-radius:3px;
+    font-size:10px;
+}
+
+.chart-watermark{
+    position:absolute;
+    left:15px;
+    bottom:12px;
+    color:rgba(130,160,185,.12);
+    font-size:28px;
+    font-weight:900;
+    pointer-events:none;
+}
+
+/* =========================================================
+   CHART BOTTOM
+========================================================= */
+
+.chart-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    padding:7px 10px;
+    background:#08131f;
+    border-top:1px solid #1c344c;
+    font-size:11px;
+}
+
+.chart-bottom-left,
+.chart-bottom-right{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.session-status{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.session-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#19d69b;
+}
+
+/* =========================================================
+   QUICK TRADE
+========================================================= */
+
+.quick-trade{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin-top:8px;
+}
+
+.quick-buy,
+.quick-sell{
+    padding:10px;
+    border:none;
+    border-radius:6px;
+    color:#fff;
+    font-weight:bold;
+}
+
+.quick-buy{
+    background:#087c60;
+}
+
+.quick-sell{
+    background:#a72f45;
+}
+
+.quick-buy:hover{
+    background:#099b77;
+}
+
+.quick-sell:hover{
+    background:#c23852;
+}
+
+/* =========================================================
+   ACCOUNT
+========================================================= */
 
 .account-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-bottom:15px;
+    grid-template-columns:repeat(2,1fr);
+    gap:6px;
 }
 
 .stat{
-    background:#101f31;
-    border:1px solid #203a55;
-    border-radius:10px;
-    padding:12px;
+    background:#0d1d2e;
+    border:1px solid #1e3851;
+    border-radius:7px;
+    padding:8px;
 }
 
 .stat-label{
-    color:#8da5bc;
-    font-size:12px;
-    margin-bottom:5px;
+    color:#7891a7;
+    font-size:10px;
+    margin-bottom:4px;
 }
 
 .stat-value{
-    font-size:19px;
+    font-size:14px;
     font-weight:bold;
 }
+
+/* =========================================================
+   ORDER TICKET
+========================================================= */
 
 .trade-controls{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:10px;
+    gap:7px;
 }
 
 label{
     display:block;
-    color:#91a9bf;
-    font-size:12px;
-    margin-bottom:5px;
+    color:#8ea6bb;
+    font-size:10px;
+    margin-bottom:4px;
 }
 
 input,
 select,
 textarea{
     width:100%;
-    background:#07101c;
+    background:#060f19;
     border:1px solid #29435e;
     color:#fff;
-    border-radius:7px;
-    padding:10px;
+    border-radius:6px;
+    padding:8px;
     outline:none;
 }
 
@@ -238,37 +583,38 @@ textarea:focus{
 
 .btn{
     border:none;
-    border-radius:8px;
-    padding:11px 14px;
+    border-radius:6px;
+    padding:9px 11px;
     font-weight:bold;
+    font-size:12px;
 }
 
 .btn-primary{
-    background:#00a8cc;
+    background:#008faf;
     color:#fff;
 }
 
 .btn-primary:hover{
-    background:#00c2eb;
+    background:#00b8dd;
 }
 
 .btn-success{
-    background:#079b70;
+    background:#078c67;
     color:#fff;
 }
 
 .btn-danger{
-    background:#c73852;
+    background:#bd354f;
     color:#fff;
 }
 
 .btn-warning{
-    background:#ad7b18;
+    background:#a97718;
     color:#fff;
 }
 
 .btn-secondary{
-    background:#1b3046;
+    background:#192d42;
     color:#d9e7f3;
 }
 
@@ -276,41 +622,62 @@ textarea:focus{
     background:#193e59;
     color:#fff;
     width:100%;
-    margin-top:8px;
+    margin-top:7px;
 }
 
 .action-row{
     display:flex;
-    gap:8px;
+    gap:6px;
     flex-wrap:wrap;
 }
 
+/* =========================================================
+   POSITION / ORDERS
+========================================================= */
+
 .position,
 .order{
-    background:#101f31;
-    border:1px solid #203a55;
-    border-radius:8px;
-    padding:11px;
-    margin-bottom:8px;
+    background:#0c1b2b;
+    border:1px solid #1d3850;
+    border-radius:7px;
+    padding:9px;
+    margin-bottom:6px;
+}
+
+.position:hover,
+.order:hover{
+    border-color:#2b4d68;
 }
 
 .position-top,
 .order-top{
     display:flex;
     justify-content:space-between;
-    gap:10px;
+    gap:8px;
 }
 
 .small{
-    color:#8da5bc;
-    font-size:12px;
+    color:#8199ae;
+    font-size:10px;
+    line-height:1.55;
+}
+
+.position-actions{
+    display:flex;
+    gap:5px;
+    margin-top:7px;
+}
+
+.position-marker{
+    color:#8fa9bc;
+    font-size:10px;
 }
 
 .badge{
     display:inline-block;
-    padding:4px 8px;
-    border-radius:20px;
-    font-size:11px;
+    padding:3px 6px;
+    border-radius:15px;
+    font-size:9px;
     font-weight:bold;
 }
 
@@ -336,37 +703,16 @@ textarea:focus{
     color:#ffb0bc;
 }
 
-.section-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:12px;
-}
-
-.wallet-address{
-    background:#07101c;
-    border:1px solid #31506d;
-    border-radius:8px;
-    padding:12px;
-    word-break:break-all;
-    color:#8ff1ff;
-    font-size:13px;
-}
-
-.deposit-info{
-    background:#102238;
-    border-radius:8px;
-    padding:10px;
-    margin:10px 0;
-    font-size:13px;
-    color:#bdd0e2;
-}
+/* =========================================================
+   STATUS
+========================================================= */
 
 .status-message{
-    padding:10px;
-    border-radius:8px;
-    margin-top:10px;
+    padding:8px;
+    border-radius:6px;
+    margin-top:8px;
     display:none;
+    font-size:11px;
 }
 
 .status-message.show{
@@ -383,6 +729,78 @@ textarea:focus{
     color:#ffb4c0;
 }
 
+/* =========================================================
+   DEPOSIT
+========================================================= */
+
+.wallet-address{
+    background:#050d16;
+    border:1px solid #31506d;
+    border-radius:6px;
+    padding:10px;
+    word-break:break-all;
+    color:#8ff1ff;
+    font-size:11px;
+}
+
+.deposit-info{
+    background:#102238;
+    border-radius:6px;
+    padding:8px;
+    margin:7px 0;
+    font-size:10px;
+    color:#bdd0e2;
+    line-height:1.5;
+}
+
+/* =========================================================
+   ANALYTICS
+========================================================= */
+
+.stats-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+}
+
+.mini-stat{
+    background:#0c1b2b;
+    border:1px solid #1c354d;
+    border-radius:6px;
+    padding:7px;
+}
+
+.mini-stat strong{
+    display:block;
+    margin-top:3px;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:10px;
+}
+
+th,
+td{
+    border-bottom:1px solid #243a50;
+    padding:6px;
+    text-align:left;
+    vertical-align:top;
+}
+
+th{
+    color:#8fb0ca;
+}
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
 .admin-panel{
     border:1px solid #784f1a;
     background:#17140d;
@@ -396,62 +814,140 @@ textarea:focus{
     display:none;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:12px;
-}
-
-th,
-td{
-    border-bottom:1px solid #243a50;
-    padding:8px;
-    text-align:left;
-    vertical-align:top;
-}
-
-th{
-    color:#8fb0ca;
-}
+/* =========================================================
+   FOOTER
+========================================================= */
 
 .footer{
     text-align:center;
-    color:#6f879d;
-    font-size:12px;
-    padding:25px;
+    color:#60788e;
+    font-size:10px;
+    padding:20px;
 }
 
-@media(max-width:1100px){
-    .grid{
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:1250px){
+
+    .terminal{
+        grid-template-columns:210px minmax(400px,1fr) 270px;
+    }
+
+}
+
+@media(max-width:1050px){
+
+    .terminal{
         grid-template-columns:1fr;
     }
+
+    .terminal-left,
+    .terminal-right{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+    }
+
+    .terminal-left .card,
+    .terminal-right .card{
+        margin-bottom:0;
+    }
+
+    .terminal-center{
+        order:-1;
+    }
+
 }
 
 @media(max-width:700px){
+
     .header-inner{
-        flex-direction:column;
-        align-items:stretch;
+        flex-wrap:wrap;
     }
 
-    .mode-buttons{
+    .header-market{
+        order:3;
         width:100%;
     }
 
-    .mode-btn{
-        flex:1;
+    .container{
+        padding:5px;
     }
 
-    .account-grid{
-        grid-template-columns:1fr;
+    .main-navigation{
+        overflow-x:auto;
+    }
+
+    .terminal-left,
+    .terminal-right{
+        display:block;
+    }
+
+    .terminal-left .card,
+    .terminal-right .card{
+        margin-bottom:7px;
+    }
+
+    .chart-canvas-wrap{
+        height:390px;
+    }
+
+    .chart-stats{
+        gap:7px;
     }
 
     .trade-controls{
         grid-template-columns:1fr;
     }
 
-    canvas{
-        height:300px;
+    .account-grid{
+        grid-template-columns:repeat(2,1fr);
     }
+
+    .stats-row{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .chart-title{
+        font-size:16px;
+    }
+
+}
+
+/* =========================================================
+   FULLSCREEN BUTTON
+========================================================= */
+
+.fullscreen-close{
+    display:none;
+}
+
+body.fullscreen-chart-mode .fullscreen-close{
+    display:block;
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+    width:7px;
+    height:7px;
+}
+
+::-webkit-scrollbar-track{
+    background:#07101c;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#1e3b54;
+    border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#2d5876;
 }
 </style>
 </head>
@@ -459,340 +955,1321 @@ th{
 <body>
 
 <header class="header">
-    <div class="header-inner">
-        <div class="logo">WASHINGTON <span>FX</span></div>
 
-        <div class="mode-buttons">
-            <button id="demoModeBtn" class="mode-btn active" onclick="setMode('DEMO')">
-                DEMO
-            </button>
+<div class="header-inner">
 
-            <button id="liveModeBtn" class="mode-btn" onclick="setMode('LIVE')">
-                LIVE
-            </button>
-        </div>
-    </div>
-</header>
-
-<main class="container">
-
-    <div class="notice">
-        <strong id="modeNotice">DEMO TRADING MODE</strong><br>
-        Market prices and trading activity in DEMO mode are simulated for testing.
+    <div class="logo">
+        WASHINGTON <span>FX</span>
     </div>
 
-    <div class="grid">
-
-        <!-- LEFT -->
-        <aside>
-
-            <div class="card">
-                <h3>Markets</h3>
-
-                <div id="marketList" class="market-list"></div>
-            </div>
-
-            <div class="card">
-                <h3>Account</h3>
-
-                <div class="stat">
-                    <div class="stat-label">Available Balance</div>
-                    <div id="balanceValue" class="stat-value">$10,000.00</div>
-                </div>
-
-                <br>
-
-                <div class="stat">
-                    <div class="stat-label">Equity</div>
-                    <div id="equityValue" class="stat-value">$10,000.00</div>
-                </div>
-
-                <br>
-
-                <div class="stat">
-                    <div class="stat-label">Open Positions</div>
-                    <div id="positionCount" class="stat-value">0</div>
-                </div>
-            </div>
-
-        </aside>
-
-        <!-- CENTER -->
-        <section>
-
-            <div class="card">
-
-                <div class="chart-header">
-                    <div>
-                        <div id="chartTitle" class="chart-title">EUR/USD</div>
-                        <div id="chartPrice" class="small">1.10000</div>
-                    </div>
-
-                    <div id="chartDirection" class="up">
-                        +0.00%
-                    </div>
-                </div>
-
-                <canvas id="chart"></canvas>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Trade</h3>
-
-                <div class="trade-controls">
-
-                    <div>
-                        <label>Symbol</label>
-                        <select id="tradeSymbol"></select>
-                    </div>
-
-                    <div>
-                        <label>Lot Size</label>
-                        <input id="lotSize" type="number" value="0.01" min="0.01" step="0.01">
-                    </div>
-
-                    <div>
-                        <label>Stop Loss</label>
-                        <input id="stopLoss" type="number" placeholder="Optional">
-                    </div>
-
-                    <div>
-                        <label>Take Profit</label>
-                        <input id="takeProfit" type="number" placeholder="Optional">
-                    </div>
-
-                    <button class="btn btn-success" onclick="openTrade('BUY')">
-                        BUY
-                    </button>
-
-                    <button class="btn btn-danger" onclick="openTrade('SELL')">
-                        SELL
-                    </button>
-
-                </div>
-
-                <div id="tradeMessage" class="status-message"></div>
-
-            </div>
-
-            <div class="card">
-
-                <div class="section-title">
-                    <h3>Open Positions</h3>
-                    <span class="small">Live simulation</span>
-                </div>
-
-                <div id="positions"></div>
-
-            </div>
-
-            <div class="card">
-
-                <div class="section-title">
-                    <h3>Trade History</h3>
-                </div>
-
-                <div id="tradeHistory"></div>
-
-            </div>
-
-        </section>
-
-        <!-- RIGHT -->
-        <aside>
-
-            <!-- DEPOSIT PORTAL -->
-            <div class="card">
-
-                <div class="section-title">
-                    <h3>Deposit Portal</h3>
-                    <span class="badge processing">MANUAL</span>
-                </div>
-
-                <label>Network</label>
-                <div id="depositNetwork" class="deposit-info">
-                    Loading...
-                </div>
-
-                <label>Deposit Wallet Address</label>
-                <div id="depositAddress" class="wallet-address">
-                    Loading...
-                </div>
-
-                <button class="btn btn-copy" onclick="copyDepositAddress()">
-                    COPY WALLET ADDRESS
-                </button>
-
-                <div class="deposit-info">
-                    Send only the supported asset/network to this address.
-                    Your balance should not be credited simply by clicking
-                    the copy button.
-                </div>
-
-                <div class="trade-controls">
-
-                    <div>
-                        <label>Amount</label>
-                        <input id="depositAmount" type="number" min="1" placeholder="USD amount">
-                    </div>
-
-                    <div>
-                        <label>Transaction Hash</label>
-                        <input id="depositTx" placeholder="TXID / Hash">
-                    </div>
-
-                    <button class="btn btn-primary full" onclick="submitDepositRequest()">
-                        I HAVE MADE A DEPOSIT
-                    </button>
-
-                </div>
-
-                <div id="depositMessage" class="status-message"></div>
-
-            </div>
-
-            <!-- WITHDRAW -->
-            <div class="card">
-
-                <div class="section-title">
-                    <h3>Withdraw</h3>
-                </div>
-
-                <div class="trade-controls">
-
-                    <div class="full">
-                        <label>Amount</label>
-                        <input id="withdrawAmount" type="number" min="1" step="0.01">
-                    </div>
-
-                    <div>
-                        <label>Method</label>
-                        <select id="withdrawMethod">
-                            <option value="USDT TRC20">USDT TRC20</option>
-                            <option value="USDT ERC20">USDT ERC20</option>
-                            <option value="BANK">Bank</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Destination</label>
-                        <input id="withdrawDestination" placeholder="Wallet / bank details">
-                    </div>
-
-                    <div class="full">
-                        <label>Note</label>
-                        <textarea id="withdrawNote" rows="2"></textarea>
-                    </div>
-
-                    <button class="btn btn-primary full" onclick="submitWithdrawal()">
-                        SUBMIT WITHDRAWAL
-                    </button>
-
-                </div>
-
-                <div id="withdrawMessage" class="status-message"></div>
-
-            </div>
-
-            <!-- MY WITHDRAWALS -->
-            <div class="card">
-
-                <div class="section-title">
-                    <h3>My Withdrawal Orders</h3>
-                    <button class="btn btn-secondary" onclick="loadWithdrawals()">
-                        REFRESH
-                    </button>
-                </div>
-
-                <div id="withdrawalOrders"></div>
-
-            </div>
-
-        </aside>
-
+    <div class="header-market">
+        <span class="market-live-dot"></span>
+        <span id="globalMarketStatus">MARKETS OPEN</span>
+        <span>|</span>
+        <span id="globalClock">--:--:--</span>
     </div>
 
-    <!-- ADMIN -->
-    <div id="adminPanel" class="card admin-panel admin-hidden">
+    <div class="mode-buttons">
 
-        <div class="section-title">
-            <h2 class="admin-header">ADMIN CONTROL PANEL</h2>
-            <button class="btn btn-secondary" onclick="hideAdminPanel()">
-                CLOSE
-            </button>
-        </div>
+        <button
+            id="demoModeBtn"
+            class="mode-btn active"
+            onclick="setMode('DEMO')">
+            DEMO
+        </button>
 
-        <div class="notice">
-            Testing administration area. The final version should use
-            Supabase authentication and an admin role. Do not use an
-            anonymous UPDATE policy as the permanent security solution.
-        </div>
-
-        <h3>Deposit Wallet Settings</h3>
-
-        <div class="trade-controls">
-
-            <div>
-                <label>Network</label>
-                <input id="adminDepositNetwork" value="TRC20">
-            </div>
-
-            <div>
-                <label>Wallet Address</label>
-                <input id="adminDepositAddress" placeholder="Enter deposit wallet address">
-            </div>
-
-            <div>
-                <label>Deposit Method</label>
-                <input id="adminDepositMethod" value="USDT TRC20">
-            </div>
-
-            <div>
-                <label>Active</label>
-                <select id="adminDepositActive">
-                    <option value="true">Active</option>
-                    <option value="false">Disabled</option>
-                </select>
-            </div>
-
-            <button class="btn btn-warning full" onclick="updateDepositSettings()">
-                UPDATE DEPOSIT ADDRESS
-            </button>
-
-        </div>
-
-        <div id="adminDepositMessage" class="status-message"></div>
-
-        <br>
-
-        <h3>Withdrawal Queue</h3>
-
-        <div id="adminWithdrawals">
-            Loading...
-        </div>
-
-    </div>
-
-    <div class="card">
-
-        <div class="section-title">
-            <h3>Administration</h3>
-        </div>
-
-        <button class="btn btn-secondary" onclick="showAdminPanel()">
-            OPEN ADMIN TEST PANEL
+        <button
+            id="liveModeBtn"
+            class="mode-btn"
+            onclick="setMode('LIVE')">
+            LIVE
         </button>
 
     </div>
 
+</div>
+
+</header>
+
+<main class="container">
+
+<div class="notice">
+
+    <strong id="modeNotice">
+        DEMO TRADING MODE
+    </strong>
+
+    <span>
+        — Market prices and trading activity in DEMO mode are simulated for testing.
+    </span>
+
+</div>
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<div class="main-navigation">
+
+    <div class="nav-left">
+
+        <button class="nav-btn active">
+            TRADE
+        </button>
+
+        <button class="nav-btn">
+            MARKETS
+        </button>
+
+        <button class="nav-btn">
+            ANALYSIS
+        </button>
+
+        <button class="nav-btn">
+            POSITIONS
+        </button>
+
+        <button class="nav-btn">
+            HISTORY
+        </button>
+
+    </div>
+
+    <div class="nav-right">
+
+        <button
+            class="nav-btn"
+            onclick="showAccountStats()">
+            ACCOUNT
+        </button>
+
+        <button
+            class="nav-btn"
+            onclick="showAdminPanel()">
+            ADMIN
+        </button>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     PROFESSIONAL TERMINAL
+===================================================== -->
+
+<div class="terminal">
+
+<!-- =====================================================
+     LEFT PANEL
+===================================================== -->
+
+<aside class="terminal-left">
+
+<div class="card">
+
+    <div class="card-title">
+        <h3>MARKET WATCH</h3>
+
+        <span
+            class="badge complete">
+            LIVE
+        </span>
+    </div>
+
+    <div
+        id="marketList"
+        class="market-list">
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-title">
+        <h3>ACCOUNT</h3>
+    </div>
+
+    <div class="account-grid">
+
+        <div class="stat">
+            <div class="stat-label">
+                BALANCE
+            </div>
+
+            <div
+                id="balanceValue"
+                class="stat-value">
+                $10,000.00
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">
+                EQUITY
+            </div>
+
+            <div
+                id="equityValue"
+                class="stat-value">
+                $10,000.00
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">
+                FREE MARGIN
+            </div>
+
+            <div
+                id="freeMarginValue"
+                class="stat-value">
+                $10,000.00
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">
+                MARGIN
+            </div>
+
+            <div
+                id="marginValue"
+                class="stat-value">
+                $0.00
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">
+                MARGIN LEVEL
+            </div>
+
+            <div
+                id="marginLevelValue"
+                class="stat-value">
+                —
+            </div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">
+                POSITIONS
+            </div>
+
+            <div
+                id="positionCount"
+                class="stat-value">
+                0
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-title">
+        <h3>MARKET SESSION</h3>
+    </div>
+
+    <div class="small">
+        Session
+    </div>
+
+    <strong id="sessionName">
+        London / New York
+    </strong>
+
+    <br><br>
+
+    <div class="small">
+        Server Time
+    </div>
+
+    <strong id="serverTime">
+        --:--:--
+    </strong>
+
+    <br><br>
+
+    <div class="small">
+        Next Candle
+    </div>
+
+    <strong id="candleCountdown">
+        00:00
+    </strong>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-title">
+        <h3>QUICK ORDER</h3>
+    </div>
+
+    <div class="small">
+        Current symbol:
+        <strong id="quickSymbol">
+            EUR/USD
+        </strong>
+    </div>
+
+    <div class="quick-trade">
+
+        <button
+            class="quick-buy"
+            onclick="quickTrade('BUY')">
+            BUY
+        </button>
+
+        <button
+            class="quick-sell"
+            onclick="quickTrade('SELL')">
+            SELL
+        </button>
+
+    </div>
+
+</div>
+
+</aside>
+
+
+<!-- =====================================================
+     CENTER CHART
+===================================================== -->
+
+<section class="terminal-center">
+
+<div class="card chart-card">
+
+    <div class="chart-header">
+
+        <div class="chart-header-top">
+
+            <div class="symbol-title">
+
+                <div>
+
+                    <div
+                        id="chartTitle"
+                        class="chart-title">
+                        EUR/USD
+                    </div>
+
+                    <div class="small">
+                        FOREX
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div>
+
+                <div
+                    id="chartPrice"
+                    class="chart-price">
+                    1.10000
+                </div>
+
+                <div
+                    id="chartDirection"
+                    class="chart-change up">
+                    +0.00%
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-stats">
+
+            <span>
+                O:
+                <b id="ohlcOpen">-</b>
+            </span>
+
+            <span>
+                H:
+                <b id="ohlcHigh">-</b>
+            </span>
+
+            <span>
+                L:
+                <b id="ohlcLow">-</b>
+            </span>
+
+            <span>
+                C:
+                <b id="ohlcClose">-</b>
+            </span>
+
+            <span>
+                Volume:
+                <b id="chartVolume">-</b>
+            </span>
+
+            <span>
+                Spread:
+                <b id="chartSpread">-</b>
+            </span>
+
+        </div>
+
+
+        <div class="chart-toolbar">
+
+            <div class="toolbar-group">
+
+                <button
+                    class="chart-tool active"
+                    data-timeframe="1m"
+                    onclick="setTimeframe('1m')">
+                    1m
+                </button>
+
+                <button
+                    class="chart-tool"
+                    data-timeframe="5m"
+                    onclick="setTimeframe('5m')">
+                    5m
+                </button>
+
+                <button
+                    class="chart-tool"
+                    data-timeframe="15m"
+                    onclick="setTimeframe('15m')">
+                    15m
+                </button>
+
+                <button
+                    class="chart-tool"
+                    data-timeframe="30m"
+                    onclick="setTimeframe('30m')">
+                    30m
+                </button>
+
+                <button
+                    class="chart-tool"
+                    data-timeframe="1H"
+                    onclick="setTimeframe('1H')">
+                    1H
+                </button>
+
+                <button
+                    class="chart-tool"
+                    data-timeframe="4H"
+                    onclick="setTimeframe('4H')">
+                    4H
+                </button>
+
+                <button
+                    class="chart-tool"
+                    data-timeframe="1D"
+                    onclick="setTimeframe('1D')">
+                    1D
+                </button>
+
+            </div>
+
+
+            <div class="toolbar-group">
+
+                <button
+                    class="chart-tool active"
+                    id="gridToggle"
+                    onclick="toggleGrid()">
+                    GRID
+                </button>
+
+                <button
+                    class="chart-tool active"
+                    id="markerToggle"
+                    onclick="toggleMarkers()">
+                    MARKERS
+                </button>
+
+                <button
+                    class="chart-tool"
+                    onclick="zoomChart(1.15)">
+                    +
+                </button>
+
+                <button
+                    class="chart-tool"
+                    onclick="zoomChart(.87)">
+                    −
+                </button>
+
+                <button
+                    class="chart-tool"
+                    onclick="resetChartZoom()">
+                    FIT
+                </button>
+
+                <button
+                    class="chart-tool"
+                    onclick="toggleFullscreenChart()">
+                    FULLSCREEN
+                </button>
+
+                <button
+                    class="chart-tool fullscreen-close"
+                    onclick="toggleFullscreenChart()">
+                    EXIT
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="chartCanvasWrap"
+        class="chart-canvas-wrap">
+
+        <canvas id="chart"></canvas>
+
+        <div class="chart-overlay">
+
+            <div
+                id="crosshairPrice"
+                class="crosshair-label">
+            </div>
+
+            <div
+                id="crosshairTime"
+                class="crosshair-label">
+            </div>
+
+        </div>
+
+        <div class="chart-watermark">
+            WASHINGTON FX
+        </div>
+
+    </div>
+
+
+    <div class="chart-bottom">
+
+        <div class="chart-bottom-left">
+
+            <span>
+                <strong id="bidLabel">
+                    BID 1.10000
+                </strong>
+            </span>
+
+            <span>
+                <strong id="askLabel">
+                    ASK 1.10010
+                </strong>
+            </span>
+
+            <span>
+                Spread:
+                <strong id="spreadLabel">
+                    1.0
+                </strong>
+            </span>
+
+        </div>
+
+        <div class="chart-bottom-right">
+
+            <span class="session-status">
+                <span class="session-dot"></span>
+                <span id="chartMarketStatus">
+                    MARKET OPEN
+                </span>
+            </span>
+
+            <span>
+                <strong id="chartTimer">
+                    00:00
+                </strong>
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ORDER TICKET
+===================================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            ORDER TICKET
+        </h3>
+
+        <span
+            id="orderTicketMode"
+            class="badge processing">
+            DEMO
+        </span>
+
+    </div>
+
+    <div class="trade-controls">
+
+        <div>
+            <label>SYMBOL</label>
+
+            <select id="tradeSymbol"></select>
+        </div>
+
+        <div>
+            <label>ORDER TYPE</label>
+
+            <select id="orderType">
+
+                <option value="MARKET">
+                    MARKET
+                </option>
+
+                <option value="LIMIT">
+                    LIMIT
+                </option>
+
+                <option value="STOP">
+                    STOP
+                </option>
+
+            </select>
+
+        </div>
+
+        <div>
+            <label>LOT SIZE</label>
+
+            <input
+                id="lotSize"
+                type="number"
+                value="0.01"
+                min="0.01"
+                step="0.01">
+        </div>
+
+        <div>
+            <label>ENTRY PRICE</label>
+
+            <input
+                id="entryPrice"
+                type="number"
+                placeholder="Market price">
+        </div>
+
+        <div>
+            <label>STOP LOSS</label>
+
+            <input
+                id="stopLoss"
+                type="number"
+                placeholder="Optional">
+        </div>
+
+        <div>
+            <label>TAKE PROFIT</label>
+
+            <input
+                id="takeProfit"
+                type="number"
+                placeholder="Optional">
+        </div>
+
+        <div>
+            <label>RISK %</label>
+
+            <input
+                id="riskPercent"
+                type="number"
+                value="1"
+                min="0.1"
+                max="100"
+                step="0.1"
+                oninput="updateRiskPreview()">
+        </div>
+
+        <div>
+            <label>LEVERAGE</label>
+
+            <select id="leverage">
+
+                <option value="30">
+                    1:30
+                </option>
+
+                <option value="50">
+                    1:50
+                </option>
+
+                <option value="100" selected>
+                    1:100
+                </option>
+
+                <option value="200">
+                    1:200
+                </option>
+
+                <option value="500">
+                    1:500
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="full">
+
+            <div class="small">
+
+                Estimated margin:
+                <strong id="estimatedMargin">
+                    $0.00
+                </strong>
+
+                &nbsp;&nbsp;
+
+                Risk amount:
+                <strong id="estimatedRisk">
+                    $100.00
+                </strong>
+
+            </div>
+
+        </div>
+
+        <button
+            class="btn btn-success"
+            onclick="openTrade('BUY')">
+            BUY MARKET
+        </button>
+
+        <button
+            class="btn btn-danger"
+            onclick="openTrade('SELL')">
+            SELL MARKET
+        </button>
+
+    </div>
+
+    <div
+        id="tradeMessage"
+        class="status-message">
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     POSITIONS
+===================================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            OPEN POSITIONS
+        </h3>
+
+        <span class="small">
+            Floating P/L
+        </span>
+
+    </div>
+
+    <div id="positions"></div>
+
+</div>
+
+
+<!-- =====================================================
+     PENDING ORDERS
+===================================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            PENDING ORDERS
+        </h3>
+
+        <span class="small">
+            Limit / Stop
+        </span>
+
+    </div>
+
+    <div id="pendingOrders">
+
+        <div class="small">
+            No pending orders.
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     HISTORY
+===================================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            TRADE HISTORY
+        </h3>
+
+        <button
+            class="btn btn-secondary"
+            onclick="clearHistory()">
+            CLEAR VIEW
+        </button>
+
+    </div>
+
+    <div id="tradeHistory"></div>
+
+</div>
+
+
+<!-- =====================================================
+     STATISTICS
+===================================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            PERFORMANCE
+        </h3>
+
+    </div>
+
+    <div class="stats-row">
+
+        <div class="mini-stat">
+
+            <div class="small">
+                TOTAL TRADES
+            </div>
+
+            <strong id="totalTrades">
+                0
+            </strong>
+
+        </div>
+
+        <div class="mini-stat">
+
+            <div class="small">
+                WIN RATE
+            </div>
+
+            <strong id="winRate">
+                0%
+            </strong>
+
+        </div>
+
+        <div class="mini-stat">
+
+            <div class="small">
+                PROFIT
+            </div>
+
+            <strong
+                id="totalProfit">
+                $0.00
+            </strong>
+
+        </div>
+
+        <div class="mini-stat">
+
+            <div class="small">
+                BEST TRADE
+            </div>
+
+            <strong
+                id="bestTrade">
+                $0.00
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     RIGHT PANEL
+===================================================== -->
+
+<aside class="terminal-right">
+
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            MARKET SNAPSHOT
+        </h3>
+
+        <span
+            class="badge complete">
+            OPEN
+        </span>
+
+    </div>
+
+    <div class="stat">
+
+        <div class="stat-label">
+            BID
+        </div>
+
+        <div
+            id="rightBid"
+            class="stat-value">
+            -
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="stat">
+
+        <div class="stat-label">
+            ASK
+        </div>
+
+        <div
+            id="rightAsk"
+            class="stat-value">
+            -
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="stat">
+
+        <div class="stat-label">
+            SPREAD
+        </div>
+
+        <div
+            id="rightSpread"
+            class="stat-value">
+            -
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DEPOSIT
+===================================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            DEPOSIT PORTAL
+        </h3>
+
+        <span class="badge processing">
+            MANUAL
+        </span>
+
+    </div>
+
+    <label>
+        NETWORK
+    </label>
+
+    <div
+        id="depositNetwork"
+        class="deposit-info">
+        Loading...
+    </div>
+
+    <label>
+        DEPOSIT WALLET ADDRESS
+    </label>
+
+    <div
+        id="depositAddress"
+        class="wallet-address">
+        Loading...
+    </div>
+
+    <button
+        class="btn btn-copy"
+        onclick="copyDepositAddress()">
+        COPY WALLET ADDRESS
+    </button>
+
+    <div class="deposit-info">
+
+        Send only the supported asset/network
+        to this address.
+
+        Your balance should not be credited simply
+        by clicking the copy button.
+
+    </div>
+
+    <div class="trade-controls">
+
+        <div>
+
+            <label>
+                AMOUNT
+            </label>
+
+            <input
+                id="depositAmount"
+                type="number"
+                min="1"
+                placeholder="USD amount">
+
+        </div>
+
+        <div>
+
+            <label>
+                TRANSACTION HASH
+            </label>
+
+            <input
+                id="depositTx"
+                placeholder="TXID / Hash">
+
+        </div>
+
+        <button
+            class="btn btn-primary full"
+            onclick="submitDepositRequest()">
+            I HAVE MADE A DEPOSIT
+        </button>
+
+    </div>
+
+    <div
+        id="depositMessage"
+        class="status-message">
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     WITHDRAW
+===================================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            WITHDRAW
+        </h3>
+
+    </div>
+
+    <div class="trade-controls">
+
+        <div class="full">
+
+            <label>
+                AMOUNT
+            </label>
+
+            <input
+                id="withdrawAmount"
+                type="number"
+                min="1"
+                step="0.01">
+
+        </div>
+
+        <div>
+
+            <label>
+                METHOD
+            </label>
+
+            <select id="withdrawMethod">
+
+                <option value="USDT TRC20">
+                    USDT TRC20
+                </option>
+
+                <option value="USDT ERC20">
+                    USDT ERC20
+                </option>
+
+                <option value="BANK">
+                    Bank
+                </option>
+
+                <option value="OTHER">
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <label>
+                DESTINATION
+            </label>
+
+            <input
+                id="withdrawDestination"
+                placeholder="Wallet / bank details">
+
+        </div>
+
+        <div class="full">
+
+            <label>
+                NOTE
+            </label>
+
+            <textarea
+                id="withdrawNote"
+                rows="2">
+            </textarea>
+
+        </div>
+
+        <button
+            class="btn btn-primary full"
+            onclick="submitWithdrawal()">
+            SUBMIT WITHDRAWAL
+        </button>
+
+    </div>
+
+    <div
+        id="withdrawMessage"
+        class="status-message">
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     WITHDRAWAL ORDERS
+===================================================== -->
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            MY WITHDRAWAL ORDERS
+        </h3>
+
+        <button
+            class="btn btn-secondary"
+            onclick="loadWithdrawals()">
+            REFRESH
+        </button>
+
+    </div>
+
+    <div id="withdrawalOrders"></div>
+
+</div>
+
+</aside>
+
+</div>
+
+
+<!-- =====================================================
+     ADMIN
+===================================================== -->
+
+<div
+    id="adminPanel"
+    class="card admin-panel admin-hidden">
+
+    <div class="card-title">
+
+        <h2 class="admin-header">
+            ADMIN CONTROL PANEL
+        </h2>
+
+        <button
+            class="btn btn-secondary"
+            onclick="hideAdminPanel()">
+            CLOSE
+        </button>
+
+    </div>
+
+    <div class="notice">
+
+        Testing administration area.
+
+        The final version should use
+        Supabase authentication and an admin role.
+
+    </div>
+
+
+    <h3>
+        Deposit Wallet Settings
+    </h3>
+
+    <div class="trade-controls">
+
+        <div>
+
+            <label>
+                NETWORK
+            </label>
+
+            <input
+                id="adminDepositNetwork"
+                value="TRC20">
+
+        </div>
+
+        <div>
+
+            <label>
+                WALLET ADDRESS
+            </label>
+
+            <input
+                id="adminDepositAddress"
+                placeholder="Enter deposit wallet address">
+
+        </div>
+
+        <div>
+
+            <label>
+                DEPOSIT METHOD
+            </label>
+
+            <input
+                id="adminDepositMethod"
+                value="USDT TRC20">
+
+        </div>
+
+        <div>
+
+            <label>
+                ACTIVE
+            </label>
+
+            <select id="adminDepositActive">
+
+                <option value="true">
+                    Active
+                </option>
+
+                <option value="false">
+                    Disabled
+                </option>
+
+            </select>
+
+        </div>
+
+        <button
+            class="btn btn-warning full"
+            onclick="updateDepositSettings()">
+            UPDATE DEPOSIT ADDRESS
+        </button>
+
+    </div>
+
+    <div
+        id="adminDepositMessage"
+        class="status-message">
+    </div>
+
+    <br>
+
+    <h3>
+        Withdrawal Queue
+    </h3>
+
+    <div id="adminWithdrawals">
+        Loading...
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="card-title">
+
+        <h3>
+            ADMINISTRATION
+        </h3>
+
+    </div>
+
+    <button
+        class="btn btn-secondary"
+        onclick="showAdminPanel()">
+        OPEN ADMIN TEST PANEL
+    </button>
+
+</div>
+
 </main>
+
 
 <footer class="footer">
     Washington FX © 2026
 </footer>
+
 
 <script>
 
@@ -806,14 +2283,8 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
     "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv";
 
-/*
- IMPORTANT:
- Never put a Supabase service_role/secret key here.
- The publishable key is intended for frontend use.
-*/
-
 /* =========================================================
-   APP STATE
+   APPLICATION STATE
 ========================================================= */
 
 let currentMode = "DEMO";
@@ -826,123 +2297,204 @@ let positions = [];
 
 let tradeHistory = [];
 
+let pendingOrders = [];
+
+let candles = [];
+
+let timeframe = "1m";
+
+let candleCount = 70;
+
+let chartZoom = 1;
+
+let showGrid = true;
+
+let showMarkers = true;
+
+let crosshairEnabled = true;
+
+let lastCandleTime = Date.now();
+
+let currentChartMouse = {
+    x:null,
+    y:null
+};
+
+let tradeMarkers = [];
+
+
+/* =========================================================
+   MARKET DATA
+========================================================= */
+
 let markets = {
+
     EURUSD:{
         name:"EUR/USD",
         price:1.10000,
         start:1.10000,
-        change:0
+        change:0,
+        spread:0.00010,
+        digits:5
     },
 
     GBPUSD:{
         name:"GBP/USD",
         price:1.27000,
         start:1.27000,
-        change:0
+        change:0,
+        spread:0.00012,
+        digits:5
     },
 
     USDJPY:{
         name:"USD/JPY",
         price:148.500,
         start:148.500,
-        change:0
+        change:0,
+        spread:0.010,
+        digits:3
     },
 
     XAUUSD:{
         name:"XAU/USD",
         price:2650.00,
         start:2650.00,
-        change:0
+        change:0,
+        spread:0.20,
+        digits:2
     },
 
     BTCUSD:{
         name:"BTC/USD",
         price:62000,
         start:62000,
-        change:0
+        change:0,
+        spread:5,
+        digits:2
     }
+
 };
 
-let candles = [];
 
 /* =========================================================
    INITIALIZATION
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
 
-    populateMarkets();
+        populateMarkets();
 
-    populateTradeSymbols();
+        populateTradeSymbols();
 
-    selectMarket("EURUSD");
+        selectMarket("EURUSD");
 
-    createInitialCandles();
+        createInitialCandles();
 
-    drawChart();
+        drawChart();
 
-    renderPositions();
+        renderPositions();
 
-    renderHistory();
+        renderPendingOrders();
 
-    updateAccount();
+        renderHistory();
 
-    await loadDepositSettings();
+        updateAccount();
 
-    await loadWithdrawals();
+        updateRiskPreview();
 
-    startMarketSimulation();
+        await loadDepositSettings();
 
-});
+        await loadWithdrawals();
+
+        startMarketSimulation();
+
+        startClock();
+
+        startCandleTimer();
+
+        setupChartInteraction();
+
+    }
+);
+
 
 /* =========================================================
-   SUPABASE REQUEST HELPER
+   SUPABASE HELPER
 ========================================================= */
 
-async function supabaseRequest(path, options = {}){
+async function supabaseRequest(
+    path,
+    options={}
+){
 
     const headers = {
-        "apikey": SUPABASE_KEY,
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
-        "Prefer": options.prefer || "return=representation"
+
+        "apikey":
+            SUPABASE_KEY,
+
+        "Authorization":
+            "Bearer " + SUPABASE_KEY,
+
+        "Content-Type":
+            "application/json",
+
+        "Prefer":
+            options.prefer ||
+            "return=representation"
+
     };
 
-    const response = await fetch(
-        SUPABASE_URL + path,
-        {
-            ...options,
-            headers:{
-                ...headers,
-                ...(options.headers || {})
+    const response =
+        await fetch(
+            SUPABASE_URL + path,
+            {
+                ...options,
+                headers:{
+                    ...headers,
+                    ...(options.headers || {})
+                }
             }
-        }
-    );
+        );
 
-    const text = await response.text();
+    const text =
+        await response.text();
 
     let data = null;
 
     try{
-        data = text ? JSON.parse(text) : null;
+
+        data =
+            text
+            ? JSON.parse(text)
+            : null;
+
     }catch{
+
         data = text;
+
     }
 
     if(!response.ok){
 
         throw new Error(
+
             data?.message ||
             data?.error_description ||
             data?.hint ||
             data?.details ||
             text ||
             "Supabase request failed"
+
         );
+
     }
 
     return data;
 }
+
 
 /* =========================================================
    MODE
@@ -952,32 +2504,57 @@ function setMode(mode){
 
     currentMode = mode;
 
-    document.getElementById("demoModeBtn")
-        .classList.toggle("active", mode === "DEMO");
+    document
+        .getElementById("demoModeBtn")
+        .classList
+        .toggle(
+            "active",
+            mode === "DEMO"
+        );
 
-    document.getElementById("liveModeBtn")
-        .classList.toggle("active", mode === "LIVE");
+    document
+        .getElementById("liveModeBtn")
+        .classList
+        .toggle(
+            "active",
+            mode === "LIVE"
+        );
 
-    const notice = document.getElementById("modeNotice");
+    document
+        .getElementById("orderTicketMode")
+        .textContent =
+        mode;
+
+    const notice =
+        document.getElementById(
+            "modeNotice"
+        );
 
     if(mode === "DEMO"){
 
-        notice.textContent = "DEMO TRADING MODE";
+        notice.textContent =
+            "DEMO TRADING MODE";
 
     }else{
 
-        notice.textContent = "LIVE MODE INTERFACE";
+        notice.textContent =
+            "LIVE MODE INTERFACE";
 
     }
 
     showMessage(
+
         "tradeMessage",
+
         mode === "DEMO"
             ? "Demo trading mode selected."
             : "Live mode interface selected. Actual broker execution must be connected separately.",
+
         "success"
+
     );
 }
+
 
 /* =========================================================
    MARKETS
@@ -986,101 +2563,261 @@ function setMode(mode){
 function populateMarkets(){
 
     const container =
-        document.getElementById("marketList");
+        document.getElementById(
+            "marketList"
+        );
 
     container.innerHTML = "";
 
-    Object.keys(markets).forEach(symbol => {
+    Object.keys(markets)
+        .forEach(symbol => {
 
-        const market = markets[symbol];
+            const market =
+                markets[symbol];
 
-        const div = document.createElement("div");
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-        div.className =
-            "market " +
-            (symbol === selectedSymbol ? "active" : "");
+            div.className =
+                "market " +
+                (
+                    symbol === selectedSymbol
+                    ? "active"
+                    : ""
+                );
 
-        div.id = "market-" + symbol;
+            div.id =
+                "market-" + symbol;
 
-        div.onclick = () => selectMarket(symbol);
+            div.onclick =
+                () => selectMarket(symbol);
 
-        div.innerHTML = `
-            <div class="market-top">
-                <strong>${market.name}</strong>
-                <span id="${symbol}-change"
-                    class="${market.change >= 0 ? "up":"down"}">
-                    ${market.change.toFixed(2)}%
-                </span>
-            </div>
+            div.innerHTML = `
 
-            <div class="price" id="${symbol}-price">
-                ${formatPrice(symbol,market.price)}
-            </div>
-        `;
+                <div class="market-top">
 
-        container.appendChild(div);
-    });
+                    <strong>
+                        ${market.name}
+                    </strong>
+
+                    <span
+                        id="${symbol}-change"
+                        class="${
+                            market.change >= 0
+                            ? "up"
+                            : "down"
+                        }">
+
+                        ${
+                            market.change >= 0
+                            ? "+"
+                            : ""
+                        }${market.change.toFixed(2)}%
+
+                    </span>
+
+                </div>
+
+                <div
+                    class="price"
+                    id="${symbol}-price">
+
+                    ${formatPrice(
+                        symbol,
+                        market.price
+                    )}
+
+                </div>
+
+                <div class="market-bottom">
+
+                    <span class="small">
+                        Bid
+                    </span>
+
+                    <span
+                        class="small"
+                        id="${symbol}-bid">
+
+                        ${formatPrice(
+                            symbol,
+                            getBid(symbol)
+                        )}
+
+                    </span>
+
+                </div>
+
+                <div class="market-bottom">
+
+                    <span class="small">
+                        Ask
+                    </span>
+
+                    <span
+                        class="small"
+                        id="${symbol}-ask">
+
+                        ${formatPrice(
+                            symbol,
+                            getAsk(symbol)
+                        )}
+
+                    </span>
+
+                </div>
+
+            `;
+
+            container.appendChild(div);
+
+        });
 }
+
 
 function populateTradeSymbols(){
 
     const select =
-        document.getElementById("tradeSymbol");
+        document.getElementById(
+            "tradeSymbol"
+        );
 
     select.innerHTML = "";
 
-    Object.keys(markets).forEach(symbol => {
+    Object.keys(markets)
+        .forEach(symbol => {
 
-        const option =
-            document.createElement("option");
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-        option.value = symbol;
+            option.value =
+                symbol;
 
-        option.textContent = markets[symbol].name;
+            option.textContent =
+                markets[symbol].name;
 
-        select.appendChild(option);
-    });
+            select.appendChild(
+                option
+            );
 
-    select.value = selectedSymbol;
+        });
 
-    select.addEventListener("change", () => {
+    select.value =
+        selectedSymbol;
 
-        selectMarket(select.value);
+    select.addEventListener(
+        "change",
+        () => {
 
-    });
-}
-
-function selectMarket(symbol){
-
-    selectedSymbol = symbol;
-
-    Object.keys(markets).forEach(s => {
-
-        const element =
-            document.getElementById("market-" + s);
-
-        if(element){
-
-            element.classList.toggle(
-                "active",
-                s === symbol
+            selectMarket(
+                select.value
             );
 
         }
-    });
+    );
 
-    document.getElementById("tradeSymbol").value =
+}
+
+
+function selectMarket(symbol){
+
+    if(!markets[symbol]){
+        return;
+    }
+
+    selectedSymbol =
         symbol;
 
-    document.getElementById("chartTitle").textContent =
+    Object.keys(markets)
+        .forEach(s => {
+
+            const element =
+                document.getElementById(
+                    "market-" + s
+                );
+
+            if(element){
+
+                element.classList.toggle(
+                    "active",
+                    s === symbol
+                );
+
+            }
+
+        });
+
+    document
+        .getElementById(
+            "tradeSymbol"
+        )
+        .value =
+        symbol;
+
+    document
+        .getElementById(
+            "chartTitle"
+        )
+        .textContent =
         markets[symbol].name;
 
-    updateChartInfo();
+    document
+        .getElementById(
+            "quickSymbol"
+        )
+        .textContent =
+        markets[symbol].name;
+
+    document
+        .getElementById(
+            "entryPrice"
+        )
+        .placeholder =
+        formatPrice(
+            symbol,
+            markets[symbol].price
+        );
 
     createInitialCandles();
 
     drawChart();
+
+    updateChartInfo();
+
+    updateRiskPreview();
+
 }
+
+
+/* =========================================================
+   BID / ASK
+========================================================= */
+
+function getBid(symbol){
+
+    const m =
+        markets[symbol];
+
+    return m.price -
+        m.spread / 2;
+
+}
+
+
+function getAsk(symbol){
+
+    const m =
+        markets[symbol];
+
+    return m.price +
+        m.spread / 2;
+
+}
+
 
 /* =========================================================
    MARKET SIMULATION
@@ -1088,118 +2825,307 @@ function selectMarket(symbol){
 
 function startMarketSimulation(){
 
-    setInterval(() => {
+    setInterval(
+        () => {
 
-        Object.keys(markets).forEach(symbol => {
+            Object.keys(markets)
+                .forEach(symbol => {
 
-            const market = markets[symbol];
+                    const market =
+                        markets[symbol];
 
-            const volatility =
-                symbol === "BTCUSD"
-                ? 0.0012
-                : symbol === "XAUUSD"
-                    ? 0.0007
-                    : 0.00025;
+                    const volatility =
 
-            const movement =
-                (Math.random() - 0.5) *
-                market.price *
-                volatility;
+                        symbol === "BTCUSD"
+                        ? 0.0012
 
-            market.price += movement;
+                        : symbol === "XAUUSD"
+                        ? 0.0007
 
-            if(market.price <= 0){
-                market.price = market.start;
-            }
+                        : symbol === "USDJPY"
+                        ? 0.00025
 
-            market.change =
-                ((market.price - market.start) /
-                market.start) * 100;
+                        : 0.00025;
 
-            const priceElement =
-                document.getElementById(symbol + "-price");
 
-            const changeElement =
-                document.getElementById(symbol + "-change");
+                    const movement =
 
-            if(priceElement){
+                        (
+                            Math.random() - 0.5
+                        )
+                        *
+                        market.price
+                        *
+                        volatility;
 
-                priceElement.textContent =
-                    formatPrice(symbol,market.price);
 
-            }
+                    market.price +=
+                        movement;
 
-            if(changeElement){
 
-                changeElement.textContent =
-                    (market.change >= 0 ? "+" : "") +
-                    market.change.toFixed(2) +
-                    "%";
+                    if(
+                        market.price <= 0
+                    ){
 
-                changeElement.className =
-                    market.change >= 0 ? "up" : "down";
-            }
-        });
+                        market.price =
+                            market.start;
 
-        updatePositions();
+                    }
 
-        updateChartCandle();
 
-        if(selectedSymbol){
+                    market.change =
+
+                        (
+                            (
+                                market.price -
+                                market.start
+                            )
+                            /
+                            market.start
+                        )
+                        *
+                        100;
+
+
+                    updateMarketDisplay(
+                        symbol
+                    );
+
+                });
+
+
+            updatePositions();
+
+            processPendingOrders();
+
+            updateChartCandle();
 
             updateChartInfo();
 
             drawChart();
 
-        }
+            updateRiskPreview();
 
-    },1000);
+        },
+        1000
+    );
+
 }
 
+
+function updateMarketDisplay(symbol){
+
+    const market =
+        markets[symbol];
+
+    const priceElement =
+        document.getElementById(
+            symbol + "-price"
+        );
+
+    const changeElement =
+        document.getElementById(
+            symbol + "-change"
+        );
+
+    const bidElement =
+        document.getElementById(
+            symbol + "-bid"
+        );
+
+    const askElement =
+        document.getElementById(
+            symbol + "-ask"
+        );
+
+
+    if(priceElement){
+
+        priceElement.textContent =
+            formatPrice(
+                symbol,
+                market.price
+            );
+
+    }
+
+
+    if(changeElement){
+
+        changeElement.textContent =
+            (
+                market.change >= 0
+                ? "+"
+                : ""
+            )
+            +
+            market.change.toFixed(2)
+            +
+            "%";
+
+        changeElement.className =
+            market.change >= 0
+            ? "up"
+            : "down";
+
+    }
+
+
+    if(bidElement){
+
+        bidElement.textContent =
+            formatPrice(
+                symbol,
+                getBid(symbol)
+            );
+
+    }
+
+
+    if(askElement){
+
+        askElement.textContent =
+            formatPrice(
+                symbol,
+                getAsk(symbol)
+            );
+
+    }
+
+}
+
+
 /* =========================================================
-   CHART
+   CANDLE ENGINE
 ========================================================= */
 
 function createInitialCandles(){
 
     candles = [];
 
-    const market = markets[selectedSymbol];
+    const market =
+        markets[selectedSymbol];
 
-    let price = market.price;
+    let price =
+        market.price;
 
-    for(let i=0;i<45;i++){
+    for(
+        let i=0;
+        i<candleCount;
+        i++
+    ){
 
-        const open = price;
+        const open =
+            price;
+
+        const movement =
+
+            (
+                Math.random() - .5
+            )
+            *
+            open
+            *
+            (
+                selectedSymbol === "BTCUSD"
+                ? .002
+                : .001
+            );
+
 
         const close =
-            open +
-            (Math.random()-0.5) *
-            open *
-            0.001;
+            open + movement;
 
         const high =
-            Math.max(open,close) +
-            Math.random() *
-            open *
-            0.0007;
+            Math.max(
+                open,
+                close
+            )
+            +
+            Math.random()
+            *
+            open
+            *
+            .0007;
 
         const low =
-            Math.min(open,close) -
-            Math.random() *
-            open *
-            0.0007;
+            Math.min(
+                open,
+                close
+            )
+            -
+            Math.random()
+            *
+            open
+            *
+            .0007;
+
 
         candles.push({
+
             open,
             close,
             high,
-            low
+            low,
+
+            volume:
+                Math.floor(
+                    100 +
+                    Math.random()*900
+                ),
+
+            time:
+                Date.now()
+                -
+                (
+                    candleCount-i
+                )
+                *
+                getTimeframeMilliseconds()
+
         });
 
-        price = close;
+
+        price =
+            close;
+
     }
+
 }
+
+
+function getTimeframeMilliseconds(){
+
+    const map = {
+
+        "1m":
+            60000,
+
+        "5m":
+            300000,
+
+        "15m":
+            900000,
+
+        "30m":
+            1800000,
+
+        "1H":
+            3600000,
+
+        "4H":
+            14400000,
+
+        "1D":
+            86400000
+
+    };
+
+    return map[timeframe] ||
+        60000;
+
+}
+
 
 function updateChartCandle(){
 
@@ -1207,216 +3133,1513 @@ function updateChartCandle(){
         return;
     }
 
-    const market = markets[selectedSymbol];
+    const market =
+        markets[selectedSymbol];
 
     const last =
-        candles[candles.length - 1];
+        candles[
+            candles.length-1
+        ];
 
-    last.close = market.price;
+    last.close =
+        market.price;
 
     last.high =
-        Math.max(last.high,market.price);
+        Math.max(
+            last.high,
+            market.price
+        );
 
     last.low =
-        Math.min(last.low,market.price);
+        Math.min(
+            last.low,
+            market.price
+        );
 
-    if(Math.random() > 0.93){
+    last.volume +=
+        Math.floor(
+            Math.random()*100
+        );
+
+
+    const elapsed =
+        Date.now() -
+        lastCandleTime;
+
+
+    if(
+        elapsed >
+        getTimeframeMilliseconds()
+    ){
 
         candles.shift();
 
         candles.push({
-            open:market.price,
-            close:market.price,
-            high:market.price,
-            low:market.price
+
+            open:
+                market.price,
+
+            close:
+                market.price,
+
+            high:
+                market.price,
+
+            low:
+                market.price,
+
+            volume:
+                Math.floor(
+                    100+
+                    Math.random()*500
+                ),
+
+            time:
+                Date.now()
+
         });
+
+        lastCandleTime =
+            Date.now();
+
     }
+
 }
+
+
+/* =========================================================
+   TIMEFRAME
+========================================================= */
+
+function setTimeframe(value){
+
+    timeframe =
+        value;
+
+    document
+        .querySelectorAll(
+            "[data-timeframe]"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+                "active",
+                button.dataset.timeframe === value
+            );
+
+        });
+
+    lastCandleTime =
+        Date.now();
+
+    createInitialCandles();
+
+    drawChart();
+
+    updateChartInfo();
+
+}
+
+
+/* =========================================================
+   CHART DRAWING
+========================================================= */
 
 function drawChart(){
 
     const canvas =
-        document.getElementById("chart");
+        document.getElementById(
+            "chart"
+        );
+
+    if(!canvas){
+        return;
+    }
+
+    const wrap =
+        document.getElementById(
+            "chartCanvasWrap"
+        );
+
+    const width =
+        wrap.clientWidth;
+
+    const height =
+        wrap.clientHeight;
+
+    const dpr =
+        window.devicePixelRatio ||
+        1;
+
+
+    canvas.width =
+        width*dpr;
+
+    canvas.height =
+        height*dpr;
+
+    canvas.style.width =
+        width+"px";
+
+    canvas.style.height =
+        height+"px";
+
 
     const ctx =
         canvas.getContext("2d");
 
-    const width =
-        canvas.clientWidth;
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
 
-    const height =
-        canvas.clientHeight;
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
 
-    const dpr =
-        window.devicePixelRatio || 1;
-
-    canvas.width =
-        width * dpr;
-
-    canvas.height =
-        height * dpr;
-
-    ctx.scale(dpr,dpr);
-
-    ctx.clearRect(0,0,width,height);
 
     if(!candles.length){
         return;
     }
 
-    let high =
-        Math.max(...candles.map(c => c.high));
 
-    let low =
-        Math.min(...candles.map(c => c.low));
+    const left =
+        12;
 
-    const padding = 30;
+    const right =
+        62;
 
-    const chartHeight =
-        height - padding * 2;
+    const top =
+        12;
+
+    const bottom =
+        30;
+
 
     const chartWidth =
-        width - padding * 2;
+        width -
+        left -
+        right;
+
+    const chartHeight =
+        height -
+        top -
+        bottom;
+
+
+    let visibleCount =
+        Math.max(
+            20,
+            Math.floor(
+                candleCount /
+                chartZoom
+            )
+        );
+
+
+    visibleCount =
+        Math.min(
+            visibleCount,
+            candles.length
+        );
+
+
+    const visible =
+        candles.slice(
+            candles.length -
+            visibleCount
+        );
+
+
+    let high =
+        Math.max(
+            ...visible.map(
+                c=>c.high
+            )
+        );
+
+    let low =
+        Math.min(
+            ...visible.map(
+                c=>c.low
+            )
+        );
+
+
+    const extra =
+        (
+            high-low
+        )
+        *
+        .08;
+
+
+    high += extra;
+
+    low -= extra;
+
 
     const range =
-        high-low || 1;
+        high-low ||
+        1;
+
 
     function y(value){
 
-        return padding +
-            ((high-value)/range) *
+        return top +
+            (
+                (high-value) /
+                range
+            )
+            *
             chartHeight;
+
     }
+
 
     function x(index){
 
-        return padding +
-            (index/(candles.length-1)) *
+        return left +
+            (
+                index /
+                Math.max(
+                    1,
+                    visible.length-1
+                )
+            )
+            *
             chartWidth;
+
     }
 
-    /* Grid */
 
-    ctx.strokeStyle = "#162b40";
+    /* =====================================================
+       BACKGROUND
+    ===================================================== */
 
-    ctx.lineWidth = 1;
+    ctx.fillStyle =
+        "#060d16";
 
-    for(let i=0;i<6;i++){
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
 
-        const gy =
-            padding +
-            (chartHeight/5)*i;
 
-        ctx.beginPath();
+    /* =====================================================
+       GRID
+    ===================================================== */
 
-        ctx.moveTo(padding,gy);
+    if(showGrid){
 
-        ctx.lineTo(
-            width-padding,
-            gy
+        ctx.strokeStyle =
+            "#142638";
+
+        ctx.lineWidth =
+            1;
+
+
+        for(
+            let i=0;
+            i<=8;
+            i++
+        ){
+
+            const gy =
+                top +
+                chartHeight/8*i;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                left,
+                gy
+            );
+
+            ctx.lineTo(
+                width-right,
+                gy
+            );
+
+            ctx.stroke();
+
+        }
+
+
+        const verticals =
+            Math.min(
+                12,
+                visible.length
+            );
+
+
+        for(
+            let i=0;
+            i<verticals;
+            i++
+        ){
+
+            const gx =
+                left +
+                (
+                    chartWidth /
+                    Math.max(
+                        1,
+                        verticals-1
+                    )
+                )
+                *
+                i;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                gx,
+                top
+            );
+
+            ctx.lineTo(
+                gx,
+                height-bottom
+            );
+
+            ctx.stroke();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PRICE SCALE
+    ===================================================== */
+
+    ctx.font =
+        "10px Arial";
+
+    ctx.fillStyle =
+        "#7992a8";
+
+    ctx.textAlign =
+        "left";
+
+
+    for(
+        let i=0;
+        i<=8;
+        i++
+    ){
+
+        const value =
+            high -
+            (
+                range/8*i
+            );
+
+        const py =
+            top +
+            chartHeight/8*i;
+
+        ctx.fillText(
+            formatPrice(
+                selectedSymbol,
+                value
+            ),
+            width-right+7,
+            py+3
         );
 
-        ctx.stroke();
     }
+
+
+    /* =====================================================
+       CANDLESTICKS
+    ===================================================== */
+
+    const spacing =
+        chartWidth /
+        Math.max(
+            1,
+            visible.length
+        );
 
     const candleWidth =
         Math.max(
-            3,
-            chartWidth/candles.length * 0.65
+            2,
+            Math.min(
+                12,
+                spacing*.65
+            )
         );
 
-    candles.forEach((candle,index) => {
 
-        const px = x(index);
+    visible.forEach(
+        (candle,index)=>{
 
-        const openY = y(candle.open);
-        const closeY = y(candle.close);
-        const highY = y(candle.high);
-        const lowY = y(candle.low);
+            const px =
+                x(index);
 
-        const bullish =
-            candle.close >= candle.open;
+            const openY =
+                y(candle.open);
+
+            const closeY =
+                y(candle.close);
+
+            const highY =
+                y(candle.high);
+
+            const lowY =
+                y(candle.low);
+
+            const bullish =
+                candle.close >=
+                candle.open;
+
+            const bodyColor =
+                bullish
+                ? "#19d69b"
+                : "#ff5d73";
+
+
+            ctx.strokeStyle =
+                bodyColor;
+
+            ctx.lineWidth =
+                1;
+
+
+            /* wick */
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                px,
+                highY
+            );
+
+            ctx.lineTo(
+                px,
+                lowY
+            );
+
+            ctx.stroke();
+
+
+            /* body */
+
+            ctx.fillStyle =
+                bodyColor;
+
+            const bodyTop =
+                Math.min(
+                    openY,
+                    closeY
+                );
+
+            const bodyHeight =
+                Math.max(
+                    1,
+                    Math.abs(
+                        closeY-openY
+                    )
+                );
+
+
+            ctx.fillRect(
+
+                px -
+                candleWidth/2,
+
+                bodyTop,
+
+                candleWidth,
+
+                bodyHeight
+
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       VOLUME
+    ===================================================== */
+
+    const volumeHeight =
+        chartHeight*.13;
+
+    const volumeTop =
+        height-bottom-volumeHeight;
+
+
+    const maxVolume =
+        Math.max(
+            ...visible.map(
+                c=>c.volume||0
+            )
+        )
+        || 1;
+
+
+    visible.forEach(
+        (candle,index)=>{
+
+            const px =
+                x(index);
+
+            const vh =
+                (
+                    candle.volume ||
+                    0
+                )
+                /
+                maxVolume
+                *
+                volumeHeight;
+
+            ctx.fillStyle =
+                candle.close >=
+                candle.open
+                ? "rgba(25,214,155,.16)"
+                : "rgba(255,93,115,.16)";
+
+            ctx.fillRect(
+
+                px -
+                candleWidth/2,
+
+                volumeTop +
+                volumeHeight-vh,
+
+                candleWidth,
+
+                vh
+
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       CURRENT PRICE LINE
+    ===================================================== */
+
+    const current =
+        markets[selectedSymbol]
+            .price;
+
+    const currentY =
+        y(current);
+
+
+    ctx.strokeStyle =
+        "#00c8ef";
+
+    ctx.lineWidth =
+        1;
+
+    ctx.setLineDash(
+        [5,4]
+    );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        left,
+        currentY
+    );
+
+    ctx.lineTo(
+        width-right,
+        currentY
+    );
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+
+    ctx.fillStyle =
+        "#00a8cc";
+
+    ctx.fillRect(
+        width-right,
+        currentY-8,
+        right,
+        16
+    );
+
+
+    ctx.fillStyle =
+        "#fff";
+
+    ctx.font =
+        "10px Arial";
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillText(
+        formatPrice(
+            selectedSymbol,
+            current
+        ),
+        width-right/2,
+        currentY+3
+    );
+
+
+    /* =====================================================
+       TRADE MARKERS
+    ===================================================== */
+
+    if(showMarkers){
+
+        drawTradeMarkers(
+            ctx,
+            visible,
+            x,
+            y
+        );
+
+    }
+
+
+    /* =====================================================
+       CROSSHAIR
+    ===================================================== */
+
+    if(
+        crosshairEnabled &&
+        currentChartMouse.x !== null
+    ){
+
+        const cx =
+            currentChartMouse.x;
+
+        const cy =
+            currentChartMouse.y;
+
 
         ctx.strokeStyle =
-            bullish ? "#19d69b" : "#ff5d73";
+            "rgba(180,210,230,.45)";
 
-        ctx.fillStyle =
-            bullish ? "#19d69b" : "#ff5d73";
+        ctx.setLineDash(
+            [4,4]
+        );
 
         ctx.beginPath();
 
-        ctx.moveTo(px,highY);
+        ctx.moveTo(
+            cx,
+            top
+        );
 
-        ctx.lineTo(px,lowY);
+        ctx.lineTo(
+            cx,
+            height-bottom
+        );
 
         ctx.stroke();
 
-        const bodyTop =
-            Math.min(openY,closeY);
 
-        const bodyHeight =
-            Math.max(
-                1,
-                Math.abs(closeY-openY)
+        ctx.beginPath();
+
+        ctx.moveTo(
+            left,
+            cy
+        );
+
+        ctx.lineTo(
+            width-right,
+            cy
+        );
+
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+
+    }
+
+
+    /* =====================================================
+       TIME SCALE
+    ===================================================== */
+
+    ctx.fillStyle =
+        "#7892a8";
+
+    ctx.font =
+        "9px Arial";
+
+    ctx.textAlign =
+        "center";
+
+
+    const labels =
+        Math.min(
+            6,
+            visible.length
+        );
+
+
+    for(
+        let i=0;
+        i<labels;
+        i++
+    ){
+
+        const index =
+            Math.floor(
+                (
+                    visible.length-1
+                )
+                /
+                Math.max(
+                    1,
+                    labels-1
+                )
+                *
+                i
             );
 
-        ctx.fillRect(
-            px-candleWidth/2,
-            bodyTop,
-            candleWidth,
-            bodyHeight
+        const candle =
+            visible[index];
+
+        const px =
+            x(index);
+
+        ctx.fillText(
+            formatChartTime(
+                candle.time
+            ),
+            px,
+            height-10
         );
-    });
+
+    }
+
 }
 
-window.addEventListener("resize",drawChart);
+
+/* =========================================================
+   TRADE MARKERS
+========================================================= */
+
+function drawTradeMarkers(
+    ctx,
+    visible,
+    x,
+    y
+){
+
+    const visibleIds =
+        new Set(
+            visible.map(
+                c=>c.time
+            )
+        );
+
+
+    tradeMarkers
+        .forEach(marker => {
+
+            if(
+                !visibleIds.has(
+                    marker.time
+                )
+            ){
+                return;
+            }
+
+
+            const index =
+                visible.findIndex(
+                    c =>
+                    c.time ===
+                    marker.time
+                );
+
+
+            if(index < 0){
+                return;
+            }
+
+
+            const px =
+                x(index);
+
+            const py =
+                y(marker.price);
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                px,
+                py,
+                5,
+                0,
+                Math.PI*2
+            );
+
+
+            ctx.fillStyle =
+                marker.type === "BUY"
+                ? "#19d69b"
+                : "#ff5d73";
+
+            ctx.fill();
+
+
+            ctx.font =
+                "bold 9px Arial";
+
+            ctx.fillStyle =
+                "#fff";
+
+            ctx.textAlign =
+                marker.type === "BUY"
+                ? "left"
+                : "right";
+
+
+            ctx.fillText(
+
+                marker.type,
+
+                marker.type === "BUY"
+                ? px+8
+                : px-8,
+
+                py+3
+
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   CHART INFO
+========================================================= */
 
 function updateChartInfo(){
 
     const market =
         markets[selectedSymbol];
 
-    document.getElementById("chartPrice")
+    if(!market){
+        return;
+    }
+
+
+    document
+        .getElementById(
+            "chartPrice"
+        )
         .textContent =
         formatPrice(
             selectedSymbol,
             market.price
         );
 
+
     const direction =
-        document.getElementById("chartDirection");
+        document.getElementById(
+            "chartDirection"
+        );
+
 
     direction.textContent =
-        (market.change >= 0 ? "+" : "") +
-        market.change.toFixed(2) +
+
+        (
+            market.change >= 0
+            ? "+"
+            : ""
+        )
+        +
+        market.change.toFixed(2)
+        +
         "%";
 
+
     direction.className =
-        market.change >= 0
+        "chart-change " +
+        (
+            market.change >= 0
             ? "up"
-            : "down";
+            : "down"
+        );
+
+
+    const bid =
+        getBid(selectedSymbol);
+
+    const ask =
+        getAsk(selectedSymbol);
+
+
+    document
+        .getElementById(
+            "bidLabel"
+        )
+        .textContent =
+        "BID " +
+        formatPrice(
+            selectedSymbol,
+            bid
+        );
+
+
+    document
+        .getElementById(
+            "askLabel"
+        )
+        .textContent =
+        "ASK " +
+        formatPrice(
+            selectedSymbol,
+            ask
+        );
+
+
+    document
+        .getElementById(
+            "spreadLabel"
+        )
+        .textContent =
+        market.spread.toFixed(
+            market.digits
+        );
+
+
+    document
+        .getElementById(
+            "rightBid"
+        )
+        .textContent =
+        formatPrice(
+            selectedSymbol,
+            bid
+        );
+
+
+    document
+        .getElementById(
+            "rightAsk"
+        )
+        .textContent =
+        formatPrice(
+            selectedSymbol,
+            ask
+        );
+
+
+    document
+        .getElementById(
+            "rightSpread"
+        )
+        .textContent =
+        market.spread.toFixed(
+            market.digits
+        );
+
+
+    document
+        .getElementById(
+            "chartSpread"
+        )
+        .textContent =
+        market.spread.toFixed(
+            market.digits
+        );
+
+
+    if(candles.length){
+
+        const last =
+            candles[
+                candles.length-1
+            ];
+
+        document
+            .getElementById(
+                "ohlcOpen"
+            )
+            .textContent =
+            formatPrice(
+                selectedSymbol,
+                last.open
+            );
+
+        document
+            .getElementById(
+                "ohlcHigh"
+            )
+            .textContent =
+            formatPrice(
+                selectedSymbol,
+                last.high
+            );
+
+        document
+            .getElementById(
+                "ohlcLow"
+            )
+            .textContent =
+            formatPrice(
+                selectedSymbol,
+                last.low
+            );
+
+        document
+            .getElementById(
+                "ohlcClose"
+            )
+            .textContent =
+            formatPrice(
+                selectedSymbol,
+                last.close
+            );
+
+        document
+            .getElementById(
+                "chartVolume"
+            )
+            .textContent =
+            Math.round(
+                last.volume || 0
+            );
+
+    }
+
 }
+
+
+/* =========================================================
+   CHART CONTROLS
+========================================================= */
+
+function toggleGrid(){
+
+    showGrid =
+        !showGrid;
+
+    document
+        .getElementById(
+            "gridToggle"
+        )
+        .classList.toggle(
+            "active",
+            showGrid
+        );
+
+    drawChart();
+
+}
+
+
+function toggleMarkers(){
+
+    showMarkers =
+        !showMarkers;
+
+    document
+        .getElementById(
+            "markerToggle"
+        )
+        .classList.toggle(
+            "active",
+            showMarkers
+        );
+
+    drawChart();
+
+}
+
+
+function zoomChart(factor){
+
+    chartZoom *= factor;
+
+    chartZoom =
+        Math.max(
+            .5,
+            Math.min(
+                4,
+                chartZoom
+            )
+        );
+
+    drawChart();
+
+}
+
+
+function resetChartZoom(){
+
+    chartZoom =
+        1;
+
+    drawChart();
+
+}
+
+
+function toggleFullscreenChart(){
+
+    document.body
+        .classList
+        .toggle(
+            "fullscreen-chart-mode"
+        );
+
+    setTimeout(
+        drawChart,
+        100
+    );
+
+}
+
+
+/* =========================================================
+   CHART INTERACTION
+========================================================= */
+
+function setupChartInteraction(){
+
+    const canvas =
+        document.getElementById(
+            "chart"
+        );
+
+
+    canvas.addEventListener(
+        "mousemove",
+        event => {
+
+            const rect =
+                canvas.getBoundingClientRect();
+
+            currentChartMouse.x =
+                event.clientX -
+                rect.left;
+
+            currentChartMouse.y =
+                event.clientY -
+                rect.top;
+
+            updateCrosshair(
+                currentChartMouse.x,
+                currentChartMouse.y
+            );
+
+            drawChart();
+
+        }
+    );
+
+
+    canvas.addEventListener(
+        "mouseleave",
+        () => {
+
+            currentChartMouse.x =
+                null;
+
+            currentChartMouse.y =
+                null;
+
+            document
+                .getElementById(
+                    "crosshairPrice"
+                )
+                .style.display =
+                "none";
+
+            document
+                .getElementById(
+                    "crosshairTime"
+                )
+                .style.display =
+                "none";
+
+            drawChart();
+
+        }
+    );
+
+
+    canvas.addEventListener(
+        "wheel",
+        event => {
+
+            event.preventDefault();
+
+            if(
+                event.deltaY < 0
+            ){
+
+                zoomChart(
+                    1.1
+                );
+
+            }else{
+
+                zoomChart(
+                    .9
+                );
+
+            }
+
+        },
+        {passive:false}
+    );
+
+}
+
+
+function updateCrosshair(
+    x,
+    y
+){
+
+    if(!candles.length){
+        return;
+    }
+
+
+    const wrap =
+        document.getElementById(
+            "chartCanvasWrap"
+        );
+
+
+    const width =
+        wrap.clientWidth;
+
+    const height =
+        wrap.clientHeight;
+
+
+    const left =
+        12;
+
+    const right =
+        62;
+
+    const top =
+        12;
+
+    const bottom =
+        30;
+
+
+    const chartHeight =
+        height -
+        top -
+        bottom;
+
+
+    const chartWidth =
+        width -
+        left -
+        right;
+
+
+    const visibleCount =
+        Math.min(
+            candles.length,
+            Math.max(
+                20,
+                Math.floor(
+                    candleCount/
+                    chartZoom
+                )
+            )
+        );
+
+
+    const visible =
+        candles.slice(
+            candles.length -
+            visibleCount
+        );
+
+
+    const high =
+        Math.max(
+            ...visible.map(
+                c=>c.high
+            )
+        );
+
+
+    const low =
+        Math.min(
+            ...visible.map(
+                c=>c.low
+            )
+        );
+
+
+    const extra =
+        (high-low)*.08;
+
+
+    const max =
+        high+extra;
+
+    const min =
+        low-extra;
+
+
+    const range =
+        max-min;
+
+
+    const value =
+        max -
+        (
+            (
+                y-top
+            )
+            /
+            chartHeight
+        )
+        *
+        range;
+
+
+    const index =
+        Math.round(
+            (
+                x-left
+            )
+            /
+            chartWidth
+            *
+            (
+                visible.length-1
+            )
+        );
+
+
+    const candle =
+        visible[
+            Math.max(
+                0,
+                Math.min(
+                    visible.length-1,
+                    index
+                )
+            )
+        ];
+
+
+    const priceLabel =
+        document.getElementById(
+            "crosshairPrice"
+        );
+
+
+    const timeLabel =
+        document.getElementById(
+            "crosshairTime"
+        );
+
+
+    priceLabel.textContent =
+        formatPrice(
+            selectedSymbol,
+            value
+        );
+
+    priceLabel.style.display =
+        "block";
+
+    priceLabel.style.right =
+        "3px";
+
+    priceLabel.style.top =
+        Math.max(
+            0,
+            Math.min(
+                height-20,
+                y-8
+            )
+        )
+        +
+        "px";
+
+
+    timeLabel.textContent =
+        formatChartTime(
+            candle.time
+        );
+
+    timeLabel.style.display =
+        "block";
+
+    timeLabel.style.left =
+        Math.max(
+            0,
+            Math.min(
+                width-60,
+                x-30
+            )
+        )
+        +
+        "px";
+
+    timeLabel.style.bottom =
+        "2px";
+
+}
+
 
 /* =========================================================
    FORMATTING
 ========================================================= */
 
-function formatPrice(symbol,price){
+function formatPrice(
+    symbol,
+    price
+){
 
     if(symbol === "USDJPY"){
-        return price.toFixed(3);
+        return Number(price)
+            .toFixed(3);
     }
 
     if(symbol === "XAUUSD"){
-        return price.toFixed(2);
+        return Number(price)
+            .toFixed(2);
     }
 
     if(symbol === "BTCUSD"){
-        return price.toFixed(2);
+        return Number(price)
+            .toFixed(2);
     }
 
-    return price.toFixed(5);
+    return Number(price)
+        .toFixed(5);
+
 }
+
 
 function money(value){
 
@@ -1429,7 +4652,39 @@ function money(value){
                 maximumFractionDigits:2
             }
         );
+
 }
+
+
+function formatChartTime(
+    value
+){
+
+    if(!value){
+        return "";
+    }
+
+    const d =
+        new Date(value);
+
+    if(
+        Number.isNaN(
+            d.getTime()
+        )
+    ){
+        return "";
+    }
+
+    return d.toLocaleTimeString(
+        [],
+        {
+            hour:"2-digit",
+            minute:"2-digit"
+        }
+    );
+
+}
+
 
 /* =========================================================
    TRADING
@@ -1438,12 +4693,22 @@ function money(value){
 function openTrade(side){
 
     const symbol =
-        document.getElementById("tradeSymbol").value;
+        document
+            .getElementById(
+                "tradeSymbol"
+            )
+            .value;
+
 
     const lot =
         Number(
-            document.getElementById("lotSize").value
+            document
+                .getElementById(
+                    "lotSize"
+                )
+                .value
         );
+
 
     if(!lot || lot <= 0){
 
@@ -1456,19 +4721,126 @@ function openTrade(side){
         return;
     }
 
+
     const price =
-        markets[symbol].price;
+        side === "BUY"
+        ? getAsk(symbol)
+        : getBid(symbol);
+
+
+    const orderType =
+        document
+            .getElementById(
+                "orderType"
+            )
+            .value;
+
+
+    const stopLoss =
+        document
+            .getElementById(
+                "stopLoss"
+            )
+            .value || null;
+
+
+    const takeProfit =
+        document
+            .getElementById(
+                "takeProfit"
+            )
+            .value || null;
+
+
+    const entryInput =
+        Number(
+            document
+                .getElementById(
+                    "entryPrice"
+                )
+                .value
+        );
+
+
+    if(
+        orderType !== "MARKET" &&
+        (!entryInput || entryInput <= 0)
+    ){
+
+        showMessage(
+            "tradeMessage",
+            "Enter an entry price for a pending order.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if(
+        orderType !== "MARKET"
+    ){
+
+        pendingOrders.push({
+
+            id:
+                Date.now()+
+                "-" +
+                Math.random()
+                    .toString(36)
+                    .slice(2),
+
+            symbol,
+
+            side,
+
+            lot,
+
+            type:
+                orderType,
+
+            entryPrice:
+                entryInput,
+
+            stopLoss,
+
+            takeProfit,
+
+            createdAt:
+                new Date()
+                    .toISOString()
+
+        });
+
+
+        renderPendingOrders();
+
+
+        showMessage(
+            "tradeMessage",
+            orderType +
+            " " +
+            side +
+            " pending order created.",
+            "success"
+        );
+
+        return;
+
+    }
+
 
     const position = {
 
         id:
-            Date.now() +
+            Date.now()+
             "-" +
             Math.random()
                 .toString(36)
                 .slice(2),
 
-        mode:currentMode,
+        mode:
+            currentMode,
 
         symbol,
 
@@ -1476,20 +4848,56 @@ function openTrade(side){
 
         lot,
 
-        openPrice:price,
+        openPrice:
+            price,
 
-        currentPrice:price,
+        currentPrice:
+            price,
 
-        openedAt:new Date().toISOString(),
+        openedAt:
+            new Date()
+                .toISOString(),
 
-        stopLoss:
-            document.getElementById("stopLoss").value || null,
+        stopLoss,
 
-        takeProfit:
-            document.getElementById("takeProfit").value || null
+        takeProfit,
+
+        margin:
+            calculateMargin(
+                symbol,
+                lot
+            ),
+
+        ticket:
+            Math.floor(
+                Math.random()*900000
+            )+100000
+
     };
 
-    positions.push(position);
+
+    positions.push(
+        position
+    );
+
+
+    tradeMarkers.push({
+
+        type:side,
+
+        symbol,
+
+        price,
+
+        time:
+            candles.length
+            ? candles[
+                candles.length-1
+              ].time
+            : Date.now()
+
+    });
+
 
     renderPositions();
 
@@ -1501,94 +4909,411 @@ function openTrade(side){
         " position opened on " +
         markets[symbol].name +
         " at " +
-        formatPrice(symbol,price),
+        formatPrice(
+            symbol,
+            price
+        ),
         "success"
     );
+
 }
+
+
+function quickTrade(side){
+
+    document
+        .getElementById(
+            "tradeSymbol"
+        )
+        .value =
+        selectedSymbol;
+
+    openTrade(
+        side
+    );
+
+}
+
+
+/* =========================================================
+   MARGIN
+========================================================= */
+
+function calculateMargin(
+    symbol,
+    lot
+){
+
+    const leverage =
+        Number(
+            document
+                .getElementById(
+                    "leverage"
+                )
+                ?.value ||
+            100
+        );
+
+
+    const price =
+        markets[symbol].price;
+
+
+    let contract =
+        100000;
+
+
+    if(symbol === "XAUUSD"){
+        contract = 100;
+    }
+
+
+    if(symbol === "BTCUSD"){
+        contract = 1;
+    }
+
+
+    if(symbol === "USDJPY"){
+        contract = 100000;
+    }
+
+
+    return (
+        price *
+        contract *
+        lot
+    )
+    /
+    leverage;
+
+}
+
+
+/* =========================================================
+   RISK PREVIEW
+========================================================= */
+
+function updateRiskPreview(){
+
+    const risk =
+        Number(
+            document
+                .getElementById(
+                    "riskPercent"
+                )
+                ?.value ||
+            1
+        );
+
+
+    const riskAmount =
+        balance *
+        risk /
+        100;
+
+
+    const lot =
+        Number(
+            document
+                .getElementById(
+                    "lotSize"
+                )
+                ?.value ||
+            .01
+        );
+
+
+    const margin =
+        calculateMargin(
+            selectedSymbol,
+            lot
+        );
+
+
+    document
+        .getElementById(
+            "estimatedRisk"
+        )
+        .textContent =
+        money(
+            riskAmount
+        );
+
+
+    document
+        .getElementById(
+            "estimatedMargin"
+        )
+        .textContent =
+        money(
+            margin
+        );
+
+}
+
+
+/* =========================================================
+   POSITIONS
+========================================================= */
 
 function updatePositions(){
 
-    positions.forEach(position => {
+    positions.forEach(
+        position => {
 
-        position.currentPrice =
-            markets[position.symbol].price;
+            position.currentPrice =
+                markets[
+                    position.symbol
+                ].price;
 
-        position.profit =
-            calculateProfit(position);
+            position.profit =
+                calculateProfit(
+                    position
+                );
 
-    });
+            checkPositionStops(
+                position
+            );
+
+        }
+    );
+
 
     renderPositions();
 
     updateAccount();
+
 }
 
-function calculateProfit(position){
+
+function calculateProfit(
+    position
+){
 
     const difference =
         position.currentPrice -
         position.openPrice;
 
+
     const direction =
         position.side === "BUY"
-            ? 1
-            : -1;
+        ? 1
+        : -1;
 
-    let multiplier = 100000;
 
-    if(position.symbol === "USDJPY"){
-        multiplier = 1000;
+    let multiplier =
+        100000;
+
+
+    if(
+        position.symbol ===
+        "USDJPY"
+    ){
+        multiplier =
+            1000;
     }
 
-    if(position.symbol === "XAUUSD"){
-        multiplier = 100;
+
+    if(
+        position.symbol ===
+        "XAUUSD"
+    ){
+        multiplier =
+            100;
     }
 
-    if(position.symbol === "BTCUSD"){
-        multiplier = 1;
+
+    if(
+        position.symbol ===
+        "BTCUSD"
+    ){
+        multiplier =
+            1;
     }
 
-    return difference *
+
+    return (
+        difference *
         direction *
         position.lot *
-        multiplier;
+        multiplier
+    );
+
 }
 
-function closePosition(id){
+
+function checkPositionStops(
+    position
+){
+
+    const current =
+        position.currentPrice;
+
+
+    if(
+        position.stopLoss
+    ){
+
+        const sl =
+            Number(
+                position.stopLoss
+            );
+
+
+        if(
+            position.side === "BUY" &&
+            current <= sl
+        ){
+
+            closePosition(
+                position.id,
+                "Stop Loss"
+            );
+
+            return;
+        }
+
+
+        if(
+            position.side === "SELL" &&
+            current >= sl
+        ){
+
+            closePosition(
+                position.id,
+                "Stop Loss"
+            );
+
+            return;
+        }
+
+    }
+
+
+    if(
+        position.takeProfit
+    ){
+
+        const tp =
+            Number(
+                position.takeProfit
+            );
+
+
+        if(
+            position.side === "BUY" &&
+            current >= tp
+        ){
+
+            closePosition(
+                position.id,
+                "Take Profit"
+            );
+
+            return;
+        }
+
+
+        if(
+            position.side === "SELL" &&
+            current <= tp
+        ){
+
+            closePosition(
+                position.id,
+                "Take Profit"
+            );
+
+        }
+
+    }
+
+}
+
+
+function closePosition(
+    id,
+    reason="Manual close"
+){
 
     const index =
         positions.findIndex(
-            p => p.id === id
+            p=>p.id===id
         );
+
 
     if(index === -1){
         return;
     }
 
+
     const position =
         positions[index];
 
+
     position.currentPrice =
-        markets[position.symbol].price;
+        markets[
+            position.symbol
+        ].price;
+
 
     const profit =
-        calculateProfit(position);
+        calculateProfit(
+            position
+        );
 
-    balance += profit;
+
+    balance +=
+        profit;
+
 
     tradeHistory.unshift({
 
         ...position,
 
-        closePrice:position.currentPrice,
+        closePrice:
+            position.currentPrice,
 
         profit,
 
-        closedAt:new Date().toISOString()
+        closeReason:
+            reason,
+
+        closedAt:
+            new Date()
+                .toISOString()
 
     });
 
-    positions.splice(index,1);
+
+    tradeMarkers.push({
+
+        type:
+            profit >= 0
+            ? "TP"
+            : "EXIT",
+
+        symbol:
+            position.symbol,
+
+        price:
+            position.currentPrice,
+
+        time:
+            candles.length
+            ? candles[
+                candles.length-1
+              ].time
+            : Date.now()
+
+    });
+
+
+    positions.splice(
+        index,
+        1
+    );
+
 
     renderPositions();
 
@@ -1596,171 +5321,1010 @@ function closePosition(id){
 
     updateAccount();
 
+    updatePerformance();
+
+
     showMessage(
         "tradeMessage",
-        "Position closed. Result: " +
+        "Position closed (" +
+        reason +
+        "). Result: " +
         money(profit),
-        profit >= 0 ? "success" : "error"
+        profit >= 0
+        ? "success"
+        : "error"
     );
+
 }
+
 
 function renderPositions(){
 
     const container =
-        document.getElementById("positions");
+        document.getElementById(
+            "positions"
+        );
+
 
     if(!positions.length){
 
-        container.innerHTML =
-            `<div class="small">
-                No open positions.
-            </div>`;
+        container.innerHTML = `
 
+            <div class="small">
+                No open positions.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        positions
+        .map(
+            position => {
+
+                const profit =
+                    calculateProfit(
+                        position
+                    );
+
+
+                return `
+
+                    <div class="position">
+
+                        <div class="position-top">
+
+                            <strong>
+
+                                ${position.side}
+
+                                ${markets[
+                                    position.symbol
+                                ].name}
+
+                            </strong>
+
+                            <strong
+                                class="${
+                                    profit >= 0
+                                    ? "up"
+                                    : "down"
+                                }">
+
+                                ${
+                                    profit >= 0
+                                    ? "+"
+                                    : ""
+                                }
+
+                                ${money(profit)}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="small">
+
+                            Ticket:
+                            ${position.ticket}
+
+                            |
+                            Lot:
+                            ${position.lot}
+
+                            |
+                            Open:
+                            ${
+                                formatPrice(
+                                    position.symbol,
+                                    position.openPrice
+                                )
+                            }
+
+                            |
+                            Current:
+                            ${
+                                formatPrice(
+                                    position.symbol,
+                                    position.currentPrice
+                                )
+                            }
+
+                        </div>
+
+                        <div class="position-marker">
+
+                            ${
+                                position.stopLoss
+                                ? "SL: " +
+                                formatPrice(
+                                    position.symbol,
+                                    position.stopLoss
+                                )
+                                : "SL: —"
+                            }
+
+                            &nbsp; | &nbsp;
+
+                            ${
+                                position.takeProfit
+                                ? "TP: " +
+                                formatPrice(
+                                    position.symbol,
+                                    position.takeProfit
+                                )
+                                : "TP: —"
+                            }
+
+                            &nbsp; | &nbsp;
+
+                            Margin:
+                            ${money(
+                                position.margin
+                            )}
+
+                        </div>
+
+                        <div class="position-actions">
+
+                            <button
+                                class="btn btn-secondary"
+                                onclick="closePosition(
+                                    '${position.id}'
+                                )">
+
+                                CLOSE
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =========================================================
+   PENDING ORDERS
+========================================================= */
+
+function processPendingOrders(){
+
+    if(!pendingOrders.length){
         return;
     }
 
+
+    const triggered = [];
+
+
+    pendingOrders.forEach(
+        order => {
+
+            const price =
+                markets[
+                    order.symbol
+                ].price;
+
+
+            let trigger =
+                false;
+
+
+            if(
+                order.type === "LIMIT"
+            ){
+
+                if(
+                    order.side === "BUY" &&
+                    price <=
+                    order.entryPrice
+                ){
+
+                    trigger = true;
+
+                }
+
+                if(
+                    order.side === "SELL" &&
+                    price >=
+                    order.entryPrice
+                ){
+
+                    trigger = true;
+
+                }
+
+            }
+
+
+            if(
+                order.type === "STOP"
+            ){
+
+                if(
+                    order.side === "BUY" &&
+                    price >=
+                    order.entryPrice
+                ){
+
+                    trigger = true;
+
+                }
+
+                if(
+                    order.side === "SELL" &&
+                    price <=
+                    order.entryPrice
+                ){
+
+                    trigger = true;
+
+                }
+
+            }
+
+
+            if(trigger){
+
+                const position = {
+
+                    id:
+                        Date.now()+
+                        "-" +
+                        Math.random()
+                            .toString(36)
+                            .slice(2),
+
+                    mode:
+                        currentMode,
+
+                    symbol:
+                        order.symbol,
+
+                    side:
+                        order.side,
+
+                    lot:
+                        order.lot,
+
+                    openPrice:
+                        price,
+
+                    currentPrice:
+                        price,
+
+                    openedAt:
+                        new Date()
+                            .toISOString(),
+
+                    stopLoss:
+                        order.stopLoss,
+
+                    takeProfit:
+                        order.takeProfit,
+
+                    margin:
+                        calculateMargin(
+                            order.symbol,
+                            order.lot
+                        ),
+
+                    ticket:
+                        Math.floor(
+                            Math.random()*900000
+                        )+100000
+
+                };
+
+
+                positions.push(
+                    position
+                );
+
+
+                tradeMarkers.push({
+
+                    type:
+                        order.side,
+
+                    symbol:
+                        order.symbol,
+
+                    price,
+
+                    time:
+                        candles.length
+                        ? candles[
+                            candles.length-1
+                          ].time
+                        : Date.now()
+
+                });
+
+
+                triggered.push(
+                    order.id
+                );
+
+            }
+
+        }
+    );
+
+
+    if(triggered.length){
+
+        pendingOrders =
+            pendingOrders.filter(
+                order =>
+                !triggered.includes(
+                    order.id
+                )
+            );
+
+
+        renderPendingOrders();
+
+        renderPositions();
+
+        updateAccount();
+
+    }
+
+}
+
+
+function renderPendingOrders(){
+
+    const container =
+        document.getElementById(
+            "pendingOrders"
+        );
+
+
+    if(!pendingOrders.length){
+
+        container.innerHTML = `
+
+            <div class="small">
+                No pending orders.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
     container.innerHTML =
-        positions.map(position => {
+        pendingOrders
+        .map(
+            order => `
 
-            const profit =
-                calculateProfit(position);
+                <div class="order">
 
-            return `
-                <div class="position">
+                    <div class="order-top">
 
-                    <div class="position-top">
                         <strong>
-                            ${position.side}
-                            ${markets[position.symbol].name}
+
+                            ${order.type}
+
+                            ${order.side}
+
+                            ${markets[
+                                order.symbol
+                            ].name}
+
                         </strong>
 
-                        <strong class="${profit >= 0 ? "up":"down"}">
-                            ${profit >= 0 ? "+" : ""}
-                            ${money(profit)}
-                        </strong>
+                        <span class="badge pending">
+                            PENDING
+                        </span>
+
                     </div>
 
                     <div class="small">
-                        Lot: ${position.lot}
+
+                        Entry:
+                        ${
+                            formatPrice(
+                                order.symbol,
+                                order.entryPrice
+                            )
+                        }
+
                         |
-                        Open:
-                        ${formatPrice(
-                            position.symbol,
-                            position.openPrice
-                        )}
-                        |
-                        Current:
-                        ${formatPrice(
-                            position.symbol,
-                            markets[position.symbol].price
-                        )}
+
+                        Lot:
+                        ${order.lot}
+
                     </div>
 
                     <br>
 
                     <button
                         class="btn btn-secondary"
-                        onclick="closePosition('${position.id}')">
-                        CLOSE POSITION
+                        onclick="cancelPendingOrder(
+                            '${order.id}'
+                        )">
+
+                        CANCEL
+
                     </button>
 
                 </div>
-            `;
 
-        }).join("");
+            `
+        )
+        .join("");
+
 }
+
+
+function cancelPendingOrder(id){
+
+    pendingOrders =
+        pendingOrders.filter(
+            o=>o.id!==id
+        );
+
+    renderPendingOrders();
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
 
 function renderHistory(){
 
     const container =
-        document.getElementById("tradeHistory");
+        document.getElementById(
+            "tradeHistory"
+        );
+
 
     if(!tradeHistory.length){
 
-        container.innerHTML =
-            `<div class="small">
+        container.innerHTML = `
+
+            <div class="small">
                 No closed trades yet.
-            </div>`;
+            </div>
+
+        `;
+
+        updatePerformance();
 
         return;
+
     }
+
 
     container.innerHTML =
         tradeHistory
-        .slice(0,20)
-        .map(trade => {
+        .slice(0,30)
+        .map(
+            trade => `
 
-            return `
                 <div class="position">
 
                     <div class="position-top">
 
                         <strong>
+
                             ${trade.side}
-                            ${markets[trade.symbol].name}
+
+                            ${markets[
+                                trade.symbol
+                            ].name}
+
                         </strong>
 
-                        <strong class="${trade.profit >= 0 ? "up":"down"}">
-                            ${trade.profit >= 0 ? "+" : ""}
-                            ${money(trade.profit)}
+                        <strong
+                            class="${
+                                trade.profit >= 0
+                                ? "up"
+                                : "down"
+                            }">
+
+                            ${
+                                trade.profit >= 0
+                                ? "+"
+                                : ""
+                            }
+
+                            ${money(
+                                trade.profit
+                            )}
+
                         </strong>
 
                     </div>
 
                     <div class="small">
+
                         Open:
-                        ${formatPrice(
-                            trade.symbol,
-                            trade.openPrice
-                        )}
+                        ${
+                            formatPrice(
+                                trade.symbol,
+                                trade.openPrice
+                            )
+                        }
 
                         |
 
                         Close:
-                        ${formatPrice(
-                            trade.symbol,
-                            trade.closePrice
-                        )}
+                        ${
+                            formatPrice(
+                                trade.symbol,
+                                trade.closePrice
+                            )
+                        }
+
+                        |
+
+                        ${
+                            trade.closeReason ||
+                            "Manual"
+                        }
+
                     </div>
 
                 </div>
-            `;
 
-        }).join("");
+            `
+        )
+        .join("");
+
+    updatePerformance();
+
 }
+
+
+function clearHistory(){
+
+    if(
+        !confirm(
+            "Clear the visible trade history?"
+        )
+    ){
+        return;
+    }
+
+    tradeHistory = [];
+
+    renderHistory();
+
+}
+
+
+/* =========================================================
+   ACCOUNT
+========================================================= */
 
 function updateAccount(){
 
-    let floatingProfit = 0;
+    let floatingProfit =
+        0;
 
-    positions.forEach(position => {
+    let margin =
+        0;
 
-        floatingProfit +=
-            calculateProfit(position);
 
-    });
+    positions.forEach(
+        position => {
+
+            floatingProfit +=
+                calculateProfit(
+                    position
+                );
+
+            margin +=
+                position.margin ||
+                calculateMargin(
+                    position.symbol,
+                    position.lot
+                );
+
+        }
+    );
+
 
     const equity =
-        balance + floatingProfit;
+        balance +
+        floatingProfit;
 
-    document.getElementById("balanceValue")
+
+    const freeMargin =
+        equity -
+        margin;
+
+
+    const marginLevel =
+        margin > 0
+        ? (
+            equity /
+            margin
+          )
+          *
+          100
+        : null;
+
+
+    document
+        .getElementById(
+            "balanceValue"
+        )
         .textContent =
         money(balance);
 
-    document.getElementById("equityValue")
+
+    document
+        .getElementById(
+            "equityValue"
+        )
         .textContent =
         money(equity);
 
-    document.getElementById("positionCount")
+
+    document
+        .getElementById(
+            "freeMarginValue"
+        )
+        .textContent =
+        money(freeMargin);
+
+
+    document
+        .getElementById(
+            "marginValue"
+        )
+        .textContent =
+        money(margin);
+
+
+    document
+        .getElementById(
+            "marginLevelValue"
+        )
+        .textContent =
+        marginLevel === null
+        ? "—"
+        : marginLevel.toFixed(1)+"%";
+
+
+    document
+        .getElementById(
+            "positionCount"
+        )
         .textContent =
         positions.length;
+
 }
+
+
+/* =========================================================
+   PERFORMANCE
+========================================================= */
+
+function updatePerformance(){
+
+    const total =
+        tradeHistory.length;
+
+    const wins =
+        tradeHistory.filter(
+            t =>
+            Number(t.profit) > 0
+        ).length;
+
+    const totalProfit =
+        tradeHistory.reduce(
+            (sum,t)=>
+            sum +
+            Number(t.profit || 0),
+            0
+        );
+
+
+    const best =
+        total
+        ? Math.max(
+            ...tradeHistory.map(
+                t =>
+                Number(
+                    t.profit || 0
+                )
+            )
+        )
+        : 0;
+
+
+    document
+        .getElementById(
+            "totalTrades"
+        )
+        .textContent =
+        total;
+
+
+    document
+        .getElementById(
+            "winRate"
+        )
+        .textContent =
+        total
+        ? (
+            wins /
+            total *
+            100
+          ).toFixed(1)+"%"
+        : "0%";
+
+
+    const profitElement =
+        document
+            .getElementById(
+                "totalProfit"
+            );
+
+    profitElement.textContent =
+        money(totalProfit);
+
+    profitElement.className =
+        totalProfit >= 0
+        ? "up"
+        : "down";
+
+
+    document
+        .getElementById(
+            "bestTrade"
+        )
+        .textContent =
+        money(best);
+
+}
+
+
+/* =========================================================
+   CLOCK / TIMER
+========================================================= */
+
+function startClock(){
+
+    setInterval(
+        () => {
+
+            const now =
+                new Date();
+
+
+            const time =
+                now.toLocaleTimeString();
+
+
+            document
+                .getElementById(
+                    "globalClock"
+                )
+                .textContent =
+                time;
+
+
+            document
+                .getElementById(
+                    "serverTime"
+                )
+                .textContent =
+                time;
+
+
+            const hour =
+                now.getHours();
+
+
+            let session =
+                "Asia";
+
+
+            if(
+                hour >= 8 &&
+                hour < 16
+            ){
+
+                session =
+                    "London";
+
+            }
+
+
+            if(
+                hour >= 13 &&
+                hour < 21
+            ){
+
+                session =
+                    "London / New York";
+
+            }
+
+
+            if(
+                hour >= 21 ||
+                hour < 2
+            ){
+
+                session =
+                    "New York / Asia";
+
+            }
+
+
+            document
+                .getElementById(
+                    "sessionName"
+                )
+                .textContent =
+                session;
+
+
+            document
+                .getElementById(
+                    "globalMarketStatus"
+                )
+                .textContent =
+                "MARKETS OPEN";
+
+
+            document
+                .getElementById(
+                    "chartMarketStatus"
+                )
+                .textContent =
+                "MARKET OPEN";
+
+
+        },
+        1000
+    );
+
+}
+
+
+function startCandleTimer(){
+
+    setInterval(
+        () => {
+
+            const duration =
+                getTimeframeMilliseconds();
+
+
+            const elapsed =
+                Date.now() -
+                lastCandleTime;
+
+
+            const remaining =
+                Math.max(
+                    0,
+                    duration -
+                    elapsed
+                );
+
+
+            const seconds =
+                Math.floor(
+                    remaining/1000
+                );
+
+
+            const minutes =
+                Math.floor(
+                    seconds/60
+                );
+
+
+            const secs =
+                seconds%60;
+
+
+            const formatted =
+                String(minutes)
+                    .padStart(2,"0")
+                +
+                ":" +
+                String(secs)
+                    .padStart(2,"0");
+
+
+            document
+                .getElementById(
+                    "candleCountdown"
+                )
+                .textContent =
+                formatted;
+
+
+            document
+                .getElementById(
+                    "chartTimer"
+                )
+                .textContent =
+                formatted;
+
+        },
+        250
+    );
+
+}
+
+
+/* =========================================================
+   ACCOUNT POPUP
+========================================================= */
+
+function showAccountStats(){
+
+    const floating =
+        positions.reduce(
+            (sum,p)=>
+            sum+
+            calculateProfit(p),
+            0
+        );
+
+
+    alert(
+
+        "WASHINGTON FX ACCOUNT\n\n" +
+
+        "Mode: " +
+        currentMode +
+        "\n" +
+
+        "Balance: " +
+        money(balance) +
+        "\n" +
+
+        "Floating P/L: " +
+        money(floating) +
+        "\n" +
+
+        "Open Positions: " +
+        positions.length +
+        "\n" +
+
+        "Closed Trades: " +
+        tradeHistory.length
+
+    );
+
+}
+
 
 /* =========================================================
    DEPOSIT SETTINGS
 ========================================================= */
 
-let currentDepositSettings = null;
+let currentDepositSettings =
+    null;
+
 
 async function loadDepositSettings(){
 
@@ -1768,65 +6332,96 @@ async function loadDepositSettings(){
 
         const rows =
             await supabaseRequest(
+
                 "/rest/v1/deposit_settings" +
+
                 "?select=*" +
+
                 "&is_active=eq.true" +
+
                 "&order=updated_at.desc" +
+
                 "&limit=1"
+
             );
 
-        if(rows && rows.length){
+
+        if(
+            rows &&
+            rows.length
+        ){
 
             currentDepositSettings =
                 rows[0];
 
-            document.getElementById(
-                "depositNetwork"
-            ).textContent =
+
+            document
+                .getElementById(
+                    "depositNetwork"
+                )
+                .textContent =
                 currentDepositSettings.network ||
                 currentDepositSettings.method ||
                 "Not specified";
 
-            document.getElementById(
-                "depositAddress"
-            ).textContent =
+
+            document
+                .getElementById(
+                    "depositAddress"
+                )
+                .textContent =
                 currentDepositSettings.wallet_address ||
                 "Deposit address not configured.";
 
         }else{
 
-            document.getElementById(
-                "depositNetwork"
-            ).textContent =
+            document
+                .getElementById(
+                    "depositNetwork"
+                )
+                .textContent =
                 "Not configured";
 
-            document.getElementById(
-                "depositAddress"
-            ).textContent =
+
+            document
+                .getElementById(
+                    "depositAddress"
+                )
+                .textContent =
                 "Admin has not configured a deposit address yet.";
+
         }
 
     }catch(error){
 
         console.error(error);
 
-        document.getElementById(
-            "depositNetwork"
-        ).textContent =
+        document
+            .getElementById(
+                "depositNetwork"
+            )
+            .textContent =
             "Unable to load";
 
-        document.getElementById(
-            "depositAddress"
-        ).textContent =
+
+        document
+            .getElementById(
+                "depositAddress"
+            )
+            .textContent =
             "Check Supabase deposit_settings table.";
 
     }
+
 }
+
 
 async function copyDepositAddress(){
 
     const address =
-        currentDepositSettings?.wallet_address;
+        currentDepositSettings
+        ?.wallet_address;
+
 
     if(!address){
 
@@ -1837,11 +6432,18 @@ async function copyDepositAddress(){
         );
 
         return;
+
     }
+
 
     try{
 
-        await navigator.clipboard.writeText(address);
+        await navigator
+            .clipboard
+            .writeText(
+                address
+            );
+
 
         showMessage(
             "depositMessage",
@@ -1856,8 +6458,11 @@ async function copyDepositAddress(){
             "Copy failed. Press and hold the address to copy it.",
             "error"
         );
+
     }
+
 }
+
 
 /* =========================================================
    DEPOSIT REQUEST
@@ -1867,13 +6472,27 @@ async function submitDepositRequest(){
 
     const amount =
         Number(
-            document.getElementById("depositAmount").value
+            document
+                .getElementById(
+                    "depositAmount"
+                )
+                .value
         );
 
-    const tx =
-        document.getElementById("depositTx").value.trim();
 
-    if(!amount || amount <= 0){
+    const tx =
+        document
+            .getElementById(
+                "depositTx"
+            )
+            .value
+            .trim();
+
+
+    if(
+        !amount ||
+        amount <= 0
+    ){
 
         showMessage(
             "depositMessage",
@@ -1882,7 +6501,9 @@ async function submitDepositRequest(){
         );
 
         return;
+
     }
+
 
     if(!tx){
 
@@ -1893,41 +6514,59 @@ async function submitDepositRequest(){
         );
 
         return;
+
     }
+
 
     try{
 
         await supabaseRequest(
+
             "/rest/v1/deposit_requests",
+
             {
+
                 method:"POST",
-                body:JSON.stringify({
+
+                body:
+                JSON.stringify({
 
                     amount,
 
-                    currency:"USD",
+                    currency:
+                        "USD",
 
                     method:
-                        currentDepositSettings?.method ||
+                        currentDepositSettings
+                        ?.method ||
                         "USDT TRC20",
 
                     network:
-                        currentDepositSettings?.network ||
+                        currentDepositSettings
+                        ?.network ||
                         "TRC20",
 
                     destination:
-                        currentDepositSettings?.wallet_address ||
+                        currentDepositSettings
+                        ?.wallet_address ||
                         "",
 
-                    transaction_hash:tx,
+                    transaction_hash:
+                        tx,
 
-                    status:"PENDING",
+                    status:
+                        "PENDING",
 
                     created_at:
-                        new Date().toISOString()
+                        new Date()
+                            .toISOString()
+
                 })
+
             }
+
         );
+
 
         showMessage(
             "depositMessage",
@@ -1935,13 +6574,20 @@ async function submitDepositRequest(){
             "success"
         );
 
-        document.getElementById(
-            "depositAmount"
-        ).value = "";
 
-        document.getElementById(
-            "depositTx"
-        ).value = "";
+        document
+            .getElementById(
+                "depositAmount"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "depositTx"
+            )
+            .value = "";
+
 
     }catch(error){
 
@@ -1953,37 +6599,56 @@ async function submitDepositRequest(){
         );
 
     }
+
 }
 
+
 /* =========================================================
-   WITHDRAWALS
+   WITHDRAWAL
 ========================================================= */
 
 async function submitWithdrawal(){
 
     const amount =
         Number(
-            document.getElementById(
-                "withdrawAmount"
-            ).value
+            document
+                .getElementById(
+                    "withdrawAmount"
+                )
+                .value
         );
 
+
     const method =
-        document.getElementById(
-            "withdrawMethod"
-        ).value;
+        document
+            .getElementById(
+                "withdrawMethod"
+            )
+            .value;
+
 
     const destination =
-        document.getElementById(
-            "withdrawDestination"
-        ).value.trim();
+        document
+            .getElementById(
+                "withdrawDestination"
+            )
+            .value
+            .trim();
+
 
     const note =
-        document.getElementById(
-            "withdrawNote"
-        ).value.trim();
+        document
+            .getElementById(
+                "withdrawNote"
+            )
+            .value
+            .trim();
 
-    if(!amount || amount <= 0){
+
+    if(
+        !amount ||
+        amount <= 0
+    ){
 
         showMessage(
             "withdrawMessage",
@@ -1992,9 +6657,13 @@ async function submitWithdrawal(){
         );
 
         return;
+
     }
 
-    if(amount > balance){
+
+    if(
+        amount > balance
+    ){
 
         showMessage(
             "withdrawMessage",
@@ -2003,7 +6672,9 @@ async function submitWithdrawal(){
         );
 
         return;
+
     }
+
 
     if(!destination){
 
@@ -2014,53 +6685,64 @@ async function submitWithdrawal(){
         );
 
         return;
+
     }
+
 
     try{
 
         const now =
             new Date();
 
-        const result =
-            await supabaseRequest(
-                "/rest/v1/withdrawal_requests",
-                {
-                    method:"POST",
-                    body:JSON.stringify({
 
-                        mode:currentMode,
+        await supabaseRequest(
 
-                        amount,
+            "/rest/v1/withdrawal_requests",
 
-                        currency:"USD",
+            {
 
-                        withdrawal_method:method,
+                method:"POST",
 
-                        destination,
+                body:
+                JSON.stringify({
 
-                        note,
+                    mode:
+                        currentMode,
 
-                        status:"PENDING",
+                    amount,
 
-                        status_message:
-                            "Withdrawal order received and waiting for admin approval.",
+                    currency:
+                        "USD",
 
-                        created_at:
-                            now.toISOString()
+                    withdrawal_method:
+                        method,
 
-                    })
-                }
-            );
+                    destination,
 
-        /*
-         Reserve the balance locally.
-         If the withdrawal is rejected or expired,
-         the balance will be returned.
-        */
+                    note,
 
-        balance -= amount;
+                    status:
+                        "PENDING",
+
+                    status_message:
+                        "Withdrawal order received and waiting for admin approval.",
+
+                    created_at:
+                        now.toISOString()
+
+                })
+
+            }
+
+        );
+
+
+        balance -=
+            amount;
+
 
         updateAccount();
+
 
         showMessage(
             "withdrawMessage",
@@ -2068,21 +6750,32 @@ async function submitWithdrawal(){
             "success"
         );
 
-        document.getElementById(
-            "withdrawAmount"
-        ).value = "";
 
-        document.getElementById(
-            "withdrawDestination"
-        ).value = "";
+        document
+            .getElementById(
+                "withdrawAmount"
+            )
+            .value = "";
 
-        document.getElementById(
-            "withdrawNote"
-        ).value = "";
+
+        document
+            .getElementById(
+                "withdrawDestination"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "withdrawNote"
+            )
+            .value = "";
+
 
         await loadWithdrawals();
 
         await loadAdminWithdrawals();
+
 
     }catch(error){
 
@@ -2092,8 +6785,11 @@ async function submitWithdrawal(){
             error.message,
             "error"
         );
+
     }
+
 }
+
 
 /* =========================================================
    USER WITHDRAWAL LIST
@@ -2106,19 +6802,29 @@ async function loadWithdrawals(){
             "withdrawalOrders"
         );
 
+
     container.innerHTML =
-        `<div class="small">Loading...</div>`;
+        `<div class="small">
+            Loading...
+        </div>`;
+
 
     try{
 
         const rows =
             await supabaseRequest(
+
                 "/rest/v1/withdrawal_requests" +
                 "?select=*" +
                 "&order=created_at.desc"
+
             );
 
-        if(!rows || !rows.length){
+
+        if(
+            !rows ||
+            !rows.length
+        ){
 
             container.innerHTML =
                 `<div class="small">
@@ -2126,133 +6832,196 @@ async function loadWithdrawals(){
                 </div>`;
 
             return;
+
         }
 
+
         container.innerHTML =
-            rows.map(renderWithdrawalOrder).join("");
+            rows
+            .map(
+                renderWithdrawalOrder
+            )
+            .join("");
+
 
     }catch(error){
 
         container.innerHTML =
+
             `<div class="status-message show error">
+
                 Unable to load withdrawal orders:
-                ${escapeHtml(error.message)}
+                ${escapeHtml(
+                    error.message
+                )}
+
             </div>`;
+
     }
+
 }
 
-function renderWithdrawalOrder(order){
+
+function renderWithdrawalOrder(
+    order
+){
 
     const status =
-        String(order.status || "PENDING")
+        String(
+            order.status ||
+            "PENDING"
+        )
         .toUpperCase();
+
 
     const badgeClass =
         status.toLowerCase();
 
-    let message =
-        order.status_message || "";
 
-    if(status === "REJECTED"){
+    let message =
+        order.status_message ||
+        "";
+
+
+    if(
+        status === "REJECTED"
+    ){
 
         message =
             "Order has been rejected" +
-            (order.status_message
-                ? ": " + order.status_message
-                : ".");
+            (
+                order.status_message
+                ? ": " +
+                  order.status_message
+                : "."
+            );
 
-    }else if(status === "EXPIRED"){
+    }else if(
+        status === "EXPIRED"
+    ){
 
         message =
             "Order expired because it was not approved within the allowed time.";
 
-    }else if(status === "COMPLETE"){
+    }else if(
+        status === "COMPLETE"
+    ){
 
         message =
             "Withdrawal completed.";
 
-    }else if(status === "APPROVED" ||
-            status === "PROCESSING"){
+    }else if(
+        status === "APPROVED" ||
+        status === "PROCESSING"
+    ){
 
         message =
             "Withdrawal approved and being processed.";
 
-    }else if(status === "PENDING"){
+    }else if(
+        status === "PENDING"
+    ){
 
         message =
             "Withdrawal order is waiting for admin approval.";
 
     }
 
+
     return `
+
         <div class="order">
 
             <div class="order-top">
 
                 <strong>
-                    ${money(order.amount)}
+                    ${money(
+                        order.amount
+                    )}
                 </strong>
 
-                <span class="badge ${badgeClass}">
-                    ${escapeHtml(status)}
+                <span
+                    class="badge ${badgeClass}">
+                    ${escapeHtml(
+                        status
+                    )}
                 </span>
 
             </div>
 
             <div class="small">
+
                 ${escapeHtml(
-                    order.withdrawal_method || ""
+                    order.withdrawal_method ||
+                    ""
                 )}
 
                 <br>
 
                 ${escapeHtml(
-                    order.destination || ""
+                    order.destination ||
+                    ""
                 )}
 
                 <br>
 
-                ${formatDate(order.created_at)}
+                ${formatDate(
+                    order.created_at
+                )}
+
             </div>
 
             <br>
 
             <div class="small">
-                ${escapeHtml(message)}
+                ${escapeHtml(
+                    message
+                )}
             </div>
 
         </div>
+
     `;
+
 }
 
+
 /* =========================================================
-   ADMIN PANEL
+   ADMIN
 ========================================================= */
 
 function showAdminPanel(){
 
-    /*
-     Temporary testing panel.
+    document
+        .getElementById(
+            "adminPanel"
+        )
+        .classList
+        .remove(
+            "admin-hidden"
+        );
 
-     DO NOT treat this as production authentication.
-     The real admin password/role will be connected later.
-    */
-
-    document.getElementById(
-        "adminPanel"
-    ).classList.remove("admin-hidden");
 
     loadAdminDepositSettings();
 
     loadAdminWithdrawals();
+
 }
+
 
 function hideAdminPanel(){
 
-    document.getElementById(
-        "adminPanel"
-    ).classList.add("admin-hidden");
+    document
+        .getElementById(
+            "adminPanel"
+        )
+        .classList
+        .add(
+            "admin-hidden"
+        );
+
 }
+
 
 async function loadAdminDepositSettings(){
 
@@ -2260,35 +7029,59 @@ async function loadAdminDepositSettings(){
 
         const rows =
             await supabaseRequest(
+
                 "/rest/v1/deposit_settings" +
                 "?select=*" +
                 "&order=updated_at.desc" +
                 "&limit=1"
+
             );
 
-        if(rows && rows.length){
 
-            const settings = rows[0];
+        if(
+            rows &&
+            rows.length
+        ){
 
-            document.getElementById(
-                "adminDepositNetwork"
-            ).value =
-                settings.network || "";
+            const settings =
+                rows[0];
 
-            document.getElementById(
-                "adminDepositAddress"
-            ).value =
-                settings.wallet_address || "";
 
-            document.getElementById(
-                "adminDepositMethod"
-            ).value =
-                settings.method || "USDT TRC20";
+            document
+                .getElementById(
+                    "adminDepositNetwork"
+                )
+                .value =
+                settings.network ||
+                "";
 
-            document.getElementById(
-                "adminDepositActive"
-            ).value =
-                String(settings.is_active);
+
+            document
+                .getElementById(
+                    "adminDepositAddress"
+                )
+                .value =
+                settings.wallet_address ||
+                "";
+
+
+            document
+                .getElementById(
+                    "adminDepositMethod"
+                )
+                .value =
+                settings.method ||
+                "USDT TRC20";
+
+
+            document
+                .getElementById(
+                    "adminDepositActive"
+                )
+                .value =
+                String(
+                    settings.is_active
+                );
 
         }
 
@@ -2300,30 +7093,49 @@ async function loadAdminDepositSettings(){
             error.message,
             "error"
         );
+
     }
+
 }
+
 
 async function updateDepositSettings(){
 
     const network =
-        document.getElementById(
-            "adminDepositNetwork"
-        ).value.trim();
+        document
+            .getElementById(
+                "adminDepositNetwork"
+            )
+            .value
+            .trim();
+
 
     const address =
-        document.getElementById(
-            "adminDepositAddress"
-        ).value.trim();
+        document
+            .getElementById(
+                "adminDepositAddress"
+            )
+            .value
+            .trim();
+
 
     const method =
-        document.getElementById(
-            "adminDepositMethod"
-        ).value.trim();
+        document
+            .getElementById(
+                "adminDepositMethod"
+            )
+            .value
+            .trim();
+
 
     const active =
-        document.getElementById(
-            "adminDepositActive"
-        ).value === "true";
+        document
+            .getElementById(
+                "adminDepositActive"
+            )
+            .value ===
+        "true";
+
 
     if(!address){
 
@@ -2334,37 +7146,47 @@ async function updateDepositSettings(){
         );
 
         return;
+
     }
+
 
     try{
 
-        /*
-         The table uses method as the unique key.
-        */
+        await supabaseRequest(
 
-        const rows =
-            await supabaseRequest(
-                "/rest/v1/deposit_settings" +
-                "?method=eq." +
-                encodeURIComponent(method),
-                {
-                    method:"PATCH",
-                    body:JSON.stringify({
+            "/rest/v1/deposit_settings" +
+            "?method=eq." +
+            encodeURIComponent(
+                method
+            ),
 
-                        network,
+            {
 
-                        wallet_address:address,
+                method:"PATCH",
 
-                        method,
+                body:
+                JSON.stringify({
 
-                        is_active:active,
+                    network,
 
-                        updated_at:
-                            new Date().toISOString()
+                    wallet_address:
+                        address,
 
-                    })
-                }
-            );
+                    method,
+
+                    is_active:
+                        active,
+
+                    updated_at:
+                        new Date()
+                            .toISOString()
+
+                })
+
+            }
+
+        );
+
 
         showMessage(
             "adminDepositMessage",
@@ -2372,19 +7194,23 @@ async function updateDepositSettings(){
             "success"
         );
 
+
         await loadDepositSettings();
+
 
     }catch(error){
 
         showMessage(
             "adminDepositMessage",
             "Could not update deposit address. " +
-            error.message +
-            " If Supabase RLS is enabled, admin authentication/policy must be configured.",
+            error.message,
             "error"
         );
+
     }
+
 }
+
 
 /* =========================================================
    ADMIN WITHDRAWAL QUEUE
@@ -2397,23 +7223,34 @@ async function loadAdminWithdrawals(){
             "adminWithdrawals"
         );
 
+
     if(!container){
         return;
     }
 
+
     container.innerHTML =
-        `<div class="small">Loading...</div>`;
+        `<div class="small">
+            Loading...
+        </div>`;
+
 
     try{
 
         const rows =
             await supabaseRequest(
+
                 "/rest/v1/withdrawal_requests" +
                 "?select=*" +
                 "&order=created_at.desc"
+
             );
 
-        if(!rows || !rows.length){
+
+        if(
+            !rows ||
+            !rows.length
+        ){
 
             container.innerHTML =
                 `<div class="small">
@@ -2421,155 +7258,234 @@ async function loadAdminWithdrawals(){
                 </div>`;
 
             return;
+
         }
 
+
         container.innerHTML =
-            rows.map(order => {
+            rows
+            .map(
+                order => {
 
-                const status =
-                    String(order.status || "PENDING")
-                    .toUpperCase();
+                    const status =
+                        String(
+                            order.status ||
+                            "PENDING"
+                        )
+                        .toUpperCase();
 
-                return `
-                    <div class="order">
 
-                        <div class="order-top">
+                    return `
 
-                            <strong>
-                                ${money(order.amount)}
-                            </strong>
+                        <div class="order">
 
-                            <span class="badge ${status.toLowerCase()}">
-                                ${status}
-                            </span>
+                            <div class="order-top">
 
-                        </div>
+                                <strong>
+                                    ${money(
+                                        order.amount
+                                    )}
+                                </strong>
 
-                        <div class="small">
+                                <span
+                                    class="badge ${
+                                        status.toLowerCase()
+                                    }">
 
-                            ID:
-                            ${escapeHtml(
-                                String(order.id || "")
-                            )}
+                                    ${status}
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="small">
+
+                                ID:
+                                ${escapeHtml(
+                                    String(
+                                        order.id ||
+                                        ""
+                                    )
+                                )}
+
+                                <br>
+
+                                Method:
+                                ${escapeHtml(
+                                    order.withdrawal_method ||
+                                    ""
+                                )}
+
+                                <br>
+
+                                Destination:
+                                ${escapeHtml(
+                                    order.destination ||
+                                    ""
+                                )}
+
+                                <br>
+
+                                Created:
+                                ${formatDate(
+                                    order.created_at
+                                )}
+
+                            </div>
+
 
                             <br>
 
-                            Method:
-                            ${escapeHtml(
-                                order.withdrawal_method || ""
-                            )}
 
-                            <br>
+                            <div class="action-row">
 
-                            Destination:
-                            ${escapeHtml(
-                                order.destination || ""
-                            )}
+                                ${
+                                    status ===
+                                    "PENDING"
 
-                            <br>
+                                    ? `
 
-                            Created:
-                            ${formatDate(order.created_at)}
+                                        <button
+                                            class="btn btn-success"
+                                            onclick="
+                                            adminApproveWithdrawal(
+                                                '${order.id}'
+                                            )">
+
+                                            APPROVE
+
+                                        </button>
+
+                                        <button
+                                            class="btn btn-danger"
+                                            onclick="
+                                            adminRejectWithdrawal(
+                                                '${order.id}'
+                                            )">
+
+                                            REJECT
+
+                                        </button>
+
+                                    `
+
+                                    : ""
+                                }
+
+
+                                ${
+                                    status ===
+                                    "APPROVED" ||
+                                    status ===
+                                    "PROCESSING"
+
+                                    ? `
+
+                                        <button
+                                            class="btn btn-success"
+                                            onclick="
+                                            adminCompleteWithdrawal(
+                                                '${order.id}'
+                                            )">
+
+                                            COMPLETE NOW
+
+                                        </button>
+
+                                        <button
+                                            class="btn btn-danger"
+                                            onclick="
+                                            adminRejectWithdrawal(
+                                                '${order.id}'
+                                            )">
+
+                                            REJECT
+
+                                        </button>
+
+                                    `
+
+                                    : ""
+                                }
+
+                            </div>
 
                         </div>
 
-                        <br>
+                    `;
 
-                        <div class="action-row">
-
-                            ${
-                                status === "PENDING"
-                                ? `
-                                    <button
-                                        class="btn btn-success"
-                                        onclick="adminApproveWithdrawal('${order.id}')">
-                                        APPROVE
-                                    </button>
-
-                                    <button
-                                        class="btn btn-danger"
-                                        onclick="adminRejectWithdrawal('${order.id}')">
-                                        REJECT
-                                    </button>
-                                `
-                                : ""
-                            }
-
-                            ${
-                                status === "APPROVED" ||
-                                status === "PROCESSING"
-                                ? `
-                                    <button
-                                        class="btn btn-success"
-                                        onclick="adminCompleteWithdrawal('${order.id}')">
-                                        COMPLETE NOW
-                                    </button>
-
-                                    <button
-                                        class="btn btn-danger"
-                                        onclick="adminRejectWithdrawal('${order.id}')">
-                                        REJECT
-                                    </button>
-                                `
-                                : ""
-                            }
-
-                        </div>
-
-                    </div>
-                `;
-
-            }).join("");
+                }
+            )
+            .join("");
 
     }catch(error){
 
         container.innerHTML =
             `<div class="status-message show error">
-                ${escapeHtml(error.message)}
+
+                ${escapeHtml(
+                    error.message
+                )}
+
             </div>`;
+
     }
+
 }
+
 
 /* =========================================================
    ADMIN APPROVE
 ========================================================= */
 
-async function adminApproveWithdrawal(id){
-
-    /*
-     1–15 minute processing window.
-     Server-side scheduler should ultimately enforce this.
-    */
+async function adminApproveWithdrawal(
+    id
+){
 
     const minutes =
         Math.floor(
-            Math.random() * 15
-        ) + 1;
+            Math.random()*15
+        )+1;
+
 
     const deadline =
         new Date(
             Date.now() +
-            minutes * 60 * 1000
-        ).toISOString();
+            minutes*
+            60*
+            1000
+        )
+        .toISOString();
+
 
     try{
 
         await supabaseRequest(
+
             "/rest/v1/withdrawal_requests" +
             "?id=eq." +
-            encodeURIComponent(id),
+            encodeURIComponent(
+                id
+            ),
+
             {
+
                 method:"PATCH",
 
-                body:JSON.stringify({
+                body:
+                JSON.stringify({
 
-                    status:"APPROVED",
+                    status:
+                        "APPROVED",
 
                     reviewed_at:
-                        new Date().toISOString(),
+                        new Date()
+                            .toISOString(),
 
                     approved_at:
-                        new Date().toISOString(),
+                        new Date()
+                            .toISOString(),
 
                     processing_deadline:
                         deadline,
@@ -2578,19 +7494,26 @@ async function adminApproveWithdrawal(id){
                         "Order approved. Withdrawal is being processed."
 
                 })
+
             }
+
         );
 
+
         alert(
+
             "Withdrawal approved.\n\n" +
             "Processing deadline: approximately " +
             minutes +
             " minute(s)."
+
         );
+
 
         await loadWithdrawals();
 
         await loadAdminWithdrawals();
+
 
     }catch(error){
 
@@ -2598,14 +7521,19 @@ async function adminApproveWithdrawal(id){
             "Approval failed: " +
             error.message
         );
+
     }
+
 }
+
 
 /* =========================================================
    ADMIN REJECT
 ========================================================= */
 
-async function adminRejectWithdrawal(id){
+async function adminRejectWithdrawal(
+    id
+){
 
     const reason =
         prompt(
@@ -2613,44 +7541,60 @@ async function adminRejectWithdrawal(id){
             "Order has been rejected by admin."
         );
 
+
     if(reason === null){
         return;
     }
 
+
     try{
 
         await supabaseRequest(
+
             "/rest/v1/withdrawal_requests" +
             "?id=eq." +
-            encodeURIComponent(id),
+            encodeURIComponent(
+                id
+            ),
+
             {
+
                 method:"PATCH",
 
-                body:JSON.stringify({
+                body:
+                JSON.stringify({
 
-                    status:"REJECTED",
+                    status:
+                        "REJECTED",
 
                     reviewed_at:
-                        new Date().toISOString(),
+                        new Date()
+                            .toISOString(),
 
                     rejected_at:
-                        new Date().toISOString(),
+                        new Date()
+                            .toISOString(),
 
                     status_message:
                         reason ||
                         "Order has been rejected."
 
                 })
+
             }
+
         );
+
 
         alert(
             "Withdrawal order has been rejected."
         );
 
+
         await loadWithdrawals();
 
         await loadAdminWithdrawals();
+
 
     }catch(error){
 
@@ -2658,45 +7602,63 @@ async function adminRejectWithdrawal(id){
             "Rejection failed: " +
             error.message
         );
+
     }
+
 }
+
 
 /* =========================================================
    ADMIN COMPLETE
 ========================================================= */
 
-async function adminCompleteWithdrawal(id){
+async function adminCompleteWithdrawal(
+    id
+){
 
     try{
 
         await supabaseRequest(
+
             "/rest/v1/withdrawal_requests" +
             "?id=eq." +
-            encodeURIComponent(id),
+            encodeURIComponent(
+                id
+            ),
+
             {
+
                 method:"PATCH",
 
-                body:JSON.stringify({
+                body:
+                JSON.stringify({
 
-                    status:"COMPLETE",
+                    status:
+                        "COMPLETE",
 
                     completed_at:
-                        new Date().toISOString(),
+                        new Date()
+                            .toISOString(),
 
                     status_message:
                         "Withdrawal completed."
 
                 })
+
             }
+
         );
+
 
         alert(
             "Withdrawal marked COMPLETE."
         );
 
+
         await loadWithdrawals();
 
         await loadAdminWithdrawals();
+
 
     }catch(error){
 
@@ -2704,11 +7666,14 @@ async function adminCompleteWithdrawal(id){
             "Completion failed: " +
             error.message
         );
+
     }
+
 }
 
+
 /* =========================================================
-   AUTOMATIC STATUS CHECK
+   AUTOMATIC WITHDRAWAL STATUS CHECK
 ========================================================= */
 
 async function checkWithdrawalDeadlines(){
@@ -2717,118 +7682,179 @@ async function checkWithdrawalDeadlines(){
 
         const rows =
             await supabaseRequest(
+
                 "/rest/v1/withdrawal_requests" +
                 "?select=*" +
                 "&status=in.(PENDING,APPROVED,PROCESSING)"
+
             );
+
 
         if(!rows){
             return;
         }
 
+
         const now =
             Date.now();
 
-        for(const order of rows){
+
+        for(
+            const order of rows
+        ){
 
             const created =
                 new Date(
                     order.created_at
-                ).getTime();
+                )
+                .getTime();
+
 
             const deadline =
                 order.processing_deadline
+
                 ? new Date(
                     order.processing_deadline
-                  ).getTime()
+                  )
+                  .getTime()
+
                 : null;
 
-            /*
-             Pending for more than 15 minutes:
-             EXPIRED rather than REJECTED.
-
-             This is intentional because REJECTED should
-             mean the admin explicitly rejected it.
-            */
 
             if(
-                String(order.status)
-                    .toUpperCase() === "PENDING"
+
+                String(
+                    order.status
+                )
+                .toUpperCase()
+                ===
+                "PENDING"
+
                 &&
-                now-created >= 15*60*1000
+
+                now-created >=
+                15*60*1000
+
             ){
 
                 await supabaseRequest(
+
                     "/rest/v1/withdrawal_requests" +
                     "?id=eq." +
-                    encodeURIComponent(order.id),
+                    encodeURIComponent(
+                        order.id
+                    ),
+
                     {
+
                         method:"PATCH",
 
-                        body:JSON.stringify({
+                        body:
+                        JSON.stringify({
 
-                            status:"EXPIRED",
+                            status:
+                                "EXPIRED",
 
                             status_message:
                                 "Order expired because admin approval was not received within 15 minutes."
 
                         })
+
                     }
+
                 );
+
             }
 
-            /*
-             Approved/processing deadline.
-            */
 
             if(
+
                 (
-                    String(order.status)
-                        .toUpperCase() === "APPROVED"
+                    String(
+                        order.status
+                    )
+                    .toUpperCase()
+                    ===
+                    "APPROVED"
+
                     ||
-                    String(order.status)
-                        .toUpperCase() === "PROCESSING"
+
+                    String(
+                        order.status
+                    )
+                    .toUpperCase()
+                    ===
+                    "PROCESSING"
                 )
+
                 &&
+
                 deadline
+
                 &&
+
                 now >= deadline
+
             ){
 
                 await supabaseRequest(
+
                     "/rest/v1/withdrawal_requests" +
                     "?id=eq." +
-                    encodeURIComponent(order.id),
+                    encodeURIComponent(
+                        order.id
+                    ),
+
                     {
+
                         method:"PATCH",
 
-                        body:JSON.stringify({
+                        body:
+                        JSON.stringify({
 
-                            status:"COMPLETE",
+                            status:
+                                "COMPLETE",
 
                             completed_at:
-                                new Date().toISOString(),
+                                new Date()
+                                    .toISOString(),
 
                             status_message:
                                 "Withdrawal completed."
 
                         })
+
                     }
+
                 );
+
             }
+
         }
+
 
         await loadWithdrawals();
 
+
+        const adminPanel =
+            document.getElementById(
+                "adminPanel"
+            );
+
+
         if(
-            !document
-                .getElementById("adminPanel")
-                .classList.contains("admin-hidden")
+            adminPanel &&
+            !adminPanel
+                .classList
+                .contains(
+                    "admin-hidden"
+                )
         ){
 
             await loadAdminWithdrawals();
 
         }
+
 
     }catch(error){
 
@@ -2836,23 +7862,17 @@ async function checkWithdrawalDeadlines(){
             "Automatic withdrawal check:",
             error.message
         );
+
     }
+
 }
 
-/*
- Browser check every 30 seconds.
-
- IMPORTANT:
- This is only a temporary testing mechanism.
- It cannot guarantee completion if nobody has the
- website open. The production version needs a
- Supabase server-side scheduled function.
-*/
 
 setInterval(
     checkWithdrawalDeadlines,
     30000
 );
+
 
 /* =========================================================
    HELPERS
@@ -2865,44 +7885,99 @@ function showMessage(
 ){
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
+
 
     if(!element){
         return;
     }
 
-    element.textContent = message;
+
+    element.textContent =
+        message;
+
 
     element.className =
         "status-message show " +
         type;
+
 }
 
-function escapeHtml(value){
 
-    return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+function escapeHtml(
+    value
+){
+
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
+
 }
 
-function formatDate(value){
+
+function formatDate(
+    value
+){
 
     if(!value){
         return "";
     }
 
+
     const date =
         new Date(value);
 
-    if(Number.isNaN(date.getTime())){
+
+    if(
+        Number.isNaN(
+            date.getTime()
+        )
+    ){
+
         return "";
+
     }
 
+
     return date.toLocaleString();
+
 }
+
+
+/* =========================================================
+   WINDOW RESIZE
+========================================================= */
+
+window.addEventListener(
+    "resize",
+    () => {
+
+        drawChart();
+
+    }
+);
 
 </script>
 
