@@ -6,9 +6,7 @@
 <title>Washington FX</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -158,7 +156,7 @@ canvas{
     cursor:grab;
 }
 
-canvas:active{
+canvas.dragging{
     cursor:grabbing;
 }
 
@@ -232,7 +230,6 @@ th{
 }
 
 @media(max-width:900px){
-
     .cards{
         grid-template-columns:repeat(2,1fr);
     }
@@ -243,7 +240,6 @@ th{
 }
 
 @media(max-width:600px){
-
     .cards{
         grid-template-columns:1fr 1fr;
     }
@@ -277,7 +273,6 @@ th{
 
 </header>
 
-
 <div class="container">
 
     <div class="toolbar">
@@ -310,7 +305,6 @@ th{
 
     </div>
 
-
     <div class="cards">
 
         <div class="card">
@@ -335,7 +329,6 @@ th{
 
     </div>
 
-
     <div class="layout">
 
         <div>
@@ -356,9 +349,6 @@ th{
 
                 </div>
 
-
-                <!-- CHART CONTROLS -->
-
                 <div class="chart-toolbar">
 
                     <button id="zoomIn">
@@ -373,17 +363,17 @@ th{
                         Reset Zoom
                     </button>
 
+                    <button id="latest">
+                        Latest
+                    </button>
+
                 </div>
 
-
                 <div class="chart-wrap">
-
                     <canvas id="chart"></canvas>
-
                 </div>
 
             </div>
-
 
             <div class="panel">
 
@@ -394,7 +384,6 @@ th{
                     <table>
 
                         <thead>
-
                             <tr>
                                 <th>Symbol</th>
                                 <th>Side</th>
@@ -403,7 +392,6 @@ th{
                                 <th>P/L</th>
                                 <th></th>
                             </tr>
-
                         </thead>
 
                         <tbody id="positions"></tbody>
@@ -414,7 +402,6 @@ th{
 
             </div>
 
-
             <div class="panel">
 
                 <h3>Trade History</h3>
@@ -424,7 +411,6 @@ th{
                     <table>
 
                         <thead>
-
                             <tr>
                                 <th>Time</th>
                                 <th>Symbol</th>
@@ -432,7 +418,6 @@ th{
                                 <th>Volume</th>
                                 <th>Result</th>
                             </tr>
-
                         </thead>
 
                         <tbody id="history"></tbody>
@@ -444,7 +429,6 @@ th{
             </div>
 
         </div>
-
 
         <aside>
 
@@ -465,17 +449,11 @@ th{
 
                 <div class="order-actions">
 
-                    <button
-                        id="buyBtn"
-                        class="buy"
-                    >
+                    <button id="buyBtn" class="buy">
                         BUY
                     </button>
 
-                    <button
-                        id="sellBtn"
-                        class="sell"
-                    >
+                    <button id="sellBtn" class="sell">
                         SELL
                     </button>
 
@@ -486,7 +464,6 @@ th{
                 </div>
 
             </div>
-
 
             <div class="panel">
 
@@ -511,7 +488,6 @@ th{
 
 </div>
 
-
 <script>
 
 const canvas =
@@ -520,31 +496,27 @@ const canvas =
 const ctx =
     canvas.getContext("2d");
 
-
 let balance = 10000;
-
 let price = 1.08500;
-
 let positions = [];
-
 let history = [];
-
 let candles = [];
 
 
 /* =========================
-   ZOOM SETTINGS
+   CHART VIEW
 ========================= */
 
 let zoom = 1;
 
 const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 6;
 
-const MAX_ZOOM = 4;
+let offset = 0;
 
 
 /* =========================
-   CREATE INITIAL CANDLES
+   INITIAL CANDLES
 ========================= */
 
 for(let i=0;i<70;i++){
@@ -577,7 +549,7 @@ for(let i=0;i<70;i++){
 
 
 /* =========================
-   RESIZE CANVAS
+   RESIZE
 ========================= */
 
 function resizeCanvas(){
@@ -623,30 +595,66 @@ function drawChart(){
         height
     );
 
-
     if(candles.length === 0)
         return;
 
 
     let visibleCount =
         Math.max(
-            5,
+            8,
             Math.floor(candles.length / zoom)
         );
 
 
+    /*
+       offset = 0 means latest candles.
+       Positive offset moves backwards.
+    */
+
+    const maxOffset =
+        Math.max(
+            0,
+            candles.length-visibleCount
+        );
+
+
+    offset =
+        Math.max(
+            0,
+            Math.min(
+                offset,
+                maxOffset
+            )
+        );
+
+
+    const end =
+        candles.length-offset;
+
+
+    const start =
+        Math.max(
+            0,
+            end-visibleCount
+        );
+
+
     const visibleCandles =
-        candles.slice(-visibleCount);
+        candles.slice(start,end);
+
+
+    if(visibleCandles.length === 0)
+        return;
 
 
     let max =
         Math.max(
-            ...visibleCandles.map(c => c.high)
+            ...visibleCandles.map(c=>c.high)
         );
 
     let min =
         Math.min(
-            ...visibleCandles.map(c => c.low)
+            ...visibleCandles.map(c=>c.low)
         );
 
 
@@ -655,36 +663,34 @@ function drawChart(){
 
 
     const gap =
-        width / visibleCandles.length;
+        width/visibleCandles.length;
 
 
     visibleCandles.forEach((c,i)=>{
 
         const x =
-            i*gap + gap/2;
+            i*gap+gap/2;
 
 
         const openY =
-            height -
+            height-
             ((c.open-min)/range)*height;
 
 
         const closeY =
-            height -
+            height-
             ((c.close-min)/range)*height;
 
 
         const highY =
-            height -
+            height-
             ((c.high-min)/range)*height;
 
 
         const lowY =
-            height -
+            height-
             ((c.low-min)/range)*height;
 
-
-        /* Wick */
 
         ctx.beginPath();
 
@@ -693,14 +699,12 @@ function drawChart(){
         ctx.lineTo(x,lowY);
 
         ctx.strokeStyle =
-            c.close >= c.open
+            c.close>=c.open
             ? "#36d98b"
             : "#ff5967";
 
         ctx.stroke();
 
-
-        /* Body */
 
         const bodyTop =
             Math.min(openY,closeY);
@@ -714,7 +718,7 @@ function drawChart(){
 
 
         ctx.fillStyle =
-            c.close >= c.open
+            c.close>=c.open
             ? "#36d98b"
             : "#ff5967";
 
@@ -732,150 +736,222 @@ function drawChart(){
 
 
 /* =========================
-   ZOOM BUTTONS
+   ZOOM IN
 ========================= */
 
 document
-    .getElementById("zoomIn")
-    .addEventListener("click",()=>{
+.getElementById("zoomIn")
+.addEventListener("click",()=>{
 
-        zoom =
-            Math.min(
-                MAX_ZOOM,
-                zoom + 0.5
-            );
+    zoom =
+        Math.min(
+            MAX_ZOOM,
+            zoom+0.5
+        );
 
-        drawChart();
+    drawChart();
 
-    });
-
-
-document
-    .getElementById("zoomOut")
-    .addEventListener("click",()=>{
-
-        zoom =
-            Math.max(
-                MIN_ZOOM,
-                zoom - 0.5
-            );
-
-        drawChart();
-
-    });
-
-
-document
-    .getElementById("resetZoom")
-    .addEventListener("click",()=>{
-
-        zoom = 1;
-
-        drawChart();
-
-    });
+});
 
 
 /* =========================
-   MOUSE WHEEL ZOOM
+   ZOOM OUT
 ========================= */
 
+document
+.getElementById("zoomOut")
+.addEventListener("click",()=>{
+
+    zoom =
+        Math.max(
+            MIN_ZOOM,
+            zoom-0.5
+        );
+
+    drawChart();
+
+});
+
+
+/* =========================
+   RESET ZOOM
+========================= */
+
+document
+.getElementById("resetZoom")
+.addEventListener("click",()=>{
+
+    zoom=1;
+    offset=0;
+
+    drawChart();
+
+});
+
+
+/* =========================
+   LATEST
+========================= */
+
+document
+.getElementById("latest")
+.addEventListener("click",()=>{
+
+    offset=0;
+
+    drawChart();
+
+});
+
+
+/* =========================
+   MOUSE DRAG
+========================= */
+
+let dragging=false;
+let dragStartX=0;
+let dragStartOffset=0;
+
+
 canvas.addEventListener(
-    "wheel",
-    function(event){
+    "mousedown",
+    event=>{
 
-        event.preventDefault();
+        dragging=true;
 
-        if(event.deltaY < 0){
+        dragStartX =
+            event.clientX;
 
-            zoom =
-                Math.min(
-                    MAX_ZOOM,
-                    zoom + 0.25
-                );
+        dragStartOffset =
+            offset;
 
-        }else{
+        canvas.classList.add(
+            "dragging"
+        );
 
-            zoom =
-                Math.max(
-                    MIN_ZOOM,
-                    zoom - 0.25
-                );
+    }
+);
 
-        }
+
+window.addEventListener(
+    "mousemove",
+    event=>{
+
+        if(!dragging)
+            return;
+
+
+        const dx =
+            event.clientX-dragStartX;
+
+
+        const candleWidth =
+            canvas.clientWidth /
+            Math.max(
+                8,
+                Math.floor(
+                    candles.length/zoom
+                )
+            );
+
+
+        const candleMove =
+            Math.round(
+                dx/candleWidth
+            );
+
+
+        offset =
+            dragStartOffset-candleMove;
+
 
         drawChart();
 
-    },
-    {passive:false}
+    }
+);
+
+
+window.addEventListener(
+    "mouseup",
+    ()=>{
+
+        dragging=false;
+
+        canvas.classList.remove(
+            "dragging"
+        );
+
+    }
 );
 
 
 /* =========================
-   TOUCH PINCH ZOOM
+   PHONE TOUCH DRAG
 ========================= */
 
-let lastTouchDistance = null;
+let touchStartX=0;
+let touchStartOffset=0;
+let touching=false;
+
+
+canvas.addEventListener(
+    "touchstart",
+    event=>{
+
+        if(event.touches.length!==1)
+            return;
+
+        touching=true;
+
+        touchStartX =
+            event.touches[0].clientX;
+
+        touchStartOffset =
+            offset;
+
+    },
+    {passive:true}
+);
 
 
 canvas.addEventListener(
     "touchmove",
-    function(event){
+    event=>{
 
-        if(event.touches.length !== 2)
+        if(!touching ||
+           event.touches.length!==1)
             return;
 
 
-        const a =
-            event.touches[0];
-
-        const b =
-            event.touches[1];
+        const currentX =
+            event.touches[0].clientX;
 
 
         const dx =
-            a.clientX-b.clientX;
-
-        const dy =
-            a.clientY-b.clientY;
+            currentX-touchStartX;
 
 
-        const distance =
-            Math.sqrt(
-                dx*dx +
-                dy*dy
+        const candleWidth =
+            canvas.clientWidth /
+            Math.max(
+                8,
+                Math.floor(
+                    candles.length/zoom
+                )
             );
 
 
-        if(lastTouchDistance !== null){
-
-            if(distance > lastTouchDistance){
-
-                zoom =
-                    Math.min(
-                        MAX_ZOOM,
-                        zoom + 0.03
-                    );
-
-            }
-
-            if(distance < lastTouchDistance){
-
-                zoom =
-                    Math.max(
-                        MIN_ZOOM,
-                        zoom - 0.03
-                    );
-
-            }
-
-            drawChart();
-
-        }
+        const candleMove =
+            Math.round(
+                dx/candleWidth
+            );
 
 
-        lastTouchDistance =
-            distance;
+        offset =
+            touchStartOffset-candleMove;
+
+
+        drawChart();
 
     },
     {passive:true}
@@ -884,11 +960,46 @@ canvas.addEventListener(
 
 canvas.addEventListener(
     "touchend",
-    function(){
+    ()=>{
 
-        lastTouchDistance = null;
+        touching=false;
 
     }
+);
+
+
+/* =========================
+   MOUSE WHEEL ZOOM
+========================= */
+
+canvas.addEventListener(
+    "wheel",
+    event=>{
+
+        event.preventDefault();
+
+        if(event.deltaY<0){
+
+            zoom =
+                Math.min(
+                    MAX_ZOOM,
+                    zoom+0.25
+                );
+
+        }else{
+
+            zoom =
+                Math.max(
+                    MIN_ZOOM,
+                    zoom-0.25
+                );
+
+        }
+
+        drawChart();
+
+    },
+    {passive:false}
 );
 
 
@@ -904,8 +1015,8 @@ function updatePrice(){
     price += move;
 
 
-    if(price <= 0)
-        price = 0.0001;
+    if(price<=0)
+        price=0.0001;
 
 
     candles.push({
@@ -930,17 +1041,17 @@ function updatePrice(){
     });
 
 
-    if(candles.length>80)
+    if(candles.length>150)
         candles.shift();
 
 
     document.getElementById("bid")
-        .textContent =
+    .textContent =
         price.toFixed(5);
 
 
     document.getElementById("ask")
-        .textContent =
+    .textContent =
         (price+0.00010).toFixed(5);
 
 
@@ -963,7 +1074,7 @@ function openTrade(side){
         );
 
 
-    if(!Number.isFinite(volume) || volume<=0){
+    if(!Number.isFinite(volume)||volume<=0){
 
         setStatus(
             "Enter a valid volume.",
@@ -993,8 +1104,8 @@ function openTrade(side){
 
 
     setStatus(
-        side +
-        " position opened at " +
+        side+
+        " position opened at "+
         price.toFixed(5)
     );
 
@@ -1010,46 +1121,47 @@ function openTrade(side){
 
 function updatePositions(){
 
-    let totalPL = 0;
+    let totalPL=0;
 
 
     positions.forEach(position=>{
 
         const difference =
-            position.side === "BUY"
+            position.side==="BUY"
             ? price-position.entry
             : position.entry-price;
 
 
         position.pl =
-            difference *
-            position.volume *
+            difference*
+            position.volume*
             100000;
 
 
-        totalPL += position.pl;
+        totalPL +=
+            position.pl;
 
     });
 
 
     document.getElementById("pl")
-        .textContent =
-        "$" + totalPL.toFixed(2);
+    .textContent =
+        "$"+totalPL.toFixed(2);
 
 
     document.getElementById("equity")
-        .textContent =
-        "$" + (balance+totalPL).toFixed(2);
-
-
-    document.getElementById("positionCount")
-        .textContent =
-        positions.length;
+    .textContent =
+        "$"+(balance+totalPL).toFixed(2);
 
 
     document.getElementById("balance")
-        .textContent =
-        "$" + balance.toFixed(2);
+    .textContent =
+        "$"+balance.toFixed(2);
+
+
+    document.getElementById("positionCount")
+    .textContent =
+        positions.length;
 
 
     renderPositions();
@@ -1066,7 +1178,7 @@ function renderPositions(){
     const body =
         document.getElementById("positions");
 
-    body.innerHTML = "";
+    body.innerHTML="";
 
 
     positions.forEach(position=>{
@@ -1076,12 +1188,12 @@ function renderPositions(){
 
 
         const plClass =
-            position.pl >= 0
+            position.pl>=0
             ? "green"
             : "red";
 
 
-        row.innerHTML = `
+        row.innerHTML=`
 
             <td>${position.symbol}</td>
 
@@ -1096,11 +1208,9 @@ function renderPositions(){
             </td>
 
             <td>
-
                 <button data-close="${position.id}">
                     Close
                 </button>
-
             </td>
 
         `;
@@ -1111,19 +1221,20 @@ function renderPositions(){
     });
 
 
-    body.querySelectorAll("[data-close]")
-        .forEach(button=>{
+    body
+    .querySelectorAll("[data-close]")
+    .forEach(button=>{
 
-            button.addEventListener(
-                "click",
-                ()=>closePosition(
-                    Number(
-                        button.dataset.close
-                    )
+        button.addEventListener(
+            "click",
+            ()=>closePosition(
+                Number(
+                    button.dataset.close
                 )
-            );
+            )
+        );
 
-        });
+    });
 
 }
 
@@ -1136,11 +1247,11 @@ function closePosition(id){
 
     const index =
         positions.findIndex(
-            p => p.id === id
+            p=>p.id===id
         );
 
 
-    if(index === -1)
+    if(index===-1)
         return;
 
 
@@ -1172,11 +1283,14 @@ function closePosition(id){
     });
 
 
-    positions.splice(index,1);
+    positions.splice(
+        index,
+        1
+    );
 
 
     setStatus(
-        "Position closed. Result: $" +
+        "Position closed. Result: $"+
         position.pl.toFixed(2)
     );
 
@@ -1197,7 +1311,7 @@ function renderHistory(){
     const body =
         document.getElementById("history");
 
-    body.innerHTML = "";
+    body.innerHTML="";
 
 
     history.forEach(item=>{
@@ -1207,12 +1321,12 @@ function renderHistory(){
 
 
         const cls =
-            item.result >= 0
+            item.result>=0
             ? "green"
             : "red";
 
 
-        row.innerHTML = `
+        row.innerHTML=`
 
             <td>${item.time}</td>
 
@@ -1240,7 +1354,10 @@ function renderHistory(){
    STATUS
 ========================= */
 
-function setStatus(message,error=false){
+function setStatus(
+    message,
+    error=false
+){
 
     const status =
         document.getElementById("status");
@@ -1259,79 +1376,83 @@ function setStatus(message,error=false){
 
 
 /* =========================
-   BUY / SELL
+   BUY
 ========================= */
 
 document
-    .getElementById("buyBtn")
-    .addEventListener(
-        "click",
-        ()=>openTrade("BUY")
-    );
-
-
-document
-    .getElementById("sellBtn")
-    .addEventListener(
-        "click",
-        ()=>openTrade("SELL")
-    );
+.getElementById("buyBtn")
+.addEventListener(
+    "click",
+    ()=>openTrade("BUY")
+);
 
 
 /* =========================
-   DEMO BUTTON
+   SELL
 ========================= */
 
 document
-    .getElementById("demoBtn")
-    .addEventListener(
-        "click",
-        ()=>{
-
-            document.getElementById("modeText")
-                .textContent =
-                "Demo FX uses virtual funds and simulated market execution.";
-
-
-            document.querySelector(".mode")
-                .textContent =
-                "SIMULATION MODE";
-
-
-            setStatus(
-                "Demo FX simulator active."
-            );
-
-        }
-    );
+.getElementById("sellBtn")
+.addEventListener(
+    "click",
+    ()=>openTrade("SELL")
+);
 
 
 /* =========================
-   LIVE BUTTON
+   DEMO
 ========================= */
 
 document
-    .getElementById("liveBtn")
-    .addEventListener(
-        "click",
-        ()=>{
+.getElementById("demoBtn")
+.addEventListener(
+    "click",
+    ()=>{
 
-            document.getElementById("modeText")
-                .textContent =
-                "Live FX interface selected. Real-money execution is not connected.";
-
-
-            document.querySelector(".mode")
-                .textContent =
-                "LIVE INTERFACE";
+        document.getElementById("modeText")
+        .textContent =
+            "Demo FX uses virtual funds and simulated market execution.";
 
 
-            setStatus(
-                "Live interface selected. Real execution is not enabled."
-            );
+        document.querySelector(".mode")
+        .textContent =
+            "SIMULATION MODE";
 
-        }
-    );
+
+        setStatus(
+            "Demo FX simulator active."
+        );
+
+    }
+);
+
+
+/* =========================
+   LIVE
+========================= */
+
+document
+.getElementById("liveBtn")
+.addEventListener(
+    "click",
+    ()=>{
+
+        document.getElementById("modeText")
+        .textContent =
+            "Live FX interface selected. Real-money execution is not connected.";
+
+
+        document.querySelector(".mode")
+        .textContent =
+            "LIVE INTERFACE";
+
+
+        setStatus(
+            "Live interface selected. Real execution is not enabled."
+        );
+
+    }
+);
 
 
 /* =========================
@@ -1339,18 +1460,18 @@ document
 ========================= */
 
 document
-    .getElementById("symbol")
-    .addEventListener(
-        "change",
-        ()=>{
+.getElementById("symbol")
+.addEventListener(
+    "change",
+    ()=>{
 
-            setStatus(
-                document.getElementById("symbol").value +
-                " selected."
-            );
+        setStatus(
+            document.getElementById("symbol").value+
+            " selected."
+        );
 
-        }
-    );
+    }
+);
 
 
 /* =========================
