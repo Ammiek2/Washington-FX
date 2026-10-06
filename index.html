@@ -159,12 +159,6 @@ textarea{
     touch-action:none;
 }
 
-.chart-tools{
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
-}
-
 .small-btn{
     background:#102235;
     border:1px solid #29445e;
@@ -482,48 +476,90 @@ th{
 <body>
 
 <header class="topbar">
-    <div class="logo">WASHINGTON <span>FX</span></div>
+
+    <div class="logo">
+        WASHINGTON <span>FX</span>
+    </div>
 
     <div class="mode-buttons">
-        <button id="demoBtn" class="active" onclick="setMode('DEMO')">
+
+        <button
+            id="demoBtn"
+            class="active"
+            onclick="setMode('DEMO')"
+        >
             DEMO FX
         </button>
 
-        <button id="liveBtn" onclick="setMode('LIVE')">
+        <button
+            id="liveBtn"
+            onclick="setMode('LIVE')"
+        >
             LIVE FX
         </button>
+
     </div>
+
 </header>
 
+
 <div class="container">
+
+    <!-- ACCOUNT SUMMARY -->
 
     <div class="stats">
 
         <div class="card">
             <div class="card-title">Balance</div>
-            <div class="card-value" id="balance">$10,000.00</div>
+            <div
+                class="card-value"
+                id="balance"
+            >
+                $10,000.00
+            </div>
         </div>
 
         <div class="card">
             <div class="card-title">Equity</div>
-            <div class="card-value" id="equity">$10,000.00</div>
+            <div
+                class="card-value"
+                id="equity"
+            >
+                $10,000.00
+            </div>
         </div>
 
         <div class="card">
             <div class="card-title">Floating P/L</div>
-            <div class="card-value" id="floatingPL">$0.00</div>
+            <div
+                class="card-value"
+                id="floatingPL"
+            >
+                $0.00
+            </div>
         </div>
 
         <div class="card">
             <div class="card-title">Open Positions</div>
-            <div class="card-value" id="openPositions">0</div>
+            <div
+                class="card-value"
+                id="openPositions"
+            >
+                0
+            </div>
         </div>
 
     </div>
 
+
+    <!-- CHART CONTROLS -->
+
     <div class="controls">
 
-        <select id="symbolSelect" onchange="selectMarket(this.value)">
+        <select
+            id="symbolSelect"
+            onchange="selectMarket(this.value)"
+        >
             <option value="EURUSD">EURUSD</option>
             <option value="GBPUSD">GBPUSD</option>
             <option value="USDJPY">USDJPY</option>
@@ -541,48 +577,96 @@ th{
             <option>1 Hour</option>
         </select>
 
-        <select id="candleStyle" onchange="changeCandleStyle(this.value)">
-            <option value="classic">Classic Candles</option>
-            <option value="hollow">Hollow Candles</option>
+        <select
+            id="candleStyle"
+            onchange="changeCandleStyle(this.value)"
+        >
+            <option value="classic">
+                Classic Candles
+            </option>
+
+            <option value="hollow">
+                Hollow Candles
+            </option>
         </select>
 
-        <button class="small-btn" onclick="toggleGrid()" id="gridBtn">
+        <button
+            class="small-btn"
+            id="gridBtn"
+            onclick="toggleGrid()"
+        >
             Grid: ON
         </button>
 
-        <button class="small-btn" onclick="zoomChart(1.2)">
+        <button
+            class="small-btn"
+            onclick="zoomChart(1.2)"
+        >
             + Zoom
         </button>
 
-        <button class="small-btn" onclick="zoomChart(0.8)">
+        <button
+            class="small-btn"
+            onclick="zoomChart(0.8)"
+        >
             − Zoom
         </button>
 
-        <button class="small-btn" onclick="resetChart()">
+        <button
+            class="small-btn"
+            onclick="resetChart()"
+        >
             Reset Chart
         </button>
 
-        <button class="small-btn" onclick="toggleFullscreen()">
+        <button
+            class="small-btn"
+            onclick="toggleFullscreen()"
+        >
             Full Screen
         </button>
 
     </div>
 
-    <div class="chart-wrap" id="chartWrap">
+
+    <!-- CHART -->
+
+    <div
+        class="chart-wrap"
+        id="chartWrap"
+    >
 
         <div class="chart-header">
 
             <div>
-                <strong id="chartSymbol">EURUSD</strong>
-                <div class="market-price" id="marketPrice">1.08500</div>
+
+                <strong id="chartSymbol">
+                    EURUSD
+                </strong>
+
+                <div
+                    class="market-price"
+                    id="marketPrice"
+                >
+                    1.08500
+                </div>
+
             </div>
 
             <div>
+
                 Bid:
-                <strong id="bidPrice">1.08500</strong>
+                <strong id="bidPrice">
+                    1.08500
+                </strong>
+
                 &nbsp;
+
                 Ask:
-                <strong id="askPrice">1.08520</strong>
+                <strong id="askPrice">
+                    1.08520
+                </strong>
+
             </div>
 
         </div>
@@ -590,6 +674,9 @@ th{
         <canvas id="chart"></canvas>
 
     </div>
+
+
+    <!-- TRADING -->
 
     <div class="trade-panel">
 
@@ -600,78 +687,138 @@ th{
             <div class="form-grid">
 
                 <div class="form-group">
-                    <label>Volume</label>
-                    <input id="volume" type="number" value="0.01" min="0.01" step="0.01">
+
+                    <label>
+                        Volume
+                    </label>
+
+                    <input
+                        id="volume"
+                        type="number"
+                        value="0.01"
+                        min="0.01"
+                        step="0.01"
+                    >
+
                 </div>
 
                 <div class="form-group">
-                    <label>Take Profit</label>
-                    <input id="takeProfit" type="number" placeholder="Optional">
+
+                    <label>
+                        Take Profit
+                    </label>
+
+                    <input
+                        id="takeProfit"
+                        type="number"
+                        placeholder="Optional"
+                    >
+
                 </div>
 
                 <div class="form-group">
-                    <label>Stop Loss</label>
-                    <input id="stopLoss" type="number" placeholder="Optional">
+
+                    <label>
+                        Stop Loss
+                    </label>
+
+                    <input
+                        id="stopLoss"
+                        type="number"
+                        placeholder="Optional"
+                    >
+
                 </div>
 
             </div>
 
             <div class="trade-buttons">
 
-                <button class="buy" onclick="openTrade('BUY')">
+                <button
+                    class="buy"
+                    onclick="openTrade('BUY')"
+                >
                     BUY
                 </button>
 
-                <button class="sell" onclick="openTrade('SELL')">
+                <button
+                    class="sell"
+                    onclick="openTrade('SELL')"
+                >
                     SELL
                 </button>
 
             </div>
 
-            <div class="notice" id="modeNotice">
-                Demo mode uses virtual funds and simulated market execution.
-            </div>
-
-            <div class="notice">
-                Drag the chart left/right. Use the zoom controls to change
-                the chart view. Trade entries and P/L markers appear on the chart.
+            <div
+                class="notice"
+                id="modeNotice"
+            >
+                Demo mode uses virtual funds and simulated
+                market execution.
             </div>
 
         </div>
+
 
         <div class="panel">
 
             <h3>Current Market</h3>
 
             <div class="balance-box">
-                <div class="balance-label">Symbol</div>
-                <div class="balance-value" id="currentMarketName">
+
+                <div class="balance-label">
+                    Symbol
+                </div>
+
+                <div
+                    class="balance-value"
+                    id="currentMarketName"
+                >
                     EURUSD
                 </div>
+
             </div>
 
             <div style="height:8px"></div>
 
             <div class="balance-box">
-                <div class="balance-label">Current Price</div>
-                <div class="balance-value" id="currentMarketPrice">
+
+                <div class="balance-label">
+                    Current Price
+                </div>
+
+                <div
+                    class="balance-value"
+                    id="currentMarketPrice"
+                >
                     1.08500
                 </div>
+
             </div>
 
         </div>
 
     </div>
 
-    <div class="panel" style="margin-top:12px">
 
-        <h3>Open Positions</h3>
+    <!-- OPEN POSITIONS -->
+
+    <div
+        class="panel"
+        style="margin-top:12px"
+    >
+
+        <h3>
+            Open Positions
+        </h3>
 
         <div class="table-wrap">
 
             <table>
 
                 <thead>
+
                     <tr>
                         <th>Symbol</th>
                         <th>Side</th>
@@ -683,14 +830,20 @@ th{
                         <th>P/L</th>
                         <th>Action</th>
                     </tr>
+
                 </thead>
 
                 <tbody id="positionsBody">
+
                     <tr>
-                        <td colspan="9" class="empty">
+                        <td
+                            colspan="9"
+                            class="empty"
+                        >
                             No open positions
                         </td>
                     </tr>
+
                 </tbody>
 
             </table>
@@ -699,38 +852,60 @@ th{
 
     </div>
 
-    <!-- WALLET -->
+
+    <!-- WALLET / WITHDRAWAL -->
 
     <div class="wallet-grid">
 
         <div class="panel">
 
-            <h3>Wallet</h3>
+            <h3>
+                Wallet
+            </h3>
 
             <div class="balance-box">
-                <div class="balance-label">Available Balance</div>
-                <div class="balance-value" id="walletBalance">
+
+                <div class="balance-label">
+                    Available Balance
+                </div>
+
+                <div
+                    class="balance-value"
+                    id="walletBalance"
+                >
                     $10,000.00
                 </div>
+
             </div>
 
             <div class="notice">
-                Wallet balance in this version is connected to the platform
-                simulator. Real-money deposits and withdrawals require the
-                appropriate payment/custody infrastructure.
+
+                Wallet funds in this version are simulator
+                funds. Withdrawal requests are recorded in
+                Supabase and remain pending until reviewed.
+
             </div>
 
             <div class="service-buttons">
 
-                <a href="https://wa.me/" target="_blank">
+                <a
+                    href="https://wa.me/"
+                    target="_blank"
+                >
                     WhatsApp Customer Service
                 </a>
 
-                <a href="https://t.me/" target="_blank">
+                <a
+                    href="https://t.me/"
+                    target="_blank"
+                >
                     Telegram Customer Service
                 </a>
 
-                <a href="mailto:" target="_blank">
+                <a
+                    href="mailto:"
+                    target="_blank"
+                >
                     Email Customer Service
                 </a>
 
@@ -738,16 +913,23 @@ th{
 
         </div>
 
-        <!-- WITHDRAWAL -->
+
+        <!-- WITHDRAW FORM -->
 
         <div class="panel">
 
-            <h3>Withdraw Funds</h3>
+            <h3>
+                Withdraw Funds
+            </h3>
 
             <div class="withdraw-form">
 
                 <div class="form-group">
-                    <label>Amount (USD)</label>
+
+                    <label>
+                        Amount (USD)
+                    </label>
+
                     <input
                         id="withdrawAmount"
                         type="number"
@@ -755,32 +937,48 @@ th{
                         step="0.01"
                         placeholder="Enter amount"
                     >
+
                 </div>
 
                 <div class="form-group">
-                    <label>Wallet Address / Destination</label>
+
+                    <label>
+                        Wallet Address / Destination
+                    </label>
+
                     <input
                         id="walletAddress"
                         type="text"
                         placeholder="Enter destination"
                     >
+
                 </div>
 
                 <div class="form-group">
-                    <label>Network / Method</label>
+
+                    <label>
+                        Network / Method
+                    </label>
+
                     <input
                         id="walletNetwork"
                         type="text"
                         placeholder="Example: USDT TRC20"
                     >
+
                 </div>
 
                 <div class="form-group">
-                    <label>Message</label>
+
+                    <label>
+                        Message
+                    </label>
+
                     <textarea
                         id="withdrawMessage"
-                        placeholder="Optional message to customer service"
+                        placeholder="Optional message"
                     ></textarea>
+
                 </div>
 
                 <button
@@ -798,17 +996,24 @@ th{
 
     </div>
 
-    <!-- WITHDRAWAL ORDERS -->
 
-    <div class="panel" style="margin-top:12px">
+    <!-- USER WITHDRAWAL ORDERS -->
 
-        <h3>My Withdrawal Orders</h3>
+    <div
+        class="panel"
+        style="margin-top:12px"
+    >
+
+        <h3>
+            My Withdrawal Orders
+        </h3>
 
         <div class="table-wrap">
 
             <table>
 
                 <thead>
+
                     <tr>
                         <th>Order ID</th>
                         <th>Mode</th>
@@ -818,14 +1023,20 @@ th{
                         <th>Status</th>
                         <th>Date</th>
                     </tr>
+
                 </thead>
 
                 <tbody id="withdrawalsBody">
+
                     <tr>
-                        <td colspan="7" class="empty">
+                        <td
+                            colspan="7"
+                            class="empty"
+                        >
                             No withdrawal orders
                         </td>
                     </tr>
+
                 </tbody>
 
             </table>
@@ -834,33 +1045,46 @@ th{
 
     </div>
 
-    <!-- ADMIN TEST PANEL -->
 
-    <div class="panel admin-section">
+    <!-- ADMIN -->
+
+    <div
+        class="panel admin-section"
+    >
 
         <div class="admin-header">
 
             <div>
-                <h3 class="admin-title">Admin Withdrawal Orders</h3>
+
+                <h3 class="admin-title">
+                    Admin Withdrawal Orders
+                </h3>
 
                 <div class="notice">
-                    Test/admin workflow. Orders can be moved through
-                    PENDING, PROCESSING, APPROVED, REJECTED and PAID
-                    so you can see how the platform workflow operates.
+
+                    New withdrawal requests appear here
+                    for review.
+
                 </div>
+
             </div>
 
-            <button class="small-btn" onclick="loadAdminWithdrawals()">
+            <button
+                class="small-btn"
+                onclick="loadAdminWithdrawals()"
+            >
                 Refresh Orders
             </button>
 
         </div>
+
 
         <div class="table-wrap">
 
             <table>
 
                 <thead>
+
                     <tr>
                         <th>Order</th>
                         <th>Mode</th>
@@ -871,12 +1095,16 @@ th{
                         <th>Created</th>
                         <th>Admin Action</th>
                     </tr>
+
                 </thead>
 
                 <tbody id="adminWithdrawalsBody">
 
                     <tr>
-                        <td colspan="8" class="empty">
+                        <td
+                            colspan="8"
+                            class="empty"
+                        >
                             No withdrawal orders
                         </td>
                     </tr>
@@ -889,15 +1117,24 @@ th{
 
     </div>
 
-    <div class="panel" style="margin-top:12px">
 
-        <h3>Trade History</h3>
+    <!-- TRADE HISTORY -->
+
+    <div
+        class="panel"
+        style="margin-top:12px"
+    >
+
+        <h3>
+            Trade History
+        </h3>
 
         <div class="table-wrap">
 
             <table>
 
                 <thead>
+
                     <tr>
                         <th>Symbol</th>
                         <th>Side</th>
@@ -907,12 +1144,16 @@ th{
                         <th>P/L</th>
                         <th>Reason</th>
                     </tr>
+
                 </thead>
 
                 <tbody id="historyBody">
 
                     <tr>
-                        <td colspan="7" class="empty">
+                        <td
+                            colspan="7"
+                            class="empty"
+                        >
                             No completed trades
                         </td>
                     </tr>
@@ -927,11 +1168,12 @@ th{
 
 </div>
 
+
 <script>
 
-/* ============================================================
+/* =========================================================
    SUPABASE
-   ============================================================ */
+========================================================= */
 
 const SUPABASE_URL =
     "https://plddteltleqayzcpuxom.supabase.co";
@@ -940,9 +1182,9 @@ const SUPABASE_KEY =
     "sb_publishable_jX6_GQggT_GDK2Kv_jNBcqA_frXVuZWv";
 
 
-/* ============================================================
+/* =========================================================
    MARKETS
-   ============================================================ */
+========================================================= */
 
 const markets = {
 
@@ -997,148 +1239,238 @@ const markets = {
 };
 
 
-/* ============================================================
-   MAIN STATE
-   ============================================================ */
+/* =========================================================
+   STATE
+========================================================= */
 
-let currentSymbol = "EURUSD";
+let currentSymbol =
+    "EURUSD";
 
-let currentMode = "DEMO";
+let currentMode =
+    "DEMO";
 
-let balance = 10000;
+let balance =
+    10000;
 
-let positions = [];
+let positions =
+    [];
 
-let history = [];
+let history =
+    [];
 
-let candles = [];
+let candles =
+    [];
 
-let zoom = 1;
+let zoom =
+    1;
 
-let chartOffset = 0;
+let chartOffset =
+    0;
 
-let gridEnabled = true;
+let gridEnabled =
+    true;
 
-let candleStyle = "classic";
+let candleStyle =
+    "classic";
 
-let dragStartX = null;
+let dragStartX =
+    null;
 
-let dragStartOffset = 0;
+let dragStartOffset =
+    0;
 
-let lastCandleTime = Date.now();
+let lastCandleTime =
+    Date.now();
 
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
+/* =========================================================
+   FORMATTERS
+========================================================= */
 
 function money(value){
 
-    return "$" + Number(value).toLocaleString(
-        "en-US",
-        {
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        }
-    );
+    return "$" +
+        Number(value).toLocaleString(
+            "en-US",
+            {
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            }
+        );
 
 }
 
 
 function formatPrice(symbol,value){
 
-    const digits = markets[symbol].digits;
-
-    return Number(value).toFixed(digits);
+    return Number(value)
+        .toFixed(
+            markets[symbol].digits
+        );
 
 }
 
+
+/* =========================================================
+   MARKET MOVEMENT
+========================================================= */
 
 function randomMove(symbol){
 
-    const m = markets[symbol];
-
     return (
-        (Math.random() - 0.5) *
-        m.step *
-        2
-    );
+        Math.random() -
+        0.5
+    ) *
+    markets[symbol].step *
+    2;
 
 }
 
 
-/* ============================================================
+/* =========================================================
    INITIAL CANDLES
-   ============================================================ */
+========================================================= */
 
 function createInitialCandles(){
 
     candles = [];
 
-    const m = markets[currentSymbol];
+    let price =
+        markets[currentSymbol].price;
 
-    let price = m.price;
+    for(
+        let i=0;
+        i<120;
+        i++
+    ){
 
-    for(let i=0;i<120;i++){
-
-        const open = price;
-
-        const move =
-            (Math.random()-0.5) *
-            m.step *
-            5;
+        const open =
+            price;
 
         const close =
-            open + move;
+            open +
+            (
+                Math.random()-0.5
+            ) *
+            markets[currentSymbol].step *
+            5;
 
         const high =
-            Math.max(open,close) +
-            Math.random() * m.step * 2;
+            Math.max(
+                open,
+                close
+            ) +
+            Math.random() *
+            markets[currentSymbol].step *
+            2;
 
         const low =
-            Math.min(open,close) -
-            Math.random() * m.step * 2;
+            Math.min(
+                open,
+                close
+            ) -
+            Math.random() *
+            markets[currentSymbol].step *
+            2;
 
         candles.push({
             open,
             high,
             low,
             close,
-            time:Date.now()-(120-i)*60000
+            time:
+                Date.now() -
+                (120-i)*60000
         });
 
-        price = close;
+        price =
+            close;
+
     }
 
-    markets[currentSymbol].price = price;
+    markets[currentSymbol].price =
+        price;
 
-    lastCandleTime = Date.now();
+    lastCandleTime =
+        Date.now();
 
     drawChart();
 
 }
 
 
-/* ============================================================
+/* =========================================================
    MARKET SELECTION
-   ============================================================ */
+========================================================= */
 
 function selectMarket(symbol){
 
-    currentSymbol = symbol;
-
-    document.getElementById("symbolSelect").value =
+    currentSymbol =
         symbol;
 
-    document.getElementById("chartSymbol").textContent =
+    document.getElementById(
+        "chartSymbol"
+    ).textContent =
         symbol;
 
-    document.getElementById("currentMarketName").textContent =
+    document.getElementById(
+        "currentMarketName"
+    ).textContent =
         symbol;
 
     createInitialCandles();
 
     updateMarketDisplay();
+
+}
+
+
+/* =========================================================
+   CANDLE SETTINGS
+========================================================= */
+
+function changeCandleStyle(style){
+
+    candleStyle =
+        style;
+
+    drawChart();
+
+}
+
+
+function toggleGrid(){
+
+    gridEnabled =
+        !gridEnabled;
+
+    document.getElementById(
+        "gridBtn"
+    ).textContent =
+        "Grid: " +
+        (
+            gridEnabled
+                ? "ON"
+                : "OFF"
+        );
+
+    drawChart();
+
+}
+
+
+function zoomChart(amount){
+
+    zoom *=
+        amount;
+
+    if(zoom < 0.5)
+        zoom = 0.5;
+
+    if(zoom > 4)
+        zoom = 4;
+
+    drawChart();
 
 }
 
@@ -1154,58 +1486,14 @@ function resetChart(){
 }
 
 
-/* ============================================================
-   CANDLE STYLE
-   ============================================================ */
-
-function changeCandleStyle(style){
-
-    candleStyle = style;
-
-    drawChart();
-
-}
-
-
-/* ============================================================
-   GRID
-   ============================================================ */
-
-function toggleGrid(){
-
-    gridEnabled = !gridEnabled;
-
-    document.getElementById("gridBtn").textContent =
-        "Grid: " + (gridEnabled ? "ON" : "OFF");
-
-    drawChart();
-
-}
-
-
-/* ============================================================
-   ZOOM
-   ============================================================ */
-
-function zoomChart(amount){
-
-    zoom *= amount;
-
-    if(zoom < 0.5) zoom = 0.5;
-
-    if(zoom > 4) zoom = 4;
-
-    drawChart();
-
-}
-
-
-/* ============================================================
+/* =========================================================
    CANVAS
-   ============================================================ */
+========================================================= */
 
 const canvas =
-    document.getElementById("chart");
+    document.getElementById(
+        "chart"
+    );
 
 const ctx =
     canvas.getContext("2d");
@@ -1217,10 +1505,12 @@ function resizeCanvas(){
         canvas.getBoundingClientRect();
 
     canvas.width =
-        rect.width * window.devicePixelRatio;
+        rect.width *
+        window.devicePixelRatio;
 
     canvas.height =
-        rect.height * window.devicePixelRatio;
+        rect.height *
+        window.devicePixelRatio;
 
     ctx.setTransform(
         window.devicePixelRatio,
@@ -1242,6 +1532,10 @@ window.addEventListener(
 );
 
 
+/* =========================================================
+   DRAW CHART
+========================================================= */
+
 function drawChart(){
 
     const width =
@@ -1250,7 +1544,8 @@ function drawChart(){
     const height =
         canvas.clientHeight;
 
-    if(!width || !height) return;
+    if(!width || !height)
+        return;
 
     ctx.clearRect(
         0,
@@ -1270,8 +1565,6 @@ function drawChart(){
     );
 
 
-    /* Visible candles */
-
     const candleWidth =
         8 * zoom;
 
@@ -1279,7 +1572,9 @@ function drawChart(){
         candleWidth + 5;
 
     const visibleCount =
-        Math.floor(width / spacing) + 4;
+        Math.floor(
+            width / spacing
+        ) + 4;
 
     let start =
         Math.max(
@@ -1289,81 +1584,113 @@ function drawChart(){
             chartOffset
         );
 
-    let end =
-        Math.min(
-            candles.length,
-            start + visibleCount
+    const visible =
+        candles.slice(
+            start,
+            start+visibleCount
         );
 
-    const visible =
-        candles.slice(start,end);
-
-    if(!visible.length) return;
+    if(!visible.length)
+        return;
 
 
     let minPrice =
         Math.min(
-            ...visible.map(c=>c.low)
+            ...visible.map(
+                c=>c.low
+            )
         );
 
     let maxPrice =
         Math.max(
-            ...visible.map(c=>c.high)
+            ...visible.map(
+                c=>c.high
+            )
         );
 
 
     const padding =
-        (maxPrice-minPrice)*0.12 || 1;
+        (
+            maxPrice -
+            minPrice
+        ) * 0.12 || 1;
 
-    minPrice -= padding;
+    minPrice -=
+        padding;
 
-    maxPrice += padding;
+    maxPrice +=
+        padding;
 
 
     function y(price){
 
         return height -
-            ((price-minPrice) /
-            (maxPrice-minPrice)) *
+            (
+                (
+                    price -
+                    minPrice
+                ) /
+                (
+                    maxPrice -
+                    minPrice
+                )
+            ) *
             height;
 
     }
 
-
-    /* GRID */
 
     if(gridEnabled){
 
         ctx.strokeStyle =
             "#183047";
 
-        ctx.lineWidth = 1;
-
-        for(let i=0;i<10;i++){
+        for(
+            let i=0;
+            i<10;
+            i++
+        ){
 
             const yy =
-                (height/10)*i;
+                height/10*i;
 
             ctx.beginPath();
 
-            ctx.moveTo(0,yy);
+            ctx.moveTo(
+                0,
+                yy
+            );
 
-            ctx.lineTo(width,yy);
+            ctx.lineTo(
+                width,
+                yy
+            );
 
             ctx.stroke();
 
         }
 
-        for(let i=0;i<12;i++){
+
+        for(
+            let i=0;
+            i<12;
+            i++
+        ){
 
             const xx =
-                (width/12)*i;
+                width/12*i;
 
             ctx.beginPath();
 
-            ctx.moveTo(xx,0);
+            ctx.moveTo(
+                xx,
+                0
+            );
 
-            ctx.lineTo(xx,height);
+            ctx.lineTo(
+                xx,
+                height
+            );
 
             ctx.stroke();
 
@@ -1372,104 +1699,117 @@ function drawChart(){
     }
 
 
-    /* CANDLES */
+    visible.forEach(
+        (candle,index)=>{
 
-    visible.forEach((candle,index)=>{
+            const x =
+                index *
+                spacing +
+                5;
 
-        const x =
-            index * spacing + 5;
+            const openY =
+                y(candle.open);
 
-        const openY =
-            y(candle.open);
+            const closeY =
+                y(candle.close);
 
-        const closeY =
-            y(candle.close);
+            const highY =
+                y(candle.high);
 
-        const highY =
-            y(candle.high);
+            const lowY =
+                y(candle.low);
 
-        const lowY =
-            y(candle.low);
+            const up =
+                candle.close >=
+                candle.open;
 
-        const up =
-            candle.close >= candle.open;
-
-        ctx.strokeStyle =
-            up ? "#18d88a" : "#ff5964";
-
-        ctx.fillStyle =
-            up ? "#18d88a" : "#ff5964";
-
-        ctx.lineWidth = 1;
-
-        /* wick */
-
-        ctx.beginPath();
-
-        ctx.moveTo(
-            x+candleWidth/2,
-            highY
-        );
-
-        ctx.lineTo(
-            x+candleWidth/2,
-            lowY
-        );
-
-        ctx.stroke();
-
-
-        const bodyTop =
-            Math.min(
-                openY,
-                closeY
-            );
-
-        const bodyHeight =
-            Math.max(
-                1,
-                Math.abs(
-                    closeY-openY
-                )
-            );
-
-
-        if(candleStyle === "hollow" && up){
-
-            ctx.fillStyle =
-                "#08131f";
 
             ctx.strokeStyle =
-                "#18d88a";
-
-            ctx.strokeRect(
-                x,
-                bodyTop,
-                candleWidth,
-                bodyHeight
-            );
-
-        }else{
+                up
+                    ? "#18d88a"
+                    : "#ff5964";
 
             ctx.fillStyle =
-                up ? "#18d88a" : "#ff5964";
+                up
+                    ? "#18d88a"
+                    : "#ff5964";
 
-            ctx.fillRect(
-                x,
-                bodyTop,
-                candleWidth,
-                bodyHeight
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x+candleWidth/2,
+                highY
             );
 
-        }
+            ctx.lineTo(
+                x+candleWidth/2,
+                lowY
+            );
 
-    });
+            ctx.stroke();
+
+
+            const bodyTop =
+                Math.min(
+                    openY,
+                    closeY
+                );
+
+            const bodyHeight =
+                Math.max(
+                    1,
+                    Math.abs(
+                        closeY -
+                        openY
+                    )
+                );
+
+
+            if(
+                candleStyle ===
+                "hollow" &&
+                up
+            ){
+
+                ctx.fillStyle =
+                    "#08131f";
+
+                ctx.strokeStyle =
+                    "#18d88a";
+
+                ctx.strokeRect(
+                    x,
+                    bodyTop,
+                    candleWidth,
+                    bodyHeight
+                );
+
+            }else{
+
+                ctx.fillStyle =
+                    up
+                        ? "#18d88a"
+                        : "#ff5964";
+
+                ctx.fillRect(
+                    x,
+                    bodyTop,
+                    candleWidth,
+                    bodyHeight
+                );
+
+            }
+
+        }
+    );
 
 
     /* CURRENT PRICE */
 
     const current =
-        markets[currentSymbol].price;
+        markets[currentSymbol]
+            .price;
 
     const currentY =
         y(current);
@@ -1477,7 +1817,9 @@ function drawChart(){
     ctx.strokeStyle =
         "#21d4fd";
 
-    ctx.setLineDash([5,5]);
+    ctx.setLineDash(
+        [5,5]
+    );
 
     ctx.beginPath();
 
@@ -1515,76 +1857,80 @@ function drawChart(){
     );
 
 
-    /* TRADE MARKERS */
+    /* TRADE ENTRY LINES */
 
     positions
         .filter(
-            p=>p.symbol===currentSymbol
+            p =>
+                p.symbol ===
+                currentSymbol
         )
-        .forEach(position=>{
+        .forEach(
+            position=>{
 
-            const entryY =
-                y(position.entry);
+                const entryY =
+                    y(position.entry);
 
-            ctx.strokeStyle =
-                position.side === "BUY"
-                    ? "#18d88a"
-                    : "#ff5964";
+                ctx.strokeStyle =
+                    position.side === "BUY"
+                        ? "#18d88a"
+                        : "#ff5964";
 
-            ctx.setLineDash([7,4]);
+                ctx.setLineDash(
+                    [7,4]
+                );
 
-            ctx.beginPath();
+                ctx.beginPath();
 
-            ctx.moveTo(
-                0,
-                entryY
-            );
+                ctx.moveTo(
+                    0,
+                    entryY
+                );
 
-            ctx.lineTo(
-                width,
-                entryY
-            );
+                ctx.lineTo(
+                    width,
+                    entryY
+                );
 
-            ctx.stroke();
+                ctx.stroke();
 
-            ctx.setLineDash([]);
+                ctx.setLineDash([]);
 
-            ctx.fillStyle =
-                position.side === "BUY"
-                    ? "#18d88a"
-                    : "#ff5964";
+                ctx.fillStyle =
+                    position.side === "BUY"
+                        ? "#18d88a"
+                        : "#ff5964";
 
-            ctx.font =
-                "12px Arial";
+                ctx.fillText(
+                    position.side +
+                    " " +
+                    formatPrice(
+                        currentSymbol,
+                        position.entry
+                    ),
+                    8,
+                    Math.max(
+                        15,
+                        entryY-6
+                    )
+                );
 
-            ctx.fillText(
-                position.side +
-                " " +
-                formatPrice(
-                    currentSymbol,
-                    position.entry
-                ),
-                8,
-                Math.max(
-                    15,
-                    entryY-6
-                )
-            );
-
-        });
+            }
+        );
 
 }
 
 
-/* ============================================================
+/* =========================================================
    DRAG CHART
-   ============================================================ */
+========================================================= */
 
 canvas.addEventListener(
     "mousedown",
     function(e){
 
-        dragStartX = e.clientX;
+        dragStartX =
+            e.clientX;
 
         dragStartOffset =
             chartOffset;
@@ -1597,11 +1943,15 @@ canvas.addEventListener(
     "mousemove",
     function(e){
 
-        if(dragStartX === null)
+        if(
+            dragStartX ===
+            null
+        )
             return;
 
         const distance =
-            e.clientX-dragStartX;
+            e.clientX -
+            dragStartX;
 
         chartOffset =
             Math.round(
@@ -1611,14 +1961,6 @@ canvas.addEventListener(
 
         if(chartOffset < 0)
             chartOffset = 0;
-
-        if(chartOffset >
-            candles.length-10)
-            chartOffset =
-                Math.max(
-                    0,
-                    candles.length-10
-                );
 
         drawChart();
 
@@ -1630,13 +1972,16 @@ window.addEventListener(
     "mouseup",
     function(){
 
-        dragStartX = null;
+        dragStartX =
+            null;
 
     }
 );
 
 
-/* TOUCH */
+/* =========================================================
+   TOUCH
+========================================================= */
 
 canvas.addEventListener(
     "touchstart",
@@ -1690,37 +2035,39 @@ canvas.addEventListener(
     "touchend",
     function(){
 
-        dragStartX = null;
+        dragStartX =
+            null;
 
     }
 );
 
 
-/* ============================================================
+/* =========================================================
    MARKET UPDATE
-   ============================================================ */
+========================================================= */
 
 function updateMarkets(){
 
-    Object.keys(markets).forEach(symbol=>{
+    Object.keys(
+        markets
+    ).forEach(
+        symbol=>{
 
-        markets[symbol].price +=
-            randomMove(symbol);
+            markets[symbol].price +=
+                randomMove(symbol);
 
-    });
+        }
+    );
 
-
-    const m =
-        markets[currentSymbol];
 
     const price =
-        m.price;
+        markets[currentSymbol]
+            .price;
 
-
-    /* Develop current candle */
-
-    let currentCandle =
-        candles[candles.length-1];
+    const currentCandle =
+        candles[
+            candles.length-1
+        ];
 
 
     if(
@@ -1739,14 +2086,15 @@ function updateMarkets(){
 
             close:price,
 
-            time:Date.now()
+            time:
+                Date.now()
 
         });
 
         lastCandleTime =
             Date.now();
 
-        if(candles.length > 200)
+        if(candles.length>200)
             candles.shift();
 
     }else{
@@ -1781,7 +2129,8 @@ function updateMarkets(){
 function updateMarketDisplay(){
 
     const price =
-        markets[currentSymbol].price;
+        markets[currentSymbol]
+            .price;
 
     document.getElementById(
         "marketPrice"
@@ -1799,22 +2148,26 @@ function updateMarketDisplay(){
             price
         );
 
+
     const spread =
-        currentSymbol==="XAUUSD"
+        currentSymbol === "XAUUSD"
             ? 0.20
-            : currentSymbol==="BTCUSD"
+            : currentSymbol === "BTCUSD"
                 ? 10
-                : currentSymbol==="USDJPY"
+                : currentSymbol === "USDJPY"
                     ? 0.02
                     : 0.00020;
+
 
     document.getElementById(
         "askPrice"
     ).textContent =
         formatPrice(
             currentSymbol,
-            price+spread
+            price +
+            spread
         );
+
 
     document.getElementById(
         "currentMarketPrice"
@@ -1827,30 +2180,46 @@ function updateMarketDisplay(){
 }
 
 
-/* ============================================================
+/* =========================================================
    P/L
-   ============================================================ */
+========================================================= */
 
 function calculatePL(position){
 
     const current =
-        markets[position.symbol].price;
+        markets[
+            position.symbol
+        ].price;
 
-    let multiplier = 100000;
+    let multiplier =
+        100000;
 
-    if(position.symbol==="XAUUSD")
+    if(
+        position.symbol ===
+        "XAUUSD"
+    )
         multiplier = 100;
 
-    if(position.symbol==="BTCUSD")
+    if(
+        position.symbol ===
+        "BTCUSD"
+    )
         multiplier = 1;
 
-    if(position.symbol==="USDJPY")
+    if(
+        position.symbol ===
+        "USDJPY"
+    )
         multiplier = 1000;
 
+
     const difference =
-        position.side==="BUY"
-            ? current-position.entry
-            : position.entry-current;
+        position.side === "BUY"
+            ? current -
+              position.entry
+            : position.entry -
+              current;
+
 
     return (
         difference *
@@ -1861,9 +2230,9 @@ function calculatePL(position){
 }
 
 
-/* ============================================================
+/* =========================================================
    OPEN TRADE
-   ============================================================ */
+========================================================= */
 
 function openTrade(side){
 
@@ -1884,6 +2253,7 @@ function openTrade(side){
             "stopLoss"
         ).value;
 
+
     const tp =
         tpValue === ""
             ? null
@@ -1894,9 +2264,15 @@ function openTrade(side){
             ? null
             : Number(slValue);
 
-    if(!volume || volume<=0){
 
-        alert("Enter a valid volume.");
+    if(
+        !volume ||
+        volume <= 0
+    ){
+
+        alert(
+            "Enter a valid volume."
+        );
 
         return;
 
@@ -1904,14 +2280,15 @@ function openTrade(side){
 
 
     const entry =
-        markets[currentSymbol].price;
+        markets[currentSymbol]
+            .price;
 
 
     if(tp !== null){
 
         if(
-            side==="BUY" &&
-            tp<=entry
+            side === "BUY" &&
+            tp <= entry
         ){
 
             alert(
@@ -1923,8 +2300,8 @@ function openTrade(side){
         }
 
         if(
-            side==="SELL" &&
-            tp>=entry
+            side === "SELL" &&
+            tp >= entry
         ){
 
             alert(
@@ -1941,8 +2318,8 @@ function openTrade(side){
     if(sl !== null){
 
         if(
-            side==="BUY" &&
-            sl>=entry
+            side === "BUY" &&
+            sl >= entry
         ){
 
             alert(
@@ -1954,8 +2331,8 @@ function openTrade(side){
         }
 
         if(
-            side==="SELL" &&
-            sl<=entry
+            side === "SELL" &&
+            sl <= entry
         ){
 
             alert(
@@ -2005,75 +2382,86 @@ function openTrade(side){
 }
 
 
-/* ============================================================
-   UPDATE POSITIONS
-   ============================================================ */
+/* =========================================================
+   POSITIONS
+========================================================= */
 
 function updatePositions(){
 
-    let floating = 0;
+    positions.forEach(
+        position=>{
 
-    positions.forEach(position=>{
+            const current =
+                markets[
+                    position.symbol
+                ].price;
 
-        const pl =
-            calculatePL(position);
-
-        floating += pl;
-
-
-        const current =
-            markets[position.symbol].price;
+            let reason =
+                null;
 
 
-        let closeReason = null;
+            if(
+                position.tp !== null &&
+                (
+                    position.side === "BUY"
+                        ? current >= position.tp
+                        : current <= position.tp
+                )
+            ){
+
+                reason =
+                    "Take Profit";
+
+            }
 
 
-        if(
-            position.tp !== null &&
-            (
-                position.side==="BUY"
-                    ? current>=position.tp
-                    : current<=position.tp
-            )
-        ){
+            if(
+                position.sl !== null &&
+                (
+                    position.side === "BUY"
+                        ? current <= position.sl
+                        : current >= position.sl
+                )
+            ){
 
-            closeReason =
-                "Take Profit";
+                reason =
+                    "Stop Loss";
 
-        }
-
-
-        if(
-            position.sl !== null &&
-            (
-                position.side==="BUY"
-                    ? current<=position.sl
-                    : current>=position.sl
-            )
-        ){
-
-            closeReason =
-                "Stop Loss";
-
-        }
+            }
 
 
-        if(closeReason){
+            if(reason){
 
-            closePosition(
-                position.id,
-                closeReason
-            );
+                closePosition(
+                    position.id,
+                    reason
+                );
+
+            }
 
         }
+    );
 
-    });
+
+    updateAccountDisplay();
+
+    renderPositions();
+
+}
 
 
-    const remainingFloating =
+function updateAccountDisplay(){
+
+    const floating =
         positions.reduce(
-            (sum,p)=>
-                sum+calculatePL(p),
+            (
+                sum,
+                position
+            ) =>
+                sum +
+                calculatePL(
+                    position
+                ),
             0
         );
 
@@ -2081,20 +2469,15 @@ function updatePositions(){
     document.getElementById(
         "floatingPL"
     ).textContent =
-        money(remainingFloating);
+        money(floating);
 
     document.getElementById(
         "equity"
     ).textContent =
         money(
-            balance+
-            remainingFloating
+            balance +
+            floating
         );
-
-    document.getElementById(
-        "openPositions"
-    ).textContent =
-        positions.length;
 
     document.getElementById(
         "balance"
@@ -2106,14 +2489,17 @@ function updatePositions(){
     ).textContent =
         money(balance);
 
-    renderPositions();
+    document.getElementById(
+        "openPositions"
+    ).textContent =
+        positions.length;
 
 }
 
 
-/* ============================================================
+/* =========================================================
    RENDER POSITIONS
-   ============================================================ */
+========================================================= */
 
 function renderPositions(){
 
@@ -2122,14 +2508,20 @@ function renderPositions(){
             "positionsBody"
         );
 
+
     if(!positions.length){
 
         body.innerHTML =
-            `<tr>
-                <td colspan="9" class="empty">
+            `
+            <tr>
+                <td
+                    colspan="9"
+                    class="empty"
+                >
                     No open positions
                 </td>
-            </tr>`;
+            </tr>
+            `;
 
         return;
 
@@ -2137,22 +2529,34 @@ function renderPositions(){
 
 
     body.innerHTML =
-        positions.map(position=>{
+        positions.map(
+            position=>{
 
-            const current =
-                markets[position.symbol].price;
+                const current =
+                    markets[
+                        position.symbol
+                    ].price;
 
-            const pl =
-                calculatePL(position);
+                const pl =
+                    calculatePL(
+                        position
+                    );
 
-            return `
+
+                return `
                 <tr>
 
-                    <td>${position.symbol}</td>
+                    <td>
+                        ${position.symbol}
+                    </td>
 
-                    <td>${position.side}</td>
+                    <td>
+                        ${position.side}
+                    </td>
 
-                    <td>${position.volume}</td>
+                    <td>
+                        ${position.volume}
+                    </td>
 
                     <td>
                         ${formatPrice(
@@ -2170,7 +2574,7 @@ function renderPositions(){
 
                     <td>
                         ${
-                            position.tp===null
+                            position.tp === null
                                 ? "-"
                                 : formatPrice(
                                     position.symbol,
@@ -2181,7 +2585,7 @@ function renderPositions(){
 
                     <td>
                         ${
-                            position.sl===null
+                            position.sl === null
                                 ? "-"
                                 : formatPrice(
                                     position.symbol,
@@ -2191,14 +2595,17 @@ function renderPositions(){
                     </td>
 
                     <td class="${
-                        pl>=0
+                        pl >= 0
                             ? "price-up"
                             : "price-down"
                     }">
+
                         ${money(pl)}
+
                     </td>
 
                     <td>
+
                         <button
                             class="small-btn"
                             onclick="closePosition(
@@ -2208,28 +2615,34 @@ function renderPositions(){
                         >
                             CLOSE
                         </button>
+
                     </td>
 
                 </tr>
-            `;
+                `;
 
-        }).join("");
+            }
+        ).join("");
 
 }
 
 
-/* ============================================================
+/* =========================================================
    CLOSE POSITION
-   ============================================================ */
+========================================================= */
 
-function closePosition(id,reason){
+function closePosition(
+    id,
+    reason
+){
 
     const index =
         positions.findIndex(
-            p=>p.id===id
+            p =>
+                p.id === id
         );
 
-    if(index===-1)
+    if(index === -1)
         return;
 
 
@@ -2237,13 +2650,18 @@ function closePosition(id,reason){
         positions[index];
 
     const exit =
-        markets[position.symbol].price;
+        markets[
+            position.symbol
+        ].price;
 
     const pl =
-        calculatePL(position);
+        calculatePL(
+            position
+        );
 
 
-    balance += pl;
+    balance +=
+        pl;
 
 
     history.unshift({
@@ -2275,58 +2693,24 @@ function closePosition(id,reason){
     });
 
 
-    positions.splice(index,1);
+    positions.splice(
+        index,
+        1
+    );
 
 
     renderHistory();
 
     renderPositions();
 
-    updateMarketsDisplayOnly();
+    updateAccountDisplay();
 
 }
 
 
-function updateMarketsDisplayOnly(){
-
-    const floating =
-        positions.reduce(
-            (sum,p)=>
-                sum+calculatePL(p),
-            0
-        );
-
-    document.getElementById(
-        "balance"
-    ).textContent =
-        money(balance);
-
-    document.getElementById(
-        "walletBalance"
-    ).textContent =
-        money(balance);
-
-    document.getElementById(
-        "floatingPL"
-    ).textContent =
-        money(floating);
-
-    document.getElementById(
-        "equity"
-    ).textContent =
-        money(balance+floating);
-
-    document.getElementById(
-        "openPositions"
-    ).textContent =
-        positions.length;
-
-}
-
-
-/* ============================================================
+/* =========================================================
    HISTORY
-   ============================================================ */
+========================================================= */
 
 function renderHistory(){
 
@@ -2335,14 +2719,20 @@ function renderHistory(){
             "historyBody"
         );
 
+
     if(!history.length){
 
         body.innerHTML =
-            `<tr>
-                <td colspan="7" class="empty">
+            `
+            <tr>
+                <td
+                    colspan="7"
+                    class="empty"
+                >
                     No completed trades
                 </td>
-            </tr>`;
+            </tr>
+            `;
 
         return;
 
@@ -2350,16 +2740,23 @@ function renderHistory(){
 
 
     body.innerHTML =
-        history.map(item=>{
+        history.map(
+            item=>{
 
-            return `
+                return `
                 <tr>
 
-                    <td>${item.symbol}</td>
+                    <td>
+                        ${item.symbol}
+                    </td>
 
-                    <td>${item.side}</td>
+                    <td>
+                        ${item.side}
+                    </td>
 
-                    <td>${item.volume}</td>
+                    <td>
+                        ${item.volume}
+                    </td>
 
                     <td>
                         ${formatPrice(
@@ -2376,37 +2773,43 @@ function renderHistory(){
                     </td>
 
                     <td class="${
-                        item.pl>=0
+                        item.pl >= 0
                             ? "price-up"
                             : "price-down"
                     }">
+
                         ${money(item.pl)}
+
                     </td>
 
-                    <td>${item.reason}</td>
+                    <td>
+                        ${item.reason}
+                    </td>
 
                 </tr>
-            `;
+                `;
 
-        }).join("");
+            }
+        ).join("");
 
 }
 
 
-/* ============================================================
-   DEMO / LIVE MODE
-   ============================================================ */
+/* =========================================================
+   MODE
+========================================================= */
 
 function setMode(mode){
 
-    currentMode = mode;
+    currentMode =
+        mode;
 
 
     document.getElementById(
         "demoBtn"
     ).classList.toggle(
         "active",
-        mode==="DEMO"
+        mode === "DEMO"
     );
 
 
@@ -2414,36 +2817,65 @@ function setMode(mode){
         "liveBtn"
     ).classList.toggle(
         "active",
-        mode==="LIVE"
+        mode === "LIVE"
     );
 
 
-    if(mode==="DEMO"){
-
-        document.getElementById(
-            "modeNotice"
-        ).textContent =
-            "Demo mode uses virtual funds and simulated market execution.";
-
-    }else{
-
-        document.getElementById(
-            "modeNotice"
-        ).textContent =
-            "Live interface selected. Real-money execution is not connected yet.";
-
-    }
+    document.getElementById(
+        "modeNotice"
+    ).textContent =
+        mode === "DEMO"
+            ? "Demo mode uses virtual funds and simulated market execution."
+            : "Live interface selected. Real-money execution is not connected yet.";
 
 }
 
 
-/* ============================================================
-   WITHDRAWAL HELPERS
-   ============================================================ */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-function withdrawalStatusClass(status){
+function escapeHtml(value){
 
-    return "status-badge status-" + status;
+    return String(
+        value ?? ""
+    )
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   WITHDRAWAL STATUS
+========================================================= */
+
+function withdrawalStatusClass(
+    status
+){
+
+    return (
+        "status-badge status-" +
+        status
+    );
 
 }
 
@@ -2453,15 +2885,16 @@ function formatDate(date){
     if(!date)
         return "-";
 
-    return new Date(date)
-        .toLocaleString();
+    return new Date(
+        date
+    ).toLocaleString();
 
 }
 
 
-/* ============================================================
+/* =========================================================
    SUBMIT WITHDRAWAL
-   ============================================================ */
+========================================================= */
 
 async function submitWithdrawal(){
 
@@ -2493,7 +2926,10 @@ async function submitWithdrawal(){
         );
 
 
-    if(!amount || amount<=0){
+    if(
+        !amount ||
+        amount <= 0
+    ){
 
         statusBox.textContent =
             "Enter a valid withdrawal amount.";
@@ -2506,10 +2942,13 @@ async function submitWithdrawal(){
     }
 
 
-    if(amount > balance){
+    if(
+        amount >
+        balance
+    ){
 
         statusBox.textContent =
-            "Withdrawal amount is greater than the available balance.";
+            "Withdrawal amount is greater than your available balance.";
 
         statusBox.className =
             "status withdraw-error";
@@ -2579,30 +3018,31 @@ async function submitWithdrawal(){
 
                     },
 
-                    body:JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        mode:
-                            currentMode,
+                            mode:
+                                currentMode,
 
-                        amount:
-                            amount,
+                            amount:
+                                amount,
 
-                        currency:
-                            "USD",
+                            currency:
+                                "USD",
 
-                        withdrawal_method:
-                            network,
+                            withdrawal_method:
+                                network,
 
-                        destination:
-                            wallet,
+                            destination:
+                                wallet,
 
-                        note:
-                            message,
+                            note:
+                                message,
 
-                        status:
-                            "PENDING"
+                            status:
+                                "PENDING"
 
-                    })
+                        })
 
                 }
             );
@@ -2613,7 +3053,14 @@ async function submitWithdrawal(){
             const error =
                 await response.text();
 
-            throw new Error(error);
+            console.error(
+                "SUPABASE ERROR:",
+                error
+            );
+
+            throw new Error(
+                error
+            );
 
         }
 
@@ -2621,15 +3068,16 @@ async function submitWithdrawal(){
         const result =
             await response.json();
 
+        console.log(
+            "Withdrawal created:",
+            result
+        );
+
 
         /*
-         IMPORTANT:
-         The platform does not pretend that money has
-         already been paid. The request is recorded as
-         PENDING until an authorised admin/payment process
-         changes its status.
-        */
-
+         * The request has now been created
+         * in Supabase as PENDING.
+         */
 
         statusBox.textContent =
             "Withdrawal submitted successfully. Status: PENDING";
@@ -2639,12 +3087,13 @@ async function submitWithdrawal(){
 
 
         /*
-         Reserve the requested simulator balance so the
-         user cannot immediately submit the same funds
-         again in the local simulator.
-        */
+         * Deduct from the local simulator
+         * after the request has successfully
+         * been created.
+         */
 
-        balance -= amount;
+        balance -=
+            amount;
 
 
         document.getElementById(
@@ -2664,19 +3113,21 @@ async function submitWithdrawal(){
         ).value = "";
 
 
-        updateMarketsDisplayOnly();
+        updateAccountDisplay();
 
-        loadWithdrawals();
+        await loadWithdrawals();
 
-        loadAdminWithdrawals();
+        await loadAdminWithdrawals();
 
 
     }catch(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         statusBox.textContent =
-            "Withdrawal request failed. Check the Supabase table and permissions.";
+            "Withdrawal request failed. Check Supabase table and permissions.";
 
         statusBox.className =
             "status withdraw-error";
@@ -2686,9 +3137,9 @@ async function submitWithdrawal(){
 }
 
 
-/* ============================================================
-   LOAD USER WITHDRAWALS
-   ============================================================ */
+/* =========================================================
+   LOAD WITHDRAWALS
+========================================================= */
 
 async function loadWithdrawals(){
 
@@ -2702,6 +3153,8 @@ async function loadWithdrawals(){
                 "&order=created_at.desc",
                 {
 
+                    method:"GET",
+
                     headers:{
 
                         "apikey":
@@ -2717,23 +3170,31 @@ async function loadWithdrawals(){
             );
 
 
-        if(!response.ok)
+        if(!response.ok){
+
+            const error =
+                await response.text();
+
             throw new Error(
-                await response.text()
+                error
             );
+
+        }
 
 
         const data =
             await response.json();
 
 
-        renderWithdrawals(data);
+        renderWithdrawals(
+            data
+        );
 
 
     }catch(error){
 
         console.error(
-            "Load withdrawals error:",
+            "Withdrawal loading error:",
             error
         );
 
@@ -2742,11 +3203,13 @@ async function loadWithdrawals(){
 }
 
 
-/* ============================================================
-   RENDER USER WITHDRAWALS
-   ============================================================ */
+/* =========================================================
+   RENDER WITHDRAWALS
+========================================================= */
 
-function renderWithdrawals(data){
+function renderWithdrawals(
+    data
+){
 
     const body =
         document.getElementById(
@@ -2754,14 +3217,22 @@ function renderWithdrawals(data){
         );
 
 
-    if(!data || !data.length){
+    if(
+        !data ||
+        !data.length
+    ){
 
         body.innerHTML =
-            `<tr>
-                <td colspan="7" class="empty">
+            `
+            <tr>
+                <td
+                    colspan="7"
+                    class="empty"
+                >
                     No withdrawal orders
                 </td>
-            </tr>`;
+            </tr>
+            `;
 
         return;
 
@@ -2769,161 +3240,30 @@ function renderWithdrawals(data){
 
 
     body.innerHTML =
-        data.map(item=>{
+        data.map(
+            item=>{
 
-            return `
+                return `
                 <tr>
 
                     <td>
-                        ${String(item.id).substring(0,8)}...
+                        ${String(
+                            item.id
+                        ).substring(
+                            0,
+                            8
+                        )}...
                     </td>
 
-                    <td>${item.mode}</td>
+                    <td>
+                        ${item.mode}
+                    </td>
 
                     <td>
                         ${item.currency || "USD"}
-                        ${Number(item.amount).toFixed(2)}
-                    </td>
-
-                    <td>
-                        ${item.withdrawal_method}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            item.destination
-                        )}
-                    </td>
-
-                    <td>
-                        <span class="${withdrawalStatusClass(item.status)}">
-                            ${item.status}
-                        </span>
-                    </td>
-
-                    <td>
-                        ${formatDate(
-                            item.created_at
-                        )}
-                    </td>
-
-                </tr>
-            `;
-
-        }).join("");
-
-}
-
-
-/* ============================================================
-   ADMIN LOAD
-   ============================================================ */
-
-async function loadAdminWithdrawals(){
-
-    const body =
-        document.getElementById(
-            "adminWithdrawalsBody"
-        );
-
-
-    try{
-
-        const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/withdrawal_requests" +
-                "?select=*" +
-                "&order=created_at.desc",
-                {
-
-                    headers:{
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            SUPABASE_KEY
-
-                    }
-
-                }
-            );
-
-
-        if(!response.ok)
-            throw new Error(
-                await response.text()
-            );
-
-
-        const data =
-            await response.json();
-
-
-        renderAdminWithdrawals(data);
-
-
-    }catch(error){
-
-        console.error(
-            "Admin load error:",
-            error
-        );
-
-        body.innerHTML =
-            `<tr>
-                <td colspan="8" class="empty">
-                    Unable to load withdrawal orders.
-                </td>
-            </tr>`;
-
-    }
-
-}
-
-
-/* ============================================================
-   ADMIN RENDER
-   ============================================================ */
-
-function renderAdminWithdrawals(data){
-
-    const body =
-        document.getElementById(
-            "adminWithdrawalsBody"
-        );
-
-
-    if(!data || !data.length){
-
-        body.innerHTML =
-            `<tr>
-                <td colspan="8" class="empty">
-                    No withdrawal orders
-                </td>
-            </tr>`;
-
-        return;
-
-    }
-
-
-    body.innerHTML =
-        data.map(item=>{
-
-            return `
-                <tr>
-
-                    <td>
-                        ${String(item.id).substring(0,8)}...
-                    </td>
-
-                    <td>${item.mode}</td>
-
-                    <td>
-                        $${Number(item.amount).toFixed(2)}
+                        ${Number(
+                            item.amount
+                        ).toFixed(2)}
                     </td>
 
                     <td>
@@ -2939,9 +3279,179 @@ function renderAdminWithdrawals(data){
                     </td>
 
                     <td>
-                        <span class="${withdrawalStatusClass(item.status)}">
+
+                        <span
+                            class="${withdrawalStatusClass(
+                                item.status
+                            )}"
+                        >
                             ${item.status}
                         </span>
+
+                    </td>
+
+                    <td>
+                        ${formatDate(
+                            item.created_at
+                        )}
+                    </td>
+
+                </tr>
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================================
+   ADMIN LOAD
+========================================================= */
+
+async function loadAdminWithdrawals(){
+
+    try{
+
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/withdrawal_requests" +
+                "?select=*" +
+                "&order=created_at.desc",
+                {
+
+                    method:"GET",
+
+                    headers:{
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY
+
+                    }
+
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                await response.text()
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        renderAdminWithdrawals(
+            data
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Admin withdrawal load error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ADMIN TABLE
+========================================================= */
+
+function renderAdminWithdrawals(
+    data
+){
+
+    const body =
+        document.getElementById(
+            "adminWithdrawalsBody"
+        );
+
+
+    if(
+        !data ||
+        !data.length
+    ){
+
+        body.innerHTML =
+            `
+            <tr>
+                <td
+                    colspan="8"
+                    class="empty"
+                >
+                    No withdrawal orders
+                </td>
+            </tr>
+            `;
+
+        return;
+
+    }
+
+
+    body.innerHTML =
+        data.map(
+            item=>{
+
+                return `
+                <tr>
+
+                    <td>
+                        ${String(
+                            item.id
+                        ).substring(
+                            0,
+                            8
+                        )}...
+                    </td>
+
+                    <td>
+                        ${item.mode}
+                    </td>
+
+                    <td>
+                        $${Number(
+                            item.amount
+                        ).toFixed(2)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            item.withdrawal_method
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            item.destination
+                        )}
+                    </td>
+
+                    <td>
+
+                        <span
+                            class="${withdrawalStatusClass(
+                                item.status
+                            )}"
+                        >
+                            ${item.status}
+                        </span>
+
                     </td>
 
                     <td>
@@ -2995,23 +3505,24 @@ function renderAdminWithdrawals(data){
                     </td>
 
                 </tr>
-            `;
+                `;
 
-        }).join("");
+            }
+        ).join("");
 
 }
 
 
-/* ============================================================
-   ADMIN STATUS UPDATE
-   ============================================================ */
+/* =========================================================
+   ADMIN UPDATE
+========================================================= */
 
 async function adminChangeWithdrawal(
     id,
     newStatus
 ){
 
-    const confirmAction =
+    const confirmed =
         confirm(
             "Change withdrawal status to " +
             newStatus +
@@ -3019,7 +3530,7 @@ async function adminChangeWithdrawal(
         );
 
 
-    if(!confirmAction)
+    if(!confirmed)
         return;
 
 
@@ -3052,15 +3563,17 @@ async function adminChangeWithdrawal(
 
                     },
 
-                    body:JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        status:
-                            newStatus,
+                            status:
+                                newStatus,
 
-                        reviewed_at:
-                            new Date().toISOString()
+                            reviewed_at:
+                                new Date()
+                                    .toISOString()
 
-                    })
+                        })
 
                 }
             );
@@ -3071,7 +3584,14 @@ async function adminChangeWithdrawal(
             const error =
                 await response.text();
 
-            throw new Error(error);
+            console.error(
+                "ADMIN UPDATE ERROR:",
+                error
+            );
+
+            throw new Error(
+                error
+            );
 
         }
 
@@ -3089,17 +3609,13 @@ async function adminChangeWithdrawal(
 
     }catch(error){
 
-        console.error(error);
-
-        /*
-         The database RLS policy correctly prevents
-         unauthorised users from changing real records.
-        */
+        console.error(
+            error
+        );
 
         alert(
-            "The status could not be changed. " +
-            "The logged-in account must have admin permission " +
-            "in Supabase."
+            "Admin status update is blocked by Supabase permissions. " +
+            "The withdrawal request itself is working."
         );
 
     }
@@ -3107,36 +3623,19 @@ async function adminChangeWithdrawal(
 }
 
 
-/* ============================================================
-   HTML SAFETY
-   ============================================================ */
-
-function escapeHtml(value){
-
-    return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-
-}
-
-
-/* ============================================================
+/* =========================================================
    FULLSCREEN
-   ============================================================ */
+========================================================= */
 
 function toggleFullscreen(){
 
-    const wrap =
-        document.getElementById(
+    document
+        .getElementById(
             "chartWrap"
+        )
+        .classList.toggle(
+            "fullscreen-mode"
         );
-
-    wrap.classList.toggle(
-        "fullscreen-mode"
-    );
 
     setTimeout(
         resizeCanvas,
@@ -3146,9 +3645,9 @@ function toggleFullscreen(){
 }
 
 
-/* ============================================================
+/* =========================================================
    START
-   ============================================================ */
+========================================================= */
 
 createInitialCandles();
 
@@ -3165,9 +3664,9 @@ loadWithdrawals();
 loadAdminWithdrawals();
 
 
-/* ============================================================
-   MARKET LOOP
-   ============================================================ */
+/* =========================================================
+   LIVE MARKET LOOP
+========================================================= */
 
 setInterval(
     updateMarkets,
@@ -3175,9 +3674,9 @@ setInterval(
 );
 
 
-/* ============================================================
+/* =========================================================
    WITHDRAWAL REFRESH
-   ============================================================ */
+========================================================= */
 
 setInterval(
     function(){
