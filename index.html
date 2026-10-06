@@ -1,4 +1,237 @@
 <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Washington FX</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #07101c;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .box {
+            width: 90%;
+            max-width: 400px;
+            background: #111d2d;
+            padding: 30px;
+            border-radius: 15px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border-radius: 8px;
+            border: 1px solid #40516a;
+            background: #07101c;
+            color: white;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .primary {
+            background: #1683ff;
+            color: white;
+        }
+
+        .secondary {
+            background: #26364d;
+            color: white;
+        }
+
+        #registerForm {
+            display: none;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Washington FX</h1>
+
+    <!-- LOGIN -->
+    <div id="loginForm">
+
+        <h2>Login</h2>
+
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+        >
+
+        <button
+            class="primary"
+            type="button"
+            onclick="login()"
+        >
+            Login
+        </button>
+
+        <button
+            class="secondary"
+            type="button"
+            onclick="showRegister()"
+        >
+            Create Account
+        </button>
+
+    </div>
+
+
+    <!-- REGISTER -->
+    <div id="registerForm">
+
+        <h2>Create Account</h2>
+
+        <input
+            type="text"
+            id="registerName"
+            placeholder="Full Name"
+        >
+
+        <input
+            type="email"
+            id="registerEmail"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            id="registerPassword"
+            placeholder="Password"
+        >
+
+        <button
+            class="primary"
+            type="button"
+            onclick="register()"
+        >
+            Register
+        </button>
+
+        <button
+            class="secondary"
+            type="button"
+            onclick="showLogin()"
+        >
+            Back to Login
+        </button>
+
+    </div>
+
+
+    <div id="message"></div>
+
+</div>
+
+
+<script>
+
+function showRegister() {
+
+    document.getElementById("loginForm").style.display = "none";
+
+    document.getElementById("registerForm").style.display = "block";
+
+    document.getElementById("message").textContent = "";
+}
+
+
+function showLogin() {
+
+    document.getElementById("registerForm").style.display = "none";
+
+    document.getElementById("loginForm").style.display = "block";
+
+    document.getElementById("message").textContent = "";
+}
+
+
+function login() {
+
+    const email =
+        document.getElementById("loginEmail").value;
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    if (!email || !password) {
+
+        document.getElementById("message").textContent =
+            "Please enter email and password.";
+
+        return;
+    }
+
+    document.getElementById("message").textContent =
+        "Login button is working.";
+}
+
+
+function register() {
+
+    const name =
+        document.getElementById("registerName").value;
+
+    const email =
+        document.getElementById("registerEmail").value;
+
+    const password =
+        document.getElementById("registerPassword").value;
+
+    if (!name || !email || !password) {
+
+        document.getElementById("message").textContent =
+            "Please complete all fields.";
+
+        return;
+    }
+
+    document.getElementById("message").textContent =
+        "Register button is working.";
+}
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
