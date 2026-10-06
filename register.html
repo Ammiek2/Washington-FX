@@ -1,236 +1,154 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Washington FX - Create Account</title><style>
-*{box-sizing:border-box}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Washington FX Register</title>
 
-body{
-    margin:0;
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:Arial,sans-serif;
-    background:#07101c;
-    color:#fff;
-}
+    <style>
+        body {
+            margin: 0;
+            background: #07101c;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
 
-.box{
-    width:92%;
-    max-width:420px;
-    background:#101c2b;
-    padding:30px;
-    border-radius:18px;
-    box-shadow:0 15px 50px rgba(0,0,0,.45);
-}
+        .box {
+            width: 90%;
+            max-width: 400px;
+            margin: 70px auto;
+            padding: 25px;
+            background: #101c2b;
+            border-radius: 15px;
+        }
 
-.logo{
-    text-align:center;
-    font-size:27px;
-    font-weight:bold;
-    margin-bottom:8px;
-}
+        h1 {
+            text-align: center;
+        }
 
-.subtitle{
-    text-align:center;
-    color:#91a4b8;
-    margin-bottom:25px;
-}
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            background: #07101c;
+            color: white;
+            border: 1px solid #40536b;
+            border-radius: 7px;
+        }
 
-input{
-    width:100%;
-    padding:14px;
-    margin:7px 0;
-    border:1px solid #30445c;
-    border-radius:8px;
-    background:#07101c;
-    color:#fff;
-    font-size:15px;
-}
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            background: #1687ff;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 16px;
+        }
 
-button{
-    width:100%;
-    padding:14px;
-    margin-top:12px;
-    border:0;
-    border-radius:8px;
-    background:#1687ff;
-    color:#fff;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-}
+        .link {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-button:disabled{
-    opacity:.6;
-}
+        #message {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
 
-.link{
-    text-align:center;
-    margin-top:20px;
-    color:#55aaff;
-    cursor:pointer;
-}
+<body>
 
-.message{
-    text-align:center;
-    margin-top:15px;
-    line-height:1.4;
-}
+<div class="box">
 
-.error{
-    color:#ff7070;
-}
+    <h1>WASHINGTON FX</h1>
 
-.success{
-    color:#42df91;
-}
-</style></head><body><div class="box"><div class="logo">WASHINGTON FX</div>
+    <p style="text-align:center;">
+        Create your account
+    </p>
 
-<div class="subtitle">
-    Create Your Account
+    <input
+        type="text"
+        id="name"
+        placeholder="Full Name"
+    >
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Email"
+    >
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Password"
+    >
+
+    <input
+        type="password"
+        id="confirm"
+        placeholder="Confirm Password"
+    >
+
+    <button onclick="register()">
+        CREATE ACCOUNT
+    </button>
+
+    <div id="message"></div>
+
+    <div class="link">
+        <a href="login.html" style="color:#55aaff;">
+            Already have an account? Login
+        </a>
+    </div>
+
 </div>
 
-<input
-    id="name"
-    type="text"
-    placeholder="Full name"
-    autocomplete="name"
->
-
-<input
-    id="email"
-    type="email"
-    placeholder="Email address"
-    autocomplete="email"
->
-
-<input
-    id="password"
-    type="password"
-    placeholder="Password"
-    autocomplete="new-password"
->
-
-<input
-    id="confirm"
-    type="password"
-    placeholder="Confirm password"
-    autocomplete="new-password"
->
-
-<button id="registerButton">
-    CREATE ACCOUNT
-</button>
-
-<div id="message" class="message"></div>
-
-<div
-    class="link"
-    onclick="window.location.href='login.html'"
->
-    Already have an account? Login
-</div>
-
-</div><script type="module">
+<script type="module">
 
 import { createClient }
 from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-
-const SUPABASE_URL =
-    "https://plddteltleqayzcpuxom.supabase.co";
-
-const SUPABASE_KEY =
-    "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv";
-
-
 const supabase = createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
+    "https://plddteltleqayzcpuxom.supabase.co",
+    "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv"
 );
 
-
-const nameInput =
-    document.getElementById("name");
-
-const emailInput =
-    document.getElementById("email");
-
-const passwordInput =
-    document.getElementById("password");
-
-const confirmInput =
-    document.getElementById("confirm");
-
-const button =
-    document.getElementById("registerButton");
-
-const message =
-    document.getElementById("message");
-
-
-button.addEventListener("click", async () => {
+window.register = async function() {
 
     const name =
-        nameInput.value.trim();
+        document.getElementById("name").value;
 
     const email =
-        emailInput.value.trim();
+        document.getElementById("email").value;
 
     const password =
-        passwordInput.value;
+        document.getElementById("password").value;
 
     const confirm =
-        confirmInput.value;
+        document.getElementById("confirm").value;
 
+    const message =
+        document.getElementById("message");
 
-    message.textContent = "";
-    message.className = "message";
-
-
-    if(!name || !email || !password || !confirm){
-
-        message.textContent =
+    if (!name || !email || !password) {
+        message.innerHTML =
             "Please complete all fields.";
-
-        message.className =
-            "message error";
-
         return;
     }
 
-
-    if(password.length < 6){
-
-        message.textContent =
-            "Password must contain at least 6 characters.";
-
-        message.className =
-            "message error";
-
-        return;
-    }
-
-
-    if(password !== confirm){
-
-        message.textContent =
+    if (password !== confirm) {
+        message.innerHTML =
             "Passwords do not match.";
-
-        message.className =
-            "message error";
-
         return;
     }
 
-
-    button.disabled = true;
-    button.textContent = "CREATING ACCOUNT...";
-
-
-    const { data, error } =
+    const { error } =
         await supabase.auth.signUp({
 
             email: email,
@@ -238,54 +156,27 @@ button.addEventListener("click", async () => {
             password: password,
 
             options: {
-
                 data: {
                     full_name: name
                 }
-
             }
 
         });
 
+    if (error) {
 
-    if(error){
-
-        message.textContent =
+        message.innerHTML =
             error.message;
-
-        message.className =
-            "message error";
-
-        button.disabled = false;
-        button.textContent =
-            "CREATE ACCOUNT";
 
         return;
     }
 
+    message.innerHTML =
+        "Account created. You can now login.";
 
-    message.textContent =
-        "Account created successfully.";
+};
 
-    message.className =
-        "message success";
+</script>
 
-
-    /*
-      If email confirmation is disabled,
-      the user can normally continue directly.
-      If confirmation is enabled, Supabase will
-      ask the user to confirm their email.
-    */
-
-    setTimeout(() => {
-
-        window.location.href =
-            "login.html";
-
-    },1500);
-
-});
-
-</script></body>
+</body>
 </html>
