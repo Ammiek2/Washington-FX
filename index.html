@@ -185,6 +185,21 @@ canvas.dragging{
     font-size:20px;
 }
 
+.order-field{
+    margin-top:10px;
+}
+
+.order-field label{
+    display:block;
+    color:#9eb0c4;
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.order-field input{
+    width:100%;
+}
+
 .order-actions{
     display:flex;
     gap:10px;
@@ -229,6 +244,16 @@ th{
     line-height:1.5;
 }
 
+.live-note{
+    display:none;
+    padding:10px;
+    border-radius:7px;
+    background:#16263a;
+    color:#8ec7ff;
+    font-size:13px;
+    margin-top:10px;
+}
+
 @media(max-width:900px){
     .cards{
         grid-template-columns:repeat(2,1fr);
@@ -267,7 +292,7 @@ th{
         WASHINGTON FX
     </div>
 
-    <div class="mode">
+    <div class="mode" id="modeBadge">
         SIMULATION MODE
     </div>
 
@@ -389,6 +414,8 @@ th{
                                 <th>Side</th>
                                 <th>Volume</th>
                                 <th>Entry</th>
+                                <th>TP</th>
+                                <th>SL</th>
                                 <th>P/L</th>
                                 <th></th>
                             </tr>
@@ -436,16 +463,45 @@ th{
 
                 <h3>New Order</h3>
 
-                <label>Volume</label>
+                <div class="order-field">
 
-                <input
-                    id="volume"
-                    type="number"
-                    value="0.10"
-                    min="0.01"
-                    step="0.01"
-                    style="width:100%;margin-top:7px;"
-                >
+                    <label>Volume</label>
+
+                    <input
+                        id="volume"
+                        type="number"
+                        value="0.10"
+                        min="0.01"
+                        step="0.01"
+                    >
+
+                </div>
+
+                <div class="order-field">
+
+                    <label>Take Profit</label>
+
+                    <input
+                        id="takeProfit"
+                        type="number"
+                        placeholder="Optional"
+                        step="0.00001"
+                    >
+
+                </div>
+
+                <div class="order-field">
+
+                    <label>Stop Loss</label>
+
+                    <input
+                        id="stopLoss"
+                        type="number"
+                        placeholder="Optional"
+                        step="0.00001"
+                    >
+
+                </div>
 
                 <div class="order-actions">
 
@@ -463,6 +519,11 @@ th{
                     Demo simulator ready.
                 </div>
 
+                <div id="liveNote" class="live-note">
+                    Live interface selected. Real-money execution requires
+                    a connected broker/execution service.
+                </div>
+
             </div>
 
             <div class="panel">
@@ -475,9 +536,10 @@ th{
                 </p>
 
                 <p class="notice">
-                    The Live FX interface is reserved for a future
-                    regulated broker/execution connection. This
-                    version does not execute real-money trades.
+                    Switching to Live keeps the same trading interface,
+                    chart, controls and account display. Real-money
+                    execution is only enabled after a genuine broker
+                    connection and server-side execution layer are added.
                 </p>
 
             </div>
@@ -501,6 +563,8 @@ let price = 1.08500;
 let positions = [];
 let history = [];
 let candles = [];
+
+let currentMode = "DEMO";
 
 
 /* =========================
@@ -605,11 +669,6 @@ function drawChart(){
             Math.floor(candles.length / zoom)
         );
 
-
-    /*
-       offset = 0 means latest candles.
-       Positive offset moves backwards.
-    */
 
     const maxOffset =
         Math.max(
@@ -736,7 +795,7 @@ function drawChart(){
 
 
 /* =========================
-   ZOOM IN
+   ZOOM
 ========================= */
 
 document
@@ -754,10 +813,6 @@ document
 });
 
 
-/* =========================
-   ZOOM OUT
-========================= */
-
 document
 .getElementById("zoomOut")
 .addEventListener("click",()=>{
@@ -773,10 +828,6 @@ document
 });
 
 
-/* =========================
-   RESET ZOOM
-========================= */
-
 document
 .getElementById("resetZoom")
 .addEventListener("click",()=>{
@@ -788,10 +839,6 @@ document
 
 });
 
-
-/* =========================
-   LATEST
-========================= */
 
 document
 .getElementById("latest")
@@ -969,7 +1016,7 @@ canvas.addEventListener(
 
 
 /* =========================
-   MOUSE WHEEL ZOOM
+   WHEEL ZOOM
 ========================= */
 
 canvas.addEventListener(
@@ -1019,21 +1066,24 @@ function updatePrice(){
         price=0.0001;
 
 
+    const previousClose =
+        candles[candles.length-1].close;
+
+
     candles.push({
 
-        open:
-            candles[candles.length-1].close,
+        open:previousClose,
 
         high:
             Math.max(
                 price,
-                candles[candles.length-1].close
+                previousClose
             ),
 
         low:
             Math.min(
                 price,
-                candles[candles.length-1].close
+                previousClose
             ),
 
         close:price
@@ -1085,6 +1135,94 @@ function openTrade(side){
     }
 
 
+    let takeProfit =
+        Number(
+            document.getElementById("takeProfit").value
+        );
+
+
+    let stopLoss =
+        Number(
+            document.getElementById("stopLoss").value
+        );
+
+
+    if(!Number.isFinite(takeProfit))
+        takeProfit = null;
+
+
+    if(!Number.isFinite(stopLoss))
+        stopLoss = null;
+
+
+    /*
+       Validate TP/SL direction.
+    */
+
+    if(side==="BUY"){
+
+        if(
+            takeProfit !== null &&
+            takeProfit <= price
+        ){
+
+            setStatus(
+                "For BUY, Take Profit must be above entry price.",
+                true
+            );
+
+            return;
+        }
+
+
+        if(
+            stopLoss !== null &&
+            stopLoss >= price
+        ){
+
+            setStatus(
+                "For BUY, Stop Loss must be below entry price.",
+                true
+            );
+
+            return;
+        }
+
+    }
+
+
+    if(side==="SELL"){
+
+        if(
+            takeProfit !== null &&
+            takeProfit >= price
+        ){
+
+            setStatus(
+                "For SELL, Take Profit must be below entry price.",
+                true
+            );
+
+            return;
+        }
+
+
+        if(
+            stopLoss !== null &&
+            stopLoss <= price
+        ){
+
+            setStatus(
+                "For SELL, Stop Loss must be above entry price.",
+                true
+            );
+
+            return;
+        }
+
+    }
+
+
     positions.push({
 
         id:Date.now(),
@@ -1097,6 +1235,10 @@ function openTrade(side){
         volume,
 
         entry:price,
+
+        takeProfit,
+
+        stopLoss,
 
         pl:0
 
@@ -1123,6 +1265,8 @@ function updatePositions(){
 
     let totalPL=0;
 
+    const positionsToClose=[];
+
 
     positions.forEach(position=>{
 
@@ -1141,7 +1285,97 @@ function updatePositions(){
         totalPL +=
             position.pl;
 
+
+        /*
+           TP / SL automatic close
+        */
+
+        if(position.side==="BUY"){
+
+            if(
+                position.takeProfit !== null &&
+                price >= position.takeProfit
+            ){
+
+                positionsToClose.push({
+                    id:position.id,
+                    reason:"Take Profit"
+                });
+
+            }
+            else if(
+                position.stopLoss !== null &&
+                price <= position.stopLoss
+            ){
+
+                positionsToClose.push({
+                    id:position.id,
+                    reason:"Stop Loss"
+                });
+
+            }
+
+        }
+
+
+        if(position.side==="SELL"){
+
+            if(
+                position.takeProfit !== null &&
+                price <= position.takeProfit
+            ){
+
+                positionsToClose.push({
+                    id:position.id,
+                    reason:"Take Profit"
+                });
+
+            }
+            else if(
+                position.stopLoss !== null &&
+                price >= position.stopLoss
+            ){
+
+                positionsToClose.push({
+                    id:position.id,
+                    reason:"Stop Loss"
+                });
+
+            }
+
+        }
+
     });
+
+
+    /*
+       Close triggered positions after
+       calculating their P/L.
+    */
+
+    positionsToClose.forEach(item=>{
+
+        closePosition(
+            item.id,
+            item.reason
+        );
+
+    });
+
+
+    /*
+       Recalculate after automatic closes.
+    */
+
+    if(positionsToClose.length>0){
+
+        totalPL =
+            positions.reduce(
+                (sum,p)=>sum+p.pl,
+                0
+            );
+
+    }
 
 
     document.getElementById("pl")
@@ -1193,6 +1427,18 @@ function renderPositions(){
             : "red";
 
 
+        const tp =
+            position.takeProfit === null
+            ? "-"
+            : position.takeProfit.toFixed(5);
+
+
+        const sl =
+            position.stopLoss === null
+            ? "-"
+            : position.stopLoss.toFixed(5);
+
+
         row.innerHTML=`
 
             <td>${position.symbol}</td>
@@ -1202,6 +1448,10 @@ function renderPositions(){
             <td>${position.volume.toFixed(2)}</td>
 
             <td>${position.entry.toFixed(5)}</td>
+
+            <td>${tp}</td>
+
+            <td>${sl}</td>
 
             <td class="${plClass}">
                 $${position.pl.toFixed(2)}
@@ -1230,7 +1480,8 @@ function renderPositions(){
             ()=>closePosition(
                 Number(
                     button.dataset.close
-                )
+                ),
+                "Manual Close"
             )
         );
 
@@ -1243,7 +1494,7 @@ function renderPositions(){
    CLOSE POSITION
 ========================= */
 
-function closePosition(id){
+function closePosition(id,reason="Manual Close"){
 
     const index =
         positions.findIndex(
@@ -1278,7 +1529,9 @@ function closePosition(id){
             position.volume,
 
         result:
-            position.pl
+            position.pl,
+
+        reason
 
     });
 
@@ -1290,14 +1543,13 @@ function closePosition(id){
 
 
     setStatus(
-        "Position closed. Result: $"+
+        reason+
+        ". Result: $"+
         position.pl.toFixed(2)
     );
 
 
     renderHistory();
-
-    updatePositions();
 
 }
 
@@ -1338,6 +1590,9 @@ function renderHistory(){
 
             <td class="${cls}">
                 $${item.result.toFixed(2)}
+                <small style="display:block;color:#8da0b5;">
+                    ${item.reason}
+                </small>
             </td>
 
         `;
@@ -1400,7 +1655,7 @@ document
 
 
 /* =========================
-   DEMO
+   DEMO MODE
 ========================= */
 
 document
@@ -1409,14 +1664,22 @@ document
     "click",
     ()=>{
 
+        currentMode="DEMO";
+
+
         document.getElementById("modeText")
         .textContent =
             "Demo FX uses virtual funds and simulated market execution.";
 
 
-        document.querySelector(".mode")
+        document.getElementById("modeBadge")
         .textContent =
             "SIMULATION MODE";
+
+
+        document.getElementById("liveNote")
+        .style.display =
+            "none";
 
 
         setStatus(
@@ -1428,7 +1691,7 @@ document
 
 
 /* =========================
-   LIVE
+   LIVE INTERFACE
 ========================= */
 
 document
@@ -1437,18 +1700,32 @@ document
     "click",
     ()=>{
 
+        currentMode="LIVE";
+
+
+        /*
+           Keep the exact same interface.
+           Do not reset chart, balance display,
+           positions or history.
+        */
+
         document.getElementById("modeText")
         .textContent =
-            "Live FX interface selected. Real-money execution is not connected.";
+            "Live FX interface selected. Real-money execution requires a connected broker.";
 
 
-        document.querySelector(".mode")
+        document.getElementById("modeBadge")
         .textContent =
             "LIVE INTERFACE";
 
 
+        document.getElementById("liveNote")
+        .style.display =
+            "block";
+
+
         setStatus(
-            "Live interface selected. Real execution is not enabled."
+            "Live interface selected. Real execution is not connected."
         );
 
     }
