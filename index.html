@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Washington FX</title>
 
 <style>
@@ -10,49 +10,26 @@
     box-sizing:border-box;
 }
 
-html,body{
+body{
     margin:0;
-    padding:0;
+    font-family:Arial,sans-serif;
     background:#07101c;
     color:#fff;
-    font-family:Arial,Helvetica,sans-serif;
 }
 
-button,input,select{
+button,select,input{
     font:inherit;
 }
 
-button,
-select,
-input{
-    min-height:42px;
-    border:1px solid #34495e;
-    border-radius:7px;
-    background:#101d2d;
-    color:#fff;
-    padding:9px 12px;
-}
-
-button{
-    cursor:pointer;
-}
-
-button:hover{
-    background:#1d344d;
-}
-
-.topbar{
+.top{
+    padding:16px 20px;
     background:#0d1827;
     border-bottom:1px solid #26384d;
-    padding:14px 18px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:12px;
+    gap:15px;
     flex-wrap:wrap;
-    position:sticky;
-    top:0;
-    z-index:20;
 }
 
 .logo{
@@ -60,29 +37,42 @@ button:hover{
     font-weight:bold;
 }
 
-.badge{
-    background:#173552;
-    color:#8ec7ff;
+.mode{
     padding:7px 12px;
     border-radius:20px;
-    font-size:12px;
+    background:#173552;
+    color:#8ec7ff;
+    font-size:13px;
 }
 
 .container{
-    max-width:1500px;
+    max-width:1400px;
     margin:auto;
-    padding:15px;
+    padding:18px;
 }
 
 .toolbar{
     display:flex;
+    gap:10px;
     flex-wrap:wrap;
-    gap:8px;
-    margin-bottom:14px;
+    margin-bottom:18px;
 }
 
-.toolbar select{
-    min-width:120px;
+button,select,input{
+    min-height:44px;
+    border-radius:7px;
+    border:1px solid #34495e;
+    background:#101d2d;
+    color:white;
+    padding:10px 13px;
+}
+
+button{
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1b3048;
 }
 
 .primary{
@@ -90,18 +80,30 @@ button:hover{
     border-color:#147df5;
 }
 
+.buy{
+    background:#087f50;
+    border-color:#087f50;
+    flex:1;
+}
+
+.sell{
+    background:#a72c39;
+    border-color:#a72c39;
+    flex:1;
+}
+
 .cards{
     display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:10px;
-    margin-bottom:14px;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+    margin-bottom:18px;
 }
 
 .card{
     background:#0d1827;
     border:1px solid #26384d;
-    border-radius:9px;
-    padding:13px;
+    border-radius:10px;
+    padding:16px;
 }
 
 .card small{
@@ -110,159 +112,91 @@ button:hover{
 
 .card strong{
     display:block;
-    font-size:19px;
-    margin-top:7px;
+    margin-top:8px;
+    font-size:21px;
 }
 
 .layout{
     display:grid;
-    grid-template-columns:minmax(0,1fr) 340px;
-    gap:14px;
+    grid-template-columns:minmax(0,1fr) 320px;
+    gap:18px;
 }
 
 .panel{
     background:#0d1827;
     border:1px solid #26384d;
-    border-radius:9px;
-    padding:14px;
-    margin-bottom:14px;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:18px;
 }
 
-.price-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
+.chart-wrap{
+    height:440px;
+    position:relative;
+    overflow:hidden;
+    background:#08131f;
+    border-radius:7px;
+}
+
+canvas{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.price{
+    display:flex;
+    justify-content:space-between;
     gap:10px;
-    margin-bottom:10px;
+    margin-bottom:12px;
 }
 
 .price-box{
-    background:#111f30;
+    flex:1;
+    padding:12px;
     border-radius:7px;
-    padding:10px;
+    background:#111f30;
     text-align:center;
 }
 
 .price-box small{
     display:block;
     color:#8da0b5;
-    margin-bottom:4px;
+    margin-bottom:5px;
 }
 
 .price-box strong{
-    font-size:21px;
+    font-size:20px;
 }
 
-.chart-toolbar{
+.order-actions{
     display:flex;
-    flex-wrap:wrap;
-    gap:6px;
-    margin-bottom:8px;
-}
-
-.chart-toolbar button{
-    min-width:42px;
-    min-height:36px;
-    padding:6px 9px;
-}
-
-.chart-area{
-    height:500px;
-    background:#08131f;
-    border-radius:7px;
-    overflow:hidden;
-    position:relative;
-    touch-action:none;
-}
-
-canvas{
-    display:block;
-    width:100%;
-    height:100%;
-}
-
-.chart-info{
-    position:absolute;
-    top:8px;
-    left:10px;
-    background:rgba(7,16,28,.8);
-    border-radius:5px;
-    padding:6px 8px;
-    font-size:12px;
-    color:#b7c5d5;
-    pointer-events:none;
-}
-
-.order-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-}
-
-.order-grid .full{
-    grid-column:1/-1;
-}
-
-.buy{
-    background:#087f50;
-    border-color:#087f50;
-    width:100%;
-    font-weight:bold;
-}
-
-.sell{
-    background:#a72c39;
-    border-color:#a72c39;
-    width:100%;
-    font-weight:bold;
-}
-
-.deposit{
-    background:#145f94;
-    border-color:#145f94;
-    width:100%;
-}
-
-.withdraw{
-    background:#795a20;
-    border-color:#795a20;
-    width:100%;
-}
-
-.status{
-    margin-top:10px;
-    background:#101d2d;
-    border-radius:7px;
-    padding:9px;
-    color:#9eb0c4;
-    font-size:13px;
-}
-
-.notice{
-    color:#9eb0c4;
-    font-size:12px;
-    line-height:1.5;
-}
-
-.table-wrap{
-    width:100%;
-    overflow-x:auto;
+    gap:10px;
+    margin-top:12px;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    min-width:650px;
 }
 
 th,td{
     text-align:left;
-    padding:9px 7px;
+    padding:11px 8px;
     border-bottom:1px solid #26384d;
-    font-size:13px;
+    font-size:14px;
 }
 
 th{
     color:#8da0b5;
+}
+
+.status{
+    padding:9px;
+    border-radius:7px;
+    background:#101d2d;
+    color:#9eb0c4;
+    margin-top:12px;
 }
 
 .green{
@@ -273,41 +207,15 @@ th{
     color:#ff6875;
 }
 
-.yellow{
-    color:#ffd166;
-}
-
-.muted{
-    color:#8da0b5;
-}
-
-.account-actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-}
-
-.section-title{
-    margin-top:0;
-    margin-bottom:12px;
-}
-
-.stat-row{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    padding:7px 0;
-    border-bottom:1px solid #1d2d40;
+.notice{
+    color:#9eb0c4;
     font-size:13px;
+    line-height:1.5;
 }
 
-input[type="number"]{
-    width:100%;
-}
-
-@media(max-width:1100px){
+@media(max-width:900px){
     .cards{
-        grid-template-columns:repeat(3,1fr);
+        grid-template-columns:repeat(2,1fr);
     }
 
     .layout{
@@ -315,26 +223,21 @@ input[type="number"]{
     }
 }
 
-@media(max-width:650px){
-    .container{
-        padding:9px;
-    }
-
+@media(max-width:600px){
     .cards{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:1fr 1fr;
     }
 
-    .chart-area{
-        height:370px;
+    .container{
+        padding:10px;
     }
 
-    .logo{
-        font-size:19px;
+    .chart-wrap{
+        height:330px;
     }
 
-    .toolbar select,
-    .toolbar button{
-        flex:1;
+    th,td{
+        font-size:12px;
     }
 }
 </style>
@@ -342,33 +245,34 @@ input[type="number"]{
 
 <body>
 
-<header class="topbar">
+<header class="top">
     <div class="logo">WASHINGTON FX</div>
-    <div class="badge" id="modeBadge">SIMULATION MODE</div>
+
+    <div class="mode">
+        SIMULATION MODE
+    </div>
 </header>
 
 <div class="container">
 
-    <!-- MARKET CONTROLS -->
     <div class="toolbar">
 
         <select id="symbol">
-            <option value="EURUSD">EUR/USD</option>
-            <option value="GBPUSD">GBP/USD</option>
-            <option value="USDJPY">USD/JPY</option>
-            <option value="USDCHF">USD/CHF</option>
-            <option value="AUDUSD">AUD/USD</option>
-            <option value="USDCAD">USD/CAD</option>
-            <option value="NZDUSD">NZD/USD</option>
-            <option value="XAUUSD">GOLD / XAU/USD</option>
-            <option value="BTCUSD">BTC/USD</option>
+            <option>EURUSD</option>
+            <option>GBPUSD</option>
+            <option>USDJPY</option>
+            <option>USDCHF</option>
+            <option>AUDUSD</option>
+            <option>USDCAD</option>
+            <option>XAUUSD</option>
+            <option>BTCUSD</option>
         </select>
 
         <select id="timeframe">
-            <option value="1">1 Minute</option>
-            <option value="5">5 Minutes</option>
-            <option value="15">15 Minutes</option>
-            <option value="60">1 Hour</option>
+            <option>1 Minute</option>
+            <option>5 Minutes</option>
+            <option>15 Minutes</option>
+            <option>1 Hour</option>
         </select>
 
         <button id="demoBtn" class="primary">
@@ -379,13 +283,9 @@ input[type="number"]{
             Live FX
         </button>
 
-        <button id="resetBtn">
-            Reset Demo
-        </button>
-
     </div>
 
-    <!-- ACCOUNT CARDS -->
+
     <div class="cards">
 
         <div class="card">
@@ -400,34 +300,24 @@ input[type="number"]{
 
         <div class="card">
             <small>Floating P/L</small>
-            <strong id="floatingPL">$0.00</strong>
+            <strong id="pl">$0.00</strong>
         </div>
 
         <div class="card">
-            <small>Margin Used</small>
-            <strong id="marginUsed">$0.00</strong>
-        </div>
-
-        <div class="card">
-            <small>Free Margin</small>
-            <strong id="freeMargin">$10,000.00</strong>
-        </div>
-
-        <div class="card">
-            <small>Positions</small>
+            <small>Open Positions</small>
             <strong id="positionCount">0</strong>
         </div>
 
     </div>
 
+
     <div class="layout">
 
-        <main>
+        <div>
 
-            <!-- CHART -->
             <div class="panel">
 
-                <div class="price-row">
+                <div class="price">
 
                     <div class="price-box">
                         <small>BID</small>
@@ -441,49 +331,18 @@ input[type="number"]{
 
                 </div>
 
-                <div class="chart-toolbar">
-
-                    <button id="zoomIn">＋ Zoom</button>
-                    <button id="zoomOut">－ Zoom</button>
-                    <button id="resetZoom">Reset Zoom</button>
-
-                    <button id="candleBtn">
-                        Candle
-                    </button>
-
-                    <button id="lineBtn">
-                        Line
-                    </button>
-
-                    <button id="gridBtn">
-                        Grid
-                    </button>
-
-                </div>
-
-                <div class="chart-area" id="chartArea">
-
+                <div class="chart-wrap">
                     <canvas id="chart"></canvas>
-
-                    <div class="chart-info">
-                        <span id="chartSymbol">EUR/USD</span>
-                        ·
-                        <span id="chartTF">1 Minute</span>
-                    </div>
-
                 </div>
 
             </div>
 
 
-            <!-- OPEN POSITIONS -->
             <div class="panel">
 
-                <h3 class="section-title">
-                    Open Positions
-                </h3>
+                <h3>Open Positions</h3>
 
-                <div class="table-wrap">
+                <div style="overflow-x:auto;">
 
                     <table>
 
@@ -493,8 +352,6 @@ input[type="number"]{
                                 <th>Side</th>
                                 <th>Volume</th>
                                 <th>Entry</th>
-                                <th>TP</th>
-                                <th>SL</th>
                                 <th>P/L</th>
                                 <th></th>
                             </tr>
@@ -509,14 +366,11 @@ input[type="number"]{
             </div>
 
 
-            <!-- HISTORY -->
             <div class="panel">
 
-                <h3 class="section-title">
-                    Trade History
-                </h3>
+                <h3>Trade History</h3>
 
-                <div class="table-wrap">
+                <div style="overflow-x:auto;">
 
                     <table>
 
@@ -526,10 +380,7 @@ input[type="number"]{
                                 <th>Symbol</th>
                                 <th>Side</th>
                                 <th>Volume</th>
-                                <th>Entry</th>
-                                <th>Exit</th>
                                 <th>Result</th>
-                                <th>Reason</th>
                             </tr>
                         </thead>
 
@@ -541,92 +392,41 @@ input[type="number"]{
 
             </div>
 
-
-            <!-- TRANSACTIONS -->
-            <div class="panel">
-
-                <h3 class="section-title">
-                    Account Transactions
-                </h3>
-
-                <div class="table-wrap">
-
-                    <table>
-
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="transactions"></tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </main>
+        </div>
 
 
-        <!-- RIGHT PANEL -->
         <aside>
 
-            <!-- ORDER -->
             <div class="panel">
 
-                <h3 class="section-title">
-                    New Order
-                </h3>
+                <h3>New Order</h3>
 
-                <div class="order-grid">
+                <label>Volume</label>
 
-                    <div class="full">
-                        <label>Volume / Lots</label>
-                        <input
-                            id="volume"
-                            type="number"
-                            value="0.10"
-                            min="0.01"
-                            step="0.01"
-                        >
-                    </div>
+                <input
+                    id="volume"
+                    type="number"
+                    value="0.10"
+                    min="0.01"
+                    step="0.01"
+                    style="width:100%;margin-top:7px;"
+                >
 
-                    <div>
-                        <label>Take Profit</label>
-                        <input
-                            id="tp"
-                            type="number"
-                            step="0.00001"
-                            placeholder="Optional"
-                        >
-                    </div>
+                <div class="order-actions">
 
-                    <div>
-                        <label>Stop Loss</label>
-                        <input
-                            id="sl"
-                            type="number"
-                            step="0.00001"
-                            placeholder="Optional"
-                        >
-                    </div>
+                    <button
+                        id="buyBtn"
+                        class="buy"
+                    >
+                        BUY
+                    </button>
 
-                    <div>
-                        <button id="buyBtn" class="buy">
-                            BUY
-                        </button>
-                    </div>
-
-                    <div>
-                        <button id="sellBtn" class="sell">
-                            SELL
-                        </button>
-                    </div>
+                    <button
+                        id="sellBtn"
+                        class="sell"
+                    >
+                        SELL
+                    </button>
 
                 </div>
 
@@ -637,86 +437,9 @@ input[type="number"]{
             </div>
 
 
-            <!-- ACCOUNT -->
             <div class="panel">
 
-                <h3 class="section-title">
-                    Account
-                </h3>
-
-                <div class="stat-row">
-                    <span>Starting Balance</span>
-                    <strong>$10,000</strong>
-                </div>
-
-                <div class="stat-row">
-                    <span>Balance</span>
-                    <strong id="sideBalance">$10,000.00</strong>
-                </div>
-
-                <div class="stat-row">
-                    <span>Equity</span>
-                    <strong id="sideEquity">$10,000.00</strong>
-                </div>
-
-                <div class="stat-row">
-                    <span>Floating P/L</span>
-                    <strong id="sidePL">$0.00</strong>
-                </div>
-
-            </div>
-
-
-            <!-- DEPOSIT/WITHDRAW -->
-            <div class="panel">
-
-                <h3 class="section-title">
-                    Virtual Funds
-                </h3>
-
-                <p class="notice">
-                    These transactions use virtual simulator
-                    funds only. They do not move real money.
-                </p>
-
-                <label>Amount</label>
-
-                <input
-                    id="fundAmount"
-                    type="number"
-                    min="1"
-                    step="1"
-                    value="1000"
-                >
-
-                <div class="account-actions"
-                     style="margin-top:9px;">
-
-                    <button
-                        id="depositBtn"
-                        class="deposit"
-                    >
-                        Deposit
-                    </button>
-
-                    <button
-                        id="withdrawBtn"
-                        class="withdraw"
-                    >
-                        Withdraw
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- MODE -->
-            <div class="panel">
-
-                <h3 class="section-title">
-                    Trading Mode
-                </h3>
+                <h3>Trading Mode</h3>
 
                 <p id="modeText">
                     Demo FX uses virtual funds and simulated
@@ -724,9 +447,9 @@ input[type="number"]{
                 </p>
 
                 <p class="notice">
-                    The Live FX interface is a platform area for
-                    future broker integration. Real-money execution
-                    is not connected in this version.
+                    The Live FX interface is reserved for a future
+                    regulated broker/execution connection. This
+                    version does not execute real-money trades.
                 </p>
 
             </div>
@@ -740,11 +463,6 @@ input[type="number"]{
 
 <script>
 
-/* =========================================================
-   WASHINGTON FX - ADVANCED SIMULATOR
-   ========================================================= */
-
-
 const canvas =
     document.getElementById("chart");
 
@@ -752,189 +470,62 @@ const ctx =
     canvas.getContext("2d");
 
 
-/* -------------------------
-   ACCOUNT
-------------------------- */
-
 let balance = 10000;
+
+let price = 1.08500;
 
 let positions = [];
 
 let history = [];
 
-let transactions = [];
+let candles = [];
 
 
-/* -------------------------
-   MARKET DATA
-------------------------- */
+for(let i=0;i<70;i++){
 
-const markets = {
+    let open = price;
 
-    EURUSD:{
-        name:"EUR/USD",
-        price:1.08500,
-        pip:0.0001,
-        multiplier:100000
-    },
+    let move =
+        (Math.random()-0.5)*0.002;
 
-    GBPUSD:{
-        name:"GBP/USD",
-        price:1.27300,
-        pip:0.0001,
-        multiplier:100000
-    },
+    let close =
+        open + move;
 
-    USDJPY:{
-        name:"USD/JPY",
-        price:149.500,
-        pip:0.01,
-        multiplier:1000
-    },
+    let high =
+        Math.max(open,close) +
+        Math.random()*0.001;
 
-    USDCHF:{
-        name:"USD/CHF",
-        price:0.90200,
-        pip:0.0001,
-        multiplier:100000
-    },
+    let low =
+        Math.min(open,close) -
+        Math.random()*0.001;
 
-    AUDUSD:{
-        name:"AUD/USD",
-        price:0.65500,
-        pip:0.0001,
-        multiplier:100000
-    },
+    candles.push({
+        open,
+        high,
+        low,
+        close
+    });
 
-    USDCAD:{
-        name:"USD/CAD",
-        price:1.35500,
-        pip:0.0001,
-        multiplier:100000
-    },
-
-    NZDUSD:{
-        name:"NZD/USD",
-        price:0.61200,
-        pip:0.0001,
-        multiplier:100000
-    },
-
-    XAUUSD:{
-        name:"GOLD / XAU/USD",
-        price:2650.00,
-        pip:0.01,
-        multiplier:100
-    },
-
-    BTCUSD:{
-        name:"BTC/USD",
-        price:65000,
-        pip:1,
-        multiplier:1
-    }
-
-};
-
-
-let currentSymbol =
-    "EURUSD";
-
-
-let timeframe =
-    1;
-
-
-let candleMode =
-    "candle";
-
-
-let showGrid =
-    true;
-
-
-let zoom =
-    1;
-
-
-let candles =
-    [];
-
-
-/* -------------------------
-   INITIAL CANDLES
-------------------------- */
-
-function createInitialCandles(){
-
-    candles = [];
-
-    let p =
-        markets[currentSymbol].price;
-
-    for(let i=0;i<90;i++){
-
-        const volatility =
-            markets[currentSymbol].pip *
-            10;
-
-        const open =
-            p;
-
-        const move =
-            (Math.random()-0.5) *
-            volatility;
-
-        const close =
-            open + move;
-
-        const high =
-            Math.max(open,close) +
-            Math.random()*volatility;
-
-        const low =
-            Math.min(open,close) -
-            Math.random()*volatility;
-
-        candles.push({
-            open,
-            high,
-            low,
-            close
-        });
-
-        p =
-            close;
-    }
-
-    markets[currentSymbol].price =
-        p;
+    price = close;
 }
 
-
-/* -------------------------
-   RESIZE
-------------------------- */
 
 function resizeCanvas(){
 
     const rect =
         canvas.getBoundingClientRect();
 
-    const dpr =
-        window.devicePixelRatio || 1;
-
     canvas.width =
-        rect.width * dpr;
+        rect.width * devicePixelRatio;
 
     canvas.height =
-        rect.height * dpr;
+        rect.height * devicePixelRatio;
 
     ctx.setTransform(
-        dpr,
+        devicePixelRatio,
         0,
         0,
-        dpr,
+        devicePixelRatio,
         0,
         0
     );
@@ -942,10 +533,6 @@ function resizeCanvas(){
     drawChart();
 }
 
-
-/* -------------------------
-   CHART
-------------------------- */
 
 function drawChart(){
 
@@ -963,126 +550,505 @@ function drawChart(){
     );
 
 
-    if(!candles.length)
-        return;
-
-
-    let visibleCount =
-        Math.max(
-            15,
-            Math.floor(80 / zoom)
-        );
-
-
-    const visible =
-        candles.slice(-visibleCount);
+    if(candles.length === 0) return;
 
 
     let max =
-        Math.max(
-            ...visible.map(c=>c.high)
-        );
+        Math.max(...candles.map(c => c.high));
 
     let min =
-        Math.min(
-            ...visible.map(c=>c.low)
-        );
+        Math.min(...candles.map(c => c.low));
 
 
     const range =
-        max-min ||
-        markets[currentSymbol].pip*100;
-
-
-    const padding =
-        30;
-
-
-    function y(price){
-
-        return (
-            height -
-            padding -
-            ((price-min)/range) *
-            (height-padding*2)
-        );
-
-    }
-
-
-    /* GRID */
-
-    if(showGrid){
-
-        ctx.strokeStyle =
-            "#1b2a3a";
-
-        ctx.lineWidth = 1;
-
-        for(let i=1;i<6;i++){
-
-            const gy =
-                i*height/6;
-
-            ctx.beginPath();
-
-            ctx.moveTo(0,gy);
-
-            ctx.lineTo(width,gy);
-
-            ctx.stroke();
-
-        }
-
-        for(let i=1;i<8;i++){
-
-            const gx =
-                i*width/8;
-
-            ctx.beginPath();
-
-            ctx.moveTo(gx,0);
-
-            ctx.lineTo(gx,height);
-
-            ctx.stroke();
-
-        }
-
-    }
+        max-min || 0.001;
 
 
     const gap =
-        width / visible.length;
+        width/candles.length;
 
 
-    /* CANDLES */
+    candles.forEach((c,i)=>{
 
-    if(candleMode === "candle"){
+        const x =
+            i*gap + gap/2;
 
-        visible.forEach((c,i)=>{
+        const openY =
+            height -
+            ((c.open-min)/range)*height;
 
-            const x =
-                i*gap +
-                gap/2;
+        const closeY =
+            height -
+            ((c.close-min)/range)*height;
 
-            const openY =
-                y(c.open);
+        const highY =
+            height -
+            ((c.high-min)/range)*height;
 
-            const closeY =
-                y(c.close);
-
-            const highY =
-                y(c.high);
-
-            const lowY =
-                y(c.low);
-
-
-            const up =
-                c.close >= c.open;
+        const lowY =
+            height -
+            ((c.low-min)/range)*height;
 
 
-            ctx.strokeStyle =
-                up
-            
+        ctx.beginPath();
+
+        ctx.moveTo(x,highY);
+        ctx.lineTo(x,lowY);
+
+        ctx.strokeStyle =
+            c.close >= c.open
+            ? "#36d98b"
+            : "#ff5967";
+
+        ctx.stroke();
+
+
+        const bodyTop =
+            Math.min(openY,closeY);
+
+        const bodyHeight =
+            Math.max(
+                2,
+                Math.abs(closeY-openY)
+            );
+
+
+        ctx.fillStyle =
+            c.close >= c.open
+            ? "#36d98b"
+            : "#ff5967";
+
+
+        ctx.fillRect(
+            x-gap*0.3,
+            bodyTop,
+            gap*0.6,
+            bodyHeight
+        );
+
+    });
+
+}
+
+
+function updatePrice(){
+
+    const move =
+        (Math.random()-0.5)*0.0008;
+
+    price += move;
+
+
+    if(price <= 0)
+        price = 0.0001;
+
+
+    candles.push({
+
+        open:
+            candles[candles.length-1].close,
+
+        high:
+            Math.max(
+                price,
+                candles[candles.length-1].close
+            ),
+
+        low:
+            Math.min(
+                price,
+                candles[candles.length-1].close
+            ),
+
+        close:price
+
+    });
+
+
+    if(candles.length>80)
+        candles.shift();
+
+
+    document.getElementById("bid")
+        .textContent =
+        price.toFixed(5);
+
+    document.getElementById("ask")
+        .textContent =
+        (price+0.00010).toFixed(5);
+
+
+    updatePositions();
+
+    drawChart();
+
+}
+
+
+function openTrade(side){
+
+    const volume =
+        Number(
+            document.getElementById("volume").value
+        );
+
+
+    if(!Number.isFinite(volume) || volume<=0){
+
+        setStatus(
+            "Enter a valid volume.",
+            true
+        );
+
+        return;
+    }
+
+
+    positions.push({
+
+        id:Date.now(),
+
+        symbol:
+            document.getElementById("symbol").value,
+
+        side,
+
+        volume,
+
+        entry:price,
+
+        pl:0
+
+    });
+
+
+    setStatus(
+        side +
+        " position opened at " +
+        price.toFixed(5)
+    );
+
+
+    updatePositions();
+
+}
+
+
+function updatePositions(){
+
+    let totalPL = 0;
+
+
+    positions.forEach(position=>{
+
+        const difference =
+            position.side === "BUY"
+            ? price-position.entry
+            : position.entry-price;
+
+
+        position.pl =
+            difference *
+            position.volume *
+            100000;
+
+
+        totalPL += position.pl;
+
+    });
+
+
+    document.getElementById("pl")
+        .textContent =
+        "$" + totalPL.toFixed(2);
+
+
+    document.getElementById("equity")
+        .textContent =
+        "$" + (balance+totalPL).toFixed(2);
+
+
+    document.getElementById("positionCount")
+        .textContent =
+        positions.length;
+
+
+    renderPositions();
+
+}
+
+
+function renderPositions(){
+
+    const body =
+        document.getElementById("positions");
+
+    body.innerHTML = "";
+
+
+    positions.forEach(position=>{
+
+        const row =
+            document.createElement("tr");
+
+
+        const plClass =
+            position.pl >= 0
+            ? "green"
+            : "red";
+
+
+        row.innerHTML = `
+
+            <td>${position.symbol}</td>
+
+            <td>${position.side}</td>
+
+            <td>${position.volume.toFixed(2)}</td>
+
+            <td>${position.entry.toFixed(5)}</td>
+
+            <td class="${plClass}">
+                $${position.pl.toFixed(2)}
+            </td>
+
+            <td>
+                <button data-close="${position.id}">
+                    Close
+                </button>
+            </td>
+
+        `;
+
+
+        body.appendChild(row);
+
+    });
+
+
+    body.querySelectorAll("[data-close]")
+        .forEach(button=>{
+
+            button.addEventListener(
+                "click",
+                ()=>closePosition(
+                    Number(
+                        button.dataset.close
+                    )
+                )
+            );
+
+        });
+
+}
+
+
+function closePosition(id){
+
+    const index =
+        positions.findIndex(
+            p => p.id === id
+        );
+
+
+    if(index === -1)
+        return;
+
+
+    const position =
+        positions[index];
+
+
+    balance +=
+        position.pl;
+
+
+    history.unshift({
+
+        time:
+            new Date().toLocaleTimeString(),
+
+        symbol:
+            position.symbol,
+
+        side:
+            position.side,
+
+        volume:
+            position.volume,
+
+        result:
+            position.pl
+
+    });
+
+
+    positions.splice(index,1);
+
+
+    setStatus(
+        "Position closed. Result: $" +
+        position.pl.toFixed(2)
+    );
+
+
+    renderHistory();
+
+    updatePositions();
+
+}
+
+
+function renderHistory(){
+
+    const body =
+        document.getElementById("history");
+
+    body.innerHTML = "";
+
+
+    history.forEach(item=>{
+
+        const row =
+            document.createElement("tr");
+
+
+        const cls =
+            item.result >= 0
+            ? "green"
+            : "red";
+
+
+        row.innerHTML = `
+
+            <td>${item.time}</td>
+
+            <td>${item.symbol}</td>
+
+            <td>${item.side}</td>
+
+            <td>${item.volume.toFixed(2)}</td>
+
+            <td class="${cls}">
+                $${item.result.toFixed(2)}
+            </td>
+
+        `;
+
+
+        body.appendChild(row);
+
+    });
+
+}
+
+
+function setStatus(message,error=false){
+
+    const status =
+        document.getElementById("status");
+
+    status.textContent =
+        message;
+
+    status.style.color =
+        error
+        ? "#ff6875"
+        : "#9eb0c4";
+
+}
+
+
+document
+    .getElementById("buyBtn")
+    .addEventListener(
+        "click",
+        ()=>openTrade("BUY")
+    );
+
+
+document
+    .getElementById("sellBtn")
+    .addEventListener(
+        "click",
+        ()=>openTrade("SELL")
+    );
+
+
+document
+    .getElementById("demoBtn")
+    .addEventListener(
+        "click",
+        ()=>{
+
+            document.getElementById("modeText")
+                .textContent =
+                "Demo FX uses virtual funds and simulated market execution.";
+
+            document.querySelector(".mode")
+                .textContent =
+                "SIMULATION MODE";
+
+            setStatus(
+                "Demo FX simulator active."
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("liveBtn")
+    .addEventListener(
+        "click",
+        ()=>{
+
+            document.getElementById("modeText")
+                .textContent =
+                "Live FX interface selected. Real-money execution is not connected.";
+
+            document.querySelector(".mode")
+                .textContent =
+                "LIVE INTERFACE";
+
+            setStatus(
+                "Live interface selected. Real execution is not enabled."
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("symbol")
+    .addEventListener(
+        "change",
+        ()=>{
+
+            setStatus(
+                document.getElementById("symbol").value +
+                " selected."
+            );
+
+        }
+    );
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+resizeCanvas();
+
+
+setInterval(
+    updatePrice,
+    1000
+);
+
+</script>
+
+</body>
+                </html>
