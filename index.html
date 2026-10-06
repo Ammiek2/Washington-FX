@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Washington FX</title>
 
 <style>
@@ -30,1636 +30,769 @@ button{
     cursor:pointer;
 }
 
-header{
-    padding:18px;
-    background:#091525;
-    border-bottom:1px solid #20344b;
+.header{
+    background:#0c1726;
+    border-bottom:1px solid #1e344d;
+    padding:14px;
     position:sticky;
     top:0;
-    z-index:20;
+    z-index:100;
 }
 
-.header-row{
+.header-inner{
+    max-width:1400px;
+    margin:auto;
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:15px;
-    flex-wrap:wrap;
 }
 
 .logo{
-    font-size:25px;
+    font-size:24px;
     font-weight:800;
+    color:#00d4ff;
 }
 
-.mode-badge{
-    padding:8px 14px;
-    border-radius:20px;
-    font-weight:bold;
-    font-size:13px;
+.logo span{
+    color:#fff;
 }
 
-.demo-badge{
-    background:#123b24;
-    color:#7dffae;
+.mode-buttons{
+    display:flex;
+    gap:8px;
 }
 
-.live-badge{
-    background:#392b08;
-    color:#ffd76a;
+.mode-btn{
+    border:1px solid #31506d;
+    background:#101f31;
+    color:#bcd0e5;
+    padding:9px 15px;
+    border-radius:8px;
+}
+
+.mode-btn.active{
+    background:#00a8cc;
+    color:#fff;
+    border-color:#00d4ff;
 }
 
 .container{
-    width:min(1400px,96%);
+    max-width:1400px;
     margin:auto;
-    padding:18px 0 40px;
+    padding:15px;
 }
 
-.top-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
+.notice{
+    background:#102238;
+    border:1px solid #244361;
+    border-radius:10px;
+    padding:12px;
     margin-bottom:15px;
+    color:#c9d9e8;
+    font-size:13px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:280px 1fr 330px;
+    gap:15px;
 }
 
 .card{
-    background:#0b1828;
-    border:1px solid #1d344d;
-    border-radius:14px;
-    padding:18px;
-    box-shadow:0 8px 30px rgba(0,0,0,.2);
-}
-
-.card h2{
+    background:#0c1726;
+    border:1px solid #1e344d;
+    border-radius:12px;
+    padding:15px;
     margin-bottom:15px;
-    font-size:20px;
 }
 
-.controls{
+.card h2,
+.card h3{
+    margin-bottom:12px;
+}
+
+.market-list{
     display:flex;
-    gap:10px;
-    flex-wrap:wrap;
+    flex-direction:column;
+    gap:8px;
 }
 
-select,
-input,
-textarea{
-    width:100%;
-    background:#0c1c2d;
-    border:1px solid #2b4864;
-    color:#fff;
-    border-radius:9px;
-    padding:12px;
-    outline:none;
+.market{
+    background:#101f31;
+    border:1px solid #203a55;
+    border-radius:8px;
+    padding:11px;
+    cursor:pointer;
 }
 
-select:focus,
-input:focus,
-textarea:focus{
-    border-color:#1596e8;
+.market:hover{
+    border-color:#00a8cc;
 }
 
-.small-control{
-    flex:1;
-    min-width:130px;
+.market.active{
+    border-color:#00d4ff;
+    background:#122c43;
 }
 
-label{
-    display:block;
-    color:#9fb2c7;
-    margin-bottom:7px;
-    font-size:14px;
+.market-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:5px;
 }
 
-.btn{
-    border:0;
-    border-radius:9px;
-    padding:12px 18px;
+.price{
+    font-size:18px;
     font-weight:bold;
-    color:#fff;
 }
 
-.btn-blue{
-    background:#147bc1;
+.up{
+    color:#18d99b;
 }
 
-.btn-blue:hover{
-    background:#1994e6;
+.down{
+    color:#ff5d73;
 }
 
-.btn-green{
-    background:#159447;
-}
-
-.btn-red{
-    background:#b72e3a;
-}
-
-.btn-dark{
-    background:#17283a;
-    border:1px solid #29445f;
-}
-
-.btn-gold{
-    background:#96700d;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
+.chart-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     gap:10px;
+    margin-bottom:10px;
+}
+
+.chart-title{
+    font-size:20px;
+    font-weight:bold;
+}
+
+canvas{
+    width:100%;
+    height:390px;
+    background:#07101c;
+    border:1px solid #203a55;
+    border-radius:10px;
+    display:block;
+}
+
+.account-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:15px;
 }
 
 .stat{
-    background:#0d1d2f;
-    border:1px solid #1d344d;
+    background:#101f31;
+    border:1px solid #203a55;
     border-radius:10px;
-    padding:13px;
+    padding:12px;
 }
 
-.stat-title{
-    color:#91a7bd;
+.stat-label{
+    color:#8da5bc;
     font-size:12px;
     margin-bottom:5px;
 }
 
 .stat-value{
-    font-size:18px;
+    font-size:19px;
     font-weight:bold;
 }
 
-.market-row{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:12px;
-}
-
-.market-row select{
-    width:auto;
-    min-width:145px;
-}
-
-.chart-wrap{
-    position:relative;
-    background:#06101c;
-    border:1px solid #223b54;
-    border-radius:12px;
-    overflow:hidden;
-}
-
-#chart{
-    display:block;
-    width:100%;
-    height:500px;
-    touch-action:none;
-}
-
-.chart-tools{
-    display:flex;
-    gap:7px;
-    flex-wrap:wrap;
-    padding:10px;
-    background:#091727;
-    border-top:1px solid #20364d;
-}
-
-.chart-tools button{
-    padding:8px 11px;
-    border-radius:7px;
-    border:1px solid #2a4862;
-    background:#102238;
-    color:#fff;
-}
-
-.chart-tools button.active{
-    background:#176fa8;
-}
-
-.trade-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-    margin-top:15px;
-}
-
-.trade-box{
+.trade-controls{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:10px;
 }
 
-.trade-box .wide{
+label{
+    display:block;
+    color:#91a9bf;
+    font-size:12px;
+    margin-bottom:5px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    background:#07101c;
+    border:1px solid #29435e;
+    color:#fff;
+    border-radius:7px;
+    padding:10px;
+    outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#00b9df;
+}
+
+.full{
     grid-column:1/-1;
 }
 
-.buy-sell{
-    display:grid;
-    grid-template-columns:1fr 1fr;
+.btn{
+    border:none;
+    border-radius:8px;
+    padding:11px 14px;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:#00a8cc;
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:#00c2eb;
+}
+
+.btn-success{
+    background:#079b70;
+    color:#fff;
+}
+
+.btn-danger{
+    background:#c73852;
+    color:#fff;
+}
+
+.btn-warning{
+    background:#ad7b18;
+    color:#fff;
+}
+
+.btn-secondary{
+    background:#1b3046;
+    color:#d9e7f3;
+}
+
+.btn-copy{
+    background:#193e59;
+    color:#fff;
+    width:100%;
+    margin-top:8px;
+}
+
+.action-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.position,
+.order{
+    background:#101f31;
+    border:1px solid #203a55;
+    border-radius:8px;
+    padding:11px;
+    margin-bottom:8px;
+}
+
+.position-top,
+.order-top{
+    display:flex;
+    justify-content:space-between;
     gap:10px;
-    margin-top:10px;
 }
 
-.buy{
-    background:#118c43;
+.small{
+    color:#8da5bc;
+    font-size:12px;
 }
 
-.sell{
-    background:#bb3040;
+.badge{
+    display:inline-block;
+    padding:4px 8px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
 }
 
-.notice{
+.badge.pending{
+    background:#725817;
+    color:#ffe6a0;
+}
+
+.badge.processing,
+.badge.approved{
+    background:#164c67;
+    color:#9fe9ff;
+}
+
+.badge.complete{
+    background:#075d45;
+    color:#9ff5d5;
+}
+
+.badge.rejected,
+.badge.expired{
+    background:#5e1e2a;
+    color:#ffb0bc;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.wallet-address{
+    background:#07101c;
+    border:1px solid #31506d;
+    border-radius:8px;
     padding:12px;
-    border-radius:9px;
-    background:#10263d;
-    color:#a9c5dd;
-    margin-top:12px;
-    line-height:1.5;
+    word-break:break-all;
+    color:#8ff1ff;
+    font-size:13px;
 }
 
-.notice.live{
-    background:#392b08;
-    color:#f4d57b;
+.deposit-info{
+    background:#102238;
+    border-radius:8px;
+    padding:10px;
+    margin:10px 0;
+    font-size:13px;
+    color:#bdd0e2;
+}
+
+.status-message{
+    padding:10px;
+    border-radius:8px;
+    margin-top:10px;
+    display:none;
+}
+
+.status-message.show{
+    display:block;
+}
+
+.status-message.success{
+    background:#083c2e;
+    color:#8ff1cc;
+}
+
+.status-message.error{
+    background:#4a1721;
+    color:#ffb4c0;
+}
+
+.admin-panel{
+    border:1px solid #784f1a;
+    background:#17140d;
+}
+
+.admin-header{
+    color:#ffd66b;
+}
+
+.admin-hidden{
+    display:none;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    min-width:760px;
-}
-
-.table-scroll{
-    overflow-x:auto;
+    font-size:12px;
 }
 
 th,
 td{
-    border-bottom:1px solid #1d3349;
-    padding:10px;
+    border-bottom:1px solid #243a50;
+    padding:8px;
     text-align:left;
-    font-size:13px;
-    white-space:nowrap;
+    vertical-align:top;
 }
 
 th{
-    color:#91aac2;
-    background:#0a1726;
+    color:#8fb0ca;
 }
 
-.profit{
-    color:#61e695;
-}
-
-.loss{
-    color:#ff737d;
-}
-
-.wallet-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-    margin-top:15px;
-}
-
-.balance-box{
-    background:#091827;
-    border:1px solid #24435d;
-    border-radius:12px;
-    padding:18px;
-}
-
-.balance-big{
-    font-size:32px;
-    font-weight:800;
-    margin-top:6px;
-}
-
-.form-group{
-    margin-bottom:13px;
-}
-
-textarea{
-    min-height:100px;
-    resize:vertical;
-}
-
-.status-box{
-    display:none;
-    padding:13px;
-    border-radius:9px;
-    margin-top:12px;
-    line-height:1.5;
-    overflow-wrap:anywhere;
-}
-
-.withdraw-card{
-    margin-top:15px;
-}
-
-.service-buttons{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:12px;
-}
-
-.service-buttons a{
-    text-decoration:none;
-    display:inline-block;
-    padding:10px 15px;
-    border-radius:8px;
-    color:#fff;
-    font-weight:bold;
-    background:#152b41;
-    border:1px solid #294966;
-}
-
-.deposit-address-box{
-    display:flex;
-    gap:8px;
-    align-items:stretch;
-}
-
-.deposit-address-box input{
-    flex:1;
-}
-
-.deposit-copy{
-    min-width:125px;
-}
-
-.network-badge{
-    display:inline-block;
-    padding:5px 9px;
-    border-radius:7px;
-    background:#15314a;
-    color:#8ec9f5;
-    font-size:12px;
-    font-weight:bold;
-}
-
-.pending{
-    color:#ffd76a;
-}
-
-.processing{
-    color:#8ec9ff;
-}
-
-.completed{
-    color:#61e695;
-}
-
-.rejected{
-    color:#ff737d;
-}
-
-.fullscreen-mode{
-    position:fixed!important;
-    inset:0!important;
-    z-index:9999!important;
-    background:#06101c!important;
-    padding:10px!important;
-    border-radius:0!important;
-}
-
-.fullscreen-mode #chart{
-    height:calc(100vh - 65px);
-}
-
-.entry-line{
-    color:#ffd76a;
-}
-
-.footer-note{
-    color:#71879b;
+.footer{
     text-align:center;
+    color:#6f879d;
     font-size:12px;
-    margin-top:25px;
-    line-height:1.5;
+    padding:25px;
 }
 
-.admin-hidden-note{
-    font-size:12px;
-    color:#71879b;
-    margin-top:8px;
-}
-
-@media(max-width:900px){
-
-    .top-grid,
-    .trade-grid,
-    .wallet-grid{
+@media(max-width:1100px){
+    .grid{
         grid-template-columns:1fr;
     }
-
-    .stats{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    #chart{
-        height:390px;
-    }
-
 }
 
-@media(max-width:550px){
-
-    .container{
-        width:94%;
-    }
-
-    .stats{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .stat-value{
-        font-size:15px;
-    }
-
-    #chart{
-        height:330px;
-    }
-
-    .trade-box{
-        grid-template-columns:1fr;
-    }
-
-    .trade-box .wide{
-        grid-column:auto;
-    }
-
-    .deposit-address-box{
+@media(max-width:700px){
+    .header-inner{
         flex-direction:column;
+        align-items:stretch;
     }
 
-    .deposit-copy{
+    .mode-buttons{
         width:100%;
     }
 
+    .mode-btn{
+        flex:1;
+    }
+
+    .account-grid{
+        grid-template-columns:1fr;
+    }
+
+    .trade-controls{
+        grid-template-columns:1fr;
+    }
+
+    canvas{
+        height:300px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header>
+<header class="header">
+    <div class="header-inner">
+        <div class="logo">WASHINGTON <span>FX</span></div>
 
-    <div class="header-row">
-
-        <div class="logo">
-            WASHINGTON FX
-        </div>
-
-        <div style="display:flex;gap:8px;align-items:center;">
-
-            <button
-                class="btn btn-dark"
-                onclick="setMode('DEMO')"
-            >
-                DEMO FX
+        <div class="mode-buttons">
+            <button id="demoModeBtn" class="mode-btn active" onclick="setMode('DEMO')">
+                DEMO
             </button>
 
-            <button
-                class="btn btn-dark"
-                onclick="setMode('LIVE')"
-            >
-                LIVE FX
+            <button id="liveModeBtn" class="mode-btn" onclick="setMode('LIVE')">
+                LIVE
             </button>
-
-            <span
-                id="modeBadge"
-                class="mode-badge demo-badge"
-            >
-                SIMULATION MODE
-            </span>
-
         </div>
-
     </div>
-
 </header>
 
+<main class="container">
 
-<div class="container">
-
-
-<!-- =====================================================
-     ACCOUNT
-====================================================== -->
-
-<div class="top-grid">
-
-    <div class="card">
-
-        <h2>Account</h2>
-
-        <div class="stats">
-
-            <div class="stat">
-                <div class="stat-title">
-                    Balance
-                </div>
-
-                <div
-                    class="stat-value"
-                    id="balanceValue"
-                >
-                    $10,000.00
-                </div>
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-title">
-                    Equity
-                </div>
-
-                <div
-                    class="stat-value"
-                    id="equityValue"
-                >
-                    $10,000.00
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-title">
-                    Floating P/L
-                </div>
-
-                <div
-                    class="stat-value"
-                    id="floatingValue"
-                >
-                    $0.00
-                </div>
-
-            </div>
-
-
-            <div class="stat">
-
-                <div class="stat-title">
-                    Open Positions
-                </div>
-
-                <div
-                    class="stat-value"
-                    id="positionsValue"
-                >
-                    0
-                </div>
-
-            </div>
-
-        </div>
-
+    <div class="notice">
+        <strong id="modeNotice">DEMO TRADING MODE</strong><br>
+        Market prices and trading activity in DEMO mode are simulated for testing.
     </div>
 
+    <div class="grid">
 
-    <div class="card">
+        <!-- LEFT -->
+        <aside>
 
-        <h2>Market</h2>
+            <div class="card">
+                <h3>Markets</h3>
 
-        <div class="market-row">
+                <div id="marketList" class="market-list"></div>
+            </div>
 
-            <select
-                id="marketSelect"
-                onchange="selectMarket(this.value)"
-            >
+            <div class="card">
+                <h3>Account</h3>
 
-                <option value="EURUSD">
-                    EURUSD
-                </option>
-
-                <option value="GBPUSD">
-                    GBPUSD
-                </option>
-
-                <option value="USDJPY">
-                    USDJPY
-                </option>
-
-                <option value="USDCHF">
-                    USDCHF
-                </option>
-
-                <option value="AUDUSD">
-                    AUDUSD
-                </option>
-
-                <option value="USDCAD">
-                    USDCAD
-                </option>
-
-                <option value="XAUUSD">
-                    XAUUSD
-                </option>
-
-                <option value="BTCUSD">
-                    BTCUSD
-                </option>
-
-            </select>
-
-
-            <select id="timeframeSelect">
-
-                <option>
-                    1 Minute
-                </option>
-
-                <option>
-                    5 Minutes
-                </option>
-
-                <option>
-                    15 Minutes
-                </option>
-
-                <option>
-                    1 Hour
-                </option>
-
-            </select>
-
-        </div>
-
-
-        <div class="stats">
-
-            <div class="stat">
-
-                <div class="stat-title">
-                    Bid
+                <div class="stat">
+                    <div class="stat-label">Available Balance</div>
+                    <div id="balanceValue" class="stat-value">$10,000.00</div>
                 </div>
 
-                <div
-                    class="stat-value"
-                    id="bidValue"
-                >
-                    1.08500
+                <br>
+
+                <div class="stat">
+                    <div class="stat-label">Equity</div>
+                    <div id="equityValue" class="stat-value">$10,000.00</div>
                 </div>
 
+                <br>
+
+                <div class="stat">
+                    <div class="stat-label">Open Positions</div>
+                    <div id="positionCount" class="stat-value">0</div>
+                </div>
             </div>
 
+        </aside>
 
-            <div class="stat">
+        <!-- CENTER -->
+        <section>
 
-                <div class="stat-title">
-                    Ask
+            <div class="card">
+
+                <div class="chart-header">
+                    <div>
+                        <div id="chartTitle" class="chart-title">EUR/USD</div>
+                        <div id="chartPrice" class="small">1.10000</div>
+                    </div>
+
+                    <div id="chartDirection" class="up">
+                        +0.00%
+                    </div>
                 </div>
 
-                <div
-                    class="stat-value"
-                    id="askValue"
-                >
-                    1.08510
+                <canvas id="chart"></canvas>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Trade</h3>
+
+                <div class="trade-controls">
+
+                    <div>
+                        <label>Symbol</label>
+                        <select id="tradeSymbol"></select>
+                    </div>
+
+                    <div>
+                        <label>Lot Size</label>
+                        <input id="lotSize" type="number" value="0.01" min="0.01" step="0.01">
+                    </div>
+
+                    <div>
+                        <label>Stop Loss</label>
+                        <input id="stopLoss" type="number" placeholder="Optional">
+                    </div>
+
+                    <div>
+                        <label>Take Profit</label>
+                        <input id="takeProfit" type="number" placeholder="Optional">
+                    </div>
+
+                    <button class="btn btn-success" onclick="openTrade('BUY')">
+                        BUY
+                    </button>
+
+                    <button class="btn btn-danger" onclick="openTrade('SELL')">
+                        SELL
+                    </button>
+
                 </div>
 
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     CHART
-====================================================== -->
-
-<div class="card">
-
-    <h2>
-
-        <span id="chartTitle">
-            EURUSD
-        </span>
-
-        Chart
-
-    </h2>
-
-
-    <div
-        class="chart-wrap"
-        id="chartContainer"
-    >
-
-        <canvas id="chart"></canvas>
-
-
-        <div class="chart-tools">
-
-            <button onclick="zoomChart(1.2)">
-                ＋ Zoom In
-            </button>
-
-            <button onclick="zoomChart(0.83)">
-                － Zoom Out
-            </button>
-
-            <button onclick="resetChart()">
-                Reset
-            </button>
-
-            <button
-                id="gridButton"
-                class="active"
-                onclick="toggleGrid()"
-            >
-                Grid
-            </button>
-
-            <button onclick="setCandleStyle('classic')">
-                Classic Candles
-            </button>
-
-            <button onclick="setCandleStyle('hollow')">
-                Hollow Candles
-            </button>
-
-            <button onclick="toggleFullscreen()">
-                Full Screen
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <div
-        class="notice"
-        id="marketNotice"
-    >
-        Demo market prices are simulated for testing.
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     TRADE
-====================================================== -->
-
-<div class="trade-grid">
-
-    <div class="card">
-
-        <h2>
-            Open Trade
-        </h2>
-
-
-        <div class="trade-box">
-
-            <div>
-
-                <label>
-                    Volume
-                </label>
-
-                <input
-                    id="volume"
-                    type="number"
-                    value="0.01"
-                    min="0.01"
-                    step="0.01"
-                >
+                <div id="tradeMessage" class="status-message"></div>
 
             </div>
 
+            <div class="card">
 
-            <div>
+                <div class="section-title">
+                    <h3>Open Positions</h3>
+                    <span class="small">Live simulation</span>
+                </div>
 
-                <label>
-                    Take Profit
-                </label>
-
-                <input
-                    id="takeProfit"
-                    type="number"
-                    placeholder="Optional"
-                    step="0.00001"
-                >
+                <div id="positions"></div>
 
             </div>
 
+            <div class="card">
 
-            <div>
+                <div class="section-title">
+                    <h3>Trade History</h3>
+                </div>
 
-                <label>
-                    Stop Loss
-                </label>
-
-                <input
-                    id="stopLoss"
-                    type="number"
-                    placeholder="Optional"
-                    step="0.00001"
-                >
+                <div id="tradeHistory"></div>
 
             </div>
 
+        </section>
 
-            <div class="wide buy-sell">
+        <!-- RIGHT -->
+        <aside>
 
-                <button
-                    class="btn buy"
-                    onclick="openTrade('BUY')"
-                >
-                    BUY
+            <!-- DEPOSIT PORTAL -->
+            <div class="card">
+
+                <div class="section-title">
+                    <h3>Deposit Portal</h3>
+                    <span class="badge processing">MANUAL</span>
+                </div>
+
+                <label>Network</label>
+                <div id="depositNetwork" class="deposit-info">
+                    Loading...
+                </div>
+
+                <label>Deposit Wallet Address</label>
+                <div id="depositAddress" class="wallet-address">
+                    Loading...
+                </div>
+
+                <button class="btn btn-copy" onclick="copyDepositAddress()">
+                    COPY WALLET ADDRESS
                 </button>
 
-                <button
-                    class="btn sell"
-                    onclick="openTrade('SELL')"
-                >
-                    SELL
-                </button>
+                <div class="deposit-info">
+                    Send only the supported asset/network to this address.
+                    Your balance should not be credited simply by clicking
+                    the copy button.
+                </div>
+
+                <div class="trade-controls">
+
+                    <div>
+                        <label>Amount</label>
+                        <input id="depositAmount" type="number" min="1" placeholder="USD amount">
+                    </div>
+
+                    <div>
+                        <label>Transaction Hash</label>
+                        <input id="depositTx" placeholder="TXID / Hash">
+                    </div>
+
+                    <button class="btn btn-primary full" onclick="submitDepositRequest()">
+                        I HAVE MADE A DEPOSIT
+                    </button>
+
+                </div>
+
+                <div id="depositMessage" class="status-message"></div>
 
             </div>
 
-        </div>
+            <!-- WITHDRAW -->
+            <div class="card">
 
+                <div class="section-title">
+                    <h3>Withdraw</h3>
+                </div>
 
-        <div
-            id="tradeMessage"
-            class="status-box"
-        ></div>
+                <div class="trade-controls">
+
+                    <div class="full">
+                        <label>Amount</label>
+                        <input id="withdrawAmount" type="number" min="1" step="0.01">
+                    </div>
+
+                    <div>
+                        <label>Method</label>
+                        <select id="withdrawMethod">
+                            <option value="USDT TRC20">USDT TRC20</option>
+                            <option value="USDT ERC20">USDT ERC20</option>
+                            <option value="BANK">Bank</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Destination</label>
+                        <input id="withdrawDestination" placeholder="Wallet / bank details">
+                    </div>
+
+                    <div class="full">
+                        <label>Note</label>
+                        <textarea id="withdrawNote" rows="2"></textarea>
+                    </div>
+
+                    <button class="btn btn-primary full" onclick="submitWithdrawal()">
+                        SUBMIT WITHDRAWAL
+                    </button>
+
+                </div>
+
+                <div id="withdrawMessage" class="status-message"></div>
+
+            </div>
+
+            <!-- MY WITHDRAWALS -->
+            <div class="card">
+
+                <div class="section-title">
+                    <h3>My Withdrawal Orders</h3>
+                    <button class="btn btn-secondary" onclick="loadWithdrawals()">
+                        REFRESH
+                    </button>
+                </div>
+
+                <div id="withdrawalOrders"></div>
+
+            </div>
+
+        </aside>
 
     </div>
 
+    <!-- ADMIN -->
+    <div id="adminPanel" class="card admin-panel admin-hidden">
 
-    <div class="card">
-
-        <h2>
-            Selected Market
-        </h2>
+        <div class="section-title">
+            <h2 class="admin-header">ADMIN CONTROL PANEL</h2>
+            <button class="btn btn-secondary" onclick="hideAdminPanel()">
+                CLOSE
+            </button>
+        </div>
 
         <div class="notice">
-
-            Symbol:
-            <strong id="selectedSymbol">
-                EURUSD
-            </strong>
-
-            <br>
-
-            Current price:
-            <strong id="selectedPrice">
-                1.08500
-            </strong>
-
-            <br>
-
-            Entry markers and open-position lines are displayed on the chart.
-
+            Testing administration area. The final version should use
+            Supabase authentication and an admin role. Do not use an
+            anonymous UPDATE policy as the permanent security solution.
         </div>
 
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     POSITIONS
-====================================================== -->
-
-<div
-    class="card"
-    style="margin-top:15px;"
->
-
-    <h2>
-        Open Positions
-    </h2>
-
-
-    <div class="table-scroll">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Symbol
-                    </th>
-
-                    <th>
-                        Side
-                    </th>
-
-                    <th>
-                        Volume
-                    </th>
-
-                    <th>
-                        Entry
-                    </th>
-
-                    <th>
-                        Current
-                    </th>
-
-                    <th>
-                        TP
-                    </th>
-
-                    <th>
-                        SL
-                    </th>
-
-                    <th>
-                        P/L
-                    </th>
-
-                    <th>
-                        Action
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="positionsTable">
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     HISTORY
-====================================================== -->
-
-<div
-    class="card"
-    style="margin-top:15px;"
->
-
-    <h2>
-        Trade History
-    </h2>
-
-
-    <div class="table-scroll">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Symbol
-                    </th>
-
-                    <th>
-                        Side
-                    </th>
-
-                    <th>
-                        Volume
-                    </th>
-
-                    <th>
-                        Entry
-                    </th>
-
-                    <th>
-                        Exit
-                    </th>
-
-                    <th>
-                        P/L
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="historyTable">
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     WALLET
-====================================================== -->
-
-<div class="wallet-grid">
-
-    <div class="balance-box">
-
-        <div style="color:#91a7bd;">
-            Wallet Balance
-        </div>
-
-
-        <div
-            class="balance-big"
-            id="walletBalance"
-        >
-            $10,000.00
-        </div>
-
-
-        <div class="notice">
-
-            Wallet balance available for this account.
-
-        </div>
-
-    </div>
-
-
-    <div class="balance-box">
-
-        <div style="color:#91a7bd;">
-            Account Mode
-        </div>
-
-
-        <div
-            class="balance-big"
-            id="walletMode"
-        >
-            DEMO
-        </div>
-
-
-        <div
-            class="notice"
-            id="walletNotice"
-        >
-            Demo account selected.
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     DEPOSIT PORTAL
-====================================================== -->
-
-<div
-    class="card"
-    style="margin-top:15px;"
->
-
-    <h2>
-        Deposit Funds
-    </h2>
-
-
-    <div class="notice">
-
-        Send your deposit to the wallet address shown below.
-        Always confirm the selected network before sending funds.
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Deposit Network
-        </label>
-
-
-        <select id="depositNetwork">
-
-            <option value="USDT TRC20">
-                USDT TRC20
-            </option>
-
-            <option value="USDT ERC20">
-                USDT ERC20
-            </option>
-
-            <option value="USDT BEP20">
-                USDT BEP20
-            </option>
-
-            <option value="BTC">
-                BTC
-            </option>
-
-            <option value="Bank Transfer">
-                Bank Transfer
-            </option>
-
-            <option value="Mobile Money">
-                Mobile Money
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Deposit Wallet Address
-        </label>
-
-
-        <div class="deposit-address-box">
-
-            <input
-                id="depositAddress"
-                type="text"
-                readonly
-                value="Deposit address not configured"
-            >
-
-
-            <button
-                class="btn btn-blue deposit-copy"
-                onclick="copyDepositAddress()"
-            >
-                COPY ADDRESS
+        <h3>Deposit Wallet Settings</h3>
+
+        <div class="trade-controls">
+
+            <div>
+                <label>Network</label>
+                <input id="adminDepositNetwork" value="TRC20">
+            </div>
+
+            <div>
+                <label>Wallet Address</label>
+                <input id="adminDepositAddress" placeholder="Enter deposit wallet address">
+            </div>
+
+            <div>
+                <label>Deposit Method</label>
+                <input id="adminDepositMethod" value="USDT TRC20">
+            </div>
+
+            <div>
+                <label>Active</label>
+                <select id="adminDepositActive">
+                    <option value="true">Active</option>
+                    <option value="false">Disabled</option>
+                </select>
+            </div>
+
+            <button class="btn btn-warning full" onclick="updateDepositSettings()">
+                UPDATE DEPOSIT ADDRESS
             </button>
 
         </div>
 
-    </div>
+        <div id="adminDepositMessage" class="status-message"></div>
 
+        <br>
 
-    <div
-        id="depositStatus"
-        class="status-box"
-    ></div>
+        <h3>Withdrawal Queue</h3>
 
-
-    <div class="notice">
-
-        <strong>Important:</strong>
-        Only send funds using the selected network and address.
-        The deposit address displayed here is controlled by the platform
-        administrator.
+        <div id="adminWithdrawals">
+            Loading...
+        </div>
 
     </div>
 
-</div>
+    <div class="card">
 
+        <div class="section-title">
+            <h3>Administration</h3>
+        </div>
 
-<!-- =====================================================
-     WITHDRAWAL
-====================================================== -->
-
-<div
-    class="card withdraw-card"
->
-
-    <h2>
-        Withdraw Funds
-    </h2>
-
-
-    <div class="form-group">
-
-        <label>
-            Amount (USD)
-        </label>
-
-
-        <input
-            id="withdrawAmount"
-            type="number"
-            min="1"
-            step="0.01"
-            placeholder="100"
-        >
+        <button class="btn btn-secondary" onclick="showAdminPanel()">
+            OPEN ADMIN TEST PANEL
+        </button>
 
     </div>
 
-
-    <div class="form-group">
-
-        <label>
-            Wallet Address / Destination
-        </label>
-
-
-        <input
-            id="walletAddress"
-            type="text"
-            placeholder="Enter destination"
-        >
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Network / Method
-        </label>
-
-
-        <select id="walletNetwork">
-
-            <option value="">
-                Select network / method
-            </option>
-
-            <option value="USDT TRC20">
-                USDT TRC20
-            </option>
-
-            <option value="USDT ERC20">
-                USDT ERC20
-            </option>
-
-            <option value="USDT BEP20">
-                USDT BEP20
-            </option>
-
-            <option value="BTC">
-                BTC
-            </option>
-
-            <option value="Bank Transfer">
-                Bank Transfer
-            </option>
-
-            <option value="Mobile Money">
-                Mobile Money
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Message
-        </label>
-
-
-        <textarea
-            id="withdrawMessage"
-            placeholder="Optional message"
-        ></textarea>
-
-    </div>
-
-
-    <button
-        class="btn btn-blue"
-        style="width:100%;font-size:17px;"
-        onclick="submitWithdrawal()"
-    >
-        SUBMIT WITHDRAWAL
-    </button>
-
-
-    <div
-        id="withdrawStatus"
-        class="status-box"
-    ></div>
-
-
-    <div class="notice">
-
-        New withdrawals remain <strong>PENDING</strong> until
-        the administrator approves or rejects them.
-
-        <br><br>
-
-        Once approved, the order enters
-        <strong>PROCESSING</strong> and is completed automatically
-        within the processing window.
-
-    </div>
-
-
-    <div class="service-buttons">
-
-        <a
-            href="https://wa.me/"
-            target="_blank"
-            rel="noopener"
-        >
-            WhatsApp Customer Service
-        </a>
-
-
-        <a
-            href="https://t.me/"
-            target="_blank"
-            rel="noopener"
-        >
-            Telegram Customer Service
-        </a>
-
-
-        <a href="mailto:">
-            Email Customer Service
-        </a>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     MY WITHDRAWALS
-====================================================== -->
-
-<div
-    class="card"
-    style="margin-top:15px;"
->
-
-    <h2>
-        My Withdrawal Orders
-    </h2>
-
-
-    <div class="table-scroll">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Order ID
-                    </th>
-
-                    <th>
-                        Mode
-                    </th>
-
-                    <th>
-                        Amount
-                    </th>
-
-                    <th>
-                        Method
-                    </th>
-
-                    <th>
-                        Destination
-                    </th>
-
-                    <th>
-                        Status
-                    </th>
-
-                    <th>
-                        Created
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="withdrawalsTable">
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     ADMIN DEPOSIT SETTINGS
-====================================================== -->
-
-<div
-    class="card"
-    style="margin-top:15px;"
->
-
-    <h2>
-        Admin Deposit Settings
-    </h2>
-
-
-    <div class="notice">
-
-        Administrator can update the deposit wallet address
-        shown in the Deposit Funds portal.
-
-        <br><br>
-
-        This interface uses the Supabase
-        <strong>platform_settings</strong> table.
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            Network
-        </label>
-
-
-        <select id="adminDepositNetwork">
-
-            <option value="USDT TRC20">
-                USDT TRC20
-            </option>
-
-            <option value="USDT ERC20">
-                USDT ERC20
-            </option>
-
-            <option value="USDT BEP20">
-                USDT BEP20
-            </option>
-
-            <option value="BTC">
-                BTC
-            </option>
-
-            <option value="Bank Transfer">
-                Bank Transfer
-            </option>
-
-            <option value="Mobile Money">
-                Mobile Money
-            </option>
-
-        </select>
-
-    </div>
-
-
-    <div class="form-group">
-
-        <label>
-            New Deposit Address
-        </label>
-
-
-        <input
-            id="adminDepositAddress"
-            type="text"
-            placeholder="Enter wallet address"
-        >
-
-    </div>
-
-
-    <button
-        class="btn btn-green"
-        onclick="saveDepositAddress()"
-    >
-        UPDATE DEPOSIT ADDRESS
-    </button>
-
-
-    <div
-        id="adminDepositStatus"
-        class="status-box"
-    ></div>
-
-
-    <div class="admin-hidden-note">
-        The database/RLS must allow the authenticated administrator
-        to modify platform settings.
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     ADMIN WITHDRAWAL QUEUE
-====================================================== -->
-
-<div
-    class="card"
-    style="margin-top:15px;"
->
-
-    <h2>
-        Admin Withdrawal Queue
-    </h2>
-
-
-    <div class="notice">
-
-        Withdrawal requests received by the database appear here.
-        Admin can process, approve, or reject an order.
-
-        <br><br>
-
-        <strong>
-            APPROVED
-        </strong>
-        orders automatically move to
-        <strong>PROCESSING</strong> and then
-        <strong>COMPLETED</strong> after the processing window.
-
-    </div>
-
-
-    <div
-        class="table-scroll"
-        style="margin-top:12px;"
-    >
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Order
-                    </th>
-
-                    <th>
-                        Mode
-                    </th>
-
-                    <th>
-                        Amount
-                    </th>
-
-                    <th>
-                        Method
-                    </th>
-
-                    <th>
-                        Destination
-                    </th>
-
-                    <th>
-                        Status
-                    </th>
-
-                    <th>
-                        Action
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="adminWithdrawalsTable">
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-    <div
-        id="adminStatus"
-        class="status-box"
-    ></div>
-
-</div>
-
-
-<div class="footer-note">
-
-    Washington FX — Account, market and trading functions are controlled
-    by the platform configuration. Deposit and withdrawal settlement
-    should only be completed through authorized payment, custody and
-    compliance infrastructure.
-
-</div>
-
-</div>
-
+</main>
+
+<footer class="footer">
+    Washington FX © 2026
+</footer>
 
 <script>
 
@@ -1670,1868 +803,146 @@ textarea{
 const SUPABASE_URL =
     "https://plddteltleqayzcpuxom.supabase.co";
 
-
 const SUPABASE_KEY =
     "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv";
 
+/*
+ IMPORTANT:
+ Never put a Supabase service_role/secret key here.
+ The publishable key is intended for frontend use.
+*/
 
 /* =========================================================
-   ACCOUNT
+   APP STATE
 ========================================================= */
 
 let currentMode = "DEMO";
 
 let balance = 10000;
 
+let selectedSymbol = "EURUSD";
+
 let positions = [];
 
-let history = [];
+let tradeHistory = [];
 
-
-/* =========================================================
-   WITHDRAWAL TIMER SETTINGS
-========================================================= */
-
-const WITHDRAWAL_AUTO_REJECT_MS =
-    15 * 60 * 1000;
-
-
-/*
-    Approved withdrawals are completed between
-    1 and 15 minutes.
-
-    The delay is calculated from the order ID so that
-    the same order keeps the same completion time
-    when the page is refreshed.
-*/
-
-const WITHDRAWAL_MIN_PROCESS_MS =
-    1 * 60 * 1000;
-
-const WITHDRAWAL_MAX_PROCESS_MS =
-    15 * 60 * 1000;
-
-
-/* =========================================================
-   MARKETS
-========================================================= */
-
-const markets = {
-
+let markets = {
     EURUSD:{
-        price:1.08500,
-        step:0.0008,
-        digits:5
+        name:"EUR/USD",
+        price:1.10000,
+        start:1.10000,
+        change:0
     },
 
     GBPUSD:{
+        name:"GBP/USD",
         price:1.27000,
-        step:0.0009,
-        digits:5
+        start:1.27000,
+        change:0
     },
 
     USDJPY:{
-        price:149.500,
-        step:0.08,
-        digits:3
-    },
-
-    USDCHF:{
-        price:0.88000,
-        step:0.0007,
-        digits:5
-    },
-
-    AUDUSD:{
-        price:0.65500,
-        step:0.0007,
-        digits:5
-    },
-
-    USDCAD:{
-        price:1.36000,
-        step:0.0008,
-        digits:5
+        name:"USD/JPY",
+        price:148.500,
+        start:148.500,
+        change:0
     },
 
     XAUUSD:{
+        name:"XAU/USD",
         price:2650.00,
-        step:2.0,
-        digits:2
+        start:2650.00,
+        change:0
     },
 
     BTCUSD:{
-        price:65000.00,
-        step:120,
-        digits:2
+        name:"BTC/USD",
+        price:62000,
+        start:62000,
+        change:0
     }
-
 };
-
-
-let currentSymbol =
-    "EURUSD";
 
 let candles = [];
 
-let zoom = 1;
-
-let chartOffset = 0;
-
-let gridEnabled = true;
-
-let candleStyle = "classic";
-
-
 /* =========================================================
-   DOM
+   INITIALIZATION
 ========================================================= */
 
-const canvas =
-    document.getElementById("chart");
+document.addEventListener("DOMContentLoaded", async () => {
 
-const ctx =
-    canvas.getContext("2d");
+    populateMarkets();
 
+    populateTradeSymbols();
 
-/* =========================================================
-   HELPERS
-========================================================= */
-
-function escapeHtml(text){
-
-    return String(text)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-function money(value){
-
-    return "$" +
-        Number(value).toFixed(2);
-
-}
-
-
-function priceFormat(
-    symbol,
-    value
-){
-
-    return Number(value).toFixed(
-        markets[symbol].digits
-    );
-
-}
-
-
-/* =========================================================
-   WITHDRAWAL STATUS HELPERS
-========================================================= */
-
-function withdrawalStatusClass(status){
-
-    if(
-        status==="COMPLETED" ||
-        status==="PAID" ||
-        status==="APPROVED"
-    ){
-
-        return "completed";
-
-    }
-
-
-    if(
-        status==="REJECTED" ||
-        status==="CANCELLED"
-    ){
-
-        return "rejected";
-
-    }
-
-
-    if(
-        status==="PROCESSING"
-    ){
-
-        return "processing";
-
-    }
-
-
-    return "pending";
-
-}
-
-
-/*
-    Generate a stable 1–15 minute completion delay
-    from the withdrawal ID.
-*/
-
-function getProcessingDelay(id){
-
-    const text =
-        String(id || "0");
-
-
-    let hash = 0;
-
-
-    for(
-        let i=0;
-        i<text.length;
-        i++
-    ){
-
-        hash =
-            (
-                hash * 31 +
-                text.charCodeAt(i)
-            ) >>> 0;
-
-    }
-
-
-    const range =
-        WITHDRAWAL_MAX_PROCESS_MS -
-        WITHDRAWAL_MIN_PROCESS_MS;
-
-
-    return (
-        WITHDRAWAL_MIN_PROCESS_MS +
-        (hash % (range + 1))
-    );
-
-}
-
-
-/*
-    Work out the status that the user should see.
-
-    PENDING > 15 minutes:
-        REJECTED
-
-    APPROVED:
-        PROCESSING immediately
-
-    PROCESSING:
-        COMPLETED after the assigned 1–15 minute period.
-*/
-
-function getEffectiveWithdrawalStatus(item){
-
-    const databaseStatus =
-        String(
-            item.status || "PENDING"
-        ).toUpperCase();
-
-
-    const now =
-        Date.now();
-
-
-    const createdTime =
-        item.created_at
-        ? new Date(item.created_at).getTime()
-        : now;
-
-
-    if(
-        databaseStatus==="PENDING"
-    ){
-
-        if(
-            now-createdTime >=
-            WITHDRAWAL_AUTO_REJECT_MS
-        ){
-
-            return "REJECTED";
-
-        }
-
-
-        return "PENDING";
-
-    }
-
-
-    if(
-        databaseStatus==="REJECTED" ||
-        databaseStatus==="CANCELLED"
-    ){
-
-        return "REJECTED";
-
-    }
-
-
-    if(
-        databaseStatus==="APPROVED"
-    ){
-
-        return "PROCESSING";
-
-    }
-
-
-    if(
-        databaseStatus==="PROCESSING"
-    ){
-
-        const approvedTime =
-            item.reviewed_at
-            ? new Date(
-                item.reviewed_at
-              ).getTime()
-            : createdTime;
-
-
-        const completionTime =
-            approvedTime +
-            getProcessingDelay(item.id);
-
-
-        if(
-            now >= completionTime
-        ){
-
-            return "COMPLETED";
-
-        }
-
-
-        return "PROCESSING";
-
-    }
-
-
-    if(
-        databaseStatus==="COMPLETED" ||
-        databaseStatus==="PAID"
-    ){
-
-        return "COMPLETED";
-
-    }
-
-
-    return databaseStatus;
-
-}
-
-
-/*
-    Calculate remaining processing time.
-*/
-
-function getWithdrawalTimeText(item){
-
-    const status =
-        getEffectiveWithdrawalStatus(item);
-
-
-    if(status==="PENDING"){
-
-        const created =
-            item.created_at
-            ? new Date(
-                item.created_at
-              ).getTime()
-            : Date.now();
-
-
-        const deadline =
-            created +
-            WITHDRAWAL_AUTO_REJECT_MS;
-
-
-        const remaining =
-            Math.max(
-                0,
-                deadline-Date.now()
-            );
-
-
-        const minutes =
-            Math.ceil(
-                remaining/60000
-            );
-
-
-        return (
-            "Auto review timeout: " +
-            minutes +
-            " min"
-        );
-
-    }
-
-
-    if(status==="PROCESSING"){
-
-        const approved =
-            item.reviewed_at
-            ? new Date(
-                item.reviewed_at
-              ).getTime()
-            : (
-                item.created_at
-                ? new Date(
-                    item.created_at
-                  ).getTime()
-                : Date.now()
-            );
-
-
-        const completion =
-            approved +
-            getProcessingDelay(item.id);
-
-
-        const remaining =
-            Math.max(
-                0,
-                completion-Date.now()
-            );
-
-
-        const minutes =
-            Math.floor(
-                remaining/60000
-            );
-
-
-        const seconds =
-            Math.floor(
-                (remaining%60000)/1000
-            );
-
-
-        return (
-            "Processing: " +
-            minutes +
-            "m " +
-            String(seconds).padStart(2,"0") +
-            "s remaining"
-        );
-
-    }
-
-
-    if(status==="COMPLETED"){
-
-        return "Completed";
-
-    }
-
-
-    if(status==="REJECTED"){
-
-        return "Order rejected";
-
-    }
-
-
-    return "";
-
-}
-
-
-/* =========================================================
-   INITIAL CANDLES
-========================================================= */
-
-function createInitialCandles(){
-
-    candles = [];
-
-    let price =
-        markets[currentSymbol].price;
-
-
-    for(
-        let i=0;
-        i<120;
-        i++
-    ){
-
-        const open =
-            price;
-
-
-        const move =
-            (Math.random()-0.5) *
-            markets[currentSymbol].step *
-            3;
-
-
-        const close =
-            open+move;
-
-
-        const high =
-            Math.max(
-                open,
-                close
-            ) +
-            Math.random() *
-            markets[currentSymbol].step;
-
-
-        const low =
-            Math.min(
-                open,
-                close
-            ) -
-            Math.random() *
-            markets[currentSymbol].step;
-
-
-        candles.push({
-
-            open:open,
-
-            high:high,
-
-            low:low,
-
-            close:close
-
-        });
-
-
-        price =
-            close;
-
-    }
-
-
-    markets[currentSymbol].price =
-        price;
-
-}
-
-
-/* =========================================================
-   CHART SIZE
-========================================================= */
-
-function resizeCanvas(){
-
-    const rect =
-        canvas.getBoundingClientRect();
-
-
-    const dpr =
-        window.devicePixelRatio || 1;
-
-
-    canvas.width =
-        rect.width*dpr;
-
-
-    canvas.height =
-        rect.height*dpr;
-
-
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
-
-
-    drawChart();
-
-}
-
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-
-
-/* =========================================================
-   DRAW CHART
-========================================================= */
-
-function drawChart(){
-
-    const width =
-        canvas.clientWidth;
-
-
-    const height =
-        canvas.clientHeight;
-
-
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    ctx.fillStyle =
-        "#06101c";
-
-
-    ctx.fillRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    if(gridEnabled){
-
-        ctx.strokeStyle =
-            "#12283d";
-
-
-        ctx.lineWidth =
-            1;
-
-
-        for(
-            let x=0;
-            x<width;
-            x+=70
-        ){
-
-            ctx.beginPath();
-
-            ctx.moveTo(x,0);
-
-            ctx.lineTo(
-                x,
-                height
-            );
-
-            ctx.stroke();
-
-        }
-
-
-        for(
-            let y=0;
-            y<height;
-            y+=55
-        ){
-
-            ctx.beginPath();
-
-            ctx.moveTo(0,y);
-
-            ctx.lineTo(
-                width,
-                y
-            );
-
-            ctx.stroke();
-
-        }
-
-    }
-
-
-    if(!candles.length)
-        return;
-
-
-    let visibleCount =
-        Math.max(
-            25,
-            Math.floor(
-                90/zoom
-            )
-        );
-
-
-    visibleCount =
-        Math.min(
-            visibleCount,
-            candles.length
-        );
-
-
-    let end =
-        candles.length-chartOffset;
-
-
-    end =
-        Math.max(
-            visibleCount,
-            Math.min(
-                candles.length,
-                end
-            )
-        );
-
-
-    let start =
-        end-visibleCount;
-
-
-    const visible =
-        candles.slice(
-            start,
-            end
-        );
-
-
-    let highest =
-        Math.max(
-            ...visible.map(
-                c=>c.high
-            )
-        );
-
-
-    let lowest =
-        Math.min(
-            ...visible.map(
-                c=>c.low
-            )
-        );
-
-
-    const padding =
-        35;
-
-
-    const range =
-        highest-lowest || 1;
-
-
-    const scaleY =
-        (height-padding*2)/
-        range;
-
-
-    const candleWidth =
-        Math.max(
-            4,
-            (width-70)/
-            visible.length
-        );
-
-
-    function y(price){
-
-        return height -
-            padding -
-            (price-lowest)*
-            scaleY;
-
-    }
-
-
-    visible.forEach(
-        (c,i)=>{
-
-            const x =
-                40 +
-                i*candleWidth;
-
-
-            const openY =
-                y(c.open);
-
-
-            const closeY =
-                y(c.close);
-
-
-            const highY =
-                y(c.high);
-
-
-            const lowY =
-                y(c.low);
-
-
-            const up =
-                c.close>=c.open;
-
-
-            ctx.strokeStyle =
-                up
-                ? "#35d878"
-                : "#f05c67";
-
-
-            ctx.fillStyle =
-                up
-                ? "#35d878"
-                : "#f05c67";
-
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                x+candleWidth/2,
-                highY
-            );
-
-            ctx.lineTo(
-                x+candleWidth/2,
-                lowY
-            );
-
-            ctx.stroke();
-
-
-            const bodyTop =
-                Math.min(
-                    openY,
-                    closeY
-                );
-
-
-            const bodyHeight =
-                Math.max(
-                    1,
-                    Math.abs(
-                        closeY-openY
-                    )
-                );
-
-
-            if(
-                candleStyle==="classic"
-            ){
-
-                ctx.fillRect(
-                    x+1,
-                    bodyTop,
-                    Math.max(
-                        2,
-                        candleWidth-2
-                    ),
-                    bodyHeight
-                );
-
-            }else{
-
-                ctx.strokeRect(
-                    x+1,
-                    bodyTop,
-                    Math.max(
-                        2,
-                        candleWidth-2
-                    ),
-                    bodyHeight
-                );
-
-            }
-
-        }
-    );
-
-
-    const currentPrice =
-        markets[currentSymbol].price;
-
-
-    const currentY =
-        y(currentPrice);
-
-
-    ctx.strokeStyle =
-        "#f2c94c";
-
-
-    ctx.setLineDash(
-        [5,5]
-    );
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        currentY
-    );
-
-    ctx.lineTo(
-        width,
-        currentY
-    );
-
-    ctx.stroke();
-
-
-    ctx.setLineDash([]);
-
-
-    ctx.fillStyle =
-        "#f2c94c";
-
-
-    ctx.font =
-        "12px Arial";
-
-
-    ctx.fillText(
-        priceFormat(
-            currentSymbol,
-            currentPrice
-        ),
-        width-90,
-        currentY-5
-    );
-
-
-    positions
-        .filter(
-            p=>p.symbol===currentSymbol
-        )
-        .forEach(
-            p=>{
-
-                const entryY =
-                    y(p.entry);
-
-
-                ctx.strokeStyle =
-                    "#65aef2";
-
-
-                ctx.setLineDash(
-                    [4,4]
-                );
-
-
-                ctx.beginPath();
-
-                ctx.moveTo(
-                    0,
-                    entryY
-                );
-
-                ctx.lineTo(
-                    width,
-                    entryY
-                );
-
-                ctx.stroke();
-
-
-                ctx.setLineDash([]);
-
-
-                ctx.fillStyle =
-                    "#65aef2";
-
-
-                ctx.fillText(
-                    p.side +
-                    " " +
-                    priceFormat(
-                        currentSymbol,
-                        p.entry
-                    ),
-                    8,
-                    entryY-5
-                );
-
-            }
-        );
-
-}
-
-
-/* =========================================================
-   MARKET SELECTION
-========================================================= */
-
-function selectMarket(symbol){
-
-    currentSymbol =
-        symbol;
-
-
-    document.getElementById(
-        "chartTitle"
-    ).textContent =
-        symbol;
-
-
-    document.getElementById(
-        "selectedSymbol"
-    ).textContent =
-        symbol;
-
-
-    zoom =
-        1;
-
-
-    chartOffset =
-        0;
-
+    selectMarket("EURUSD");
 
     createInitialCandles();
 
-    updateMarketUI();
-
     drawChart();
-
-}
-
-
-function updateMarketUI(){
-
-    const price =
-        markets[currentSymbol].price;
-
-
-    const spread =
-        markets[currentSymbol].digits>=5
-        ? 0.00010
-        : markets[currentSymbol].digits===3
-        ? 0.010
-        : currentSymbol==="XAUUSD"
-        ? 0.20
-        : 20;
-
-
-    document.getElementById(
-        "bidValue"
-    ).textContent =
-        priceFormat(
-            currentSymbol,
-            price
-        );
-
-
-    document.getElementById(
-        "askValue"
-    ).textContent =
-        priceFormat(
-            currentSymbol,
-            price+spread
-        );
-
-
-    document.getElementById(
-        "selectedPrice"
-    ).textContent =
-        priceFormat(
-            currentSymbol,
-            price
-        );
-
-}
-
-
-/* =========================================================
-   MARKET MOVEMENT
-========================================================= */
-
-function updateMarkets(){
-
-    Object.keys(markets)
-        .forEach(
-            symbol=>{
-
-                const m =
-                    markets[symbol];
-
-
-                const move =
-                    (Math.random()-0.5)*
-                    m.step;
-
-
-                m.price +=
-                    move;
-
-            }
-        );
-
-
-    const m =
-        markets[currentSymbol];
-
-
-    let last =
-        candles[
-            candles.length-1
-        ];
-
-
-    if(!last){
-
-        createInitialCandles();
-
-        return;
-
-    }
-
-
-    last.close =
-        m.price;
-
-
-    last.high =
-        Math.max(
-            last.high,
-            m.price
-        );
-
-
-    last.low =
-        Math.min(
-            last.low,
-            m.price
-        );
-
-
-    if(
-        Date.now()%15000<1000
-    ){
-
-        candles.push({
-
-            open:m.price,
-
-            high:m.price,
-
-            low:m.price,
-
-            close:m.price
-
-        });
-
-
-        if(
-            candles.length>180
-        ){
-
-            candles.shift();
-
-        }
-
-    }
-
-
-    updateMarketUI();
-
-    updatePositions();
-
-    drawChart();
-
-}
-
-
-setInterval(
-    updateMarkets,
-    1000
-);
-
-
-/* =========================================================
-   TRADING
-========================================================= */
-
-function openTrade(side){
-
-    const volume =
-        Number(
-            document.getElementById(
-                "volume"
-            ).value
-        );
-
-
-    const tpText =
-        document.getElementById(
-            "takeProfit"
-        ).value;
-
-
-    const slText =
-        document.getElementById(
-            "stopLoss"
-        ).value;
-
-
-    const tp =
-        tpText===""
-        ? null
-        : Number(tpText);
-
-
-    const sl =
-        slText===""
-        ? null
-        : Number(slText);
-
-
-    const price =
-        markets[currentSymbol].price;
-
-
-    if(
-        !volume ||
-        volume<=0
-    ){
-
-        showTradeMessage(
-            "Enter a valid volume.",
-            true
-        );
-
-        return;
-
-    }
-
-
-    if(tp!==null){
-
-        if(
-            side==="BUY" &&
-            tp<=price
-        ){
-
-            showTradeMessage(
-                "BUY Take Profit must be above the entry price.",
-                true
-            );
-
-            return;
-
-        }
-
-
-        if(
-            side==="SELL" &&
-            tp>=price
-        ){
-
-            showTradeMessage(
-                "SELL Take Profit must be below the entry price.",
-                true
-            );
-
-            return;
-
-        }
-
-    }
-
-
-    if(sl!==null){
-
-        if(
-            side==="BUY" &&
-            sl>=price
-        ){
-
-            showTradeMessage(
-                "BUY Stop Loss must be below the entry price.",
-                true
-            );
-
-            return;
-
-        }
-
-
-        if(
-            side==="SELL" &&
-            sl<=price
-        ){
-
-            showTradeMessage(
-                "SELL Stop Loss must be above the entry price.",
-                true
-            );
-
-            return;
-
-        }
-
-    }
-
-
-    positions.push({
-
-        id:
-            Date.now()+
-            Math.random(),
-
-        symbol:
-            currentSymbol,
-
-        side:
-            side,
-
-        volume:
-            volume,
-
-        entry:
-            price,
-
-        tp:
-            tp,
-
-        sl:
-            sl,
-
-        mode:
-            currentMode
-
-    });
-
-
-    showTradeMessage(
-        side+
-        " "+
-        currentSymbol+
-        " opened at "+
-        priceFormat(
-            currentSymbol,
-            price
-        ),
-        false
-    );
-
 
     renderPositions();
-
-    drawChart();
-
-}
-
-
-function showTradeMessage(
-    message,
-    error
-){
-
-    const box =
-        document.getElementById(
-            "tradeMessage"
-        );
-
-
-    box.style.display =
-        "block";
-
-
-    box.style.background =
-        error
-        ? "#4a151b"
-        : "#123b24";
-
-
-    box.style.color =
-        error
-        ? "#ff8b8b"
-        : "#7dffae";
-
-
-    box.innerHTML =
-        escapeHtml(message);
-
-}
-
-
-/* =========================================================
-   P/L
-========================================================= */
-
-function calculatePL(position){
-
-    const current =
-        markets[position.symbol].price;
-
-
-    let multiplier =
-        100000;
-
-
-    if(
-        position.symbol==="XAUUSD"
-    )
-        multiplier=100;
-
-
-    if(
-        position.symbol==="BTCUSD"
-    )
-        multiplier=1;
-
-
-    if(
-        position.symbol==="USDJPY"
-    )
-        multiplier=1000;
-
-
-    let difference;
-
-
-    if(
-        position.side==="BUY"
-    ){
-
-        difference =
-            current-position.entry;
-
-    }else{
-
-        difference =
-            position.entry-current;
-
-    }
-
-
-    return (
-        difference*
-        position.volume*
-        multiplier
-    );
-
-}
-
-
-/* =========================================================
-   POSITIONS
-========================================================= */
-
-function updatePositions(){
-
-    let floating =
-        0;
-
-
-    positions.forEach(
-        position=>{
-
-            const pl =
-                calculatePL(
-                    position
-                );
-
-
-            floating +=
-                pl;
-
-
-            const current =
-                markets[
-                    position.symbol
-                ].price;
-
-
-            let closeReason =
-                null;
-
-
-            if(
-                position.tp!==null &&
-                (
-                    position.side==="BUY"
-                    ? current>=position.tp
-                    : current<=position.tp
-                )
-            ){
-
-                closeReason =
-                    "TP";
-
-            }
-
-
-            if(
-                position.sl!==null &&
-                (
-                    position.side==="BUY"
-                    ? current<=position.sl
-                    : current>=position.sl
-                )
-            ){
-
-                closeReason =
-                    "SL";
-
-            }
-
-
-            if(closeReason){
-
-                closePosition(
-                    position.id,
-                    closeReason
-                );
-
-            }
-
-        }
-    );
-
-
-    const equity =
-        balance+floating;
-
-
-    document.getElementById(
-        "equityValue"
-    ).textContent =
-        money(equity);
-
-
-    document.getElementById(
-        "floatingValue"
-    ).textContent =
-        money(floating);
-
-
-    document.getElementById(
-        "positionsValue"
-    ).textContent =
-        positions.length;
-
-
-    renderPositions();
-
-}
-
-
-function renderPositions(){
-
-    const tbody =
-        document.getElementById(
-            "positionsTable"
-        );
-
-
-    tbody.innerHTML =
-        "";
-
-
-    positions.forEach(
-        p=>{
-
-            const pl =
-                calculatePL(p);
-
-
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            row.innerHTML = `
-
-                <td>
-                    ${escapeHtml(p.symbol)}
-                </td>
-
-                <td>
-                    ${escapeHtml(p.side)}
-                </td>
-
-                <td>
-                    ${p.volume}
-                </td>
-
-                <td>
-                    ${priceFormat(
-                        p.symbol,
-                        p.entry
-                    )}
-                </td>
-
-                <td>
-                    ${priceFormat(
-                        p.symbol,
-                        markets[p.symbol].price
-                    )}
-                </td>
-
-                <td>
-                    ${
-                        p.tp===null
-                        ? "-"
-                        : priceFormat(
-                            p.symbol,
-                            p.tp
-                        )
-                    }
-                </td>
-
-                <td>
-                    ${
-                        p.sl===null
-                        ? "-"
-                        : priceFormat(
-                            p.symbol,
-                            p.sl
-                        )
-                    }
-                </td>
-
-                <td
-                    class="${
-                        pl>=0
-                        ? "profit"
-                        : "loss"
-                    }"
-                >
-                    ${money(pl)}
-                </td>
-
-                <td>
-
-                    <button
-                        class="btn btn-red"
-                        onclick="closePosition(
-                            '${p.id}',
-                            'MANUAL'
-                        )"
-                    >
-                        CLOSE
-                    </button>
-
-                </td>
-
-            `;
-
-
-            tbody.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   CLOSE POSITION
-========================================================= */
-
-function closePosition(
-    id,
-    reason
-){
-
-    const index =
-        positions.findIndex(
-            p=>String(p.id)===
-                String(id)
-        );
-
-
-    if(index===-1)
-        return;
-
-
-    const p =
-        positions[index];
-
-
-    const exit =
-        markets[
-            p.symbol
-        ].price;
-
-
-    const pl =
-        calculatePL(p);
-
-
-    balance +=
-        pl;
-
-
-    history.unshift({
-
-        symbol:
-            p.symbol,
-
-        side:
-            p.side,
-
-        volume:
-            p.volume,
-
-        entry:
-            p.entry,
-
-        exit:
-            exit,
-
-        pl:
-            pl,
-
-        reason:
-            reason
-
-    });
-
-
-    positions.splice(
-        index,
-        1
-    );
-
-
-    updateAccountUI();
 
     renderHistory();
 
-    renderPositions();
+    updateAccount();
 
-    drawChart();
+    await loadDepositSettings();
 
-}
+    await loadWithdrawals();
 
+    startMarketSimulation();
+
+});
 
 /* =========================================================
-   HISTORY
+   SUPABASE REQUEST HELPER
 ========================================================= */
 
-function renderHistory(){
+async function supabaseRequest(path, options = {}){
 
-    const tbody =
-        document.getElementById(
-            "historyTable"
-        );
+    const headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": options.prefer || "return=representation"
+    };
 
-
-    tbody.innerHTML =
-        "";
-
-
-    history.forEach(
-        h=>{
-
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            row.innerHTML = `
-
-                <td>
-                    ${escapeHtml(h.symbol)}
-                </td>
-
-                <td>
-                    ${escapeHtml(h.side)}
-                </td>
-
-                <td>
-                    ${h.volume}
-                </td>
-
-                <td>
-                    ${priceFormat(
-                        h.symbol,
-                        h.entry
-                    )}
-                </td>
-
-                <td>
-                    ${priceFormat(
-                        h.symbol,
-                        h.exit
-                    )}
-                </td>
-
-                <td
-                    class="${
-                        h.pl>=0
-                        ? "profit"
-                        : "loss"
-                    }"
-                >
-                    ${money(h.pl)}
-                </td>
-
-            `;
-
-
-            tbody.appendChild(
-                row
-            );
-
+    const response = await fetch(
+        SUPABASE_URL + path,
+        {
+            ...options,
+            headers:{
+                ...headers,
+                ...(options.headers || {})
+            }
         }
     );
 
-}
+    const text = await response.text();
 
+    let data = null;
 
-/* =========================================================
-   ACCOUNT UI
-========================================================= */
-
-function updateAccountUI(){
-
-    document.getElementById(
-        "balanceValue"
-    ).textContent =
-        money(balance);
-
-
-    document.getElementById(
-        "walletBalance"
-    ).textContent =
-        money(balance);
-
-
-    document.getElementById(
-        "walletMode"
-    ).textContent =
-        currentMode;
-
-
-    const walletNotice =
-        document.getElementById(
-            "walletNotice"
-        );
-
-
-    if(
-        currentMode==="DEMO"
-    ){
-
-        walletNotice.innerHTML =
-            "Demo account selected. " +
-            "Wallet activity is recorded by the platform.";
-
-    }else{
-
-        walletNotice.innerHTML =
-            "Live interface selected.";
-
+    try{
+        data = text ? JSON.parse(text) : null;
+    }catch{
+        data = text;
     }
 
-}
+    if(!response.ok){
 
+        throw new Error(
+            data?.message ||
+            data?.error_description ||
+            data?.hint ||
+            data?.details ||
+            text ||
+            "Supabase request failed"
+        );
+    }
+
+    return data;
+}
 
 /* =========================================================
    MODE
@@ -3539,396 +950,1013 @@ function updateAccountUI(){
 
 function setMode(mode){
 
-    currentMode =
-        mode;
+    currentMode = mode;
 
+    document.getElementById("demoModeBtn")
+        .classList.toggle("active", mode === "DEMO");
 
-    const badge =
-        document.getElementById(
-            "modeBadge"
-        );
+    document.getElementById("liveModeBtn")
+        .classList.toggle("active", mode === "LIVE");
 
+    const notice = document.getElementById("modeNotice");
 
-    const notice =
-        document.getElementById(
-            "marketNotice"
-        );
+    if(mode === "DEMO"){
 
-
-    if(
-        mode==="DEMO"
-    ){
-
-        badge.textContent =
-            "SIMULATION MODE";
-
-
-        badge.className =
-            "mode-badge demo-badge";
-
-
-        notice.className =
-            "notice";
-
-
-        notice.innerHTML =
-            "Demo market prices and account funds are simulated.";
+        notice.textContent = "DEMO TRADING MODE";
 
     }else{
 
-        badge.textContent =
-            "LIVE INTERFACE";
-
-
-        badge.className =
-            "mode-badge live-badge";
-
-
-        notice.className =
-            "notice live";
-
-
-        notice.innerHTML =
-            "Live interface selected.";
+        notice.textContent = "LIVE MODE INTERFACE";
 
     }
 
-
-    updateAccountUI();
-
+    showMessage(
+        "tradeMessage",
+        mode === "DEMO"
+            ? "Demo trading mode selected."
+            : "Live mode interface selected. Actual broker execution must be connected separately.",
+        "success"
+    );
 }
 
-
 /* =========================================================
-   CHART TOOLS
+   MARKETS
 ========================================================= */
 
-function zoomChart(amount){
+function populateMarkets(){
 
-    zoom *=
-        amount;
+    const container =
+        document.getElementById("marketList");
 
+    container.innerHTML = "";
 
-    zoom =
+    Object.keys(markets).forEach(symbol => {
+
+        const market = markets[symbol];
+
+        const div = document.createElement("div");
+
+        div.className =
+            "market " +
+            (symbol === selectedSymbol ? "active" : "");
+
+        div.id = "market-" + symbol;
+
+        div.onclick = () => selectMarket(symbol);
+
+        div.innerHTML = `
+            <div class="market-top">
+                <strong>${market.name}</strong>
+                <span id="${symbol}-change"
+                    class="${market.change >= 0 ? "up":"down"}">
+                    ${market.change.toFixed(2)}%
+                </span>
+            </div>
+
+            <div class="price" id="${symbol}-price">
+                ${formatPrice(symbol,market.price)}
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+function populateTradeSymbols(){
+
+    const select =
+        document.getElementById("tradeSymbol");
+
+    select.innerHTML = "";
+
+    Object.keys(markets).forEach(symbol => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = symbol;
+
+        option.textContent = markets[symbol].name;
+
+        select.appendChild(option);
+    });
+
+    select.value = selectedSymbol;
+
+    select.addEventListener("change", () => {
+
+        selectMarket(select.value);
+
+    });
+}
+
+function selectMarket(symbol){
+
+    selectedSymbol = symbol;
+
+    Object.keys(markets).forEach(s => {
+
+        const element =
+            document.getElementById("market-" + s);
+
+        if(element){
+
+            element.classList.toggle(
+                "active",
+                s === symbol
+            );
+
+        }
+    });
+
+    document.getElementById("tradeSymbol").value =
+        symbol;
+
+    document.getElementById("chartTitle").textContent =
+        markets[symbol].name;
+
+    updateChartInfo();
+
+    createInitialCandles();
+
+    drawChart();
+}
+
+/* =========================================================
+   MARKET SIMULATION
+========================================================= */
+
+function startMarketSimulation(){
+
+    setInterval(() => {
+
+        Object.keys(markets).forEach(symbol => {
+
+            const market = markets[symbol];
+
+            const volatility =
+                symbol === "BTCUSD"
+                ? 0.0012
+                : symbol === "XAUUSD"
+                    ? 0.0007
+                    : 0.00025;
+
+            const movement =
+                (Math.random() - 0.5) *
+                market.price *
+                volatility;
+
+            market.price += movement;
+
+            if(market.price <= 0){
+                market.price = market.start;
+            }
+
+            market.change =
+                ((market.price - market.start) /
+                market.start) * 100;
+
+            const priceElement =
+                document.getElementById(symbol + "-price");
+
+            const changeElement =
+                document.getElementById(symbol + "-change");
+
+            if(priceElement){
+
+                priceElement.textContent =
+                    formatPrice(symbol,market.price);
+
+            }
+
+            if(changeElement){
+
+                changeElement.textContent =
+                    (market.change >= 0 ? "+" : "") +
+                    market.change.toFixed(2) +
+                    "%";
+
+                changeElement.className =
+                    market.change >= 0 ? "up" : "down";
+            }
+        });
+
+        updatePositions();
+
+        updateChartCandle();
+
+        if(selectedSymbol){
+
+            updateChartInfo();
+
+            drawChart();
+
+        }
+
+    },1000);
+}
+
+/* =========================================================
+   CHART
+========================================================= */
+
+function createInitialCandles(){
+
+    candles = [];
+
+    const market = markets[selectedSymbol];
+
+    let price = market.price;
+
+    for(let i=0;i<45;i++){
+
+        const open = price;
+
+        const close =
+            open +
+            (Math.random()-0.5) *
+            open *
+            0.001;
+
+        const high =
+            Math.max(open,close) +
+            Math.random() *
+            open *
+            0.0007;
+
+        const low =
+            Math.min(open,close) -
+            Math.random() *
+            open *
+            0.0007;
+
+        candles.push({
+            open,
+            close,
+            high,
+            low
+        });
+
+        price = close;
+    }
+}
+
+function updateChartCandle(){
+
+    if(!candles.length){
+        return;
+    }
+
+    const market = markets[selectedSymbol];
+
+    const last =
+        candles[candles.length - 1];
+
+    last.close = market.price;
+
+    last.high =
+        Math.max(last.high,market.price);
+
+    last.low =
+        Math.min(last.low,market.price);
+
+    if(Math.random() > 0.93){
+
+        candles.shift();
+
+        candles.push({
+            open:market.price,
+            close:market.price,
+            high:market.price,
+            low:market.price
+        });
+    }
+}
+
+function drawChart(){
+
+    const canvas =
+        document.getElementById("chart");
+
+    const ctx =
+        canvas.getContext("2d");
+
+    const width =
+        canvas.clientWidth;
+
+    const height =
+        canvas.clientHeight;
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        width * dpr;
+
+    canvas.height =
+        height * dpr;
+
+    ctx.scale(dpr,dpr);
+
+    ctx.clearRect(0,0,width,height);
+
+    if(!candles.length){
+        return;
+    }
+
+    let high =
+        Math.max(...candles.map(c => c.high));
+
+    let low =
+        Math.min(...candles.map(c => c.low));
+
+    const padding = 30;
+
+    const chartHeight =
+        height - padding * 2;
+
+    const chartWidth =
+        width - padding * 2;
+
+    const range =
+        high-low || 1;
+
+    function y(value){
+
+        return padding +
+            ((high-value)/range) *
+            chartHeight;
+    }
+
+    function x(index){
+
+        return padding +
+            (index/(candles.length-1)) *
+            chartWidth;
+    }
+
+    /* Grid */
+
+    ctx.strokeStyle = "#162b40";
+
+    ctx.lineWidth = 1;
+
+    for(let i=0;i<6;i++){
+
+        const gy =
+            padding +
+            (chartHeight/5)*i;
+
+        ctx.beginPath();
+
+        ctx.moveTo(padding,gy);
+
+        ctx.lineTo(
+            width-padding,
+            gy
+        );
+
+        ctx.stroke();
+    }
+
+    const candleWidth =
         Math.max(
-            0.5,
-            Math.min(
-                5,
-                zoom
-            )
+            3,
+            chartWidth/candles.length * 0.65
         );
 
+    candles.forEach((candle,index) => {
 
-    drawChart();
+        const px = x(index);
 
-}
+        const openY = y(candle.open);
+        const closeY = y(candle.close);
+        const highY = y(candle.high);
+        const lowY = y(candle.low);
 
+        const bullish =
+            candle.close >= candle.open;
 
-function resetChart(){
+        ctx.strokeStyle =
+            bullish ? "#19d69b" : "#ff5d73";
 
-    zoom =
-        1;
+        ctx.fillStyle =
+            bullish ? "#19d69b" : "#ff5d73";
 
+        ctx.beginPath();
 
-    chartOffset =
-        0;
+        ctx.moveTo(px,highY);
 
+        ctx.lineTo(px,lowY);
 
-    drawChart();
+        ctx.stroke();
 
-}
+        const bodyTop =
+            Math.min(openY,closeY);
 
-
-function toggleGrid(){
-
-    gridEnabled =
-        !gridEnabled;
-
-
-    document.getElementById(
-        "gridButton"
-    ).classList.toggle(
-        "active",
-        gridEnabled
-    );
-
-
-    drawChart();
-
-}
-
-
-function setCandleStyle(
-    style
-){
-
-    candleStyle =
-        style;
-
-
-    drawChart();
-
-}
-
-
-function toggleFullscreen(){
-
-    const box =
-        document.getElementById(
-            "chartContainer"
-        );
-
-
-    box.classList.toggle(
-        "fullscreen-mode"
-    );
-
-
-    setTimeout(
-        resizeCanvas,
-        100
-    );
-
-}
-
-
-/* =========================================================
-   DRAG CHART
-========================================================= */
-
-let dragging =
-    false;
-
-let dragStartX =
-    0;
-
-let startingOffset =
-    0;
-
-
-canvas.addEventListener(
-    "mousedown",
-    e=>{
-
-        dragging =
-            true;
-
-
-        dragStartX =
-            e.clientX;
-
-
-        startingOffset =
-            chartOffset;
-
-    }
-);
-
-
-window.addEventListener(
-    "mouseup",
-    ()=>{
-
-        dragging =
-            false;
-
-    }
-);
-
-
-window.addEventListener(
-    "mousemove",
-    e=>{
-
-        if(!dragging)
-            return;
-
-
-        const distance =
-            e.clientX-
-            dragStartX;
-
-
-        chartOffset =
-            Math.round(
-                startingOffset-
-                distance/8
-            );
-
-
-        chartOffset =
+        const bodyHeight =
             Math.max(
-                0,
-                Math.min(
-                    candles.length-20,
-                    chartOffset
-                )
+                1,
+                Math.abs(closeY-openY)
             );
 
-
-        drawChart();
-
-    }
-);
-
-
-canvas.addEventListener(
-    "touchstart",
-    e=>{
-
-        if(
-            !e.touches[0]
-        )
-            return;
-
-
-        dragging =
-            true;
-
-
-        dragStartX =
-            e.touches[0].clientX;
-
-
-        startingOffset =
-            chartOffset;
-
-    },
-    {passive:true}
-);
-
-
-canvas.addEventListener(
-    "touchend",
-    ()=>{
-
-        dragging =
-            false;
-
-    }
-);
-
-
-canvas.addEventListener(
-    "touchmove",
-    e=>{
-
-        if(
-            !dragging ||
-            !e.touches[0]
-        )
-            return;
-
-
-        const distance =
-            e.touches[0].clientX-
-            dragStartX;
-
-
-        chartOffset =
-            Math.round(
-                startingOffset-
-                distance/8
-            );
-
-
-        chartOffset =
-            Math.max(
-                0,
-                Math.min(
-                    candles.length-20,
-                    chartOffset
-                )
-            );
-
-
-        drawChart();
-
-    },
-    {passive:true}
-);
-
-
-/* =========================================================
-   MOUSE WHEEL ZOOM
-========================================================= */
-
-canvas.addEventListener(
-    "wheel",
-    e=>{
-
-        e.preventDefault();
-
-
-        zoomChart(
-            e.deltaY<0
-            ? 1.15
-            : 0.87
+        ctx.fillRect(
+            px-candleWidth/2,
+            bodyTop,
+            candleWidth,
+            bodyHeight
         );
-
-    },
-    {passive:false}
-);
-
-
-/* =========================================================
-   WITHDRAWAL MESSAGE
-========================================================= */
-
-function showWithdrawalStatus(
-    message,
-    type="info"
-){
-
-    const box =
-        document.getElementById(
-            "withdrawStatus"
-        );
-
-
-    box.style.display =
-        "block";
-
-
-    if(
-        type==="success"
-    ){
-
-        box.style.background =
-            "#123b24";
-
-        box.style.color =
-            "#7dffae";
-
-    }else if(
-        type==="error"
-    ){
-
-        box.style.background =
-            "#4a151b";
-
-        box.style.color =
-            "#ff8b8b";
-
-    }else{
-
-        box.style.background =
-            "#10263d";
-
-        box.style.color =
-            "#b9d4ec";
-
-    }
-
-
-    box.innerHTML =
-        message;
-
+    });
 }
 
+window.addEventListener("resize",drawChart);
+
+function updateChartInfo(){
+
+    const market =
+        markets[selectedSymbol];
+
+    document.getElementById("chartPrice")
+        .textContent =
+        formatPrice(
+            selectedSymbol,
+            market.price
+        );
+
+    const direction =
+        document.getElementById("chartDirection");
+
+    direction.textContent =
+        (market.change >= 0 ? "+" : "") +
+        market.change.toFixed(2) +
+        "%";
+
+    direction.className =
+        market.change >= 0
+            ? "up"
+            : "down";
+}
 
 /* =========================================================
-   SUBMIT WITHDRAWAL
+   FORMATTING
+========================================================= */
+
+function formatPrice(symbol,price){
+
+    if(symbol === "USDJPY"){
+        return price.toFixed(3);
+    }
+
+    if(symbol === "XAUUSD"){
+        return price.toFixed(2);
+    }
+
+    if(symbol === "BTCUSD"){
+        return price.toFixed(2);
+    }
+
+    return price.toFixed(5);
+}
+
+function money(value){
+
+    return "$" +
+        Number(value || 0)
+        .toLocaleString(
+            "en-US",
+            {
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            }
+        );
+}
+
+/* =========================================================
+   TRADING
+========================================================= */
+
+function openTrade(side){
+
+    const symbol =
+        document.getElementById("tradeSymbol").value;
+
+    const lot =
+        Number(
+            document.getElementById("lotSize").value
+        );
+
+    if(!lot || lot <= 0){
+
+        showMessage(
+            "tradeMessage",
+            "Enter a valid lot size.",
+            "error"
+        );
+
+        return;
+    }
+
+    const price =
+        markets[symbol].price;
+
+    const position = {
+
+        id:
+            Date.now() +
+            "-" +
+            Math.random()
+                .toString(36)
+                .slice(2),
+
+        mode:currentMode,
+
+        symbol,
+
+        side,
+
+        lot,
+
+        openPrice:price,
+
+        currentPrice:price,
+
+        openedAt:new Date().toISOString(),
+
+        stopLoss:
+            document.getElementById("stopLoss").value || null,
+
+        takeProfit:
+            document.getElementById("takeProfit").value || null
+    };
+
+    positions.push(position);
+
+    renderPositions();
+
+    updateAccount();
+
+    showMessage(
+        "tradeMessage",
+        side +
+        " position opened on " +
+        markets[symbol].name +
+        " at " +
+        formatPrice(symbol,price),
+        "success"
+    );
+}
+
+function updatePositions(){
+
+    positions.forEach(position => {
+
+        position.currentPrice =
+            markets[position.symbol].price;
+
+        position.profit =
+            calculateProfit(position);
+
+    });
+
+    renderPositions();
+
+    updateAccount();
+}
+
+function calculateProfit(position){
+
+    const difference =
+        position.currentPrice -
+        position.openPrice;
+
+    const direction =
+        position.side === "BUY"
+            ? 1
+            : -1;
+
+    let multiplier = 100000;
+
+    if(position.symbol === "USDJPY"){
+        multiplier = 1000;
+    }
+
+    if(position.symbol === "XAUUSD"){
+        multiplier = 100;
+    }
+
+    if(position.symbol === "BTCUSD"){
+        multiplier = 1;
+    }
+
+    return difference *
+        direction *
+        position.lot *
+        multiplier;
+}
+
+function closePosition(id){
+
+    const index =
+        positions.findIndex(
+            p => p.id === id
+        );
+
+    if(index === -1){
+        return;
+    }
+
+    const position =
+        positions[index];
+
+    position.currentPrice =
+        markets[position.symbol].price;
+
+    const profit =
+        calculateProfit(position);
+
+    balance += profit;
+
+    tradeHistory.unshift({
+
+        ...position,
+
+        closePrice:position.currentPrice,
+
+        profit,
+
+        closedAt:new Date().toISOString()
+
+    });
+
+    positions.splice(index,1);
+
+    renderPositions();
+
+    renderHistory();
+
+    updateAccount();
+
+    showMessage(
+        "tradeMessage",
+        "Position closed. Result: " +
+        money(profit),
+        profit >= 0 ? "success" : "error"
+    );
+}
+
+function renderPositions(){
+
+    const container =
+        document.getElementById("positions");
+
+    if(!positions.length){
+
+        container.innerHTML =
+            `<div class="small">
+                No open positions.
+            </div>`;
+
+        return;
+    }
+
+    container.innerHTML =
+        positions.map(position => {
+
+            const profit =
+                calculateProfit(position);
+
+            return `
+                <div class="position">
+
+                    <div class="position-top">
+                        <strong>
+                            ${position.side}
+                            ${markets[position.symbol].name}
+                        </strong>
+
+                        <strong class="${profit >= 0 ? "up":"down"}">
+                            ${profit >= 0 ? "+" : ""}
+                            ${money(profit)}
+                        </strong>
+                    </div>
+
+                    <div class="small">
+                        Lot: ${position.lot}
+                        |
+                        Open:
+                        ${formatPrice(
+                            position.symbol,
+                            position.openPrice
+                        )}
+                        |
+                        Current:
+                        ${formatPrice(
+                            position.symbol,
+                            markets[position.symbol].price
+                        )}
+                    </div>
+
+                    <br>
+
+                    <button
+                        class="btn btn-secondary"
+                        onclick="closePosition('${position.id}')">
+                        CLOSE POSITION
+                    </button>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+function renderHistory(){
+
+    const container =
+        document.getElementById("tradeHistory");
+
+    if(!tradeHistory.length){
+
+        container.innerHTML =
+            `<div class="small">
+                No closed trades yet.
+            </div>`;
+
+        return;
+    }
+
+    container.innerHTML =
+        tradeHistory
+        .slice(0,20)
+        .map(trade => {
+
+            return `
+                <div class="position">
+
+                    <div class="position-top">
+
+                        <strong>
+                            ${trade.side}
+                            ${markets[trade.symbol].name}
+                        </strong>
+
+                        <strong class="${trade.profit >= 0 ? "up":"down"}">
+                            ${trade.profit >= 0 ? "+" : ""}
+                            ${money(trade.profit)}
+                        </strong>
+
+                    </div>
+
+                    <div class="small">
+                        Open:
+                        ${formatPrice(
+                            trade.symbol,
+                            trade.openPrice
+                        )}
+
+                        |
+
+                        Close:
+                        ${formatPrice(
+                            trade.symbol,
+                            trade.closePrice
+                        )}
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+}
+
+function updateAccount(){
+
+    let floatingProfit = 0;
+
+    positions.forEach(position => {
+
+        floatingProfit +=
+            calculateProfit(position);
+
+    });
+
+    const equity =
+        balance + floatingProfit;
+
+    document.getElementById("balanceValue")
+        .textContent =
+        money(balance);
+
+    document.getElementById("equityValue")
+        .textContent =
+        money(equity);
+
+    document.getElementById("positionCount")
+        .textContent =
+        positions.length;
+}
+
+/* =========================================================
+   DEPOSIT SETTINGS
+========================================================= */
+
+let currentDepositSettings = null;
+
+async function loadDepositSettings(){
+
+    try{
+
+        const rows =
+            await supabaseRequest(
+                "/rest/v1/deposit_settings" +
+                "?select=*" +
+                "&is_active=eq.true" +
+                "&order=updated_at.desc" +
+                "&limit=1"
+            );
+
+        if(rows && rows.length){
+
+            currentDepositSettings =
+                rows[0];
+
+            document.getElementById(
+                "depositNetwork"
+            ).textContent =
+                currentDepositSettings.network ||
+                currentDepositSettings.method ||
+                "Not specified";
+
+            document.getElementById(
+                "depositAddress"
+            ).textContent =
+                currentDepositSettings.wallet_address ||
+                "Deposit address not configured.";
+
+        }else{
+
+            document.getElementById(
+                "depositNetwork"
+            ).textContent =
+                "Not configured";
+
+            document.getElementById(
+                "depositAddress"
+            ).textContent =
+                "Admin has not configured a deposit address yet.";
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        document.getElementById(
+            "depositNetwork"
+        ).textContent =
+            "Unable to load";
+
+        document.getElementById(
+            "depositAddress"
+        ).textContent =
+            "Check Supabase deposit_settings table.";
+
+    }
+}
+
+async function copyDepositAddress(){
+
+    const address =
+        currentDepositSettings?.wallet_address;
+
+    if(!address){
+
+        showMessage(
+            "depositMessage",
+            "There is no deposit address configured yet.",
+            "error"
+        );
+
+        return;
+    }
+
+    try{
+
+        await navigator.clipboard.writeText(address);
+
+        showMessage(
+            "depositMessage",
+            "Deposit wallet address copied.",
+            "success"
+        );
+
+    }catch{
+
+        showMessage(
+            "depositMessage",
+            "Copy failed. Press and hold the address to copy it.",
+            "error"
+        );
+    }
+}
+
+/* =========================================================
+   DEPOSIT REQUEST
+========================================================= */
+
+async function submitDepositRequest(){
+
+    const amount =
+        Number(
+            document.getElementById("depositAmount").value
+        );
+
+    const tx =
+        document.getElementById("depositTx").value.trim();
+
+    if(!amount || amount <= 0){
+
+        showMessage(
+            "depositMessage",
+            "Enter the deposit amount.",
+            "error"
+        );
+
+        return;
+    }
+
+    if(!tx){
+
+        showMessage(
+            "depositMessage",
+            "Enter the transaction hash.",
+            "error"
+        );
+
+        return;
+    }
+
+    try{
+
+        await supabaseRequest(
+            "/rest/v1/deposit_requests",
+            {
+                method:"POST",
+                body:JSON.stringify({
+
+                    amount,
+
+                    currency:"USD",
+
+                    method:
+                        currentDepositSettings?.method ||
+                        "USDT TRC20",
+
+                    network:
+                        currentDepositSettings?.network ||
+                        "TRC20",
+
+                    destination:
+                        currentDepositSettings?.wallet_address ||
+                        "",
+
+                    transaction_hash:tx,
+
+                    status:"PENDING",
+
+                    created_at:
+                        new Date().toISOString()
+                })
+            }
+        );
+
+        showMessage(
+            "depositMessage",
+            "Deposit request submitted for admin verification. Your balance has not been automatically credited.",
+            "success"
+        );
+
+        document.getElementById(
+            "depositAmount"
+        ).value = "";
+
+        document.getElementById(
+            "depositTx"
+        ).value = "";
+
+    }catch(error){
+
+        showMessage(
+            "depositMessage",
+            "Deposit request failed: " +
+            error.message,
+            "error"
+        );
+
+    }
+}
+
+/* =========================================================
+   WITHDRAWALS
 ========================================================= */
 
 async function submitWithdrawal(){
@@ -3940,1796 +1968,117 @@ async function submitWithdrawal(){
             ).value
         );
 
-
-    const wallet =
+    const method =
         document.getElementById(
-            "walletAddress"
+            "withdrawMethod"
+        ).value;
+
+    const destination =
+        document.getElementById(
+            "withdrawDestination"
         ).value.trim();
 
-
-    const network =
+    const note =
         document.getElementById(
-            "walletNetwork"
+            "withdrawNote"
         ).value.trim();
 
+    if(!amount || amount <= 0){
 
-    const message =
-        document.getElementById(
-            "withdrawMessage"
-        ).value.trim();
+        showMessage(
+            "withdrawMessage",
+            "Enter a valid withdrawal amount.",
+            "error"
+        );
 
+        return;
+    }
 
-    showWithdrawalStatus(
-        "Submitting withdrawal request...",
-        "info"
-    );
+    if(amount > balance){
 
+        showMessage(
+            "withdrawMessage",
+            "Insufficient available balance.",
+            "error"
+        );
+
+        return;
+    }
+
+    if(!destination){
+
+        showMessage(
+            "withdrawMessage",
+            "Enter your destination wallet or bank details.",
+            "error"
+        );
+
+        return;
+    }
 
     try{
 
-        if(
-            !amount ||
-            amount<=0
-        ){
+        const now =
+            new Date();
 
-            throw new Error(
-                "Enter a valid withdrawal amount."
-            );
-
-        }
-
-
-        if(
-            amount>balance
-        ){
-
-            throw new Error(
-                "Insufficient available balance. Current balance: "+
-                money(balance)
-            );
-
-        }
-
-
-        if(!wallet){
-
-            throw new Error(
-                "Enter the wallet address or destination."
-            );
-
-        }
-
-
-        if(!network){
-
-            throw new Error(
-                "Select a withdrawal network or method."
-            );
-
-        }
-
-
-        const requestData = {
-
-            mode:
-                currentMode,
-
-            amount:
-                amount,
-
-            currency:
-                "USD",
-
-            withdrawal_method:
-                network,
-
-            destination:
-                wallet,
-
-            note:
-                message || null,
-
-            status:
-                "PENDING"
-
-        };
-
-
-        const response =
-            await fetch(
-
-                SUPABASE_URL+
+        const result =
+            await supabaseRequest(
                 "/rest/v1/withdrawal_requests",
-
                 {
+                    method:"POST",
+                    body:JSON.stringify({
 
-                    method:
-                        "POST",
+                        mode:currentMode,
 
-                    headers:{
+                        amount,
 
-                        "Content-Type":
-                            "application/json",
+                        currency:"USD",
 
-                        "apikey":
-                            SUPABASE_KEY,
+                        withdrawal_method:method,
 
-                        "Authorization":
-                            "Bearer "+
-                            SUPABASE_KEY,
+                        destination,
 
-                        "Prefer":
-                            "return=representation"
+                        note,
 
-                    },
+                        status:"PENDING",
 
-                    body:
-                        JSON.stringify(
-                            requestData
-                        )
+                        status_message:
+                            "Withdrawal order received and waiting for admin approval.",
 
+                        created_at:
+                            now.toISOString()
+
+                    })
                 }
-
             );
-
-
-        const responseText =
-            await response.text();
-
-
-        if(!response.ok){
-
-            let detailedError =
-                responseText;
-
-
-            try{
-
-                const errorObject =
-                    JSON.parse(
-                        responseText
-                    );
-
-
-                if(
-                    errorObject.code
-                ){
-
-                    detailedError =
-                        "Code "+
-                        errorObject.code+
-                        ": "+
-                        detailedError;
-
-                }
-
-
-                if(
-                    errorObject.message
-                ){
-
-                    detailedError +=
-                        "<br><br>Message: "+
-                        escapeHtml(
-                            errorObject.message
-                        );
-
-                }
-
-
-                if(
-                    errorObject.details
-                ){
-
-                    detailedError +=
-                        "<br>Details: "+
-                        escapeHtml(
-                            errorObject.details
-                        );
-
-                }
-
-
-                if(
-                    errorObject.hint
-                ){
-
-                    detailedError +=
-                        "<br>Hint: "+
-                        escapeHtml(
-                            errorObject.hint
-                        );
-
-                }
-
-            }catch(e){
-
-                detailedError =
-                    escapeHtml(
-                        responseText
-                    );
-
-            }
-
-
-            throw new Error(
-                "Supabase HTTP "+
-                response.status+
-                "<br><br>"+
-                detailedError
-            );
-
-        }
-
-
-        let insertedRows = [];
-
-
-        try{
-
-            insertedRows =
-                JSON.parse(
-                    responseText
-                );
-
-        }catch(e){
-
-            insertedRows =
-                [];
-
-        }
-
 
         /*
-            Reserve the requested amount from the local
-            account immediately, just as the existing version did.
+         Reserve the balance locally.
+         If the withdrawal is rejected or expired,
+         the balance will be returned.
         */
 
-        balance -=
-            amount;
+        balance -= amount;
 
+        updateAccount();
 
-        updateAccountUI();
-
+        showMessage(
+            "withdrawMessage",
+            "Withdrawal order submitted successfully. Status: PENDING.",
+            "success"
+        );
 
         document.getElementById(
             "withdrawAmount"
-        ).value =
-            "";
-
+        ).value = "";
 
         document.getElementById(
-            "walletAddress"
-        ).value =
-            "";
-
+            "withdrawDestination"
+        ).value = "";
 
         document.getElementById(
-            "withdrawMessage"
-        ).value =
-            "";
-
-
-        const order =
-            insertedRows[0];
-
-
-        const orderId =
-            order
-            ? order.id
-            : "";
-
-
-        showWithdrawalStatus(
-
-            "✓ Withdrawal request submitted successfully."+
-
-            "<br>Status: <strong>PENDING</strong>"+
-
-            "<br>Amount: "+
-            money(amount)+
-
-            "<br>Mode: "+
-            escapeHtml(
-                currentMode
-            )+
-
-            "<br><br>"+
-            "Order has been sent to the withdrawal queue."+
-
-            "<br><small>"+
-            "The administrator must approve the order before processing."+
-            "</small>",
-
-            "success"
-
-        );
-
-
-        loadWithdrawals();
-
-        loadAdminWithdrawals();
-
-
-    }catch(error){
-
-        console.error(
-            "WITHDRAWAL ERROR:",
-            error
-        );
-
-
-        showWithdrawalStatus(
-
-            "<strong>Withdrawal failed</strong>"+
-
-            "<br><br>"+
-
-            error.message,
-
-            "error"
-
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   LOAD USER WITHDRAWALS
-========================================================= */
-
-async function loadWithdrawals(){
-
-    try{
-
-        const response =
-            await fetch(
-
-                SUPABASE_URL+
-                "/rest/v1/withdrawal_requests"+
-                "?select=*"+
-                "&order=created_at.desc",
-
-                {
-
-                    method:
-                        "GET",
-
-                    headers:{
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer "+
-                            SUPABASE_KEY
-
-                    }
-
-                }
-
-            );
-
-
-        if(!response.ok){
-
-            console.log(
-                "Withdrawal load error:",
-                await response.text()
-            );
-
-            return;
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        /*
-            Try to synchronize automatic statuses
-            before rendering.
-        */
-
-        await processAutomaticWithdrawalStatuses(
-            data
-        );
-
-
-        renderWithdrawals(
-            data
-        );
-
-
-    }catch(error){
-
-        console.error(
-            "Load withdrawals error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   AUTOMATIC WITHDRAWAL STATUS PROCESSOR
-========================================================= */
-
-async function processAutomaticWithdrawalStatuses(
-    data
-){
-
-    if(
-        !Array.isArray(data)
-    )
-        return;
-
-
-    for(
-        const item of data
-    ){
-
-        const databaseStatus =
-            String(
-                item.status || ""
-            ).toUpperCase();
-
-
-        const effectiveStatus =
-            getEffectiveWithdrawalStatus(
-                item
-            );
-
-
-        /*
-            Pending for more than 15 minutes:
-            attempt to permanently mark rejected.
-        */
-
-        if(
-            databaseStatus==="PENDING" &&
-            effectiveStatus==="REJECTED"
-        ){
-
-            await tryAutomaticStatusUpdate(
-                item.id,
-                "REJECTED"
-            );
-
-            item.status =
-                "REJECTED";
-
-            continue;
-
-        }
-
-
-        /*
-            APPROVED becomes PROCESSING.
-        */
-
-        if(
-            databaseStatus==="APPROVED"
-        ){
-
-            const now =
-                new Date().toISOString();
-
-
-            await tryAutomaticStatusUpdate(
-                item.id,
-                "PROCESSING",
-                now
-            );
-
-
-            item.status =
-                "PROCESSING";
-
-
-            if(!item.reviewed_at){
-
-                item.reviewed_at =
-                    now;
-
-            }
-
-
-            continue;
-
-        }
-
-
-        /*
-            PROCESSING becomes COMPLETED
-            after its assigned 1–15 minute period.
-        */
-
-        if(
-            databaseStatus==="PROCESSING" &&
-            effectiveStatus==="COMPLETED"
-        ){
-
-            await tryAutomaticStatusUpdate(
-                item.id,
-                "COMPLETED"
-            );
-
-
-            item.status =
-                "COMPLETED";
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   AUTOMATIC DATABASE STATUS UPDATE
-========================================================= */
-
-async function tryAutomaticStatusUpdate(
-    id,
-    newStatus,
-    reviewedAt=null
-){
-
-    if(!id)
-        return false;
-
-
-    try{
-
-        const body = {
-
-            status:
-                newStatus
-
-        };
-
-
-        if(
-            reviewedAt
-        ){
-
-            body.reviewed_at =
-                reviewedAt;
-
-        }
-
-
-        const response =
-            await fetch(
-
-                SUPABASE_URL+
-                "/rest/v1/withdrawal_requests"+
-                "?id=eq."+
-                encodeURIComponent(id),
-
-                {
-
-                    method:
-                        "PATCH",
-
-                    headers:{
-
-                        "Content-Type":
-                            "application/json",
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer "+
-                            SUPABASE_KEY,
-
-                        "Prefer":
-                            "return=minimal"
-
-                    },
-
-                    body:
-                        JSON.stringify(
-                            body
-                        )
-
-                }
-
-            );
-
-
-        if(!response.ok){
-
-            console.warn(
-                "Automatic status update was not permitted:",
-                await response.text()
-            );
-
-            return false;
-
-        }
-
-
-        return true;
-
-    }catch(error){
-
-        console.warn(
-            "Automatic status update error:",
-            error
-        );
-
-        return false;
-
-    }
-
-}
-
-
-/* =========================================================
-   RENDER USER WITHDRAWALS
-========================================================= */
-
-function renderWithdrawals(
-    data
-){
-
-    const tbody =
-        document.getElementById(
-            "withdrawalsTable"
-        );
-
-
-    tbody.innerHTML =
-        "";
-
-
-    if(
-        !data ||
-        !data.length
-    ){
-
-        tbody.innerHTML = `
-
-            <tr>
-
-                <td colspan="7">
-                    No withdrawal orders yet.
-                </td>
-
-            </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-    data.forEach(
-        item=>{
-
-            const status =
-                getEffectiveWithdrawalStatus(
-                    item
-                );
-
-
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            const statusClass =
-                withdrawalStatusClass(
-                    status
-                );
-
-
-            const timeText =
-                getWithdrawalTimeText(
-                    item
-                );
-
-
-            row.innerHTML = `
-
-                <td>
-
-                    ${escapeHtml(
-                        String(
-                            item.id
-                        ).slice(0,8)
-                    )}...
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHtml(
-                        item.mode || ""
-                    )}
-
-                </td>
-
-
-                <td>
-
-                    $${Number(
-                        item.amount || 0
-                    ).toFixed(2)}
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHtml(
-                        item.withdrawal_method || ""
-                    )}
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHtml(
-                        item.destination || ""
-                    )}
-
-                </td>
-
-
-                <td>
-
-                    <strong
-                        class="${statusClass}"
-                    >
-                        ${escapeHtml(
-                            status
-                        )}
-                    </strong>
-
-                    <br>
-
-                    <small
-                        style="color:#91a7bd;"
-                    >
-                        ${escapeHtml(
-                            timeText
-                        )}
-                    </small>
-
-                </td>
-
-
-                <td>
-
-                    ${
-                        item.created_at
-                        ? new Date(
-                            item.created_at
-                          ).toLocaleString()
-                        : "-"
-                    }
-
-                </td>
-
-            `;
-
-
-            tbody.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ADMIN WITHDRAWALS
-========================================================= */
-
-async function loadAdminWithdrawals(){
-
-    try{
-
-        const response =
-            await fetch(
-
-                SUPABASE_URL+
-                "/rest/v1/withdrawal_requests"+
-                "?select=*"+
-                "&order=created_at.desc",
-
-                {
-
-                    method:
-                        "GET",
-
-                    headers:{
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer "+
-                            SUPABASE_KEY
-
-                    }
-
-                }
-
-            );
-
-
-        if(!response.ok){
-
-            return;
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        await processAutomaticWithdrawalStatuses(
-            data
-        );
-
-
-        renderAdminWithdrawals(
-            data
-        );
-
-
-    }catch(error){
-
-        console.error(
-            "Admin withdrawal load error:",
-            error
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   ADMIN TABLE
-========================================================= */
-
-function renderAdminWithdrawals(
-    data
-){
-
-    const tbody =
-        document.getElementById(
-            "adminWithdrawalsTable"
-        );
-
-
-    tbody.innerHTML =
-        "";
-
-
-    if(
-        !data ||
-        !data.length
-    ){
-
-        tbody.innerHTML = `
-
-            <tr>
-
-                <td colspan="7">
-                    No withdrawal requests.
-                </td>
-
-            </tr>
-
-        `;
-
-        return;
-
-    }
-
-
-    data.forEach(
-        item=>{
-
-            const status =
-                getEffectiveWithdrawalStatus(
-                    item
-                );
-
-
-            const statusClass =
-                withdrawalStatusClass(
-                    status
-                );
-
-
-            const row =
-                document.createElement(
-                    "tr"
-                );
-
-
-            let actions = "";
-
-
-            if(
-                status==="PENDING"
-            ){
-
-                actions = `
-
-                    <button
-                        class="btn btn-gold"
-                        onclick="adminChangeWithdrawal(
-                            '${item.id}',
-                            'PROCESSING'
-                        )"
-                    >
-                        PROCESS
-                    </button>
-
-
-                    <button
-                        class="btn btn-green"
-                        onclick="adminChangeWithdrawal(
-                            '${item.id}',
-                            'APPROVED'
-                        )"
-                    >
-                        APPROVE
-                    </button>
-
-
-                    <button
-                        class="btn btn-red"
-                        onclick="adminChangeWithdrawal(
-                            '${item.id}',
-                            'REJECTED'
-                        )"
-                    >
-                        REJECT
-                    </button>
-
-                `;
-
-            }else if(
-                status==="PROCESSING"
-            ){
-
-                actions = `
-
-                    <span
-                        style="color:#8ec9ff;"
-                    >
-                        Processing automatically
-                    </span>
-
-                `;
-
-            }else if(
-                status==="COMPLETED"
-            ){
-
-                actions = `
-
-                    <span
-                        style="color:#61e695;"
-                    >
-                        Completed
-                    </span>
-
-                `;
-
-            }else{
-
-                actions = `
-
-                    <span
-                        style="color:#ff737d;"
-                    >
-                        Rejected
-                    </span>
-
-                `;
-
-            }
-
-
-            row.innerHTML = `
-
-                <td>
-
-                    ${escapeHtml(
-                        String(
-                            item.id
-                        ).slice(0,8)
-                    )}...
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHtml(
-                        item.mode || ""
-                    )}
-
-                </td>
-
-
-                <td>
-
-                    $${Number(
-                        item.amount || 0
-                    ).toFixed(2)}
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHtml(
-                        item.withdrawal_method || ""
-                    )}
-
-                </td>
-
-
-                <td>
-
-                    ${escapeHtml(
-                        item.destination || ""
-                    )}
-
-                </td>
-
-
-                <td>
-
-                    <strong
-                        class="${statusClass}"
-                    >
-                        ${escapeHtml(
-                            status
-                        )}
-                    </strong>
-
-                    <br>
-
-                    <small
-                        style="color:#91a7bd;"
-                    >
-                        ${escapeHtml(
-                            getWithdrawalTimeText(
-                                item
-                            )
-                        )}
-                    </small>
-
-                </td>
-
-
-                <td>
-
-                    <div
-                        style="
-                            display:flex;
-                            gap:5px;
-                            flex-wrap:wrap;
-                        "
-                    >
-
-                        ${actions}
-
-                    </div>
-
-                </td>
-
-            `;
-
-
-            tbody.appendChild(
-                row
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ADMIN CHANGE STATUS
-========================================================= */
-
-async function adminChangeWithdrawal(
-    id,
-    newStatus
-){
-
-    const box =
-        document.getElementById(
-            "adminStatus"
-        );
-
-
-    box.style.display =
-        "block";
-
-
-    box.style.background =
-        "#10263d";
-
-
-    box.style.color =
-        "#b9d4ec";
-
-
-    box.innerHTML =
-        "Updating order status...";
-
-
-    try{
-
-        /*
-            APPROVE immediately becomes PROCESSING.
-            This starts the 1–15 minute completion timer.
-        */
-
-        let databaseStatus =
-            newStatus;
-
-
-        let reviewedAt =
-            null;
-
-
-        if(
-            newStatus==="APPROVED"
-        ){
-
-            databaseStatus =
-                "PROCESSING";
-
-
-            reviewedAt =
-                new Date()
-                .toISOString();
-
-        }
-
-
-        const body = {
-
-            status:
-                databaseStatus
-
-        };
-
-
-        if(
-            reviewedAt
-        ){
-
-            body.reviewed_at =
-                reviewedAt;
-
-        }
-
-
-        const response =
-            await fetch(
-
-                SUPABASE_URL+
-                "/rest/v1/withdrawal_requests"+
-                "?id=eq."+
-                encodeURIComponent(id),
-
-                {
-
-                    method:
-                        "PATCH",
-
-                    headers:{
-
-                        "Content-Type":
-                            "application/json",
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer "+
-                            SUPABASE_KEY,
-
-                        "Prefer":
-                            "return=representation"
-
-                    },
-
-                    body:
-                        JSON.stringify(
-                            body
-                        )
-
-                }
-
-            );
-
-
-        const responseText =
-            await response.text();
-
-
-        if(!response.ok){
-
-            throw new Error(
-
-                "Supabase HTTP "+
-                response.status+
-                ": "+
-                responseText
-
-            );
-
-        }
-
-
-        box.style.background =
-            "#123b24";
-
-
-        box.style.color =
-            "#7dffae";
-
-
-        if(
-            newStatus==="APPROVED"
-        ){
-
-            box.innerHTML =
-                "✓ Order approved and moved to <strong>PROCESSING</strong>."+
-                "<br>The order will automatically become <strong>COMPLETED</strong> within 1–15 minutes.";
-
-        }else if(
-            newStatus==="REJECTED"
-        ){
-
-            box.innerHTML =
-                "✓ Order has been <strong>REJECTED</strong>.";
-
-        }else{
-
-            box.innerHTML =
-                "✓ Order status changed to <strong>"+
-                escapeHtml(
-                    newStatus
-                )+
-                "</strong>.";
-
-        }
-
-
-        loadWithdrawals();
-
-        loadAdminWithdrawals();
-
-
-    }catch(error){
-
-        box.style.background =
-            "#4a151b";
-
-
-        box.style.color =
-            "#ff8b8b";
-
-
-        box.innerHTML =
-
-            "<strong>Admin update failed</strong>"+
-            "<br><br>"+
-            escapeHtml(
-                error.message
-            );
-
-    }
-
-}
-
-
-/* =========================================================
-   DEPOSIT SETTINGS
-========================================================= */
-
-
-/*
-    Expected platform_settings structure:
-
-    setting_key
-    setting_value
-
-    The address is stored using:
-
-    deposit_address_USDT TRC20
-    deposit_address_USDT ERC20
-    deposit_address_USDT BEP20
-    deposit_address_BTC
-    deposit_address_Bank Transfer
-    deposit_address_Mobile Money
-*/
-
-
-function depositSettingKey(
-    network
-){
-
-    return (
-        "deposit_address_"+
-        network
-    );
-
-}
-
-
-/* =========================================================
-   LOAD DEPOSIT ADDRESS
-========================================================= */
-
-async function loadDepositAddress(){
-
-    const network =
-        document.getElementById(
-            "depositNetwork"
-        ).value;
-
-
-    const input =
-        document.getElementById(
-            "depositAddress"
-        );
-
-
-    input.value =
-        "Loading deposit address...";
-
-
-    try{
-
-        const key =
-            depositSettingKey(
-                network
-            );
-
-
-        const response =
-            await fetch(
-
-                SUPABASE_URL+
-                "/rest/v1/platform_settings"+
-                "?select=setting_key,setting_value"+
-                "&setting_key=eq."+
-                encodeURIComponent(key),
-
-                {
-
-                    method:
-                        "GET",
-
-                    headers:{
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer "+
-                            SUPABASE_KEY
-
-                    }
-
-                }
-
-            );
-
-
-        if(!response.ok){
-
-            throw new Error(
-                await response.text()
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        if(
-            data &&
-            data.length &&
-            data[0].setting_value
-        ){
-
-            input.value =
-                data[0].setting_value;
-
-        }else{
-
-            input.value =
-                "Deposit address not configured";
-
-        }
-
-
-    }catch(error){
-
-        console.error(
-            "Deposit address load error:",
-            error
-        );
-
-
-        input.value =
-            "Deposit address not configured";
-
-
-        showDepositStatus(
-            "Deposit address could not be loaded. Check the platform_settings table and its RLS permissions.",
-            "error"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CHANGE DEPOSIT NETWORK
-========================================================= */
-
-document.getElementById(
-    "depositNetwork"
-).addEventListener(
-    "change",
-    loadDepositAddress
-);
-
-
-/* =========================================================
-   COPY DEPOSIT ADDRESS
-========================================================= */
-
-async function copyDepositAddress(){
-
-    const input =
-        document.getElementById(
-            "depositAddress"
-        );
-
-
-    const address =
-        input.value.trim();
-
-
-    if(
-        !address ||
-        address==="Deposit address not configured" ||
-        address==="Loading deposit address..."
-    ){
-
-        showDepositStatus(
-            "There is no deposit address configured for this network.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    try{
-
-        await navigator.clipboard.writeText(
-            address
-        );
-
-
-        showDepositStatus(
-            "✓ Deposit wallet address copied.",
-            "success"
-        );
-
-    }catch(error){
-
-        input.select();
-
-        document.execCommand(
-            "copy"
-        );
-
-
-        showDepositStatus(
-            "✓ Deposit wallet address copied.",
-            "success"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   DEPOSIT STATUS
-========================================================= */
-
-function showDepositStatus(
-    message,
-    type="info"
-){
-
-    const box =
-        document.getElementById(
-            "depositStatus"
-        );
-
-
-    box.style.display =
-        "block";
-
-
-    if(
-        type==="success"
-    ){
-
-        box.style.background =
-            "#123b24";
-
-        box.style.color =
-            "#7dffae";
-
-    }else if(
-        type==="error"
-    ){
-
-        box.style.background =
-            "#4a151b";
-
-        box.style.color =
-            "#ff8b8b";
-
-    }else{
-
-        box.style.background =
-            "#10263d";
-
-        box.style.color =
-            "#b9d4ec";
-
-    }
-
-
-    box.innerHTML =
-        message;
-
-}
-
-
-/* =========================================================
-   ADMIN SAVE DEPOSIT ADDRESS
-========================================================= */
-
-async function saveDepositAddress(){
-
-    const network =
-        document.getElementById(
-            "adminDepositNetwork"
-        ).value;
-
-
-    const address =
-        document.getElementById(
-            "adminDepositAddress"
-        ).value.trim();
-
-
-    const box =
-        document.getElementById(
-            "adminDepositStatus"
-        );
-
-
-    box.style.display =
-        "block";
-
-
-    box.style.background =
-        "#10263d";
-
-
-    box.style.color =
-        "#b9d4ec";
-
-
-    box.innerHTML =
-        "Saving deposit address...";
-
-
-    try{
-
-        if(!network){
-
-            throw new Error(
-                "Select a network."
-            );
-
-        }
-
-
-        if(!address){
-
-            throw new Error(
-                "Enter the new deposit wallet address."
-            );
-
-        }
-
-
-        const key =
-            depositSettingKey(
-                network
-            );
-
-
-        /*
-            Upsert is used so the administrator can either
-            create the setting for the first time or update it.
-        */
-
-        const response =
-            await fetch(
-
-                SUPABASE_URL+
-                "/rest/v1/platform_settings",
-
-                {
-
-                    method:
-                        "POST",
-
-                    headers:{
-
-                        "Content-Type":
-                            "application/json",
-
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer "+
-                            SUPABASE_KEY,
-
-                        "Prefer":
-                            "resolution=merge-duplicates,return=representation"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            setting_key:
-                                key,
-
-                            setting_value:
-                                address
-
-                        })
-
-                }
-
-            );
-
-
-        const responseText =
-            await response.text();
-
-
-        if(!response.ok){
-
-            throw new Error(
-                "Supabase HTTP "+
-                response.status+
-                ": "+
-                responseText
-            );
-
-        }
-
-
-        box.style.background =
-            "#123b24";
-
-
-        box.style.color =
-            "#7dffae";
-
-
-        box.innerHTML =
-            "✓ Deposit address updated successfully for <strong>"+
-            escapeHtml(
-                network
-            )+
-            "</strong>.";
-
-
-        document.getElementById(
-            "adminDepositAddress"
-        ).value =
-            "";
-
-
-        await loadDepositAddress();
-
-
-    }catch(error){
-
-        console.error(
-            "Deposit settings error:",
-            error
-        );
-
-
-        box.style.background =
-            "#4a151b";
-
-
-        box.style.color =
-            "#ff8b8b";
-
-
-        box.innerHTML =
-
-            "<strong>Could not update deposit address.</strong>"+
-            "<br><br>"+
-            escapeHtml(
-                error.message
-            )+
-            "<br><br>"+
-            "<small>"+
-            "The platform_settings table and administrator RLS permissions must allow this update."+
-            "</small>";
-
-    }
-
-}
-
-
-/* =========================================================
-   AUTOMATIC WITHDRAWAL MONITOR
-========================================================= */
-
-async function monitorWithdrawals(){
-
-    try{
+            "withdrawNote"
+        ).value = "";
 
         await loadWithdrawals();
 
@@ -5737,123 +2086,823 @@ async function monitorWithdrawals(){
 
     }catch(error){
 
-        console.error(
-            "Withdrawal monitor error:",
-            error
+        showMessage(
+            "withdrawMessage",
+            "Withdrawal failed: " +
+            error.message,
+            "error"
         );
+    }
+}
+
+/* =========================================================
+   USER WITHDRAWAL LIST
+========================================================= */
+
+async function loadWithdrawals(){
+
+    const container =
+        document.getElementById(
+            "withdrawalOrders"
+        );
+
+    container.innerHTML =
+        `<div class="small">Loading...</div>`;
+
+    try{
+
+        const rows =
+            await supabaseRequest(
+                "/rest/v1/withdrawal_requests" +
+                "?select=*" +
+                "&order=created_at.desc"
+            );
+
+        if(!rows || !rows.length){
+
+            container.innerHTML =
+                `<div class="small">
+                    No withdrawal orders yet.
+                </div>`;
+
+            return;
+        }
+
+        container.innerHTML =
+            rows.map(renderWithdrawalOrder).join("");
+
+    }catch(error){
+
+        container.innerHTML =
+            `<div class="status-message show error">
+                Unable to load withdrawal orders:
+                ${escapeHtml(error.message)}
+            </div>`;
+    }
+}
+
+function renderWithdrawalOrder(order){
+
+    const status =
+        String(order.status || "PENDING")
+        .toUpperCase();
+
+    const badgeClass =
+        status.toLowerCase();
+
+    let message =
+        order.status_message || "";
+
+    if(status === "REJECTED"){
+
+        message =
+            "Order has been rejected" +
+            (order.status_message
+                ? ": " + order.status_message
+                : ".");
+
+    }else if(status === "EXPIRED"){
+
+        message =
+            "Order expired because it was not approved within the allowed time.";
+
+    }else if(status === "COMPLETE"){
+
+        message =
+            "Withdrawal completed.";
+
+    }else if(status === "APPROVED" ||
+            status === "PROCESSING"){
+
+        message =
+            "Withdrawal approved and being processed.";
+
+    }else if(status === "PENDING"){
+
+        message =
+            "Withdrawal order is waiting for admin approval.";
 
     }
 
+    return `
+        <div class="order">
+
+            <div class="order-top">
+
+                <strong>
+                    ${money(order.amount)}
+                </strong>
+
+                <span class="badge ${badgeClass}">
+                    ${escapeHtml(status)}
+                </span>
+
+            </div>
+
+            <div class="small">
+                ${escapeHtml(
+                    order.withdrawal_method || ""
+                )}
+
+                <br>
+
+                ${escapeHtml(
+                    order.destination || ""
+                )}
+
+                <br>
+
+                ${formatDate(order.created_at)}
+            </div>
+
+            <br>
+
+            <div class="small">
+                ${escapeHtml(message)}
+            </div>
+
+        </div>
+    `;
 }
 
+/* =========================================================
+   ADMIN PANEL
+========================================================= */
 
-/*
-    Check frequently so the status changes without
-    requiring the user to refresh the page.
-*/
+function showAdminPanel(){
 
-setInterval(
-    monitorWithdrawals,
-    10000
-);
+    /*
+     Temporary testing panel.
 
+     DO NOT treat this as production authentication.
+     The real admin password/role will be connected later.
+    */
 
-/*
-    Redraw the withdrawal countdown every second.
-    This does not repeatedly hit Supabase.
-*/
+    document.getElementById(
+        "adminPanel"
+    ).classList.remove("admin-hidden");
 
-setInterval(
-    async ()=>{
+    loadAdminDepositSettings();
 
-        try{
+    loadAdminWithdrawals();
+}
 
-            const response =
-                await fetch(
+function hideAdminPanel(){
 
-                    SUPABASE_URL+
-                    "/rest/v1/withdrawal_requests"+
-                    "?select=*"+
-                    "&order=created_at.desc",
+    document.getElementById(
+        "adminPanel"
+    ).classList.add("admin-hidden");
+}
 
-                    {
+async function loadAdminDepositSettings(){
 
-                        method:
-                            "GET",
+    try{
 
-                        headers:{
-
-                            "apikey":
-                                SUPABASE_KEY,
-
-                            "Authorization":
-                                "Bearer "+
-                                SUPABASE_KEY
-
-                        }
-
-                    }
-
-                );
-
-
-            if(!response.ok)
-                return;
-
-
-            const data =
-                await response.json();
-
-
-            renderWithdrawals(
-                data
+        const rows =
+            await supabaseRequest(
+                "/rest/v1/deposit_settings" +
+                "?select=*" +
+                "&order=updated_at.desc" +
+                "&limit=1"
             );
 
+        if(rows && rows.length){
 
-            renderAdminWithdrawals(
-                data
-            );
+            const settings = rows[0];
 
-        }catch(error){
+            document.getElementById(
+                "adminDepositNetwork"
+            ).value =
+                settings.network || "";
 
-            console.warn(
-                "Withdrawal display refresh error:",
-                error
-            );
+            document.getElementById(
+                "adminDepositAddress"
+            ).value =
+                settings.wallet_address || "";
+
+            document.getElementById(
+                "adminDepositMethod"
+            ).value =
+                settings.method || "USDT TRC20";
+
+            document.getElementById(
+                "adminDepositActive"
+            ).value =
+                String(settings.is_active);
 
         }
 
-    },
-    1000
-);
+    }catch(error){
 
+        showMessage(
+            "adminDepositMessage",
+            "Could not load deposit settings: " +
+            error.message,
+            "error"
+        );
+    }
+}
+
+async function updateDepositSettings(){
+
+    const network =
+        document.getElementById(
+            "adminDepositNetwork"
+        ).value.trim();
+
+    const address =
+        document.getElementById(
+            "adminDepositAddress"
+        ).value.trim();
+
+    const method =
+        document.getElementById(
+            "adminDepositMethod"
+        ).value.trim();
+
+    const active =
+        document.getElementById(
+            "adminDepositActive"
+        ).value === "true";
+
+    if(!address){
+
+        showMessage(
+            "adminDepositMessage",
+            "Enter the deposit wallet address.",
+            "error"
+        );
+
+        return;
+    }
+
+    try{
+
+        /*
+         The table uses method as the unique key.
+        */
+
+        const rows =
+            await supabaseRequest(
+                "/rest/v1/deposit_settings" +
+                "?method=eq." +
+                encodeURIComponent(method),
+                {
+                    method:"PATCH",
+                    body:JSON.stringify({
+
+                        network,
+
+                        wallet_address:address,
+
+                        method,
+
+                        is_active:active,
+
+                        updated_at:
+                            new Date().toISOString()
+
+                    })
+                }
+            );
+
+        showMessage(
+            "adminDepositMessage",
+            "Deposit address updated successfully.",
+            "success"
+        );
+
+        await loadDepositSettings();
+
+    }catch(error){
+
+        showMessage(
+            "adminDepositMessage",
+            "Could not update deposit address. " +
+            error.message +
+            " If Supabase RLS is enabled, admin authentication/policy must be configured.",
+            "error"
+        );
+    }
+}
 
 /* =========================================================
-   START
+   ADMIN WITHDRAWAL QUEUE
 ========================================================= */
 
-createInitialCandles();
+async function loadAdminWithdrawals(){
 
-setMode("DEMO");
+    const container =
+        document.getElementById(
+            "adminWithdrawals"
+        );
 
-updateMarketUI();
+    if(!container){
+        return;
+    }
 
-updateAccountUI();
+    container.innerHTML =
+        `<div class="small">Loading...</div>`;
 
-renderPositions();
+    try{
 
-renderHistory();
+        const rows =
+            await supabaseRequest(
+                "/rest/v1/withdrawal_requests" +
+                "?select=*" +
+                "&order=created_at.desc"
+            );
 
-loadWithdrawals();
+        if(!rows || !rows.length){
 
-loadAdminWithdrawals();
+            container.innerHTML =
+                `<div class="small">
+                    No withdrawal orders.
+                </div>`;
 
-loadDepositAddress();
+            return;
+        }
 
-setTimeout(
-    resizeCanvas,
-    100
+        container.innerHTML =
+            rows.map(order => {
+
+                const status =
+                    String(order.status || "PENDING")
+                    .toUpperCase();
+
+                return `
+                    <div class="order">
+
+                        <div class="order-top">
+
+                            <strong>
+                                ${money(order.amount)}
+                            </strong>
+
+                            <span class="badge ${status.toLowerCase()}">
+                                ${status}
+                            </span>
+
+                        </div>
+
+                        <div class="small">
+
+                            ID:
+                            ${escapeHtml(
+                                String(order.id || "")
+                            )}
+
+                            <br>
+
+                            Method:
+                            ${escapeHtml(
+                                order.withdrawal_method || ""
+                            )}
+
+                            <br>
+
+                            Destination:
+                            ${escapeHtml(
+                                order.destination || ""
+                            )}
+
+                            <br>
+
+                            Created:
+                            ${formatDate(order.created_at)}
+
+                        </div>
+
+                        <br>
+
+                        <div class="action-row">
+
+                            ${
+                                status === "PENDING"
+                                ? `
+                                    <button
+                                        class="btn btn-success"
+                                        onclick="adminApproveWithdrawal('${order.id}')">
+                                        APPROVE
+                                    </button>
+
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="adminRejectWithdrawal('${order.id}')">
+                                        REJECT
+                                    </button>
+                                `
+                                : ""
+                            }
+
+                            ${
+                                status === "APPROVED" ||
+                                status === "PROCESSING"
+                                ? `
+                                    <button
+                                        class="btn btn-success"
+                                        onclick="adminCompleteWithdrawal('${order.id}')">
+                                        COMPLETE NOW
+                                    </button>
+
+                                    <button
+                                        class="btn btn-danger"
+                                        onclick="adminRejectWithdrawal('${order.id}')">
+                                        REJECT
+                                    </button>
+                                `
+                                : ""
+                            }
+
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("");
+
+    }catch(error){
+
+        container.innerHTML =
+            `<div class="status-message show error">
+                ${escapeHtml(error.message)}
+            </div>`;
+    }
+}
+
+/* =========================================================
+   ADMIN APPROVE
+========================================================= */
+
+async function adminApproveWithdrawal(id){
+
+    /*
+     1–15 minute processing window.
+     Server-side scheduler should ultimately enforce this.
+    */
+
+    const minutes =
+        Math.floor(
+            Math.random() * 15
+        ) + 1;
+
+    const deadline =
+        new Date(
+            Date.now() +
+            minutes * 60 * 1000
+        ).toISOString();
+
+    try{
+
+        await supabaseRequest(
+            "/rest/v1/withdrawal_requests" +
+            "?id=eq." +
+            encodeURIComponent(id),
+            {
+                method:"PATCH",
+
+                body:JSON.stringify({
+
+                    status:"APPROVED",
+
+                    reviewed_at:
+                        new Date().toISOString(),
+
+                    approved_at:
+                        new Date().toISOString(),
+
+                    processing_deadline:
+                        deadline,
+
+                    status_message:
+                        "Order approved. Withdrawal is being processed."
+
+                })
+            }
+        );
+
+        alert(
+            "Withdrawal approved.\n\n" +
+            "Processing deadline: approximately " +
+            minutes +
+            " minute(s)."
+        );
+
+        await loadWithdrawals();
+
+        await loadAdminWithdrawals();
+
+    }catch(error){
+
+        alert(
+            "Approval failed: " +
+            error.message
+        );
+    }
+}
+
+/* =========================================================
+   ADMIN REJECT
+========================================================= */
+
+async function adminRejectWithdrawal(id){
+
+    const reason =
+        prompt(
+            "Enter rejection reason:",
+            "Order has been rejected by admin."
+        );
+
+    if(reason === null){
+        return;
+    }
+
+    try{
+
+        await supabaseRequest(
+            "/rest/v1/withdrawal_requests" +
+            "?id=eq." +
+            encodeURIComponent(id),
+            {
+                method:"PATCH",
+
+                body:JSON.stringify({
+
+                    status:"REJECTED",
+
+                    reviewed_at:
+                        new Date().toISOString(),
+
+                    rejected_at:
+                        new Date().toISOString(),
+
+                    status_message:
+                        reason ||
+                        "Order has been rejected."
+
+                })
+            }
+        );
+
+        alert(
+            "Withdrawal order has been rejected."
+        );
+
+        await loadWithdrawals();
+
+        await loadAdminWithdrawals();
+
+    }catch(error){
+
+        alert(
+            "Rejection failed: " +
+            error.message
+        );
+    }
+}
+
+/* =========================================================
+   ADMIN COMPLETE
+========================================================= */
+
+async function adminCompleteWithdrawal(id){
+
+    try{
+
+        await supabaseRequest(
+            "/rest/v1/withdrawal_requests" +
+            "?id=eq." +
+            encodeURIComponent(id),
+            {
+                method:"PATCH",
+
+                body:JSON.stringify({
+
+                    status:"COMPLETE",
+
+                    completed_at:
+                        new Date().toISOString(),
+
+                    status_message:
+                        "Withdrawal completed."
+
+                })
+            }
+        );
+
+        alert(
+            "Withdrawal marked COMPLETE."
+        );
+
+        await loadWithdrawals();
+
+        await loadAdminWithdrawals();
+
+    }catch(error){
+
+        alert(
+            "Completion failed: " +
+            error.message
+        );
+    }
+}
+
+/* =========================================================
+   AUTOMATIC STATUS CHECK
+========================================================= */
+
+async function checkWithdrawalDeadlines(){
+
+    try{
+
+        const rows =
+            await supabaseRequest(
+                "/rest/v1/withdrawal_requests" +
+                "?select=*" +
+                "&status=in.(PENDING,APPROVED,PROCESSING)"
+            );
+
+        if(!rows){
+            return;
+        }
+
+        const now =
+            Date.now();
+
+        for(const order of rows){
+
+            const created =
+                new Date(
+                    order.created_at
+                ).getTime();
+
+            const deadline =
+                order.processing_deadline
+                ? new Date(
+                    order.processing_deadline
+                  ).getTime()
+                : null;
+
+            /*
+             Pending for more than 15 minutes:
+             EXPIRED rather than REJECTED.
+
+             This is intentional because REJECTED should
+             mean the admin explicitly rejected it.
+            */
+
+            if(
+                String(order.status)
+                    .toUpperCase() === "PENDING"
+                &&
+                now-created >= 15*60*1000
+            ){
+
+                await supabaseRequest(
+                    "/rest/v1/withdrawal_requests" +
+                    "?id=eq." +
+                    encodeURIComponent(order.id),
+                    {
+                        method:"PATCH",
+
+                        body:JSON.stringify({
+
+                            status:"EXPIRED",
+
+                            status_message:
+                                "Order expired because admin approval was not received within 15 minutes."
+
+                        })
+                    }
+                );
+            }
+
+            /*
+             Approved/processing deadline.
+            */
+
+            if(
+                (
+                    String(order.status)
+                        .toUpperCase() === "APPROVED"
+                    ||
+                    String(order.status)
+                        .toUpperCase() === "PROCESSING"
+                )
+                &&
+                deadline
+                &&
+                now >= deadline
+            ){
+
+                await supabaseRequest(
+                    "/rest/v1/withdrawal_requests" +
+                    "?id=eq." +
+                    encodeURIComponent(order.id),
+                    {
+                        method:"PATCH",
+
+                        body:JSON.stringify({
+
+                            status:"COMPLETE",
+
+                            completed_at:
+                                new Date().toISOString(),
+
+                            status_message:
+                                "Withdrawal completed."
+
+                        })
+                    }
+                );
+            }
+        }
+
+        await loadWithdrawals();
+
+        if(
+            !document
+                .getElementById("adminPanel")
+                .classList.contains("admin-hidden")
+        ){
+
+            await loadAdminWithdrawals();
+
+        }
+
+    }catch(error){
+
+        console.log(
+            "Automatic withdrawal check:",
+            error.message
+        );
+    }
+}
+
+/*
+ Browser check every 30 seconds.
+
+ IMPORTANT:
+ This is only a temporary testing mechanism.
+ It cannot guarantee completion if nobody has the
+ website open. The production version needs a
+ Supabase server-side scheduled function.
+*/
+
+setInterval(
+    checkWithdrawalDeadlines,
+    30000
 );
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function showMessage(
+    id,
+    message,
+    type
+){
+
+    const element =
+        document.getElementById(id);
+
+    if(!element){
+        return;
+    }
+
+    element.textContent = message;
+
+    element.className =
+        "status-message show " +
+        type;
+}
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+function formatDate(value){
+
+    if(!value){
+        return "";
+    }
+
+    const date =
+        new Date(value);
+
+    if(Number.isNaN(date.getTime())){
+        return "";
+    }
+
+    return date.toLocaleString();
+}
 
 </script>
 
