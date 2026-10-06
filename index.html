@@ -15,9 +15,7 @@ body{
     color:#fff;
 }
 
-button,select,input{
-    font:inherit;
-}
+button,select,input{font:inherit}
 
 .top{
     padding:16px 20px;
@@ -65,13 +63,9 @@ button,select,input{
     padding:10px 13px;
 }
 
-button{
-    cursor:pointer;
-}
+button{cursor:pointer}
 
-button:hover{
-    background:#1b3048;
-}
+button:hover{background:#1b3048}
 
 .primary{
     background:#147df5;
@@ -104,9 +98,7 @@ button:hover{
     padding:16px;
 }
 
-.card small{
-    color:#8da0b5;
-}
+.card small{color:#8da0b5}
 
 .card strong{
     display:block;
@@ -156,9 +148,7 @@ canvas{
     cursor:grab;
 }
 
-canvas.dragging{
-    cursor:grabbing;
-}
+canvas.dragging{cursor:grabbing}
 
 .price{
     display:flex;
@@ -181,9 +171,7 @@ canvas.dragging{
     margin-bottom:5px;
 }
 
-.price-box strong{
-    font-size:20px;
-}
+.price-box strong{font-size:20px}
 
 .order-actions{
     display:flex;
@@ -203,9 +191,7 @@ th,td{
     font-size:14px;
 }
 
-th{
-    color:#8da0b5;
-}
+th{color:#8da0b5}
 
 .status{
     padding:9px;
@@ -215,13 +201,8 @@ th{
     margin-top:12px;
 }
 
-.green{
-    color:#42dc96;
-}
-
-.red{
-    color:#ff6875;
-}
+.green{color:#42dc96}
+.red{color:#ff6875}
 
 .notice{
     color:#9eb0c4;
@@ -230,31 +211,14 @@ th{
 }
 
 @media(max-width:900px){
-    .cards{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .layout{
-        grid-template-columns:1fr;
-    }
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .layout{grid-template-columns:1fr}
 }
 
 @media(max-width:600px){
-    .cards{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .container{
-        padding:10px;
-    }
-
-    .chart-wrap{
-        height:330px;
-    }
-
-    th,td{
-        font-size:12px;
-    }
+    .container{padding:10px}
+    .chart-wrap{height:330px}
+    th,td{font-size:12px}
 }
 </style>
 </head>
@@ -262,280 +226,233 @@ th{
 <body>
 
 <header class="top">
-
-    <div class="logo">
-        WASHINGTON FX
-    </div>
-
-    <div class="mode">
-        SIMULATION MODE
-    </div>
-
+    <div class="logo">WASHINGTON FX</div>
+    <div class="mode">SIMULATION MODE</div>
 </header>
 
 <div class="container">
 
-    <div class="toolbar">
+<div class="toolbar">
 
-        <select id="symbol">
-            <option>EURUSD</option>
-            <option>GBPUSD</option>
-            <option>USDJPY</option>
-            <option>USDCHF</option>
-            <option>AUDUSD</option>
-            <option>USDCAD</option>
-            <option>XAUUSD</option>
-            <option>BTCUSD</option>
-        </select>
+<select id="symbol">
+<option>EURUSD</option>
+<option>GBPUSD</option>
+<option>USDJPY</option>
+<option>USDCHF</option>
+<option>AUDUSD</option>
+<option>USDCAD</option>
+<option>XAUUSD</option>
+<option>BTCUSD</option>
+</select>
 
-        <select id="timeframe">
-            <option>1 Minute</option>
-            <option>5 Minutes</option>
-            <option>15 Minutes</option>
-            <option>1 Hour</option>
-        </select>
+<select id="timeframe">
+<option>1 Minute</option>
+<option>5 Minutes</option>
+<option>15 Minutes</option>
+<option>1 Hour</option>
+</select>
 
-        <button id="demoBtn" class="primary">
-            Demo FX
-        </button>
+<button id="demoBtn" class="primary">Demo FX</button>
+<button id="liveBtn">Live FX</button>
 
-        <button id="liveBtn">
-            Live FX
-        </button>
+</div>
 
-    </div>
+<div class="cards">
 
-    <div class="cards">
+<div class="card">
+<small>Balance</small>
+<strong id="balance">$10,000.00</strong>
+</div>
 
-        <div class="card">
-            <small>Balance</small>
-            <strong id="balance">$10,000.00</strong>
-        </div>
+<div class="card">
+<small>Equity</small>
+<strong id="equity">$10,000.00</strong>
+</div>
 
-        <div class="card">
-            <small>Equity</small>
-            <strong id="equity">$10,000.00</strong>
-        </div>
+<div class="card">
+<small>Floating P/L</small>
+<strong id="pl">$0.00</strong>
+</div>
 
-        <div class="card">
-            <small>Floating P/L</small>
-            <strong id="pl">$0.00</strong>
-        </div>
+<div class="card">
+<small>Open Positions</small>
+<strong id="positionCount">0</strong>
+</div>
 
-        <div class="card">
-            <small>Open Positions</small>
-            <strong id="positionCount">0</strong>
-        </div>
+</div>
 
-    </div>
+<div class="layout">
 
-    <div class="layout">
+<div>
 
-        <div>
+<div class="panel">
 
-            <div class="panel">
+<div class="price">
 
-                <div class="price">
+<div class="price-box">
+<small>BID</small>
+<strong id="bid">1.08500</strong>
+</div>
 
-                    <div class="price-box">
-                        <small>BID</small>
-                        <strong id="bid">1.08500</strong>
-                    </div>
+<div class="price-box">
+<small>ASK</small>
+<strong id="ask">1.08510</strong>
+</div>
 
-                    <div class="price-box">
-                        <small>ASK</small>
-                        <strong id="ask">1.08510</strong>
-                    </div>
+</div>
 
-                </div>
+<div class="chart-toolbar">
 
-                <div class="chart-toolbar">
+<button id="zoomIn">+ Zoom In</button>
+<button id="zoomOut">− Zoom Out</button>
+<button id="resetZoom">Reset Zoom</button>
+<button id="latest">Latest</button>
 
-                    <button id="zoomIn">
-                        + Zoom In
-                    </button>
+</div>
 
-                    <button id="zoomOut">
-                        − Zoom Out
-                    </button>
+<div class="chart-wrap">
+<canvas id="chart"></canvas>
+</div>
 
-                    <button id="resetZoom">
-                        Reset Zoom
-                    </button>
+</div>
 
-                    <button id="latest">
-                        Latest
-                    </button>
+<div class="panel">
 
-                </div>
+<h3>Open Positions</h3>
 
-                <div class="chart-wrap">
-                    <canvas id="chart"></canvas>
-                </div>
+<div style="overflow-x:auto">
 
-            </div>
+<table>
 
-            <div class="panel">
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Side</th>
+<th>Volume</th>
+<th>Entry</th>
+<th>P/L</th>
+<th></th>
+</tr>
+</thead>
 
-                <h3>Open Positions</h3>
+<tbody id="positions"></tbody>
 
-                <div style="overflow-x:auto;">
+</table>
 
-                    <table>
+</div>
 
-                        <thead>
-                            <tr>
-                                <th>Symbol</th>
-                                <th>Side</th>
-                                <th>Volume</th>
-                                <th>Entry</th>
-                                <th>P/L</th>
-                                <th></th>
-                            </tr>
-                        </thead>
+</div>
 
-                        <tbody id="positions"></tbody>
+<div class="panel">
 
-                    </table>
+<h3>Trade History</h3>
 
-                </div>
+<div style="overflow-x:auto">
 
-            </div>
+<table>
 
-            <div class="panel">
+<thead>
+<tr>
+<th>Time</th>
+<th>Symbol</th>
+<th>Side</th>
+<th>Volume</th>
+<th>Result</th>
+</tr>
+</thead>
 
-                <h3>Trade History</h3>
+<tbody id="history"></tbody>
 
-                <div style="overflow-x:auto;">
+</table>
 
-                    <table>
+</div>
 
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Symbol</th>
-                                <th>Side</th>
-                                <th>Volume</th>
-                                <th>Result</th>
-                            </tr>
-                        </thead>
+</div>
 
-                        <tbody id="history"></tbody>
+</div>
 
-                    </table>
+<aside>
 
-                </div>
+<div class="panel">
 
-            </div>
+<h3>New Order</h3>
 
-        </div>
+<label>Volume</label>
 
-        <aside>
+<input
+id="volume"
+type="number"
+value="0.10"
+min="0.01"
+step="0.01"
+style="width:100%;margin-top:7px;"
+>
 
-            <div class="panel">
+<div class="order-actions">
 
-                <h3>New Order</h3>
+<button id="buyBtn" class="buy">BUY</button>
+<button id="sellBtn" class="sell">SELL</button>
 
-                <label>Volume</label>
+</div>
 
-                <input
-                    id="volume"
-                    type="number"
-                    value="0.10"
-                    min="0.01"
-                    step="0.01"
-                    style="width:100%;margin-top:7px;"
-                >
+<div id="status" class="status">
+Demo simulator ready.
+</div>
 
-                <div class="order-actions">
+</div>
 
-                    <button id="buyBtn" class="buy">
-                        BUY
-                    </button>
+<div class="panel">
 
-                    <button id="sellBtn" class="sell">
-                        SELL
-                    </button>
+<h3>Trading Mode</h3>
 
-                </div>
+<p id="modeText">
+Demo FX uses virtual funds and simulated market execution.
+</p>
 
-                <div id="status" class="status">
-                    Demo simulator ready.
-                </div>
+<p class="notice">
+The Live FX interface is reserved for a future regulated
+broker/execution connection. This version does not execute
+real-money trades.
+</p>
 
-            </div>
+</div>
 
-            <div class="panel">
+</aside>
 
-                <h3>Trading Mode</h3>
-
-                <p id="modeText">
-                    Demo FX uses virtual funds and simulated
-                    market execution.
-                </p>
-
-                <p class="notice">
-                    The Live FX interface is reserved for a future
-                    regulated broker/execution connection. This
-                    version does not execute real-money trades.
-                </p>
-
-            </div>
-
-        </aside>
-
-    </div>
-
+</div>
 </div>
 
 <script>
 
-const canvas =
-    document.getElementById("chart");
+const canvas=document.getElementById("chart");
+const ctx=canvas.getContext("2d");
 
-const ctx =
-    canvas.getContext("2d");
+let balance=10000;
+let price=1.08500;
+let positions=[];
+let history=[];
+let candles=[];
 
-let balance = 10000;
-let price = 1.08500;
-let positions = [];
-let history = [];
-let candles = [];
+let zoom=1;
+let offset=0;
 
-
-/* =========================
-   CHART VIEW
-========================= */
-
-let zoom = 1;
-
-const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 6;
-
-let offset = 0;
+const MIN_ZOOM=0.5;
+const MAX_ZOOM=6;
 
 
-/* =========================
-   INITIAL CANDLES
-========================= */
+/* INITIAL CANDLES */
 
 for(let i=0;i<70;i++){
 
-    let open = price;
+    let open=price;
 
-    let move =
-        (Math.random()-0.5)*0.002;
+    let move=(Math.random()-0.5)*0.002;
 
-    let close =
-        open + move;
+    let close=open+move;
 
-    let high =
-        Math.max(open,close) +
-        Math.random()*0.001;
+    let high=Math.max(open,close)+Math.random()*0.001;
 
-    let low =
-        Math.min(open,close) -
-        Math.random()*0.001;
+    let low=Math.min(open,close)-Math.random()*0.001;
 
     candles.push({
         open,
@@ -544,24 +461,18 @@ for(let i=0;i<70;i++){
         close
     });
 
-    price = close;
+    price=close;
 }
 
 
-/* =========================
-   RESIZE
-========================= */
+/* RESIZE */
 
 function resizeCanvas(){
 
-    const rect =
-        canvas.getBoundingClientRect();
+    const rect=canvas.getBoundingClientRect();
 
-    canvas.width =
-        rect.width * devicePixelRatio;
-
-    canvas.height =
-        rect.height * devicePixelRatio;
+    canvas.width=rect.width*devicePixelRatio;
+    canvas.height=rect.height*devicePixelRatio;
 
     ctx.setTransform(
         devicePixelRatio,
@@ -576,129 +487,89 @@ function resizeCanvas(){
 }
 
 
-/* =========================
-   DRAW CHART
-========================= */
+/* CHART */
 
 function drawChart(){
 
-    const width =
-        canvas.clientWidth;
+    const width=canvas.clientWidth;
+    const height=canvas.clientHeight;
 
-    const height =
-        canvas.clientHeight;
+    ctx.clearRect(0,0,width,height);
 
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
+    if(!candles.length)return;
+
+
+    let visibleCount=Math.max(
+        8,
+        Math.floor(candles.length/zoom)
     );
 
-    if(candles.length === 0)
-        return;
+
+    const maxOffset=Math.max(
+        0,
+        candles.length-visibleCount
+    );
 
 
-    let visibleCount =
-        Math.max(
-            8,
-            Math.floor(candles.length / zoom)
-        );
+    offset=Math.max(
+        0,
+        Math.min(offset,maxOffset)
+    );
 
 
-    /*
-       offset = 0 means latest candles.
-       Positive offset moves backwards.
-    */
+    const end=candles.length-offset;
 
-    const maxOffset =
-        Math.max(
-            0,
-            candles.length-visibleCount
-        );
+    const start=Math.max(
+        0,
+        end-visibleCount
+    );
 
 
-    offset =
-        Math.max(
-            0,
-            Math.min(
-                offset,
-                maxOffset
-            )
-        );
+    const visibleCandles=candles.slice(
+        start,
+        end
+    );
 
 
-    const end =
-        candles.length-offset;
+    let max=Math.max(
+        ...visibleCandles.map(c=>c.high)
+    );
+
+    let min=Math.min(
+        ...visibleCandles.map(c=>c.low)
+    );
 
 
-    const start =
-        Math.max(
-            0,
-            end-visibleCount
-        );
+    const range=max-min||0.001;
+
+    const gap=width/visibleCandles.length;
 
 
-    const visibleCandles =
-        candles.slice(start,end);
-
-
-    if(visibleCandles.length === 0)
-        return;
-
-
-    let max =
-        Math.max(
-            ...visibleCandles.map(c=>c.high)
-        );
-
-    let min =
-        Math.min(
-            ...visibleCandles.map(c=>c.low)
-        );
-
-
-    const range =
-        max-min || 0.001;
-
-
-    const gap =
-        width/visibleCandles.length;
-
+    /* CANDLES */
 
     visibleCandles.forEach((c,i)=>{
 
-        const x =
-            i*gap+gap/2;
+        const x=i*gap+gap/2;
 
+        const openY=
+            height-((c.open-min)/range)*height;
 
-        const openY =
-            height-
-            ((c.open-min)/range)*height;
+        const closeY=
+            height-((c.close-min)/range)*height;
 
+        const highY=
+            height-((c.high-min)/range)*height;
 
-        const closeY =
-            height-
-            ((c.close-min)/range)*height;
-
-
-        const highY =
-            height-
-            ((c.high-min)/range)*height;
-
-
-        const lowY =
-            height-
-            ((c.low-min)/range)*height;
+        const lowY=
+            height-((c.low-min)/range)*height;
 
 
         ctx.beginPath();
 
         ctx.moveTo(x,highY);
-
         ctx.lineTo(x,lowY);
 
-        ctx.strokeStyle =
+        ctx.strokeStyle=
             c.close>=c.open
             ? "#36d98b"
             : "#ff5967";
@@ -706,18 +577,17 @@ function drawChart(){
         ctx.stroke();
 
 
-        const bodyTop =
-            Math.min(openY,closeY);
+        const bodyTop=Math.min(
+            openY,
+            closeY
+        );
 
+        const bodyHeight=Math.max(
+            2,
+            Math.abs(closeY-closeY+openY-openY)
+        );
 
-        const bodyHeight =
-            Math.max(
-                2,
-                Math.abs(closeY-openY)
-            );
-
-
-        ctx.fillStyle =
+        ctx.fillStyle=
             c.close>=c.open
             ? "#36d98b"
             : "#ff5967";
@@ -727,58 +597,172 @@ function drawChart(){
             x-gap*0.3,
             bodyTop,
             gap*0.6,
-            bodyHeight
+            Math.max(
+                2,
+                Math.abs(closeY-openY)
+            )
         );
 
     });
 
+
+    /* TRADE MARKS */
+
+    positions.forEach(position=>{
+
+        if(position.symbol!==
+           document.getElementById("symbol").value)
+            return;
+
+
+        const y=
+            height-
+            ((position.entry-min)/range)*height;
+
+
+        /* ENTRY LINE */
+
+        ctx.beginPath();
+
+        ctx.moveTo(0,y);
+        ctx.lineTo(width,y);
+
+        ctx.setLineDash([7,5]);
+
+        ctx.strokeStyle=
+            position.side==="BUY"
+            ? "#42dc96"
+            : "#ff6875";
+
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+
+
+        /* ENTRY LABEL */
+
+        ctx.fillStyle=
+            position.side==="BUY"
+            ? "#42dc96"
+            : "#ff6875";
+
+
+        ctx.font="bold 12px Arial";
+
+
+        ctx.fillText(
+            position.side+
+            "  "+
+            position.entry.toFixed(5),
+            8,
+            Math.max(
+                14,
+                y-6
+            )
+        );
+
+
+        /* P/L MARKER */
+
+        const currentY=
+            height-
+            ((price-min)/range)*height;
+
+
+        ctx.beginPath();
+
+        ctx.arc(
+            width-45,
+            currentY,
+            6,
+            0,
+            Math.PI*2
+        );
+
+        ctx.fill();
+
+
+        ctx.font="bold 12px Arial";
+
+
+        const plText=
+            (position.pl>=0?"+":"")+
+            "$"+
+            position.pl.toFixed(2);
+
+
+        ctx.fillText(
+            plText,
+            width-100,
+            currentY-10
+        );
+
+    });
+
+
+    /* CURRENT PRICE */
+
+    const currentY=
+        height-
+        ((price-min)/range)*height;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(0,currentY);
+    ctx.lineTo(width,currentY);
+
+    ctx.setLineDash([3,4]);
+
+    ctx.strokeStyle="#ffffff";
+
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+
+
+    ctx.fillStyle="#ffffff";
+
+    ctx.font="12px Arial";
+
+    ctx.fillText(
+        price.toFixed(5),
+        width-70,
+        currentY-5
+    );
+
 }
 
 
-/* =========================
-   ZOOM IN
-========================= */
+/* ZOOM */
 
-document
-.getElementById("zoomIn")
+document.getElementById("zoomIn")
 .addEventListener("click",()=>{
 
-    zoom =
-        Math.min(
-            MAX_ZOOM,
-            zoom+0.5
-        );
+    zoom=Math.min(
+        MAX_ZOOM,
+        zoom+0.5
+    );
 
     drawChart();
 
 });
 
 
-/* =========================
-   ZOOM OUT
-========================= */
-
-document
-.getElementById("zoomOut")
+document.getElementById("zoomOut")
 .addEventListener("click",()=>{
 
-    zoom =
-        Math.max(
-            MIN_ZOOM,
-            zoom-0.5
-        );
+    zoom=Math.max(
+        MIN_ZOOM,
+        zoom-0.5
+    );
 
     drawChart();
 
 });
 
 
-/* =========================
-   RESET ZOOM
-========================= */
-
-document
-.getElementById("resetZoom")
+document.getElementById("resetZoom")
 .addEventListener("click",()=>{
 
     zoom=1;
@@ -789,12 +773,7 @@ document
 });
 
 
-/* =========================
-   LATEST
-========================= */
-
-document
-.getElementById("latest")
+document.getElementById("latest")
 .addEventListener("click",()=>{
 
     offset=0;
@@ -804,9 +783,7 @@ document
 });
 
 
-/* =========================
-   MOUSE DRAG
-========================= */
+/* MOUSE DRAG */
 
 let dragging=false;
 let dragStartX=0;
@@ -814,264 +791,176 @@ let dragStartOffset=0;
 
 
 canvas.addEventListener(
-    "mousedown",
-    event=>{
+"mousedown",
+event=>{
 
-        dragging=true;
+    dragging=true;
 
-        dragStartX =
-            event.clientX;
+    dragStartX=event.clientX;
 
-        dragStartOffset =
-            offset;
+    dragStartOffset=offset;
 
-        canvas.classList.add(
-            "dragging"
-        );
+    canvas.classList.add("dragging");
 
-    }
-);
+});
 
 
 window.addEventListener(
-    "mousemove",
-    event=>{
+"mousemove",
+event=>{
 
-        if(!dragging)
-            return;
+    if(!dragging)return;
 
 
-        const dx =
-            event.clientX-dragStartX;
+    const dx=
+        event.clientX-dragStartX;
 
 
-        const candleWidth =
-            canvas.clientWidth /
-            Math.max(
-                8,
-                Math.floor(
-                    candles.length/zoom
-                )
-            );
+    const visibleCount=Math.max(
+        8,
+        Math.floor(candles.length/zoom)
+    );
 
 
-        const candleMove =
-            Math.round(
-                dx/candleWidth
-            );
+    const candleWidth=
+        canvas.clientWidth/visibleCount;
 
 
-        offset =
-            dragStartOffset-candleMove;
+    const candleMove=
+        Math.round(dx/candleWidth);
 
 
-        drawChart();
+    offset=
+        dragStartOffset-candleMove;
 
-    }
-);
-
-
-window.addEventListener(
-    "mouseup",
-    ()=>{
-
-        dragging=false;
-
-        canvas.classList.remove(
-            "dragging"
-        );
-
-    }
-);
-
-
-/* =========================
-   PHONE TOUCH DRAG
-========================= */
-
-let touchStartX=0;
-let touchStartOffset=0;
-let touching=false;
-
-
-canvas.addEventListener(
-    "touchstart",
-    event=>{
-
-        if(event.touches.length!==1)
-            return;
-
-        touching=true;
-
-        touchStartX =
-            event.touches[0].clientX;
-
-        touchStartOffset =
-            offset;
-
-    },
-    {passive:true}
-);
-
-
-canvas.addEventListener(
-    "touchmove",
-    event=>{
-
-        if(!touching ||
-           event.touches.length!==1)
-            return;
-
-
-        const currentX =
-            event.touches[0].clientX;
-
-
-        const dx =
-            currentX-touchStartX;
-
-
-        const candleWidth =
-            canvas.clientWidth /
-            Math.max(
-                8,
-                Math.floor(
-                    candles.length/zoom
-                )
-            );
-
-
-        const candleMove =
-            Math.round(
-                dx/candleWidth
-            );
-
-
-        offset =
-            touchStartOffset-candleMove;
-
-
-        drawChart();
-
-    },
-    {passive:true}
-);
-
-
-canvas.addEventListener(
-    "touchend",
-    ()=>{
-
-        touching=false;
-
-    }
-);
-
-
-/* =========================
-   MOUSE WHEEL ZOOM
-========================= */
-
-canvas.addEventListener(
-    "wheel",
-    event=>{
-
-        event.preventDefault();
-
-        if(event.deltaY<0){
-
-            zoom =
-                Math.min(
-                    MAX_ZOOM,
-                    zoom+0.25
-                );
-
-        }else{
-
-            zoom =
-                Math.max(
-                    MIN_ZOOM,
-                    zoom-0.25
-                );
-
-        }
-
-        drawChart();
-
-    },
-    {passive:false}
-);
-
-
-/* =========================
-   PRICE UPDATE
-========================= */
-
-function updatePrice(){
-
-    const move =
-        (Math.random()-0.5)*0.0008;
-
-    price += move;
-
-
-    if(price<=0)
-        price=0.0001;
-
-
-    candles.push({
-
-        open:
-            candles[candles.length-1].close,
-
-        high:
-            Math.max(
-                price,
-                candles[candles.length-1].close
-            ),
-
-        low:
-            Math.min(
-                price,
-                candles[candles.length-1].close
-            ),
-
-        close:price
-
-    });
-
-
-    if(candles.length>150)
-        candles.shift();
-
-
-    document.getElementById("bid")
-    .textContent =
-        price.toFixed(5);
-
-
-    document.getElementById("ask")
-    .textContent =
-        (price+0.00010).toFixed(5);
-
-
-    updatePositions();
 
     drawChart();
 
-}
+});
 
 
-/* =========================
-   OPEN TRADE
-========================= */
+window.addEventListener(
+"mouseup",
+()=>{
+
+    dragging=false;
+
+    canvas.classList.remove("dragging");
+
+});
+
+
+/* TOUCH DRAG */
+
+let touching=false;
+let touchStartX=0;
+let touchStartOffset=0;
+
+
+canvas.addEventListener(
+"touchstart",
+event=>{
+
+    if(event.touches.length!==1)return;
+
+    touching=true;
+
+    touchStartX=
+        event.touches[0].clientX;
+
+    touchStartOffset=offset;
+
+},
+{passive:true}
+);
+
+
+canvas.addEventListener(
+"touchmove",
+event=>{
+
+    if(!touching ||
+       event.touches.length!==1)
+        return;
+
+
+    const dx=
+        event.touches[0].clientX-
+        touchStartX;
+
+
+    const visibleCount=Math.max(
+        8,
+        Math.floor(candles.length/zoom)
+    );
+
+
+    const candleWidth=
+        canvas.clientWidth/visibleCount;
+
+
+    const candleMove=
+        Math.round(dx/candleWidth);
+
+
+    offset=
+        touchStartOffset-candleMove;
+
+
+    drawChart();
+
+},
+{passive:true}
+);
+
+
+canvas.addEventListener(
+"touchend",
+()=>{
+
+    touching=false;
+
+});
+
+
+/* WHEEL ZOOM */
+
+canvas.addEventListener(
+"wheel",
+event=>{
+
+    event.preventDefault();
+
+    if(event.deltaY<0){
+
+        zoom=Math.min(
+            MAX_ZOOM,
+            zoom+0.25
+        );
+
+    }else{
+
+        zoom=Math.max(
+            MIN_ZOOM,
+            zoom-0.25
+        );
+
+    }
+
+    drawChart();
+
+},
+{passive:false}
+);
+
+
+/* OPEN TRADE */
 
 function openTrade(side){
 
-    const volume =
-        Number(
-            document.getElementById("volume").value
-        );
+    const volume=Number(
+        document.getElementById("volume").value
+    );
 
 
     if(!Number.isFinite(volume)||volume<=0){
@@ -1112,12 +1001,12 @@ function openTrade(side){
 
     updatePositions();
 
+    drawChart();
+
 }
 
 
-/* =========================
-   UPDATE POSITIONS
-========================= */
+/* UPDATE POSITIONS */
 
 function updatePositions(){
 
@@ -1126,41 +1015,40 @@ function updatePositions(){
 
     positions.forEach(position=>{
 
-        const difference =
+        const difference=
             position.side==="BUY"
             ? price-position.entry
             : position.entry-price;
 
 
-        position.pl =
+        position.pl=
             difference*
             position.volume*
             100000;
 
 
-        totalPL +=
-            position.pl;
+        totalPL+=position.pl;
 
     });
 
 
     document.getElementById("pl")
-    .textContent =
+    .textContent=
         "$"+totalPL.toFixed(2);
 
 
     document.getElementById("equity")
-    .textContent =
+    .textContent=
         "$"+(balance+totalPL).toFixed(2);
 
 
     document.getElementById("balance")
-    .textContent =
+    .textContent=
         "$"+balance.toFixed(2);
 
 
     document.getElementById("positionCount")
-    .textContent =
+    .textContent=
         positions.length;
 
 
@@ -1169,13 +1057,11 @@ function updatePositions(){
 }
 
 
-/* =========================
-   RENDER POSITIONS
-========================= */
+/* POSITIONS */
 
 function renderPositions(){
 
-    const body =
+    const body=
         document.getElementById("positions");
 
     body.innerHTML="";
@@ -1183,11 +1069,11 @@ function renderPositions(){
 
     positions.forEach(position=>{
 
-        const row =
+        const row=
             document.createElement("tr");
 
 
-        const plClass =
+        const cls=
             position.pl>=0
             ? "green"
             : "red";
@@ -1195,25 +1081,25 @@ function renderPositions(){
 
         row.innerHTML=`
 
-            <td>${position.symbol}</td>
+<td>${position.symbol}</td>
 
-            <td>${position.side}</td>
+<td>${position.side}</td>
 
-            <td>${position.volume.toFixed(2)}</td>
+<td>${position.volume.toFixed(2)}</td>
 
-            <td>${position.entry.toFixed(5)}</td>
+<td>${position.entry.toFixed(5)}</td>
 
-            <td class="${plClass}">
-                $${position.pl.toFixed(2)}
-            </td>
+<td class="${cls}">
+$${position.pl.toFixed(2)}
+</td>
 
-            <td>
-                <button data-close="${position.id}">
-                    Close
-                </button>
-            </td>
+<td>
+<button data-close="${position.id}">
+Close
+</button>
+</td>
 
-        `;
+`;
 
 
         body.appendChild(row);
@@ -1221,16 +1107,13 @@ function renderPositions(){
     });
 
 
-    body
-    .querySelectorAll("[data-close]")
+    body.querySelectorAll("[data-close]")
     .forEach(button=>{
 
         button.addEventListener(
             "click",
             ()=>closePosition(
-                Number(
-                    button.dataset.close
-                )
+                Number(button.dataset.close)
             )
         );
 
@@ -1239,28 +1122,24 @@ function renderPositions(){
 }
 
 
-/* =========================
-   CLOSE POSITION
-========================= */
+/* CLOSE */
 
 function closePosition(id){
 
-    const index =
+    const index=
         positions.findIndex(
             p=>p.id===id
         );
 
 
-    if(index===-1)
-        return;
+    if(index===-1)return;
 
 
-    const position =
+    const position=
         positions[index];
 
 
-    balance +=
-        position.pl;
+    balance+=position.pl;
 
 
     history.unshift({
@@ -1283,10 +1162,7 @@ function closePosition(id){
     });
 
 
-    positions.splice(
-        index,
-        1
-    );
+    positions.splice(index,1);
 
 
     setStatus(
@@ -1299,16 +1175,16 @@ function closePosition(id){
 
     updatePositions();
 
+    drawChart();
+
 }
 
 
-/* =========================
-   HISTORY
-========================= */
+/* HISTORY */
 
 function renderHistory(){
 
-    const body =
+    const body=
         document.getElementById("history");
 
     body.innerHTML="";
@@ -1316,11 +1192,11 @@ function renderHistory(){
 
     history.forEach(item=>{
 
-        const row =
+        const row=
             document.createElement("tr");
 
 
-        const cls =
+        const cls=
             item.result>=0
             ? "green"
             : "red";
@@ -1328,19 +1204,19 @@ function renderHistory(){
 
         row.innerHTML=`
 
-            <td>${item.time}</td>
+<td>${item.time}</td>
 
-            <td>${item.symbol}</td>
+<td>${item.symbol}</td>
 
-            <td>${item.side}</td>
+<td>${item.side}</td>
 
-            <td>${item.volume.toFixed(2)}</td>
+<td>${item.volume.toFixed(2)}</td>
 
-            <td class="${cls}">
-                $${item.result.toFixed(2)}
-            </td>
+<td class="${cls}">
+$${item.result.toFixed(2)}
+</td>
 
-        `;
+`;
 
 
         body.appendChild(row);
@@ -1350,24 +1226,16 @@ function renderHistory(){
 }
 
 
-/* =========================
-   STATUS
-========================= */
+/* STATUS */
 
-function setStatus(
-    message,
-    error=false
-){
+function setStatus(message,error=false){
 
-    const status =
+    const status=
         document.getElementById("status");
 
+    status.textContent=message;
 
-    status.textContent =
-        message;
-
-
-    status.style.color =
+    status.style.color=
         error
         ? "#ff6875"
         : "#9eb0c4";
@@ -1375,49 +1243,36 @@ function setStatus(
 }
 
 
-/* =========================
-   BUY
-========================= */
+/* BUY / SELL */
 
-document
-.getElementById("buyBtn")
+document.getElementById("buyBtn")
 .addEventListener(
     "click",
     ()=>openTrade("BUY")
 );
 
 
-/* =========================
-   SELL
-========================= */
-
-document
-.getElementById("sellBtn")
+document.getElementById("sellBtn")
 .addEventListener(
     "click",
     ()=>openTrade("SELL")
 );
 
 
-/* =========================
-   DEMO
-========================= */
+/* DEMO */
 
-document
-.getElementById("demoBtn")
+document.getElementById("demoBtn")
 .addEventListener(
     "click",
     ()=>{
 
         document.getElementById("modeText")
-        .textContent =
-            "Demo FX uses virtual funds and simulated market execution.";
-
+        .textContent=
+        "Demo FX uses virtual funds and simulated market execution.";
 
         document.querySelector(".mode")
-        .textContent =
-            "SIMULATION MODE";
-
+        .textContent=
+        "SIMULATION MODE";
 
         setStatus(
             "Demo FX simulator active."
@@ -1427,25 +1282,20 @@ document
 );
 
 
-/* =========================
-   LIVE
-========================= */
+/* LIVE */
 
-document
-.getElementById("liveBtn")
+document.getElementById("liveBtn")
 .addEventListener(
     "click",
     ()=>{
 
         document.getElementById("modeText")
-        .textContent =
-            "Live FX interface selected. Real-money execution is not connected.";
-
+        .textContent=
+        "Live FX interface selected. Real-money execution is not connected.";
 
         document.querySelector(".mode")
-        .textContent =
-            "LIVE INTERFACE";
-
+        .textContent=
+        "LIVE INTERFACE";
 
         setStatus(
             "Live interface selected. Real execution is not enabled."
@@ -1455,12 +1305,9 @@ document
 );
 
 
-/* =========================
-   SYMBOL
-========================= */
+/* SYMBOL */
 
-document
-.getElementById("symbol")
+document.getElementById("symbol")
 .addEventListener(
     "change",
     ()=>{
@@ -1470,19 +1317,18 @@ document
             " selected."
         );
 
+        drawChart();
+
     }
 );
 
 
-/* =========================
-   START
-========================= */
+/* START */
 
 window.addEventListener(
     "resize",
     resizeCanvas
 );
-
 
 resizeCanvas();
 
