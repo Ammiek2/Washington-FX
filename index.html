@@ -1,5 +1,3 @@
-<!-- Replace your current index.html with this complete version -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,23 +6,31 @@
 <title>Washington FX</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
+*{
+    box-sizing:border-box;
     margin:0;
-    font-family:Arial,sans-serif;
-    background:#07101c;
-    color:#fff;
+    padding:0;
 }
 
-button,select,input{
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#07101c;
+    color:#fff;
+    min-height:100vh;
+}
+
+button,input,select{
     font:inherit;
 }
 
-.top{
-    padding:16px 20px;
-    background:#0d1827;
-    border-bottom:1px solid #26384d;
+button{
+    cursor:pointer;
+}
+
+header{
+    background:#0c1726;
+    border-bottom:1px solid #24364d;
+    padding:14px 18px;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -33,293 +39,330 @@ button,select,input{
 }
 
 .logo{
-    font-size:23px;
+    font-size:22px;
     font-weight:bold;
 }
 
-.mode{
+.mode-badge{
     padding:7px 12px;
-    border-radius:20px;
-    background:#173552;
-    color:#8ec7ff;
-    font-size:13px;
+    border-radius:7px;
+    background:#17395f;
+    font-size:12px;
+    font-weight:bold;
 }
 
 .container{
-    max-width:1400px;
+    max-width:1500px;
     margin:auto;
-    padding:18px;
+    padding:15px;
 }
 
 .toolbar{
     display:flex;
-    gap:10px;
     flex-wrap:wrap;
-    margin-bottom:18px;
+    gap:8px;
+    margin-bottom:12px;
 }
 
-button,select,input{
-    min-height:44px;
-    border-radius:7px;
-    border:1px solid #34495e;
+select,
+input{
     background:#101d2d;
     color:white;
-    padding:10px 13px;
+    border:1px solid #30445c;
+    padding:9px 10px;
+    border-radius:6px;
+    outline:none;
 }
 
 button{
-    cursor:pointer;
+    border:0;
+    padding:9px 12px;
+    border-radius:6px;
+    background:#1d3047;
+    color:white;
 }
 
 button:hover{
-    background:#1b3048;
-}
-
-.primary{
-    background:#147df5;
-    border-color:#147df5;
+    filter:brightness(1.2);
 }
 
 .buy{
-    background:#087f50;
-    border-color:#087f50;
-    flex:1;
+    background:#087f5b;
 }
 
 .sell{
-    background:#a72c39;
-    border-color:#a72c39;
-    flex:1;
+    background:#a83232;
+}
+
+.fullscreen{
+    background:#7048e8;
 }
 
 .cards{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:12px;
-    margin-bottom:18px;
+    gap:10px;
+    margin-bottom:12px;
 }
 
 .card{
-    background:#0d1827;
-    border:1px solid #26384d;
-    border-radius:10px;
-    padding:16px;
+    background:#0c1726;
+    border:1px solid #22364d;
+    border-radius:8px;
+    padding:13px;
 }
 
 .card small{
-    color:#8da0b5;
+    color:#8fa2b8;
+    display:block;
+    margin-bottom:6px;
 }
 
 .card strong{
-    display:block;
-    margin-top:8px;
-    font-size:21px;
+    font-size:18px;
 }
 
-.layout{
+.main{
     display:grid;
-    grid-template-columns:minmax(0,1fr) 320px;
-    gap:18px;
+    grid-template-columns:1fr 300px;
+    gap:12px;
 }
 
 .panel{
-    background:#0d1827;
-    border:1px solid #26384d;
-    border-radius:10px;
-    padding:15px;
-    margin-bottom:18px;
+    background:#0c1726;
+    border:1px solid #22364d;
+    border-radius:8px;
+    overflow:hidden;
 }
 
-.chart-toolbar{
+.panel-title{
+    padding:11px 13px;
+    border-bottom:1px solid #22364d;
+    font-weight:bold;
     display:flex;
-    gap:7px;
-    flex-wrap:wrap;
-    margin-bottom:10px;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
 }
 
-.chart-toolbar button,
-.chart-toolbar select{
-    min-height:38px;
-    padding:7px 11px;
+.chart-tools{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.chart-tools button{
+    font-size:12px;
+    padding:7px 9px;
 }
 
 .chart-wrap{
-    height:440px;
     position:relative;
+    width:100%;
+    height:520px;
+    background:#07101c;
     overflow:hidden;
-    background:#08131f;
-    border-radius:7px;
-    touch-action:none;
 }
 
 canvas{
     width:100%;
     height:100%;
     display:block;
-    cursor:grab;
+    touch-action:none;
 }
 
-canvas.dragging{
-    cursor:grabbing;
+.chart-info{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:rgba(5,12,21,.85);
+    border:1px solid #30445c;
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    pointer-events:none;
 }
 
-.price{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:12px;
+.entry-info{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:rgba(5,12,21,.9);
+    border:1px solid #30445c;
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    pointer-events:none;
+    min-width:150px;
 }
 
-.price-box{
-    flex:1;
+.side{
     padding:12px;
-    border-radius:7px;
-    background:#111f30;
-    text-align:center;
 }
 
-.price-box small{
-    display:block;
-    color:#8da0b5;
-    margin-bottom:5px;
+.side-section{
+    margin-bottom:15px;
 }
 
-.price-box strong{
-    font-size:20px;
+.side-section h3{
+    font-size:14px;
+    margin-bottom:9px;
+    color:#b9c8d8;
 }
 
-.market-info{
+.market-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.market{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:10px;
-    color:#9eb0c4;
-    font-size:13px;
+    background:#101d2d;
+    padding:9px;
+    border-radius:6px;
+    cursor:pointer;
+    border:1px solid transparent;
 }
 
-.order-field{
-    margin-top:10px;
+.market.active{
+    border-color:#4dabf7;
 }
 
-.order-field label{
-    display:block;
-    color:#9eb0c4;
-    font-size:13px;
-    margin-bottom:5px;
+.market span:last-child{
+    font-family:monospace;
 }
 
-.order-field input{
-    width:100%;
+.order-box{
+    display:grid;
+    gap:8px;
 }
 
-.order-actions{
-    display:flex;
-    gap:10px;
+.order-box label{
+    font-size:12px;
+    color:#9eb0c3;
+}
+
+.order-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+}
+
+.notice{
     margin-top:12px;
+    padding:11px;
+    background:#111f30;
+    border:1px solid #30445c;
+    border-radius:7px;
+    color:#aebdce;
+    font-size:12px;
+    line-height:1.5;
+}
+
+.table-panel{
+    margin-top:12px;
+}
+
+.table-scroll{
+    overflow-x:auto;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
+    min-width:850px;
 }
 
 th,td{
+    padding:9px 10px;
+    border-bottom:1px solid #203247;
     text-align:left;
-    padding:11px 8px;
-    border-bottom:1px solid #26384d;
-    font-size:14px;
+    font-size:12px;
 }
 
 th{
-    color:#8da0b5;
+    color:#8fa2b8;
+    background:#0a1421;
 }
 
-.status{
-    padding:9px;
-    border-radius:7px;
-    background:#101d2d;
-    color:#9eb0c4;
-    margin-top:12px;
+.positive{
+    color:#40c997;
 }
 
-.green{
-    color:#42dc96;
+.negative{
+    color:#ff6b6b;
 }
 
-.red{
-    color:#ff6875;
+.fullscreen-mode{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:#050b13;
+    padding:8px;
 }
 
-.notice{
-    color:#9eb0c4;
-    font-size:13px;
-    line-height:1.5;
+.fullscreen-mode .chart-wrap{
+    height:calc(100vh - 65px);
 }
 
-.live-note{
+.fullscreen-mode .panel{
+    height:100%;
+}
+
+.fullscreen-mode .panel-title{
+    height:55px;
+}
+
+.exit-fullscreen{
     display:none;
-    padding:10px;
-    border-radius:7px;
-    background:#16263a;
-    color:#8ec7ff;
-    font-size:13px;
-    margin-top:10px;
 }
 
-.market-list{
-    display:grid;
-    gap:8px;
+.fullscreen-mode .exit-fullscreen{
+    display:inline-block;
+    background:#c92a2a;
 }
 
-.market-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px;
-    background:#101d2d;
-    border-radius:7px;
-    cursor:pointer;
+.dragging{
+    cursor:grabbing !important;
 }
 
-.market-row:hover{
-    background:#182a3e;
-}
-
-.market-name{
-    font-weight:bold;
-}
-
-.market-price{
-    color:#8ec7ff;
-}
-
-@media(max-width:900px){
+@media(max-width:1000px){
+    .main{
+        grid-template-columns:1fr;
+    }
 
     .cards{
         grid-template-columns:repeat(2,1fr);
     }
-
-    .layout{
-        grid-template-columns:1fr;
-    }
 }
 
 @media(max-width:600px){
+    .container{
+        padding:8px;
+    }
 
     .cards{
         grid-template-columns:1fr 1fr;
+        gap:6px;
     }
 
-    .container{
+    .card{
         padding:10px;
     }
 
-    .chart-wrap{
-        height:330px;
+    .card strong{
+        font-size:15px;
     }
 
-    th,td{
-        font-size:12px;
+    .chart-wrap{
+        height:430px;
+    }
+
+    header{
+        padding:11px;
     }
 }
 </style>
@@ -327,25 +370,18 @@ th{
 
 <body>
 
-<header class="top">
-
-    <div class="logo">
-        WASHINGTON FX
+<header>
+    <div class="logo">WASHINGTON FX</div>
+    <div>
+        <span id="modeBadge" class="mode-badge">SIMULATION MODE</span>
     </div>
-
-    <div class="mode" id="modeBadge">
-        SIMULATION MODE
-    </div>
-
 </header>
-
 
 <div class="container">
 
     <div class="toolbar">
 
-        <select id="symbol">
-
+        <select id="symbolSelect">
             <option>EURUSD</option>
             <option>GBPUSD</option>
             <option>USDJPY</option>
@@ -354,31 +390,19 @@ th{
             <option>USDCAD</option>
             <option>XAUUSD</option>
             <option>BTCUSD</option>
-
         </select>
 
-
         <select id="timeframe">
-
             <option>1 Minute</option>
             <option>5 Minutes</option>
             <option>15 Minutes</option>
             <option>1 Hour</option>
-
         </select>
 
-
-        <button id="demoBtn" class="primary">
-            Demo FX
-        </button>
-
-
-        <button id="liveBtn">
-            Live FX
-        </button>
+        <button id="demoBtn">Demo FX</button>
+        <button id="liveBtn">Live FX</button>
 
     </div>
-
 
     <div class="cards">
 
@@ -394,7 +418,7 @@ th{
 
         <div class="card">
             <small>Floating P/L</small>
-            <strong id="pl">$0.00</strong>
+            <strong id="floating">$0.00</strong>
         </div>
 
         <div class="card">
@@ -404,334 +428,159 @@ th{
 
     </div>
 
+    <div class="main">
 
-    <div class="layout">
+        <div class="panel" id="chartPanel">
 
-        <div>
+            <div class="panel-title">
 
-            <div class="panel">
-
-                <div class="price">
-
-                    <div class="price-box">
-                        <small>BID</small>
-                        <strong id="bid">1.08500</strong>
-                    </div>
-
-                    <div class="price-box">
-                        <small>ASK</small>
-                        <strong id="ask">1.08510</strong>
-                    </div>
-
+                <div>
+                    <span id="chartSymbol">EURUSD</span>
+                    &nbsp;
+                    <span id="bidAsk">1.08500 / 1.08508</span>
                 </div>
 
-
-                <div class="market-info">
-
-                    <span>
-                        Market:
-                        <strong id="marketName">
-                            EURUSD
-                        </strong>
-                    </span>
-
-                    <span id="marketStatus">
-                        Simulated price feed
-                    </span>
-
-                </div>
-
-
-                <div class="chart-toolbar">
-
-                    <button id="zoomIn">
-                        + Zoom In
-                    </button>
-
-                    <button id="zoomOut">
-                        − Zoom Out
-                    </button>
-
-                    <button id="resetZoom">
-                        Reset Zoom
-                    </button>
-
-                    <button id="latest">
-                        Latest
-                    </button>
-
-                    <button id="gridBtn">
-                        Grid: ON
-                    </button>
-
-
-                    <select id="candleStyle">
-
-                        <option value="classic">
-                            Classic Candles
-                        </option>
-
-                        <option value="hollow">
-                            Hollow Candles
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="chart-wrap">
-
-                    <canvas id="chart"></canvas>
-
+                <div class="chart-tools">
+                    <button id="zoomIn">＋ Zoom</button>
+                    <button id="zoomOut">－ Zoom</button>
+                    <button id="resetZoom">Reset</button>
+                    <button id="latest">Latest</button>
+                    <button id="gridBtn">Grid</button>
+                    <button id="styleBtn">Classic</button>
+                    <button id="fullscreenBtn" class="fullscreen">Full Screen</button>
+                    <button id="exitFullscreen" class="exit-fullscreen">Exit Full Screen</button>
                 </div>
 
             </div>
 
+            <div class="chart-wrap" id="chartWrap">
 
-            <div class="panel">
+                <canvas id="chart"></canvas>
 
-                <h3>Open Positions</h3>
-
-                <div style="overflow-x:auto;">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Symbol</th>
-                                <th>Side</th>
-                                <th>Volume</th>
-                                <th>Entry</th>
-                                <th>TP</th>
-                                <th>SL</th>
-                                <th>P/L</th>
-                                <th></th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="positions"></tbody>
-
-                    </table>
-
+                <div class="chart-info">
+                    <div>Market: <b id="infoSymbol">EURUSD</b></div>
+                    <div>Price: <b id="infoPrice">1.08500</b></div>
+                    <div>Drag chart ← → to view candles</div>
                 </div>
 
-            </div>
-
-
-            <div class="panel">
-
-                <h3>Trade History</h3>
-
-                <div style="overflow-x:auto;">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-                                <th>Time</th>
-                                <th>Symbol</th>
-                                <th>Side</th>
-                                <th>Volume</th>
-                                <th>Result</th>
-                            </tr>
-
-                        </thead>
-
-                        <tbody id="history"></tbody>
-
-                    </table>
-
+                <div class="entry-info">
+                    <div>Current: <b id="entryCurrent">1.08500</b></div>
+                    <div>Entry: <b id="entryDisplay">—</b></div>
                 </div>
 
             </div>
 
         </div>
 
+        <div class="panel">
 
-        <aside>
+            <div class="panel-title">
+                Markets
+            </div>
 
-            <div class="panel">
+            <div class="side">
 
-                <h3>New Order</h3>
+                <div class="side-section">
+                    <div class="market-list" id="marketList"></div>
+                </div>
 
+                <div class="side-section">
 
-                <div class="order-field">
+                    <h3>New Order</h3>
 
-                    <label>Volume</label>
+                    <div class="order-box">
 
-                    <input
-                        id="volume"
-                        type="number"
-                        value="0.10"
-                        min="0.01"
-                        step="0.01"
-                    >
+                        <label>Volume</label>
+                        <input id="volume" type="number" value="0.10" min="0.01" step="0.01">
+
+                        <label>Take Profit</label>
+                        <input id="tp" type="number" placeholder="Optional" step="0.00001">
+
+                        <label>Stop Loss</label>
+                        <input id="sl" type="number" placeholder="Optional" step="0.00001">
+
+                        <div class="order-buttons">
+                            <button class="buy" id="buyBtn">BUY</button>
+                            <button class="sell" id="sellBtn">SELL</button>
+                        </div>
+
+                    </div>
 
                 </div>
 
-
-                <div class="order-field">
-
-                    <label>Take Profit</label>
-
-                    <input
-                        id="takeProfit"
-                        type="number"
-                        placeholder="Optional"
-                        step="0.00001"
-                    >
-
-                </div>
-
-
-                <div class="order-field">
-
-                    <label>Stop Loss</label>
-
-                    <input
-                        id="stopLoss"
-                        type="number"
-                        placeholder="Optional"
-                        step="0.00001"
-                    >
-
-                </div>
-
-
-                <div class="order-actions">
-
-                    <button id="buyBtn" class="buy">
-                        BUY
-                    </button>
-
-                    <button id="sellBtn" class="sell">
-                        SELL
-                    </button>
-
-                </div>
-
-
-                <div id="status" class="status">
-                    Demo simulator ready.
-                </div>
-
-
-                <div id="liveNote" class="live-note">
-                    Live interface selected. Real-money execution requires
-                    a connected broker/execution service.
+                <div class="notice" id="notice">
+                    Demo mode uses virtual funds and simulated market movement.
                 </div>
 
             </div>
 
+        </div>
 
-            <div class="panel">
+    </div>
 
-                <h3>Markets</h3>
+    <div class="panel table-panel">
 
-                <div class="market-list">
+        <div class="panel-title">
+            Open Positions
+        </div>
 
-                    <div class="market-row" data-market="EURUSD">
-                        <span class="market-name">EURUSD</span>
-                        <span class="market-price" id="m-EURUSD">1.08500</span>
-                    </div>
+        <div class="table-scroll">
 
-                    <div class="market-row" data-market="GBPUSD">
-                        <span class="market-name">GBPUSD</span>
-                        <span class="market-price" id="m-GBPUSD">1.27000</span>
-                    </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Side</th>
+                        <th>Volume</th>
+                        <th>Entry</th>
+                        <th>Current</th>
+                        <th>TP</th>
+                        <th>SL</th>
+                        <th>P/L</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-                    <div class="market-row" data-market="USDJPY">
-                        <span class="market-name">USDJPY</span>
-                        <span class="market-price" id="m-USDJPY">149.500</span>
-                    </div>
+                <tbody id="positionsTable"></tbody>
 
-                    <div class="market-row" data-market="USDCHF">
-                        <span class="market-name">USDCHF</span>
-                        <span class="market-price" id="m-USDCHF">0.88000</span>
-                    </div>
+            </table>
 
-                    <div class="market-row" data-market="AUDUSD">
-                        <span class="market-name">AUDUSD</span>
-                        <span class="market-price" id="m-AUDUSD">0.65500</span>
-                    </div>
+        </div>
 
-                    <div class="market-row" data-market="USDCAD">
-                        <span class="market-name">USDCAD</span>
-                        <span class="market-price" id="m-USDCAD">1.36000</span>
-                    </div>
+    </div>
 
-                    <div class="market-row" data-market="XAUUSD">
-                        <span class="market-name">GOLD / XAUUSD</span>
-                        <span class="market-price" id="m-XAUUSD">2650.00</span>
-                    </div>
+    <div class="panel table-panel">
 
-                    <div class="market-row" data-market="BTCUSD">
-                        <span class="market-name">BTCUSD</span>
-                        <span class="market-price" id="m-BTCUSD">65000.00</span>
-                    </div>
+        <div class="panel-title">
+            Trade History
+        </div>
 
-                </div>
+        <div class="table-scroll">
 
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Side</th>
+                        <th>Volume</th>
+                        <th>Entry</th>
+                        <th>Exit</th>
+                        <th>P/L</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
 
+                <tbody id="historyTable"></tbody>
 
-            <div class="panel">
+            </table>
 
-                <h3>Trading Mode</h3>
-
-                <p id="modeText">
-                    Demo FX uses virtual funds and simulated
-                    market execution.
-                </p>
-
-                <p class="notice">
-                    Switching to Live keeps the same trading interface.
-                    Real-money execution requires a genuine broker
-                    connection and server-side execution system.
-                </p>
-
-            </div>
-
-        </aside>
+        </div>
 
     </div>
 
 </div>
 
-
 <script>
-
-/* =========================
-   CANVAS
-========================= */
-
-const canvas =
-    document.getElementById("chart");
-
-const ctx =
-    canvas.getContext("2d");
-
-
-/* =========================
-   ACCOUNT
-========================= */
-
-let balance = 10000;
-
-let positions = [];
-
-let history = [];
-
-let currentMode = "DEMO";
-
-
-/* =========================
-   MARKETS
-========================= */
 
 const markets = {
 
@@ -785,125 +634,43 @@ const markets = {
 
 };
 
+let currentSymbol = "EURUSD";
+let currentMode = "DEMO";
 
-let currentSymbol =
-    "EURUSD";
+let balance = 10000;
 
-
-let price =
-    markets[currentSymbol].price;
-
+let positions = [];
+let history = [];
 
 let candles = [];
 
+let zoom = 1;
+let offset = 0;
 
-/* =========================
-   CHART SETTINGS
-========================= */
+let gridEnabled = true;
+let candleStyle = "classic";
 
-let zoom=1;
+let price = markets[currentSymbol].price;
 
-const MIN_ZOOM=0.5;
+let dragging = false;
+let dragStartX = 0;
+let dragStartOffset = 0;
 
-const MAX_ZOOM=6;
+const canvas = document.getElementById("chart");
+const ctx = canvas.getContext("2d");
 
-let offset=0;
+function formatPrice(value,symbol=currentSymbol){
 
-let gridEnabled=true;
-
-let candleStyle="classic";
-
-
-/* =========================
-   CREATE CANDLES
-========================= */
-
-function createInitialCandles(){
-
-    candles=[];
-
-    price =
-        markets[currentSymbol].price;
-
-
-    const step =
-        markets[currentSymbol].step;
-
-
-    for(let i=0;i<100;i++){
-
-        const open=price;
-
-        const move =
-            (Math.random()-0.5)*
-            step*2;
-
-
-        const close =
-            open+move;
-
-
-        const high =
-            Math.max(open,close)+
-            Math.random()*step;
-
-
-        const low =
-            Math.min(open,close)-
-            Math.random()*step;
-
-
-        candles.push({
-            open,
-            high,
-            low,
-            close
-        });
-
-
-        price=close;
-
-    }
-
-
-    markets[currentSymbol].price =
-        price;
+    return Number(value).toFixed(markets[symbol].digits);
 
 }
-
-
-/* =========================
-   FORMAT PRICE
-========================= */
-
-function formatPrice(value,symbol){
-
-    const digits =
-        markets[symbol].digits;
-
-    return Number(value)
-        .toFixed(digits);
-
-}
-
-
-/* =========================
-   RESIZE
-========================= */
 
 function resizeCanvas(){
 
-    const rect =
-        canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
 
-
-    canvas.width =
-        rect.width*devicePixelRatio;
-
-
-    canvas.height =
-        rect.height*devicePixelRatio;
-
+    canvas.width = rect.width * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
 
     ctx.setTransform(
         devicePixelRatio,
@@ -914,394 +681,381 @@ function resizeCanvas(){
         0
     );
 
-
     drawChart();
 
 }
 
+window.addEventListener("resize",resizeCanvas);
 
-/* =========================
-   GRID
-========================= */
+function createInitialCandles(){
 
-function drawGrid(width,height){
+    candles = [];
 
-    if(!gridEnabled)
-        return;
+    let p = markets[currentSymbol].price;
 
+    for(let i=0;i<120;i++){
 
-    ctx.save();
+        let open = p;
 
-    ctx.strokeStyle =
-        "rgba(255,255,255,0.08)";
+        let close =
+            open +
+            (Math.random()-.5) *
+            markets[currentSymbol].step *
+            3;
 
-    ctx.lineWidth=1;
+        let high =
+            Math.max(open,close) +
+            Math.random() *
+            markets[currentSymbol].step *
+            1.5;
 
+        let low =
+            Math.min(open,close) -
+            Math.random() *
+            markets[currentSymbol].step *
+            1.5;
 
-    for(let i=1;i<10;i++){
+        candles.push({
+            open,
+            high,
+            low,
+            close
+        });
 
-        const x =
-            width/10*i;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(x,0);
-
-        ctx.lineTo(x,height);
-
-        ctx.stroke();
-
-    }
-
-
-    for(let i=1;i<8;i++){
-
-        const y =
-            height/8*i;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(0,y);
-
-        ctx.lineTo(width,y);
-
-        ctx.stroke();
+        p = close;
 
     }
 
-
-    ctx.restore();
+    price = markets[currentSymbol].price;
 
 }
 
+function drawGrid(){
 
-/* =========================
-   DRAW CHART
-========================= */
+    if(!gridEnabled) return;
+
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+
+    ctx.strokeStyle = "#162638";
+    ctx.lineWidth = 1;
+
+    for(let x=0;x<w;x+=70){
+
+        ctx.beginPath();
+        ctx.moveTo(x,0);
+        ctx.lineTo(x,h);
+        ctx.stroke();
+
+    }
+
+    for(let y=0;y<h;y+=55){
+
+        ctx.beginPath();
+        ctx.moveTo(0,y);
+        ctx.lineTo(w,y);
+        ctx.stroke();
+
+    }
+
+}
 
 function drawChart(){
 
-    const width =
-        canvas.clientWidth;
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
 
-    const height =
-        canvas.clientHeight;
+    ctx.clearRect(0,0,w,h);
 
+    drawGrid();
 
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
+    if(candles.length===0) return;
 
-
-    drawGrid(
-        width,
-        height
-    );
-
-
-    if(candles.length===0)
-        return;
-
-
-    const visibleCount =
+    let visibleCount =
         Math.max(
-            8,
-            Math.floor(
-                candles.length/zoom
-            )
+            10,
+            Math.floor(75 / zoom)
         );
 
-
-    const maxOffset =
+    let maxOffset =
         Math.max(
             0,
             candles.length-visibleCount
         );
 
+    offset = Math.max(
+        0,
+        Math.min(offset,maxOffset)
+    );
 
-    offset =
-        Math.max(
-            0,
-            Math.min(
-                offset,
-                maxOffset
-            )
-        );
+    let start =
+        candles.length -
+        visibleCount -
+        offset;
 
+    start = Math.max(0,start);
 
-    const end =
-        candles.length-offset;
-
-
-    const start =
-        Math.max(
-            0,
-            end-visibleCount
-        );
-
-
-    const visibleCandles =
+    let visible =
         candles.slice(
             start,
-            end
+            start+visibleCount
         );
 
+    if(visible.length===0) return;
 
-    let max =
+    let highest =
+        Math.max(...visible.map(c=>c.high));
+
+    let lowest =
+        Math.min(...visible.map(c=>c.low));
+
+    let range =
+        highest-lowest || 1;
+
+    const chartTop = 20;
+    const chartBottom = h-25;
+
+    function y(priceValue){
+
+        return chartBottom -
+            ((priceValue-lowest)/range) *
+            (chartBottom-chartTop);
+
+    }
+
+    const candleWidth =
         Math.max(
-            ...visibleCandles.map(
-                c=>c.high
-            )
+            4,
+            (w/visible.length)*0.65
         );
 
+    visible.forEach((c,i)=>{
 
-    let min =
-        Math.min(
-            ...visibleCandles.map(
-                c=>c.low
-            )
-        );
+        const x =
+            i*(w/visible.length) +
+            (w/visible.length)/2;
 
+        const openY = y(c.open);
+        const closeY = y(c.close);
+        const highY = y(c.high);
+        const lowY = y(c.low);
 
-    const range =
-        max-min||0.001;
+        const up = c.close >= c.open;
 
+        ctx.strokeStyle =
+            up ? "#31c48d" : "#ff5c5c";
 
-    const gap =
-        width/
-        visibleCandles.length;
+        ctx.fillStyle =
+            up ? "#31c48d" : "#ff5c5c";
 
+        ctx.lineWidth = 1;
 
-    visibleCandles.forEach(
-        (c,i)=>{
+        ctx.beginPath();
 
-            const x =
-                i*gap+
-                gap/2;
+        ctx.moveTo(x,highY);
+        ctx.lineTo(x,lowY);
 
+        ctx.stroke();
 
-            const openY =
-                height-
-                ((c.open-min)/range)*
-                height;
-
-
-            const closeY =
-                height-
-                ((c.close-min)/range)*
-                height;
-
-
-            const highY =
-                height-
-                ((c.high-min)/range)*
-                height;
-
-
-            const lowY =
-                height-
-                ((c.low-min)/range)*
-                height;
-
-
-            const bullish =
-                c.close>=c.open;
-
-
-            const candleColor =
-                bullish
-                ? "#36d98b"
-                : "#ff5967";
-
-
-            /* Wick */
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                x,
-                highY
-            );
-
-            ctx.lineTo(
-                x,
-                lowY
-            );
-
-            ctx.strokeStyle =
-                candleColor;
-
-            ctx.stroke();
-
-
-            /* Body */
+        if(candleStyle==="classic"){
 
             const bodyTop =
-                Math.min(
-                    openY,
-                    closeY
-                );
-
+                Math.min(openY,closeY);
 
             const bodyHeight =
                 Math.max(
                     2,
-                    Math.abs(
-                        closeY-openY
-                    )
+                    Math.abs(closeY-openY)
                 );
 
+            ctx.fillRect(
+                x-candleWidth/2,
+                bodyTop,
+                candleWidth,
+                bodyHeight
+            );
 
-            const bodyWidth =
+        }else{
+
+            ctx.lineWidth=2;
+
+            ctx.strokeRect(
+                x-candleWidth/2,
+                Math.min(openY,closeY),
+                candleWidth,
                 Math.max(
                     2,
-                    gap*0.6
-                );
-
-
-            if(
-                candleStyle==="classic"
-            ){
-
-                ctx.fillStyle =
-                    candleColor;
-
-                ctx.fillRect(
-                    x-bodyWidth/2,
-                    bodyTop,
-                    bodyWidth,
-                    bodyHeight
-                );
-
-            }
-            else{
-
-                ctx.strokeStyle =
-                    candleColor;
-
-                ctx.lineWidth=1.5;
-
-                ctx.strokeRect(
-                    x-bodyWidth/2,
-                    bodyTop,
-                    bodyWidth,
-                    bodyHeight
-                );
-
-            }
+                    Math.abs(closeY-openY)
+                )
+            );
 
         }
+
+    });
+
+    drawCurrentPriceLine(y);
+
+    drawTradeEntries(
+        start,
+        visible,
+        y
     );
 
 }
 
+function drawCurrentPriceLine(y){
 
-/* =========================
-   SELECT MARKET
-========================= */
+    const w = canvas.clientWidth;
 
-function selectMarket(symbol){
+    const py = y(price);
 
-    currentSymbol=symbol;
+    ctx.strokeStyle="#4dabf7";
+    ctx.setLineDash([6,4]);
+    ctx.lineWidth=1;
 
+    ctx.beginPath();
+    ctx.moveTo(0,py);
+    ctx.lineTo(w,py);
+    ctx.stroke();
 
-    createInitialCandles();
+    ctx.setLineDash([]);
 
+    ctx.fillStyle="#4dabf7";
+    ctx.font="12px Arial";
 
-    zoom=1;
-
-    offset=0;
-
-
-    document
-    .getElementById("symbol")
-    .value=symbol;
-
-
-    document
-    .getElementById("marketName")
-    .textContent=symbol;
-
-
-    updateMarketDisplay();
-
-
-    setStatus(
-        symbol+
-        " selected."
+    ctx.fillText(
+        formatPrice(price),
+        w-75,
+        py-5
     );
-
-
-    drawChart();
 
 }
 
+function drawTradeEntries(start,visible,y){
 
-/* =========================
-   MARKET DISPLAY
-========================= */
+    positions.forEach(pos=>{
+
+        if(pos.symbol!==currentSymbol) return;
+
+        const candleIndex =
+            candles.findIndex(
+                c=>c.time===pos.candleTime
+            );
+
+        if(candleIndex<start) return;
+
+        const relative =
+            candleIndex-start;
+
+        if(relative>=visible.length) return;
+
+        const x =
+            relative*(canvas.clientWidth/visible.length) +
+            (canvas.clientWidth/visible.length)/2;
+
+        const py = y(pos.entry);
+
+        ctx.strokeStyle =
+            pos.side==="BUY"
+            ? "#40c997"
+            : "#ff6b6b";
+
+        ctx.setLineDash([4,4]);
+
+        ctx.beginPath();
+
+        ctx.moveTo(x,py);
+        ctx.lineTo(canvas.clientWidth,py);
+
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+
+        ctx.fillStyle =
+            pos.side==="BUY"
+            ? "#40c997"
+            : "#ff6b6b";
+
+        ctx.beginPath();
+
+        if(pos.side==="BUY"){
+
+            ctx.moveTo(x,py);
+            ctx.lineTo(x-7,py+10);
+            ctx.lineTo(x+7,py+10);
+
+        }else{
+
+            ctx.moveTo(x,py);
+            ctx.lineTo(x-7,py-10);
+            ctx.lineTo(x+7,py-10);
+
+        }
+
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.font="11px Arial";
+
+        ctx.fillText(
+            pos.side+" Entry "+formatPrice(pos.entry),
+            Math.min(x+10,canvas.clientWidth-150),
+            py-8
+        );
+
+    });
+
+}
 
 function updateMarketDisplay(){
 
-    const market =
-        markets[currentSymbol];
-
-
-    price =
-        market.price;
-
-
-    const spread =
-        currentSymbol==="XAUUSD"
-        ? 0.20
-        : currentSymbol==="BTCUSD"
-            ? 5
-            : currentSymbol==="USDJPY"
-                ? 0.010
-                : 0.00010;
-
-
-    document
-    .getElementById("bid")
-    .textContent =
-        formatPrice(
-            price,
-            currentSymbol
-        );
-
-
-    document
-    .getElementById("ask")
-    .textContent =
-        formatPrice(
-            price+spread,
-            currentSymbol
-        );
-
-
-    document
-    .getElementById("marketName")
-    .textContent =
+    document.getElementById("chartSymbol").textContent =
         currentSymbol;
 
+    document.getElementById("infoSymbol").textContent =
+        currentSymbol;
 
-    Object.keys(markets)
-    .forEach(symbol=>{
+    document.getElementById("infoPrice").textContent =
+        formatPrice(price);
 
-        const element =
-            document.getElementById(
-                "m-"+symbol
-            );
+    document.getElementById("entryCurrent").textContent =
+        formatPrice(price);
 
+    document.getElementById("bidAsk").textContent =
+        formatPrice(price) +
+        " / " +
+        formatPrice(
+            price + markets[currentSymbol].step*0.1
+        );
 
-        if(element){
+    document.getElementById("entryDisplay").textContent =
+        positions.filter(
+            p=>p.symbol===currentSymbol
+        ).length
+        ? formatPrice(
+            positions.find(
+                p=>p.symbol===currentSymbol
+            ).entry
+        )
+        : "—";
 
-            element.textContent =
+    markets[currentSymbol].price = price;
+
+    document.querySelectorAll(".market").forEach(el=>{
+
+        const symbol = el.dataset.symbol;
+
+        el.classList.toggle(
+            "active",
+            symbol===currentSymbol
+        );
+
+        const priceElement =
+            el.querySelector(".market-price");
+
+        if(priceElement){
+
+            priceElement.textContent =
                 formatPrice(
                     markets[symbol].price,
                     symbol
@@ -1313,406 +1067,145 @@ function updateMarketDisplay(){
 
 }
 
+function renderMarkets(){
 
-/* =========================
-   GRID
-========================= */
+    const list =
+        document.getElementById("marketList");
 
-document
-.getElementById("gridBtn")
-.addEventListener(
-    "click",
-    ()=>{
+    list.innerHTML="";
 
-        gridEnabled=
-            !gridEnabled;
+    Object.keys(markets).forEach(symbol=>{
 
+        const div =
+            document.createElement("div");
 
-        document
-        .getElementById("gridBtn")
-        .textContent =
-            gridEnabled
-            ? "Grid: ON"
-            : "Grid: OFF";
+        div.className =
+            "market" +
+            (symbol===currentSymbol ? " active":"");
 
+        div.dataset.symbol=symbol;
 
-        drawChart();
+        div.innerHTML =
+            `<span>${symbol}</span>
+             <span class="market-price">
+             ${formatPrice(markets[symbol].price,symbol)}
+             </span>`;
 
-    }
-);
+        div.onclick=()=>selectMarket(symbol);
 
-
-/* =========================
-   CANDLE STYLE
-========================= */
-
-document
-.getElementById("candleStyle")
-.addEventListener(
-    "change",
-    event=>{
-
-        candleStyle=
-            event.target.value;
-
-
-        drawChart();
-
-    }
-);
-
-
-/* =========================
-   ZOOM
-========================= */
-
-document
-.getElementById("zoomIn")
-.addEventListener(
-    "click",
-    ()=>{
-
-        zoom=
-            Math.min(
-                MAX_ZOOM,
-                zoom+0.5
-            );
-
-
-        drawChart();
-
-    }
-);
-
-
-document
-.getElementById("zoomOut")
-.addEventListener(
-    "click",
-    ()=>{
-
-        zoom=
-            Math.max(
-                MIN_ZOOM,
-                zoom-0.5
-            );
-
-
-        drawChart();
-
-    }
-);
-
-
-document
-.getElementById("resetZoom")
-.addEventListener(
-    "click",
-    ()=>{
-
-        zoom=1;
-
-        offset=0;
-
-        drawChart();
-
-    }
-);
-
-
-document
-.getElementById("latest")
-.addEventListener(
-    "click",
-    ()=>{
-
-        offset=0;
-
-        drawChart();
-
-    }
-);
-
-
-/* =========================
-   MOUSE DRAG
-========================= */
-
-let dragging=false;
-
-let dragStartX=0;
-
-let dragStartOffset=0;
-
-
-canvas.addEventListener(
-    "mousedown",
-    event=>{
-
-        dragging=true;
-
-        dragStartX=
-            event.clientX;
-
-        dragStartOffset=
-            offset;
-
-        canvas.classList.add(
-            "dragging"
-        );
-
-    }
-);
-
-
-window.addEventListener(
-    "mousemove",
-    event=>{
-
-        if(!dragging)
-            return;
-
-
-        const dx =
-            event.clientX-
-            dragStartX;
-
-
-        const candleWidth =
-            canvas.clientWidth/
-            Math.max(
-                8,
-                Math.floor(
-                    candles.length/zoom
-                )
-            );
-
-
-        const candleMove =
-            Math.round(
-                dx/candleWidth
-            );
-
-
-        offset =
-            dragStartOffset-
-            candleMove;
-
-
-        drawChart();
-
-    }
-);
-
-
-window.addEventListener(
-    "mouseup",
-    ()=>{
-
-        dragging=false;
-
-        canvas.classList.remove(
-            "dragging"
-        );
-
-    }
-);
-
-
-/* =========================
-   PHONE DRAG
-========================= */
-
-let touchStartX=0;
-
-let touchStartOffset=0;
-
-let touching=false;
-
-
-canvas.addEventListener(
-    "touchstart",
-    event=>{
-
-        if(
-            event.touches.length!==1
-        )
-            return;
-
-
-        touching=true;
-
-        touchStartX=
-            event.touches[0].clientX;
-
-        touchStartOffset=
-            offset;
-
-    },
-    {passive:true}
-);
-
-
-canvas.addEventListener(
-    "touchmove",
-    event=>{
-
-        if(
-            !touching ||
-            event.touches.length!==1
-        )
-            return;
-
-
-        const dx =
-            event.touches[0].clientX-
-            touchStartX;
-
-
-        const candleWidth =
-            canvas.clientWidth/
-            Math.max(
-                8,
-                Math.floor(
-                    candles.length/zoom
-                )
-            );
-
-
-        const candleMove =
-            Math.round(
-                dx/candleWidth
-            );
-
-
-        offset =
-            touchStartOffset-
-            candleMove;
-
-
-        drawChart();
-
-    },
-    {passive:true}
-);
-
-
-canvas.addEventListener(
-    "touchend",
-    ()=>{
-
-        touching=false;
-
-    }
-);
-
-
-/* =========================
-   WHEEL ZOOM
-========================= */
-
-canvas.addEventListener(
-    "wheel",
-    event=>{
-
-        event.preventDefault();
-
-
-        if(event.deltaY<0){
-
-            zoom=
-                Math.min(
-                    MAX_ZOOM,
-                    zoom+0.25
-                );
-
-        }
-        else{
-
-            zoom=
-                Math.max(
-                    MIN_ZOOM,
-                    zoom-0.25
-                );
-
-        }
-
-
-        drawChart();
-
-    },
-    {passive:false}
-);
-
-
-/* =========================
-   UPDATE ALL MARKETS
-========================= */
-
-function updateMarkets(){
-
-    Object.keys(markets)
-    .forEach(symbol=>{
-
-        const market =
-            markets[symbol];
-
-
-        const move =
-            (Math.random()-0.5)*
-            market.step;
-
-
-        market.price+=move;
-
-
-        if(
-            market.price<=0
-        )
-            market.price=
-                market.step;
-
-
-        if(symbol===currentSymbol){
-
-            price=
-                market.price;
-
-
-            const previousClose =
-                candles[
-                    candles.length-1
-                ].close;
-
-
-            candles.push({
-
-                open:previousClose,
-
-                high:
-                    Math.max(
-                        price,
-                        previousClose
-                    ),
-
-                low:
-                    Math.min(
-                        price,
-                        previousClose
-                    ),
-
-                close:price
-
-            });
-
-
-            if(candles.length>150)
-                candles.shift();
-
-        }
+        list.appendChild(div);
 
     });
 
+}
+
+function selectMarket(symbol){
+
+    currentSymbol=symbol;
+
+    price=markets[symbol].price;
+
+    offset=0;
+    zoom=1;
+
+    createInitialCandles();
+
+    document.getElementById("symbolSelect").value =
+        symbol;
+
+    updateMarketDisplay();
+    renderMarkets();
+    drawChart();
+
+}
+
+function addNewCandle(){
+
+    let last =
+        candles[candles.length-1];
+
+    let open = last.close;
+
+    let move =
+        (Math.random()-.5) *
+        markets[currentSymbol].step *
+        2;
+
+    let close =
+        open+move;
+
+    let high =
+        Math.max(open,close) +
+        Math.random() *
+        markets[currentSymbol].step;
+
+    let low =
+        Math.min(open,close) -
+        Math.random() *
+        markets[currentSymbol].step;
+
+    candles.push({
+        open,
+        high,
+        low,
+        close,
+        time:Date.now()
+    });
+
+    if(candles.length>250){
+
+        candles.shift();
+
+        offset =
+            Math.max(0,offset-1);
+
+    }
+
+}
+
+function updateMarkets(){
+
+    Object.keys(markets).forEach(symbol=>{
+
+        const market=markets[symbol];
+
+        market.price +=
+            (Math.random()-.5) *
+            market.step;
+
+    });
+
+    price =
+        markets[currentSymbol].price;
+
+    if(candles.length===0){
+
+        createInitialCandles();
+
+    }
+
+    let last =
+        candles[candles.length-1];
+
+    last.close=price;
+
+    last.high=
+        Math.max(
+            last.high,
+            price
+        );
+
+    last.low=
+        Math.min(
+            last.low,
+            price
+        );
+
+    if(Math.random()<0.18){
+
+        addNewCandle();
+
+    }
 
     updateMarketDisplay();
 
@@ -1722,124 +1215,97 @@ function updateMarkets(){
 
 }
 
+function calculatePL(pos){
 
-/* =========================
-   OPEN TRADE
-========================= */
+    const current =
+        markets[pos.symbol].price;
+
+    let multiplier=100000;
+
+    if(pos.symbol==="XAUUSD")
+        multiplier=100;
+
+    if(pos.symbol==="BTCUSD")
+        multiplier=1;
+
+    if(pos.symbol==="USDJPY")
+        multiplier=1000;
+
+    let difference =
+        pos.side==="BUY"
+        ? current-pos.entry
+        : pos.entry-current;
+
+    return difference *
+        pos.volume *
+        multiplier;
+
+}
 
 function openTrade(side){
 
     const volume =
         Number(
-            document
-            .getElementById("volume")
-            .value
+            document.getElementById("volume").value
         );
 
+    const tpInput =
+        document.getElementById("tp").value;
 
-    if(
-        !Number.isFinite(volume) ||
-        volume<=0
-    ){
+    const slInput =
+        document.getElementById("sl").value;
 
-        setStatus(
-            "Enter a valid volume.",
-            true
-        );
+    const tp =
+        tpInput===""
+        ? null
+        : Number(tpInput);
+
+    const sl =
+        slInput===""
+        ? null
+        : Number(slInput);
+
+    if(!volume || volume<=0){
+
+        alert("Enter a valid volume.");
 
         return;
 
     }
 
-
-    let takeProfit =
-        Number(
-            document
-            .getElementById("takeProfit")
-            .value
-        );
-
-
-    let stopLoss =
-        Number(
-            document
-            .getElementById("stopLoss")
-            .value
-        );
-
-
-    if(
-        !Number.isFinite(takeProfit)
-    )
-        takeProfit=null;
-
-
-    if(
-        !Number.isFinite(stopLoss)
-    )
-        stopLoss=null;
-
-
     if(side==="BUY"){
 
-        if(
-            takeProfit!==null &&
-            takeProfit<=price
-        ){
+        if(tp!==null && tp<=price){
 
-            setStatus(
-                "For BUY, TP must be above entry.",
-                true
-            );
+            alert("BUY Take Profit must be above entry.");
 
             return;
 
         }
 
+        if(sl!==null && sl>=price){
 
-        if(
-            stopLoss!==null &&
-            stopLoss>=price
-        ){
-
-            setStatus(
-                "For BUY, SL must be below entry.",
-                true
-            );
+            alert("BUY Stop Loss must be below entry.");
 
             return;
 
         }
 
     }
-
 
     if(side==="SELL"){
 
-        if(
-            takeProfit!==null &&
-            takeProfit>=price
-        ){
+        if(tp!==null && tp>=price){
 
-            setStatus(
-                "For SELL, TP must be below entry.",
-                true
-            );
+            alert("SELL Take Profit must be below entry.");
 
             return;
 
         }
 
+        if(sl!==null && sl<=price){
 
-        if(
-            stopLoss!==null &&
-            stopLoss<=price
-        ){
-
-            setStatus(
-                "For SELL, SL must be above entry.",
-                true
-            );
+            alert("SELL Stop Loss must be above entry.");
 
             return;
 
@@ -1847,8 +1313,7 @@ function openTrade(side){
 
     }
 
-
-    positions.push({
+    const position={
 
         id:Date.now(),
 
@@ -1860,657 +1325,549 @@ function openTrade(side){
 
         entry:price,
 
-        takeProfit,
+        tp,
 
-        stopLoss,
+        sl,
 
-        pl:0
+        candleTime:
+            candles[candles.length-1].time
 
-    });
+    };
 
+    positions.push(position);
 
-    setStatus(
-        side+
-        " "+currentSymbol+
-        " opened at "+
-        formatPrice(
-            price,
-            currentSymbol
-        )
-    );
-
-
-    updatePositions();
+    renderPositions();
+    drawChart();
 
 }
-
-
-/* =========================
-   CALCULATE P/L
-========================= */
-
-function calculatePL(position){
-
-    const market =
-        markets[position.symbol];
-
-
-    const currentPrice =
-        market.price;
-
-
-    const difference =
-        position.side==="BUY"
-        ? currentPrice-position.entry
-        : position.entry-currentPrice;
-
-
-    let multiplier=100000;
-
-
-    if(
-        position.symbol==="XAUUSD"
-    )
-        multiplier=100;
-
-
-    if(
-        position.symbol==="BTCUSD"
-    )
-        multiplier=1;
-
-
-    if(
-        position.symbol==="USDJPY"
-    )
-        multiplier=1000;
-
-
-    return (
-        difference*
-        position.volume*
-        multiplier
-    );
-
-}
-
-
-/* =========================
-   UPDATE POSITIONS
-========================= */
 
 function updatePositions(){
 
-    let totalPL=0;
+    let floating=0;
 
-    const toClose=[];
+    positions =
+        positions.filter(pos=>{
 
+            const current =
+                markets[pos.symbol].price;
 
-    positions.forEach(
-        position=>{
+            let shouldClose=false;
+            let reason="";
 
-            const currentPrice =
-                markets[
-                    position.symbol
-                ].price;
+            if(pos.tp!==null){
 
+                if(
+                    pos.side==="BUY" &&
+                    current>=pos.tp
+                ){
 
-            position.pl =
-                calculatePL(
-                    position
+                    shouldClose=true;
+                    reason="Take Profit";
+
+                }
+
+                if(
+                    pos.side==="SELL" &&
+                    current<=pos.tp
+                ){
+
+                    shouldClose=true;
+                    reason="Take Profit";
+
+                }
+
+            }
+
+            if(pos.sl!==null){
+
+                if(
+                    pos.side==="BUY" &&
+                    current<=pos.sl
+                ){
+
+                    shouldClose=true;
+                    reason="Stop Loss";
+
+                }
+
+                if(
+                    pos.side==="SELL" &&
+                    current>=pos.sl
+                ){
+
+                    shouldClose=true;
+                    reason="Stop Loss";
+
+                }
+
+            }
+
+            if(shouldClose){
+
+                closePosition(
+                    pos.id,
+                    reason
                 );
 
-
-            totalPL+=
-                position.pl;
-
-
-            if(
-                position.side==="BUY"
-            ){
-
-                if(
-                    position.takeProfit!==null &&
-                    currentPrice>=
-                    position.takeProfit
-                ){
-
-                    toClose.push({
-                        id:position.id,
-                        reason:"Take Profit"
-                    });
-
-                }
-                else if(
-                    position.stopLoss!==null &&
-                    currentPrice<=
-                    position.stopLoss
-                ){
-
-                    toClose.push({
-                        id:position.id,
-                        reason:"Stop Loss"
-                    });
-
-                }
+                return false;
 
             }
 
+            floating += calculatePL(pos);
 
-            if(
-                position.side==="SELL"
-            ){
+            return true;
 
-                if(
-                    position.takeProfit!==null &&
-                    currentPrice<=
-                    position.takeProfit
-                ){
+        });
 
-                    toClose.push({
-                        id:position.id,
-                        reason:"Take Profit"
-                    });
+    document.getElementById("floating").textContent =
+        "$"+floating.toFixed(2);
 
-                }
-                else if(
-                    position.stopLoss!==null &&
-                    currentPrice>=
-                    position.stopLoss
-                ){
+    document.getElementById("floating").className =
+        floating>=0 ? "positive":"negative";
 
-                    toClose.push({
-                        id:position.id,
-                        reason:"Stop Loss"
-                    });
+    document.getElementById("equity").textContent =
+        "$"+(balance+floating).toFixed(2);
 
-                }
-
-            }
-
-        }
-    );
-
-
-    toClose.forEach(
-        item=>{
-
-            closePosition(
-                item.id,
-                item.reason
-            );
-
-        }
-    );
-
-
-    totalPL=
-        positions.reduce(
-            (sum,p)=>sum+p.pl,
-            0
-        );
-
-
-    document
-    .getElementById("pl")
-    .textContent =
-        "$"+totalPL.toFixed(2);
-
-
-    document
-    .getElementById("equity")
-    .textContent =
-        "$"+
-        (balance+totalPL)
-        .toFixed(2);
-
-
-    document
-    .getElementById("balance")
-    .textContent =
-        "$"+
-        balance.toFixed(2);
-
-
-    document
-    .getElementById("positionCount")
-    .textContent =
+    document.getElementById("positionCount").textContent =
         positions.length;
-
 
     renderPositions();
 
 }
 
-
-/* =========================
-   RENDER POSITIONS
-========================= */
-
 function renderPositions(){
 
-    const body =
-        document
-        .getElementById("positions");
+    const tbody =
+        document.getElementById("positionsTable");
 
+    tbody.innerHTML="";
 
-    body.innerHTML="";
+    positions.forEach(pos=>{
 
+        const pl =
+            calculatePL(pos);
 
-    positions.forEach(
-        position=>{
+        const tr =
+            document.createElement("tr");
 
-            const row =
-                document
-                .createElement("tr");
+        tr.innerHTML=`
 
+            <td>${pos.symbol}</td>
 
-            const plClass =
-                position.pl>=0
-                ? "green"
-                : "red";
+            <td class="${pos.side==="BUY"?"positive":"negative"}">
+                ${pos.side}
+            </td>
 
+            <td>${pos.volume}</td>
 
-            const digits =
-                markets[
-                    position.symbol
-                ].digits;
+            <td>${formatPrice(pos.entry,pos.symbol)}</td>
 
+            <td>
+                ${formatPrice(
+                    markets[pos.symbol].price,
+                    pos.symbol
+                )}
+            </td>
 
-            const tp =
-                position.takeProfit===null
-                ? "-"
-                : position.takeProfit
-                    .toFixed(digits);
+            <td>
+                ${pos.tp===null
+                    ? "—"
+                    : formatPrice(pos.tp,pos.symbol)}
+            </td>
 
+            <td>
+                ${pos.sl===null
+                    ? "—"
+                    : formatPrice(pos.sl,pos.symbol)}
+            </td>
 
-            const sl =
-                position.stopLoss===null
-                ? "-"
-                : position.stopLoss
-                    .toFixed(digits);
+            <td class="${pl>=0?"positive":"negative"}">
+                $${pl.toFixed(2)}
+            </td>
 
+            <td>
+                <button onclick="closePosition(${pos.id},'Manual Close')">
+                    Close
+                </button>
+            </td>
 
-            row.innerHTML=`
+        `;
 
-                <td>${position.symbol}</td>
+        tbody.appendChild(tr);
 
-                <td>${position.side}</td>
-
-                <td>${position.volume.toFixed(2)}</td>
-
-                <td>${position.entry.toFixed(digits)}</td>
-
-                <td>${tp}</td>
-
-                <td>${sl}</td>
-
-                <td class="${plClass}">
-                    $${position.pl.toFixed(2)}
-                </td>
-
-                <td>
-                    <button data-close="${position.id}">
-                        Close
-                    </button>
-                </td>
-
-            `;
-
-
-            body.appendChild(row);
-
-        }
-    );
-
-
-    body
-    .querySelectorAll(
-        "[data-close]"
-    )
-    .forEach(
-        button=>{
-
-            button.addEventListener(
-                "click",
-                ()=>closePosition(
-                    Number(
-                        button.dataset.close
-                    ),
-                    "Manual Close"
-                )
-            );
-
-        }
-    );
+    });
 
 }
 
-
-/* =========================
-   CLOSE POSITION
-========================= */
-
-function closePosition(
-    id,
-    reason="Manual Close"
-){
+function closePosition(id,reason="Manual Close"){
 
     const index =
         positions.findIndex(
             p=>p.id===id
         );
 
+    if(index===-1) return;
 
-    if(index===-1)
-        return;
-
-
-    const position =
+    const pos =
         positions[index];
 
+    const exit =
+        markets[pos.symbol].price;
 
-    position.pl =
-        calculatePL(
-            position
-        );
+    const pl =
+        calculatePL(pos);
 
-
-    balance+=
-        position.pl;
-
+    balance += pl;
 
     history.unshift({
 
-        time:
-            new Date()
-            .toLocaleTimeString(),
-
-        symbol:
-            position.symbol,
-
-        side:
-            position.side,
-
-        volume:
-            position.volume,
-
-        result:
-            position.pl,
-
+        symbol:pos.symbol,
+        side:pos.side,
+        volume:pos.volume,
+        entry:pos.entry,
+        exit,
+        pl,
         reason
 
     });
 
+    positions.splice(index,1);
 
-    positions.splice(
-        index,
-        1
-    );
-
-
-    setStatus(
-        reason+
-        ": "+
-        position.symbol+
-        " result $"+
-        position.pl.toFixed(2)
-    );
-
-
+    renderPositions();
     renderHistory();
+    updateMarketDisplay();
+    drawChart();
 
 }
-
-
-/* =========================
-   HISTORY
-========================= */
 
 function renderHistory(){
 
-    const body =
-        document
-        .getElementById("history");
+    const tbody =
+        document.getElementById("historyTable");
 
+    tbody.innerHTML="";
 
-    body.innerHTML="";
+    history.forEach(item=>{
 
+        const tr =
+            document.createElement("tr");
 
-    history.forEach(
-        item=>{
+        tr.innerHTML=`
 
-            const row =
-                document
-                .createElement("tr");
+            <td>${item.symbol}</td>
 
+            <td>${item.side}</td>
 
-            const cls =
-                item.result>=0
-                ? "green"
-                : "red";
+            <td>${item.volume}</td>
 
+            <td>${formatPrice(item.entry,item.symbol)}</td>
 
-            row.innerHTML=`
+            <td>${formatPrice(item.exit,item.symbol)}</td>
 
-                <td>${item.time}</td>
+            <td class="${item.pl>=0?"positive":"negative"}">
+                $${item.pl.toFixed(2)}
+            </td>
 
-                <td>${item.symbol}</td>
+            <td>${item.reason}</td>
 
-                <td>${item.side}</td>
+        `;
 
-                <td>${item.volume.toFixed(2)}</td>
+        tbody.appendChild(tr);
 
-                <td class="${cls}">
-                    $${item.result.toFixed(2)}
+    });
 
-                    <small style="
-                        display:block;
-                        color:#8da0b5;
-                    ">
-                        ${item.reason}
-                    </small>
+}
 
-                </td>
+document.getElementById("symbolSelect")
+.addEventListener("change",e=>{
 
-            `;
+    selectMarket(e.target.value);
 
+});
 
-            body.appendChild(row);
+document.getElementById("buyBtn")
+.onclick=()=>openTrade("BUY");
+
+document.getElementById("sellBtn")
+.onclick=()=>openTrade("SELL");
+
+document.getElementById("zoomIn")
+.onclick=()=>{
+
+    zoom=Math.min(6,zoom*1.25);
+
+    drawChart();
+
+};
+
+document.getElementById("zoomOut")
+.onclick=()=>{
+
+    zoom=Math.max(.5,zoom/1.25);
+
+    drawChart();
+
+};
+
+document.getElementById("resetZoom")
+.onclick=()=>{
+
+    zoom=1;
+    offset=0;
+
+    drawChart();
+
+};
+
+document.getElementById("latest")
+.onclick=()=>{
+
+    offset=0;
+
+    drawChart();
+
+};
+
+document.getElementById("gridBtn")
+.onclick=()=>{
+
+    gridEnabled=!gridEnabled;
+
+    document.getElementById("gridBtn").textContent =
+        gridEnabled ? "Grid ON":"Grid OFF";
+
+    drawChart();
+
+};
+
+document.getElementById("styleBtn")
+.onclick=()=>{
+
+    candleStyle =
+        candleStyle==="classic"
+        ? "hollow"
+        : "classic";
+
+    document.getElementById("styleBtn").textContent =
+        candleStyle==="classic"
+        ? "Classic"
+        : "Hollow";
+
+    drawChart();
+
+};
+
+/* -----------------------------
+   DRAG CHART LEFT / RIGHT
+----------------------------- */
+
+function startDrag(x){
+
+    dragging=true;
+
+    dragStartX=x;
+
+    dragStartOffset=offset;
+
+    canvas.classList.add("dragging");
+
+}
+
+function moveDrag(x){
+
+    if(!dragging) return;
+
+    const dx =
+        x-dragStartX;
+
+    const pixelsPerCandle =
+        canvas.clientWidth /
+        Math.max(
+            10,
+            Math.floor(75/zoom)
+        );
+
+    const candleMove =
+        Math.round(
+            -dx/pixelsPerCandle
+        );
+
+    let maxOffset =
+        Math.max(
+            0,
+            candles.length -
+            Math.floor(75/zoom)
+        );
+
+    offset =
+        Math.max(
+            0,
+            Math.min(
+                maxOffset,
+                dragStartOffset+candleMove
+            )
+        );
+
+    drawChart();
+
+}
+
+function endDrag(){
+
+    dragging=false;
+
+    canvas.classList.remove("dragging");
+
+}
+
+canvas.addEventListener(
+    "mousedown",
+    e=>startDrag(e.clientX)
+);
+
+window.addEventListener(
+    "mousemove",
+    e=>moveDrag(e.clientX)
+);
+
+window.addEventListener(
+    "mouseup",
+    endDrag
+);
+
+canvas.addEventListener(
+    "touchstart",
+    e=>{
+
+        if(e.touches.length!==1) return;
+
+        startDrag(
+            e.touches[0].clientX
+        );
+
+    },
+    {passive:true}
+);
+
+canvas.addEventListener(
+    "touchmove",
+    e=>{
+
+        if(!dragging) return;
+
+        moveDrag(
+            e.touches[0].clientX
+        );
+
+    },
+    {passive:true}
+);
+
+canvas.addEventListener(
+    "touchend",
+    endDrag
+);
+
+/* Mouse wheel zoom */
+
+canvas.addEventListener(
+    "wheel",
+    e=>{
+
+        e.preventDefault();
+
+        if(e.deltaY<0){
+
+            zoom=Math.min(
+                6,
+                zoom*1.12
+            );
+
+        }else{
+
+            zoom=Math.max(
+                .5,
+                zoom/1.12
+            );
 
         }
+
+        drawChart();
+
+    },
+    {passive:false}
+);
+
+/* -----------------------------
+   FULL SCREEN CHART
+----------------------------- */
+
+const chartPanel =
+    document.getElementById("chartPanel");
+
+document.getElementById("fullscreenBtn")
+.onclick=()=>{
+
+    chartPanel.classList.add(
+        "fullscreen-mode"
     );
 
-}
+    resizeCanvas();
 
+};
 
-/* =========================
-   STATUS
-========================= */
+document.getElementById("exitFullscreen")
+.onclick=()=>{
 
-function setStatus(
-    message,
-    error=false
-){
+    chartPanel.classList.remove(
+        "fullscreen-mode"
+    );
 
-    const status =
-        document
-        .getElementById("status");
+    resizeCanvas();
 
+};
 
-    status.textContent =
-        message;
+/* -----------------------------
+   DEMO / LIVE INTERFACE
+----------------------------- */
 
+document.getElementById("demoBtn")
+.onclick=()=>{
 
-    status.style.color =
-        error
-        ? "#ff6875"
-        : "#9eb0c4";
+    currentMode="DEMO";
 
-}
+    document.getElementById("modeBadge")
+    .textContent="SIMULATION MODE";
 
+    document.getElementById("notice")
+    .textContent =
+        "Demo mode uses virtual funds and simulated market movement.";
 
-/* =========================
-   SYMBOL SELECT
-========================= */
+};
 
-document
-.getElementById("symbol")
-.addEventListener(
-    "change",
-    event=>{
+document.getElementById("liveBtn")
+.onclick=()=>{
 
-        selectMarket(
-            event.target.value
-        );
+    currentMode="LIVE";
 
-    }
-);
+    document.getElementById("modeBadge")
+    .textContent="LIVE INTERFACE";
 
+    document.getElementById("notice")
+    .textContent =
+        "Live interface selected. Real-money order execution is not connected yet. This interface does not represent a completed real-money transaction.";
 
-/* =========================
-   MARKET LIST
-========================= */
+};
 
-document
-.querySelectorAll(
-    "[data-market]"
-)
-.forEach(
-    row=>{
+/* Start */
 
-        row.addEventListener(
-            "click",
-            ()=>{
-
-                selectMarket(
-                    row.dataset.market
-                );
-
-            }
-        );
-
-    }
-);
-
-
-/* =========================
-   BUY
-========================= */
-
-document
-.getElementById("buyBtn")
-.addEventListener(
-    "click",
-    ()=>openTrade("BUY")
-);
-
-
-/* =========================
-   SELL
-========================= */
-
-document
-.getElementById("sellBtn")
-.addEventListener(
-    "click",
-    ()=>openTrade("SELL")
-);
-
-
-/* =========================
-   DEMO
-========================= */
-
-document
-.getElementById("demoBtn")
-.addEventListener(
-    "click",
-    ()=>{
-
-        currentMode="DEMO";
-
-
-        document
-        .getElementById("modeText")
-        .textContent =
-            "Demo FX uses virtual funds and simulated market execution.";
-
-
-        document
-        .getElementById("modeBadge")
-        .textContent =
-            "SIMULATION MODE";
-
-
-        document
-        .getElementById("liveNote")
-        .style.display =
-            "none";
-
-
-        setStatus(
-            "Demo FX simulator active."
-        );
-
-    }
-);
-
-
-/* =========================
-   LIVE INTERFACE
-========================= */
-
-document
-.getElementById("liveBtn")
-.addEventListener(
-    "click",
-    ()=>{
-
-        currentMode="LIVE";
-
-
-        document
-        .getElementById("modeText")
-        .textContent =
-            "Live FX interface selected. Real-money execution requires a connected broker.";
-
-
-        document
-        .getElementById("modeBadge")
-        .textContent =
-            "LIVE INTERFACE";
-
-
-        document
-        .getElementById("liveNote")
-        .style.display =
-            "block";
-
-
-        setStatus(
-            "Live interface selected. Real execution is not connected."
-        );
-
-    }
-);
-
-
-/* =========================
-   START
-========================= */
+renderMarkets();
 
 createInitialCandles();
 
-updateMarketDisplay();
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-
 resizeCanvas();
 
+updateMarketDisplay();
 
 setInterval(
     updateMarkets,
