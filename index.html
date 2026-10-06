@@ -46,7 +46,7 @@ button,select,input{
 }
 
 .container{
-    max-width:1400px;
+    max-width:1450px;
     margin:auto;
     padding:18px;
 }
@@ -92,9 +92,19 @@ button:hover{
     flex:1;
 }
 
+.deposit{
+    background:#146c9e;
+    border-color:#146c9e;
+}
+
+.withdraw{
+    background:#76551d;
+    border-color:#76551d;
+}
+
 .cards{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(6,1fr);
     gap:12px;
     margin-bottom:18px;
 }
@@ -113,12 +123,12 @@ button:hover{
 .card strong{
     display:block;
     margin-top:8px;
-    font-size:21px;
+    font-size:19px;
 }
 
 .layout{
     display:grid;
-    grid-template-columns:minmax(0,1fr) 320px;
+    grid-template-columns:minmax(0,1fr) 340px;
     gap:18px;
 }
 
@@ -130,18 +140,43 @@ button:hover{
     margin-bottom:18px;
 }
 
+.chart-controls{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+}
+
+.chart-controls button{
+    min-height:38px;
+    padding:7px 11px;
+}
+
 .chart-wrap{
-    height:440px;
+    height:500px;
     position:relative;
     overflow:hidden;
     background:#08131f;
     border-radius:7px;
+    touch-action:none;
 }
 
 canvas{
     width:100%;
     height:100%;
     display:block;
+}
+
+.chart-label{
+    position:absolute;
+    left:10px;
+    top:8px;
+    padding:6px 9px;
+    background:rgba(7,16,28,.82);
+    border-radius:5px;
+    color:#b9c6d5;
+    font-size:12px;
+    pointer-events:none;
 }
 
 .price{
@@ -175,6 +210,22 @@ canvas{
     margin-top:12px;
 }
 
+.order-fields{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:8px;
+}
+
+.order-fields .full{
+    grid-column:1/-1;
+}
+
+.order-fields input{
+    width:100%;
+    margin-top:5px;
+}
+
 table{
     width:100%;
     border-collapse:collapse;
@@ -182,9 +233,10 @@ table{
 
 th,td{
     text-align:left;
-    padding:11px 8px;
+    padding:10px 7px;
     border-bottom:1px solid #26384d;
-    font-size:14px;
+    font-size:13px;
+    white-space:nowrap;
 }
 
 th{
@@ -197,6 +249,7 @@ th{
     background:#101d2d;
     color:#9eb0c4;
     margin-top:12px;
+    line-height:1.4;
 }
 
 .green{
@@ -207,15 +260,39 @@ th{
     color:#ff6875;
 }
 
+.yellow{
+    color:#ffd166;
+}
+
 .notice{
     color:#9eb0c4;
     font-size:13px;
     line-height:1.5;
 }
 
-@media(max-width:900px){
+.stat{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #26384d;
+    font-size:13px;
+}
+
+.account-buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:9px;
+}
+
+.scroll{
+    overflow-x:auto;
+}
+
+@media(max-width:1100px){
+
     .cards{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:repeat(3,1fr);
     }
 
     .layout{
@@ -224,20 +301,30 @@ th{
 }
 
 @media(max-width:600px){
-    .cards{
-        grid-template-columns:1fr 1fr;
-    }
 
     .container{
         padding:10px;
     }
 
-    .chart-wrap{
-        height:330px;
+    .cards{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    th,td{
-        font-size:12px;
+    .chart-wrap{
+        height:360px;
+    }
+
+    .order-fields{
+        grid-template-columns:1fr;
+    }
+
+    .order-fields .full{
+        grid-column:auto;
+    }
+
+    .toolbar button,
+    .toolbar select{
+        flex:1;
     }
 }
 </style>
@@ -246,45 +333,67 @@ th{
 <body>
 
 <header class="top">
-    <div class="logo">WASHINGTON FX</div>
 
-    <div class="mode">
+    <div class="logo">
+        WASHINGTON FX
+    </div>
+
+    <div class="mode" id="modeBadge">
         SIMULATION MODE
     </div>
+
 </header>
 
+
 <div class="container">
+
+    <!-- MARKET TOOLBAR -->
 
     <div class="toolbar">
 
         <select id="symbol">
-            <option>EURUSD</option>
-            <option>GBPUSD</option>
-            <option>USDJPY</option>
-            <option>USDCHF</option>
-            <option>AUDUSD</option>
-            <option>USDCAD</option>
-            <option>XAUUSD</option>
-            <option>BTCUSD</option>
+
+            <option value="EURUSD">EUR/USD</option>
+            <option value="GBPUSD">GBP/USD</option>
+            <option value="USDJPY">USD/JPY</option>
+            <option value="USDCHF">USD/CHF</option>
+            <option value="AUDUSD">AUD/USD</option>
+            <option value="USDCAD">USD/CAD</option>
+            <option value="NZDUSD">NZD/USD</option>
+            <option value="XAUUSD">GOLD / XAUUSD</option>
+            <option value="BTCUSD">BTC/USD</option>
+
         </select>
 
+
         <select id="timeframe">
-            <option>1 Minute</option>
-            <option>5 Minutes</option>
-            <option>15 Minutes</option>
-            <option>1 Hour</option>
+
+            <option value="1">1 Minute</option>
+            <option value="5">5 Minutes</option>
+            <option value="15">15 Minutes</option>
+            <option value="60">1 Hour</option>
+
         </select>
+
 
         <button id="demoBtn" class="primary">
             Demo FX
         </button>
 
+
         <button id="liveBtn">
             Live FX
         </button>
 
+
+        <button id="resetBtn">
+            Reset Demo
+        </button>
+
     </div>
 
+
+    <!-- ACCOUNT CARDS -->
 
     <div class="cards">
 
@@ -304,6 +413,16 @@ th{
         </div>
 
         <div class="card">
+            <small>Margin Used</small>
+            <strong id="margin">$0.00</strong>
+        </div>
+
+        <div class="card">
+            <small>Free Margin</small>
+            <strong id="freeMargin">$10,000.00</strong>
+        </div>
+
+        <div class="card">
             <small>Open Positions</small>
             <strong id="positionCount">0</strong>
         </div>
@@ -315,46 +434,113 @@ th{
 
         <div>
 
+            <!-- CHART PANEL -->
+
             <div class="panel">
 
                 <div class="price">
 
                     <div class="price-box">
+
                         <small>BID</small>
-                        <strong id="bid">1.08500</strong>
+
+                        <strong id="bid">
+                            1.08500
+                        </strong>
+
                     </div>
 
+
                     <div class="price-box">
+
                         <small>ASK</small>
-                        <strong id="ask">1.08510</strong>
+
+                        <strong id="ask">
+                            1.08510
+                        </strong>
+
                     </div>
 
                 </div>
 
-                <div class="chart-wrap">
+
+                <div class="chart-controls">
+
+                    <button id="zoomIn">
+                        ＋ Zoom
+                    </button>
+
+                    <button id="zoomOut">
+                        － Zoom
+                    </button>
+
+                    <button id="resetZoom">
+                        Reset Zoom
+                    </button>
+
+                    <button id="candleBtn">
+                        🕯 Candles
+                    </button>
+
+                    <button id="lineBtn">
+                        ╱ Line
+                    </button>
+
+                    <button id="gridBtn">
+                        Grid
+                    </button>
+
+                </div>
+
+
+                <div class="chart-wrap" id="chartWrap">
+
                     <canvas id="chart"></canvas>
+
+                    <div class="chart-label">
+
+                        <span id="chartSymbol">
+                            EUR/USD
+                        </span>
+
+                        ·
+
+                        <span id="chartTimeframe">
+                            1 Minute
+                        </span>
+
+                    </div>
+
                 </div>
 
             </div>
 
 
+            <!-- OPEN POSITIONS -->
+
             <div class="panel">
 
-                <h3>Open Positions</h3>
+                <h3>
+                    Open Positions
+                </h3>
 
-                <div style="overflow-x:auto;">
+                <div class="scroll">
 
                     <table>
 
                         <thead>
+
                             <tr>
                                 <th>Symbol</th>
                                 <th>Side</th>
                                 <th>Volume</th>
                                 <th>Entry</th>
+                                <th>TP</th>
+                                <th>SL</th>
                                 <th>P/L</th>
                                 <th></th>
                             </tr>
+
                         </thead>
 
                         <tbody id="positions"></tbody>
@@ -366,22 +552,31 @@ th{
             </div>
 
 
+            <!-- HISTORY -->
+
             <div class="panel">
 
-                <h3>Trade History</h3>
+                <h3>
+                    Trade History
+                </h3>
 
-                <div style="overflow-x:auto;">
+                <div class="scroll">
 
                     <table>
 
                         <thead>
+
                             <tr>
                                 <th>Time</th>
                                 <th>Symbol</th>
                                 <th>Side</th>
                                 <th>Volume</th>
+                                <th>Entry</th>
+                                <th>Exit</th>
                                 <th>Result</th>
+                                <th>Reason</th>
                             </tr>
+
                         </thead>
 
                         <tbody id="history"></tbody>
@@ -392,25 +587,107 @@ th{
 
             </div>
 
-        </div>
 
-
-        <aside>
+            <!-- TRANSACTIONS -->
 
             <div class="panel">
 
-                <h3>New Order</h3>
+                <h3>
+                    Account Transactions
+                </h3>
 
-                <label>Volume</label>
+                <div class="scroll">
 
-                <input
-                    id="volume"
-                    type="number"
-                    value="0.10"
-                    min="0.01"
-                    step="0.01"
-                    style="width:100%;margin-top:7px;"
-                >
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="transactions"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+
+        <aside>
+
+
+            <!-- ORDER PANEL -->
+
+            <div class="panel">
+
+                <h3>
+                    New Order
+                </h3>
+
+
+                <div class="order-fields">
+
+                    <div class="full">
+
+                        <label>
+                            Volume / Lots
+                        </label>
+
+                        <input
+                            id="volume"
+                            type="number"
+                            value="0.10"
+                            min="0.01"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Take Profit
+                        </label>
+
+                        <input
+                            id="tp"
+                            type="number"
+                            step="0.00001"
+                            placeholder="Optional"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            Stop Loss
+                        </label>
+
+                        <input
+                            id="sl"
+                            type="number"
+                            step="0.00001"
+                            placeholder="Optional"
+                        >
+
+                    </div>
+
+                </div>
+
 
                 <div class="order-actions">
 
@@ -421,6 +698,7 @@ th{
                         BUY
                     </button>
 
+
                     <button
                         id="sellBtn"
                         class="sell"
@@ -430,26 +708,148 @@ th{
 
                 </div>
 
-                <div id="status" class="status">
+
+                <div
+                    id="status"
+                    class="status"
+                >
                     Demo simulator ready.
+
                 </div>
 
             </div>
 
 
+            <!-- ACCOUNT -->
+
             <div class="panel">
 
-                <h3>Trading Mode</h3>
+                <h3>
+                    Account
+                </h3>
 
-                <p id="modeText">
-                    Demo FX uses virtual funds and simulated
-                    market execution.
-                </p>
+
+                <div class="stat">
+                    <span>Balance</span>
+                    <strong id="sideBalance">
+                        $10,000.00
+                    </strong>
+                </div>
+
+
+                <div class="stat">
+                    <span>Equity</span>
+                    <strong id="sideEquity">
+                        $10,000.00
+                    </strong>
+                </div>
+
+
+                <div class="stat">
+                    <span>Floating P/L</span>
+                    <strong id="sidePL">
+                        $0.00
+                    </strong>
+                </div>
+
+
+                <div class="stat">
+                    <span>Margin Used</span>
+                    <strong id="sideMargin">
+                        $0.00
+                    </strong>
+                </div>
+
+
+                <div class="stat">
+                    <span>Free Margin</span>
+                    <strong id="sideFreeMargin">
+                        $10,000.00
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- VIRTUAL FUNDS -->
+
+            <div class="panel">
+
+                <h3>
+                    Virtual Funds
+                </h3>
+
 
                 <p class="notice">
-                    The Live FX interface is reserved for a future
-                    regulated broker/execution connection. This
-                    version does not execute real-money trades.
+
+                    Deposit and withdrawal here are
+                    simulator transactions using virtual
+                    funds. They do not move real money.
+
+                </p>
+
+
+                <label>
+                    Amount
+                </label>
+
+
+                <input
+                    id="fundAmount"
+                    type="number"
+                    value="1000"
+                    min="1"
+                    step="1"
+                    style="width:100%;margin-top:6px;"
+                >
+
+
+                <div class="account-buttons">
+
+                    <button
+                        id="depositBtn"
+                        class="deposit"
+                    >
+                        Deposit
+                    </button>
+
+
+                    <button
+                        id="withdrawBtn"
+                        class="withdraw"
+                    >
+                        Withdraw
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- MODE -->
+
+            <div class="panel">
+
+                <h3>
+                    Trading Mode
+                </h3>
+
+
+                <p id="modeText">
+
+                    Demo FX uses virtual funds and
+                    simulated market execution.
+
+                </p>
+
+
+                <p class="notice">
+
+                    Live FX is currently an interface
+                    for future broker/execution
+                    integration. This version does not
+                    execute real-money trades.
+
                 </p>
 
             </div>
@@ -463,6 +863,16 @@ th{
 
 <script>
 
+/* =====================================================
+   WASHINGTON FX
+   UPGRADED VERSION BASED ON THE WORKING ENGINE
+   ===================================================== */
+
+
+/* -----------------------------
+   CANVAS
+----------------------------- */
+
 const canvas =
     document.getElementById("chart");
 
@@ -470,585 +880,268 @@ const ctx =
     canvas.getContext("2d");
 
 
-let balance = 10000;
+/* -----------------------------
+   ACCOUNT
+----------------------------- */
 
-let price = 1.08500;
+let balance = 10000;
 
 let positions = [];
 
 let history = [];
 
+let transactions = [];
+
+
+/* -----------------------------
+   MARKET DATABASE
+----------------------------- */
+
+const markets = {
+
+    EURUSD:{
+        name:"EUR/USD",
+        price:1.08500,
+        pip:0.0001,
+        multiplier:100000
+    },
+
+    GBPUSD:{
+        name:"GBP/USD",
+        price:1.27300,
+        pip:0.0001,
+        multiplier:100000
+    },
+
+    USDJPY:{
+        name:"USD/JPY",
+        price:149.500,
+        pip:0.01,
+        multiplier:1000
+    },
+
+    USDCHF:{
+        name:"USD/CHF",
+        price:0.90200,
+        pip:0.0001,
+        multiplier:100000
+    },
+
+    AUDUSD:{
+        name:"AUD/USD",
+        price:0.65500,
+        pip:0.0001,
+        multiplier:100000
+    },
+
+    USDCAD:{
+        name:"USD/CAD",
+        price:1.35500,
+        pip:0.0001,
+        multiplier:100000
+    },
+
+    NZDUSD:{
+        name:"NZD/USD",
+        price:0.61200,
+        pip:0.0001,
+        multiplier:100000
+    },
+
+    XAUUSD:{
+        name:"GOLD / XAUUSD",
+        price:2650.00,
+        pip:0.01,
+        multiplier:100
+    },
+
+    BTCUSD:{
+        name:"BTC/USD",
+        price:65000,
+        pip:1,
+        multiplier:1
+    }
+
+};
+
+
+/* -----------------------------
+   CURRENT MARKET
+----------------------------- */
+
+let currentSymbol =
+    "EURUSD";
+
+
+let timeframe =
+    1;
+
+
 let candles = [];
 
 
-for(let i=0;i<70;i++){
+/* -----------------------------
+   CHART SETTINGS
+----------------------------- */
 
-    let open = price;
+let candleMode =
+    "candle";
 
-    let move =
-        (Math.random()-0.5)*0.002;
 
-    let close =
-        open + move;
+let showGrid =
+    true;
 
-    let high =
-        Math.max(open,close) +
-        Math.random()*0.001;
 
-    let low =
-        Math.min(open,close) -
-        Math.random()*0.001;
+let zoom =
+    1;
 
-    candles.push({
-        open,
-        high,
-        low,
-        close
-    });
 
-    price = close;
+let chartOffset =
+    0;
+
+
+/* -----------------------------
+   CANDLE TIMER
+----------------------------- */
+
+let tickCounter =
+    0;
+
+
+/* -----------------------------
+   CREATE CANDLES
+----------------------------- */
+
+function createCandles(){
+
+    candles = [];
+
+    const market =
+        markets[currentSymbol];
+
+    let p =
+        market.price;
+
+
+    for(let i=0;i<80;i++){
+
+        let volatility;
+
+
+        if(currentSymbol==="BTCUSD")
+            volatility = 70;
+
+        else if(currentSymbol==="XAUUSD")
+            volatility = 2.5;
+
+        else if(currentSymbol==="USDJPY")
+            volatility = 0.15;
+
+        else
+            volatility = 0.0015;
+
+
+        const open =
+            p;
+
+
+        const move =
+            (Math.random()-0.5) *
+            volatility;
+
+
+        const close =
+            open + move;
+
+
+        const high =
+            Math.max(
+                open,
+                close
+            ) +
+            Math.random()*volatility*0.5;
+
+
+        const low =
+            Math.min(
+                open,
+                close
+            ) -
+            Math.random()*volatility*0.5;
+
+
+        candles.push({
+            open:open,
+            high:high,
+            low:low,
+            close:close
+        });
+
+
+        p =
+            close;
+
+    }
+
+
+    market.price =
+        p;
+
+
+    chartOffset =
+        0;
+
 }
 
+
+/* -----------------------------
+   RESIZE
+----------------------------- */
 
 function resizeCanvas(){
 
     const rect =
         canvas.getBoundingClientRect();
 
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+
     canvas.width =
-        rect.width * devicePixelRatio;
+        rect.width*dpr;
+
 
     canvas.height =
-        rect.height * devicePixelRatio;
+        rect.height*dpr;
+
 
     ctx.setTransform(
-        devicePixelRatio,
+        dpr,
         0,
         0,
-        devicePixelRatio,
+        dpr,
         0,
         0
     );
 
-    drawChart();
-}
-
-
-function drawChart(){
-
-    const width =
-        canvas.clientWidth;
-
-    const height =
-        canvas.clientHeight;
-
-    ctx.clearRect(
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    if(candles.length === 0) return;
-
-
-    let max =
-        Math.max(...candles.map(c => c.high));
-
-    let min =
-        Math.min(...candles.map(c => c.low));
-
-
-    const range =
-        max-min || 0.001;
-
-
-    const gap =
-        width/candles.length;
-
-
-    candles.forEach((c,i)=>{
-
-        const x =
-            i*gap + gap/2;
-
-        const openY =
-            height -
-            ((c.open-min)/range)*height;
-
-        const closeY =
-            height -
-            ((c.close-min)/range)*height;
-
-        const highY =
-            height -
-            ((c.high-min)/range)*height;
-
-        const lowY =
-            height -
-            ((c.low-min)/range)*height;
-
-
-        ctx.beginPath();
-
-        ctx.moveTo(x,highY);
-        ctx.lineTo(x,lowY);
-
-        ctx.strokeStyle =
-            c.close >= c.open
-            ? "#36d98b"
-            : "#ff5967";
-
-        ctx.stroke();
-
-
-        const bodyTop =
-            Math.min(openY,closeY);
-
-        const bodyHeight =
-            Math.max(
-                2,
-                Math.abs(closeY-openY)
-            );
-
-
-        ctx.fillStyle =
-            c.close >= c.open
-            ? "#36d98b"
-            : "#ff5967";
-
-
-        ctx.fillRect(
-            x-gap*0.3,
-            bodyTop,
-            gap*0.6,
-            bodyHeight
-        );
-
-    });
-
-}
-
-
-function updatePrice(){
-
-    const move =
-        (Math.random()-0.5)*0.0008;
-
-    price += move;
-
-
-    if(price <= 0)
-        price = 0.0001;
-
-
-    candles.push({
-
-        open:
-            candles[candles.length-1].close,
-
-        high:
-            Math.max(
-                price,
-                candles[candles.length-1].close
-            ),
-
-        low:
-            Math.min(
-                price,
-                candles[candles.length-1].close
-            ),
-
-        close:price
-
-    });
-
-
-    if(candles.length>80)
-        candles.shift();
-
-
-    document.getElementById("bid")
-        .textContent =
-        price.toFixed(5);
-
-    document.getElementById("ask")
-        .textContent =
-        (price+0.00010).toFixed(5);
-
-
-    updatePositions();
 
     drawChart();
 
 }
 
 
-function openTrade(side){
+/* -----------------------------
+   PRICE FORMAT
+----------------------------- */
 
-    const volume =
-        Number(
-            document.getElementById("volume").value
-        );
+function formatPrice(
+    value,
+    symbol=currentSymbol
+){
 
+    if(symbol==="BTCUSD")
+        return value.toFixed(2);
 
-    if(!Number.isFinite(volume) || volume<=0){
 
-        setStatus(
-            "Enter a valid volume.",
-            true
-        );
-
-        return;
-    }
-
-
-    positions.push({
-
-        id:Date.now(),
-
-        symbol:
-            document.getElementById("symbol").value,
-
-        side,
-
-        volume,
-
-        entry:price,
-
-        pl:0
-
-    });
-
-
-    setStatus(
-        side +
-        " position opened at " +
-        price.toFixed(5)
-    );
-
-
-    updatePositions();
-
-}
-
-
-function updatePositions(){
-
-    let totalPL = 0;
-
-
-    positions.forEach(position=>{
-
-        const difference =
-            position.side === "BUY"
-            ? price-position.entry
-            : position.entry-price;
-
-
-        position.pl =
-            difference *
-            position.volume *
-            100000;
-
-
-        totalPL += position.pl;
-
-    });
-
-
-    document.getElementById("pl")
-        .textContent =
-        "$" + totalPL.toFixed(2);
-
-
-    document.getElementById("equity")
-        .textContent =
-        "$" + (balance+totalPL).toFixed(2);
-
-
-    document.getElementById("positionCount")
-        .textContent =
-        positions.length;
-
-
-    renderPositions();
-
-}
-
-
-function renderPositions(){
-
-    const body =
-        document.getElementById("positions");
-
-    body.innerHTML = "";
-
-
-    positions.forEach(position=>{
-
-        const row =
-            document.createElement("tr");
-
-
-        const plClass =
-            position.pl >= 0
-            ? "green"
-            : "red";
-
-
-        row.innerHTML = `
-
-            <td>${position.symbol}</td>
-
-            <td>${position.side}</td>
-
-            <td>${position.volume.toFixed(2)}</td>
-
-            <td>${position.entry.toFixed(5)}</td>
-
-            <td class="${plClass}">
-                $${position.pl.toFixed(2)}
-            </td>
-
-            <td>
-                <button data-close="${position.id}">
-                    Close
-                </button>
-            </td>
-
-        `;
-
-
-        body.appendChild(row);
-
-    });
-
-
-    body.querySelectorAll("[data-close]")
-        .forEach(button=>{
-
-            button.addEventListener(
-                "click",
-                ()=>closePosition(
-                    Number(
-                        button.dataset.close
-                    )
-                )
-            );
-
-        });
-
-}
-
-
-function closePosition(id){
-
-    const index =
-        positions.findIndex(
-            p => p.id === id
-        );
-
-
-    if(index === -1)
-        return;
-
-
-    const position =
-        positions[index];
-
-
-    balance +=
-        position.pl;
-
-
-    history.unshift({
-
-        time:
-            new Date().toLocaleTimeString(),
-
-        symbol:
-            position.symbol,
-
-        side:
-            position.side,
-
-        volume:
-            position.volume,
-
-        result:
-            position.pl
-
-    });
-
-
-    positions.splice(index,1);
-
-
-    setStatus(
-        "Position closed. Result: $" +
-        position.pl.toFixed(2)
-    );
-
-
-    renderHistory();
-
-    updatePositions();
-
-}
-
-
-function renderHistory(){
-
-    const body =
-        document.getElementById("history");
-
-    body.innerHTML = "";
-
-
-    history.forEach(item=>{
-
-        const row =
-            document.createElement("tr");
-
-
-        const cls =
-            item.result >= 0
-            ? "green"
-            : "red";
-
-
-        row.innerHTML = `
-
-            <td>${item.time}</td>
-
-            <td>${item.symbol}</td>
-
-            <td>${item.side}</td>
-
-            <td>${item.volume.toFixed(2)}</td>
-
-            <td class="${cls}">
-                $${item.result.toFixed(2)}
-            </td>
-
-        `;
-
-
-        body.appendChild(row);
-
-    });
-
-}
-
-
-function setStatus(message,error=false){
-
-    const status =
-        document.getElementById("status");
-
-    status.textContent =
-        message;
-
-    status.style.color =
-        error
-        ? "#ff6875"
-        : "#9eb0c4";
-
-}
-
-
-document
-    .getElementById("buyBtn")
-    .addEventListener(
-        "click",
-        ()=>openTrade("BUY")
-    );
-
-
-document
-    .getElementById("sellBtn")
-    .addEventListener(
-        "click",
-        ()=>openTrade("SELL")
-    );
-
-
-document
-    .getElementById("demoBtn")
-    .addEventListener(
-        "click",
-        ()=>{
-
-            document.getElementById("modeText")
-                .textContent =
-                "Demo FX uses virtual funds and simulated market execution.";
-
-            document.querySelector(".mode")
-                .textContent =
-                "SIMULATION MODE";
-
-            setStatus(
-                "Demo FX simulator active."
-            );
-
-        }
-    );
-
-
-document
-    .getElementById("liveBtn")
-    .addEventListener(
-        "click",
-        ()=>{
-
-            document.getElementById("modeText")
-                .textContent =
-                "Live FX interface selected. Real-money execution is not connected.";
-
-            document.querySelector(".mode")
-                .textContent =
-                "LIVE INTERFACE";
-
-            setStatus(
-                "Live interface selected. Real execution is not enabled."
-            );
-
-        }
-    );
-
-
-document
-    .getElementById("symbol")
-    .addEventListener(
-        "change",
-        ()=>{
-
-            setStatus(
-                document.getElementById("symbol").value +
-                " selected."
-            );
-
-        }
-    );
-
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-
-
-resizeCanvas();
-
-
-setInterval(
-    updatePrice,
-    1000
-);
-
-</script>
-
-</body>
-                </html>
+    if(symbol==
