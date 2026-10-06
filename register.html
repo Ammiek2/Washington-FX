@@ -1,110 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Washington FX Register</title>
 
-    <style>
-        body {
-            margin: 0;
-            background: #07101c;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .box {
-            width: 90%;
-            max-width: 400px;
-            margin: 70px auto;
-            padding: 25px;
-            background: #101c2b;
-            border-radius: 15px;
-        }
+<title>Washington FX - Create Account</title>
 
-        h1 {
-            text-align: center;
-        }
+<style>
 
-        input {
-            width: 100%;
-            padding: 14px;
-            margin: 8px 0;
-            box-sizing: border-box;
-            background: #07101c;
-            color: white;
-            border: 1px solid #40536b;
-            border-radius: 7px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        button {
-            width: 100%;
-            padding: 14px;
-            margin-top: 10px;
-            background: #1687ff;
-            color: white;
-            border: none;
-            border-radius: 7px;
-            font-weight: bold;
-            font-size: 16px;
-        }
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    background: #07101c;
+    color: #fff;
+}
 
-        .link {
-            text-align: center;
-            margin-top: 20px;
-        }
+.box {
+    width: 92%;
+    max-width: 420px;
+    background: #101c2b;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 15px 50px rgba(0,0,0,.45);
+}
 
-        #message {
-            text-align: center;
-            margin-top: 15px;
-        }
-    </style>
+.logo {
+    text-align: center;
+    font-size: 27px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #91a4b8;
+    margin-bottom: 25px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 7px 0;
+    border: 1px solid #30445c;
+    border-radius: 8px;
+    background: #07101c;
+    color: #fff;
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 8px;
+    background: #1687ff;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .6;
+}
+
+.link {
+    text-align: center;
+    margin-top: 20px;
+    color: #55aaff;
+    cursor: pointer;
+}
+
+.message {
+    text-align: center;
+    margin-top: 15px;
+    line-height: 1.4;
+}
+
+.error {
+    color: #ff7070;
+}
+
+.success {
+    color: #42df91;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <div class="box">
 
-    <h1>WASHINGTON FX</h1>
+    <div class="logo">
+        WASHINGTON FX
+    </div>
 
-    <p style="text-align:center;">
-        Create your account
-    </p>
+    <div class="subtitle">
+        Create Your Account
+    </div>
 
     <input
-        type="text"
         id="name"
-        placeholder="Full Name"
+        type="text"
+        placeholder="Full name"
+        autocomplete="name"
     >
 
     <input
-        type="email"
         id="email"
-        placeholder="Email"
+        type="email"
+        placeholder="Email address"
+        autocomplete="email"
     >
 
     <input
-        type="password"
         id="password"
+        type="password"
         placeholder="Password"
+        autocomplete="new-password"
     >
 
     <input
-        type="password"
         id="confirm"
-        placeholder="Confirm Password"
+        type="password"
+        placeholder="Confirm password"
+        autocomplete="new-password"
     >
 
-    <button onclick="register()">
+    <button id="registerButton">
         CREATE ACCOUNT
     </button>
 
-    <div id="message"></div>
+    <div id="message" class="message"></div>
 
-    <div class="link">
-        <a href="login.html" style="color:#55aaff;">
-            Already have an account? Login
-        </a>
+    <div
+        class="link"
+        onclick="window.location.href='login.html'"
+    >
+        Already have an account? Login
     </div>
 
 </div>
@@ -114,69 +160,171 @@
 import { createClient }
 from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
+
+const SUPABASE_URL =
+    "https://plddteltleqayzcpuxom.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv";
+
+
 const supabase = createClient(
-    "https://plddteltleqayzcpuxom.supabase.co",
-    "sb_publishable_jX6_GQggT_GD2Kv_jNBcqA_frXVuZWv"
+    SUPABASE_URL,
+    SUPABASE_KEY
 );
 
-window.register = async function() {
+
+const nameInput =
+    document.getElementById("name");
+
+const emailInput =
+    document.getElementById("email");
+
+const passwordInput =
+    document.getElementById("password");
+
+const confirmInput =
+    document.getElementById("confirm");
+
+const button =
+    document.getElementById("registerButton");
+
+const message =
+    document.getElementById("message");
+
+
+button.addEventListener("click", async () => {
 
     const name =
-        document.getElementById("name").value;
+        nameInput.value.trim();
 
     const email =
-        document.getElementById("email").value;
+        emailInput.value.trim();
 
     const password =
-        document.getElementById("password").value;
+        passwordInput.value;
 
     const confirm =
-        document.getElementById("confirm").value;
+        confirmInput.value;
 
-    const message =
-        document.getElementById("message");
 
-    if (!name || !email || !password) {
-        message.innerHTML =
+    message.textContent = "";
+    message.className = "message";
+
+
+    if (!name || !email || !password || !confirm) {
+
+        message.textContent =
             "Please complete all fields.";
+
+        message.className =
+            "message error";
+
         return;
     }
+
+
+    if (password.length < 6) {
+
+        message.textContent =
+            "Password must contain at least 6 characters.";
+
+        message.className =
+            "message error";
+
+        return;
+    }
+
 
     if (password !== confirm) {
-        message.innerHTML =
+
+        message.textContent =
             "Passwords do not match.";
+
+        message.className =
+            "message error";
+
         return;
     }
 
-    const { error } =
-        await supabase.auth.signUp({
 
-            email: email,
+    button.disabled = true;
 
-            password: password,
+    button.textContent =
+        "CREATING ACCOUNT...";
 
-            options: {
-                data: {
-                    full_name: name
+
+    try {
+
+        const { error } =
+            await supabase.auth.signUp({
+
+                email: email,
+
+                password: password,
+
+                options: {
+
+                    data: {
+                        full_name: name
+                    }
+
                 }
-            }
 
-        });
+            });
 
-    if (error) {
 
-        message.innerHTML =
-            error.message;
+        if (error) {
 
-        return;
+            message.textContent =
+                error.message;
+
+            message.className =
+                "message error";
+
+            button.disabled = false;
+
+            button.textContent =
+                "CREATE ACCOUNT";
+
+            return;
+        }
+
+
+        message.textContent =
+            "Account created successfully.";
+
+        message.className =
+            "message success";
+
+
+        setTimeout(() => {
+
+            window.location.href =
+                "login.html";
+
+        }, 1500);
+
+
+    } catch (error) {
+
+        message.textContent =
+            "Unable to create account. Please try again.";
+
+        message.className =
+            "message error";
+
+        button.disabled = false;
+
+        button.textContent =
+            "CREATE ACCOUNT";
+
     }
 
-    message.innerHTML =
-        "Account created. You can now login.";
-
-};
+});
 
 </script>
 
 </body>
+
 </html>
